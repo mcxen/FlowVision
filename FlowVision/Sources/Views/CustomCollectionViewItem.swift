@@ -1063,6 +1063,8 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 if let collectionView = collectionView {
                     selectedCount=collectionView.selectionIndexPaths.count
                 }
+                let selectedURLs = getViewController(collectionView!)?.publicVar.selectedUrls() ?? []
+                let isMultiFolderSelection = selectedURLs.count > 1 && selectedURLs.allSatisfy { $0.hasDirectoryPath }
                 
                 var canPasteOrMove=true
                 let pasteboard = NSPasteboard.general
@@ -1142,6 +1144,11 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                     menu.addItem(NSMenuItem.separator())
                 }
                 
+                if isMultiFolderSelection {
+                    menu.addItem(withTitle: NSLocalizedString("提取子文件夹文件并归集", comment: "提取子文件夹文件并归集"), action: #selector(actCollectFilesFromSubfolders), keyEquivalent: "")
+                    menu.addItem(NSMenuItem.separator())
+                }
+                
                 let actionItemDelete = menu.addItem(withTitle: NSLocalizedString("Move to Trash", comment: "移动到废纸篓"), action: #selector(actDelete), keyEquivalent: "\u{8}")
                 actionItemDelete.keyEquivalentModifierMask = []
                 // actionItemDelete.isEnabled = (items.count>0)
@@ -1174,7 +1181,6 @@ class CustomCollectionViewItem: NSCollectionViewItem {
 
                 menu.addItem(NSMenuItem.separator())
 
-                let selectedURLs = getViewController(collectionView!)?.publicVar.selectedUrls() ?? []
                 let tagsPerURL = selectedURLs.map { FinderTagHelper.readTags(from: $0) }
                 let allTags = FinderTag.all
                 let activeTagNames: Set<String> = {
@@ -1488,6 +1494,10 @@ class CustomCollectionViewItem: NSCollectionViewItem {
 
     @objc func actDelete() {
         getViewController(collectionView!)?.handleDelete(isShowPrompt: false)
+    }
+    
+    @objc func actCollectFilesFromSubfolders() {
+        _ = getViewController(collectionView!)?.handleCollectFilesFromSubfolders()
     }
     
     @objc func actPaste() {

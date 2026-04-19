@@ -32,6 +32,71 @@ extension ViewController {
         }
     }
     
+    @discardableResult
+    private func enterSelectedFolderFromKeyboard() -> Bool {
+        guard let selectedURL = publicVar.selectedUrls().first else { return false }
+        
+        var targetFolderURL: URL? = nil
+        if selectedURL.hasDirectoryPath {
+            targetFolderURL = selectedURL
+        } else if let values = try? selectedURL.resourceValues(forKeys: [.isAliasFileKey, .isSymbolicLinkKey]),
+                  values.isAliasFile == true,
+                  let resolved = try? URL(resolvingAliasFileAt: selectedURL),
+                  resolved.hasDirectoryPath {
+            targetFolderURL = resolved
+        }
+        
+        guard let folderURL = targetFolderURL else { return false }
+        switchDirByDirection(direction: .zero, dest: folderURL.absoluteString, stackDeep: 0)
+        return true
+    }
+    
+    @discardableResult
+    private func triggerRightClickContextMenuFromKeyboard() -> Bool {
+        guard let window = view.window else { return false }
+        
+        let targetView: NSView
+        if let selectedIndexPath = collectionView.selectionIndexPaths.first,
+           let item = collectionView.item(at: selectedIndexPath) as? CustomCollectionViewItem {
+            targetView = item.view
+        } else {
+            targetView = collectionView
+        }
+        
+        let localCenter = NSPoint(x: targetView.bounds.midX, y: targetView.bounds.midY)
+        let windowPoint = targetView.convert(localCenter, to: nil)
+        let timestamp = ProcessInfo.processInfo.systemUptime
+        
+        guard let downEvent = NSEvent.mouseEvent(
+            with: .rightMouseDown,
+            location: windowPoint,
+            modifierFlags: [],
+            timestamp: timestamp,
+            windowNumber: window.windowNumber,
+            context: nil,
+            eventNumber: 0,
+            clickCount: 1,
+            pressure: 1.0
+        ),
+              let upEvent = NSEvent.mouseEvent(
+                with: .rightMouseUp,
+                location: windowPoint,
+                modifierFlags: [],
+                timestamp: timestamp + 0.01,
+                windowNumber: window.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 0.0
+              ) else {
+            return false
+        }
+        
+        targetView.rightMouseDown(with: downEvent)
+        targetView.rightMouseUp(with: upEvent)
+        return true
+    }
+    
     func KeyShortcutManager (event: NSEvent) -> NSEvent?
     {
         // 检查事件的窗口是否是当前窗口，如果不是、也非弹窗状态，就不处理，事件继续传递
@@ -401,6 +466,12 @@ extension ViewController {
                         largeImageView.seekVideoByFrame(direction: 1)
                     }
                     return nil
+                } else if !publicVar.isInLargeView,
+                          specialKey == .rightArrow {
+                    // Keyboard equivalent of mouse right click context menu.
+                    if triggerRightClickContextMenuFromKeyboard() {
+                        return nil
+                    }
                 }
             }
 
@@ -451,20 +522,8 @@ extension ViewController {
                 if publicVar.isInLargeView {
                     locateLargeImage(direction: 2)
                 } else {
-                    if let selectedURL = publicVar.selectedUrls().first {
-                        var targetFolderURL: URL? = nil
-                        if selectedURL.hasDirectoryPath {
-                            targetFolderURL = selectedURL
-                        } else if let values = try? selectedURL.resourceValues(forKeys: [.isAliasFileKey, .isSymbolicLinkKey]),
-                                  values.isAliasFile == true,
-                                  let resolved = try? URL(resolvingAliasFileAt: selectedURL),
-                                  resolved.hasDirectoryPath {
-                            targetFolderURL = resolved
-                        }
-                        if let folderURL = targetFolderURL {
-                            switchDirByDirection(direction: .zero, dest: folderURL.absoluteString, stackDeep: 0)
-                            return nil
-                        }
+                    if enterSelectedFolderFromKeyboard() {
+                        return nil
                     }
                     // Fallback: keep original behavior when selection is not a folder.
                     if let scrollView = collectionView.enclosingScrollView {

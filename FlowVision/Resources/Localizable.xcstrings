@@ -5048,6 +5048,29 @@
         }
       }
     },
+    "Collected %d files" : {
+      "comment" : "已归集 %d 个文件"
+    },
+    "Collected %d files (%d failed)" : {
+      "comment" : "已归集 %d 个文件（%d 个失败）",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Collected %1$d files (%2$d failed)"
+          }
+        }
+      }
+    },
+    "Compressing... %d%%" : {
+      "comment" : "压缩中... %d%%"
+    },
+    "Compressing... 0%" : {
+      "comment" : "压缩中... 0%"
+    },
+    "Compression complete" : {
+      "comment" : "压缩完成"
+    },
     "Compression failed." : {
       "comment" : "压缩失败。"
     },
@@ -11436,6 +11459,9 @@
     },
     "Failed to copy some files: %@" : {
       "comment" : "部分文件复制失败：%@"
+    },
+    "Failed to create collection folder." : {
+      "comment" : "创建归集文件夹失败。"
     },
     "Failed to encode captured frame." : {
       "comment" : "编码截图失败。"
@@ -18387,8 +18413,14 @@
         }
       }
     },
+    "No files found in subfolders." : {
+      "comment" : "子文件夹中未找到可归集文件。"
+    },
     "No files to rename in current folder." : {
       "comment" : "当前目录没有可重命名的文件。"
+    },
+    "No files were collected from subfolders." : {
+      "comment" : "未能从子文件夹中归集到文件。"
     },
     "No Rating" : {
       "comment" : "无评级",
@@ -21349,6 +21381,9 @@
           }
         }
       }
+    },
+    "Please select folders only." : {
+      "comment" : "请仅选择文件夹。"
     },
     "Please select items from the same folder." : {
       "comment" : "请在同一目录下选择要压缩的项目。"
@@ -36295,6 +36330,9 @@
         }
       }
     },
+    "Virtual entries are not supported for this operation." : {
+      "comment" : "该操作不支持虚拟目录或压缩包内虚拟条目。"
+    },
     "Virtual entries cannot be compressed." : {
       "comment" : "虚拟目录或压缩包内虚拟条目不支持压缩。"
     },
@@ -36980,6 +37018,9 @@
     },
     "快速压缩" : {
       "comment" : "快速压缩"
+    },
+    "提取子文件夹文件并归集" : {
+      "comment" : "提取子文件夹文件并归集"
     },
     "显示压缩文件" : {
       "comment" : "显示压缩文件"

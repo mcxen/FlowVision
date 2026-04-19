@@ -398,6 +398,7 @@ extension ViewController {
             if successCount > 0 {
                 publicVar.fileChangedCount += successCount
                 scheduledRefresh()
+                showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
             }
             if !failedItems.isEmpty {
                 let preview = failedItems.prefix(3).joined(separator: ", ")
@@ -412,10 +413,26 @@ extension ViewController {
         
         handleCopy()
         handlePaste(targetURL: targetFolderURL)
+        showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
         
         // 还原剪贴板内容
         // Restore pasteboard content
         restorePasteboard(items: backupItems)
+    }
+    
+    private func showPhotoFolderCopyToast(selectedURLs: [URL], targetFolderURL: URL) {
+        guard !selectedURLs.isEmpty else { return }
+        let firstName = selectedURLs[0].lastPathComponent.removingPercentEncoding ?? selectedURLs[0].lastPathComponent
+        let targetName = targetFolderURL.lastPathComponent.isEmpty ? targetFolderURL.path : targetFolderURL.lastPathComponent
+        let message: String
+        if selectedURLs.count == 1 {
+            message = "\(firstName) -> \(targetName)"
+        } else {
+            message = "\(firstName) +\(selectedURLs.count - 1) -> \(targetName)"
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.coreAreaView.showOperationToast(message, autoHide: 2.0)
+        }
     }
 
     func promptCompressionPassword(initialValue: String = "") -> String? {
@@ -459,6 +476,40 @@ extension ViewController {
         let stamp = formatter.string(from: Date())
         return getUniqueDestinationURL(for: parent.appendingPathComponent("Archive_\(stamp)").appendingPathExtension("zip"), isInPlace: false)
     }
+    
+    private func collectCompressMetrics(urls: [URL]) -> (totalBytes: Int64, totalFiles: Int) {
+        let fm = FileManager.default
+        var totalBytes: Int64 = 0
+        var totalFiles = 0
+        
+        func addFile(_ url: URL) {
+            let values = try? url.resourceValues(forKeys: [.fileSizeKey, .totalFileAllocatedSizeKey, .fileAllocatedSizeKey])
+            let size = values?.totalFileAllocatedSize
+                ?? values?.fileAllocatedSize
+                ?? values?.fileSize
+                ?? 0
+            totalBytes += Int64(size)
+            totalFiles += 1
+        }
+        
+        for url in urls {
+            var isDir: ObjCBool = false
+            if fm.fileExists(atPath: url.path, isDirectory: &isDir), isDir.boolValue {
+                if let enumerator = fm.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey, .totalFileAllocatedSizeKey, .fileAllocatedSizeKey], options: [], errorHandler: nil) {
+                    while let subURL = enumerator.nextObject() as? URL {
+                        let isDirectory = (try? subURL.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+                        if !isDirectory {
+                            addFile(subURL)
+                        }
+                    }
+                }
+            } else {
+                addFile(url)
+            }
+        }
+        
+        return (totalBytes, max(totalFiles, 1))
+    }
 
     private func buildCompressCommand(urls: [URL], destination: URL, mode: CompressMode) -> (args: [String], workDir: URL)? {
         guard !urls.isEmpty else { return nil }
@@ -501,28 +552,85 @@ extension ViewController {
             showAlert(message: NSLocalizedString("Please select items from the same folder.", comment: "请在同一目录下选择要压缩的项目。"))
             return false
         }
+        
+        let metrics = collectCompressMetrics(urls: sortedUrls)
+        let shouldShowOverlayProgress = metrics.totalBytes >= 100 * 1024 * 1024
 
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/zip")
         process.currentDirectoryURL = workDir
         process.arguments = args
         let stdErr = Pipe()
+        let stdOut = Pipe()
         process.standardError = stdErr
-        process.standardOutput = Pipe()
+        process.standardOutput = stdOut
+        
+        if shouldShowOverlayProgress {
+            DispatchQueue.main.async { [weak self] in
+                self?.coreAreaView.showOperationProgress(NSLocalizedString("Compressing... 0%", comment: "压缩中... 0%"), progress: 0)
+            }
+        }
+        
+        let parseQueue = DispatchQueue(label: "flowvision.compress.stdout.parse")
+        var processedFiles = 0
+        let progressUpdateStep = max(1, metrics.totalFiles / 100)
+        stdOut.fileHandleForReading.readabilityHandler = { [weak self] handle in
+            let data = handle.availableData
+            if data.isEmpty { return }
+            guard shouldShowOverlayProgress else { return }
+            guard let output = String(data: data, encoding: .utf8), !output.isEmpty else { return }
+            parseQueue.async {
+                let lines = output.split(whereSeparator: \.isNewline)
+                for line in lines {
+                    if line.contains("adding:") {
+                        processedFiles += 1
+                    }
+                }
+                if processedFiles == 0 { return }
+                if processedFiles % progressUpdateStep != 0 && processedFiles < metrics.totalFiles { return }
+                let ratio = min(1.0, Double(processedFiles) / Double(metrics.totalFiles))
+                DispatchQueue.main.async {
+                    self?.coreAreaView.showOperationProgress(
+                        String(format: NSLocalizedString("Compressing... %d%%", comment: "压缩中... %d%%"), Int(ratio * 100)),
+                        progress: ratio
+                    )
+                }
+            }
+        }
+        
         do {
             try process.run()
             process.waitUntilExit()
         } catch {
+            stdOut.fileHandleForReading.readabilityHandler = nil
             showAlert(message: NSLocalizedString("Failed to execute zip.", comment: "执行压缩失败。"))
             log("zip execute failed: \(error)", level: .error)
+            if shouldShowOverlayProgress {
+                DispatchQueue.main.async { [weak self] in
+                    self?.coreAreaView.hideOperationOverlay()
+                }
+            }
             return false
         }
+        stdOut.fileHandleForReading.readabilityHandler = nil
 
         guard process.terminationStatus == 0 else {
             let errMsg = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
             if !errMsg.isEmpty { log("zip failed: \(errMsg)", level: .error) }
             showAlert(message: NSLocalizedString("Compression failed.", comment: "压缩失败。"))
+            if shouldShowOverlayProgress {
+                DispatchQueue.main.async { [weak self] in
+                    self?.coreAreaView.hideOperationOverlay()
+                }
+            }
             return false
+        }
+        
+        if shouldShowOverlayProgress {
+            DispatchQueue.main.async { [weak self] in
+                self?.coreAreaView.showOperationProgress(NSLocalizedString("Compression complete", comment: "压缩完成"), progress: 1.0)
+                self?.coreAreaView.hideOperationOverlay(delayed: 0.8)
+            }
         }
 
         publicVar.fileChangedCount += 1
@@ -598,6 +706,100 @@ extension ViewController {
             log("Capture video frame failed: \(error)", level: .error)
             showAlert(message: NSLocalizedString("Failed to capture current video frame.", comment: "抓取当前视频帧失败。"))
         }
+    }
+    
+    @discardableResult
+    func handleCollectFilesFromSubfolders() -> Bool {
+        let selectedURLs = publicVar.selectedUrls()
+        guard selectedURLs.count > 1 else { return false }
+        
+        if selectedURLs.contains(where: { isReadOnlyVirtualFolderPath($0.absoluteString) || isVirtualArchiveEntryPath($0.absoluteString) }) {
+            showAlert(message: NSLocalizedString("Virtual entries are not supported for this operation.", comment: "该操作不支持虚拟目录或压缩包内虚拟条目。"))
+            return false
+        }
+        
+        let folderURLs = selectedURLs.filter { $0.hasDirectoryPath }
+        guard folderURLs.count == selectedURLs.count else {
+            showAlert(message: NSLocalizedString("Please select folders only.", comment: "请仅选择文件夹。"))
+            return false
+        }
+        
+        fileDB.lock()
+        let curFolder = fileDB.curFolder
+        fileDB.unlock()
+        
+        guard let currentFolderURL = URL(string: curFolder), currentFolderURL.isFileURL else {
+            showAlert(message: NSLocalizedString("Invalid current path", comment: "当前路径无效"))
+            return false
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        let folderName = "CollectedFiles_\(formatter.string(from: Date()))"
+        let targetFolderURL = getUniqueDestinationURL(for: currentFolderURL.appendingPathComponent(folderName), isInPlace: false)
+        
+        do {
+            try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            log("Create collected folder failed: \(error)", level: .error)
+            showAlert(message: NSLocalizedString("Failed to create collection folder.", comment: "创建归集文件夹失败。"))
+            return false
+        }
+        
+        var copiedCount = 0
+        var failedCount = 0
+        var copiedURLs: [String] = []
+        
+        for folderURL in folderURLs {
+            guard let enumerator = FileManager.default.enumerator(
+                at: folderURL,
+                includingPropertiesForKeys: [.isDirectoryKey, .isRegularFileKey],
+                options: [],
+                errorHandler: { url, error in
+                    log("Enumerate failed \(url): \(error)", level: .warn)
+                    return true
+                }
+            ) else { continue }
+            
+            while let itemURL = enumerator.nextObject() as? URL {
+                let values = try? itemURL.resourceValues(forKeys: [.isDirectoryKey, .isRegularFileKey])
+                if values?.isDirectory == true { continue }
+                guard values?.isRegularFile == true else { continue }
+
+                let targetURL = getUniqueDestinationURL(for: targetFolderURL.appendingPathComponent(itemURL.lastPathComponent), isInPlace: false)
+                do {
+                    try FileManager.default.copyItem(at: itemURL, to: targetURL)
+                    copiedCount += 1
+                    copiedURLs.append(targetURL.absoluteString)
+                } catch {
+                    failedCount += 1
+                    log("Copy collected file failed: \(error)", level: .warn)
+                }
+            }
+        }
+        
+        if copiedCount == 0 {
+            try? FileManager.default.removeItem(at: targetFolderURL)
+            let message = failedCount > 0
+                ? NSLocalizedString("No files were collected from subfolders.", comment: "未能从子文件夹中归集到文件。")
+                : NSLocalizedString("No files found in subfolders.", comment: "子文件夹中未找到可归集文件。")
+            showAlert(message: message)
+            return false
+        }
+        
+        publicVar.fileChangedCount += copiedCount + 1
+        publicVar.filesForLocateAfterChange = [targetFolderURL.absoluteString]
+        globalVar.operationLogs.append("[Collect] \(copiedCount) files -> \(targetFolderURL.lastPathComponent)")
+        scheduledRefresh()
+        
+        let infoText: String
+        if failedCount > 0 {
+            infoText = String(format: NSLocalizedString("Collected %d files (%d failed)", comment: "已归集 %d 个文件（%d 个失败）"), copiedCount, failedCount)
+        } else {
+            infoText = String(format: NSLocalizedString("Collected %d files", comment: "已归集 %d 个文件"), copiedCount)
+        }
+        coreAreaView.showOperationToast(infoText + " -> " + targetFolderURL.lastPathComponent, autoHide: 2.0)
+        return true
     }
     
     func handlePaste(targetURL: URL? = nil, pasteboard: NSPasteboard = NSPasteboard.general) {
