@@ -11449,6 +11449,9 @@
     "Failed to capture current video frame." : {
       "comment" : "抓取当前视频帧失败。"
     },
+    "Failed to copy some files: %@" : {
+      "comment" : "部分文件复制失败：%@"
+    },
     "Failed to encode captured frame." : {
       "comment" : "编码截图失败。"
     },

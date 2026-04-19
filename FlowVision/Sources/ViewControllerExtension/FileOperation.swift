@@ -346,7 +346,8 @@ extension ViewController {
     }
     
     func handleCopyToPhotoFolder1() {
-        if publicVar.selectedUrls().isEmpty { return }
+        let selectedURLs = publicVar.selectedUrls()
+        if selectedURLs.isEmpty { return }
         
         let targetPath = globalVar.photoFolder1Path.trimmingCharacters(in: .whitespacesAndNewlines)
         if targetPath.isEmpty {
@@ -359,13 +360,58 @@ extension ViewController {
             showAlert(message: NSLocalizedString("Photo Folder 1 does not exist or is not a folder.", comment: "图片文件夹1不存在或不是文件夹。"))
             return
         }
+
+        let targetFolderURL = URL(fileURLWithPath: targetPath, isDirectory: true)
+        if selectedURLs.contains(where: { isVirtualArchiveEntryPath($0.absoluteString) }) {
+            var failedItems: [String] = []
+            var successCount = 0
+            for srcURL in selectedURLs {
+                // Virtual entry inside archive: stream entry bytes and write directly to destination.
+                if isVirtualArchiveEntryPath(srcURL.absoluteString) {
+                    guard let parsed = parseVirtualArchivePath(srcURL.absoluteString),
+                          let entryPath = parsed.entryPath,
+                          let data = getArchiveEntryData(archiveURL: parsed.archiveURL, entryPath: entryPath) else {
+                        failedItems.append(srcURL.lastPathComponent.removingPercentEncoding ?? srcURL.lastPathComponent)
+                        continue
+                    }
+                    let fileName = URL(fileURLWithPath: entryPath).lastPathComponent
+                    let targetURL = getUniqueDestinationURL(for: targetFolderURL.appendingPathComponent(fileName), isInPlace: false)
+                    do {
+                        try data.write(to: targetURL, options: .atomic)
+                        successCount += 1
+                    } catch {
+                        log("Copy archive entry failed: \(error)", level: .error)
+                        failedItems.append(fileName)
+                    }
+                } else {
+                    let targetURL = getUniqueDestinationURL(for: targetFolderURL.appendingPathComponent(srcURL.lastPathComponent), isInPlace: false)
+                    do {
+                        try FileManager.default.copyItem(at: srcURL, to: targetURL)
+                        successCount += 1
+                    } catch {
+                        log("Copy file failed: \(error)", level: .error)
+                        failedItems.append(srcURL.lastPathComponent)
+                    }
+                }
+            }
+
+            if successCount > 0 {
+                publicVar.fileChangedCount += successCount
+                scheduledRefresh()
+            }
+            if !failedItems.isEmpty {
+                let preview = failedItems.prefix(3).joined(separator: ", ")
+                showAlert(message: String(format: NSLocalizedString("Failed to copy some files: %@", comment: "部分文件复制失败：%@"), preview))
+            }
+            return
+        }
         
         // 备份剪贴板内容
         // Backup pasteboard content
         let backupItems = backupPasteboard()
         
         handleCopy()
-        handlePaste(targetURL: URL(fileURLWithPath: targetPath, isDirectory: true))
+        handlePaste(targetURL: targetFolderURL)
         
         // 还原剪贴板内容
         // Restore pasteboard content
