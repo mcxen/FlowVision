@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>Página Inicial</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Permissões:</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>Selecionar Pasta...</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Esconder Barra de Ferramentas Automaticamente</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>Clique no botão para definir esta aplicação como o programa padrão para formatos de imagem comuns. Para outros formatos de imagem, como PSD e RAW, associe-os manualmente.</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>Cursor:</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>Associações de Ficheiros:</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Barra de ferramentas:</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>Quando esta opção está ativada, a barra de múltiplas abas não pode ser utilizada. Reinicie a aplicação para que as alterações tenham efeito.</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>Sensibilidade de Deslocamento:</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>É necessário permissão de "Ficheiros e Pastas" para abrir diretórios e ficheiros. É necessária permissão de "Automação" para reter a informação da localização original ao eliminar para o Lixo (sem esta permissão, a funcionalidade "Repor" no Lixo não funcionará).</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>Sair da Aplicação ao Fechar a Última Janela</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>Automático</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>Última Pasta</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>Página Inicial</string>
+	<key>pPv-HR-smI.title</key>
+	<string>Definir como Aplicação Padrão</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>Reinicie a aplicação para que as alterações tenham efeito</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>Idioma:</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>Comportamento ao Fechar:</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>Comportamento ao Abrir:</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>Abrir Definições de Permissões</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>Ocultar automaticamente o cursor em ecrã completo</string>
+</dict>
+</plist>

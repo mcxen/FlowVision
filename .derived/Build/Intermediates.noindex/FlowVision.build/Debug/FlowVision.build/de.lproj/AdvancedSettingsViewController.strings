@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>FFmpeg nicht verwenden</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>Für mechanische Festplatten und Netzlaufwerke wird empfohlen, den Wert auf 1 zu setzen. Bei externen SSDs kann dieser Wert angemessen erhöht werden.</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>Diese Einstellung gilt für die interne SSD. Es wird empfohlen, sie zwischen 4 und 8 festzulegen.</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>Verwenden Sie FFmpeg für mehr Videoformat-Thumbnails</string>
+	<key>L44-0u-7JE.title</key>
+	<string>Suchttiefe für Ordner:
+(Externe Volumes)</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>Die Anzahl der Unterverzeichnisebenen, die beim Erstellen von Ordner-Thumbnails durchsucht werden sollen. Wenn auf 0 gesetzt, werden keine Ordner-Thumbnails erzeugt, und im Verzeichnisbaum wird durch den Pfeil auf der linken Seite nicht angezeigt, ob Unterverzeichnisse existieren.</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>Suchttiefe für Ordner:</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>Miniaturansichten-Threads:</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>z. B. 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>Diese Einstellungen gelten für externe Volumes, einschließlich externer Laufwerke, Netzwerklaufwerke und anderer eingebundener Verzeichnisse.</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>Speichernutzungslimit:</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>Dynamische Bibliothek laden:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>Miniaturansichten-Threads:
+(Externe Volumes)</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>Wenn die Speichernutzung der Anwendung das Limit überschreitet, wird der Thumbnail-Rendering-Cache in jedem Verzeichnis basierend auf der letzten Zugriffszeit nacheinander geleert.</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>Die Anwendung hat eine integrierte FFmpeg-Bibliothek. Wenn beim Erstellen von Videothumbnails eine Ausnahme auftritt, versuchen Sie bitte, diese Option zu deaktivieren oder "Videodateien anzeigen" abzuwählen.</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>8</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>Bei Netzwerklaufwerken wird empfohlen, es auf 0 zu setzen (keine Ordner-Thumbnails generieren, und der Verzeichnisbaum zeigt nicht an, ob Unterordner mit dem Pfeil auf der linken Seite vorhanden sind).</string>
+</dict>
+</plist>

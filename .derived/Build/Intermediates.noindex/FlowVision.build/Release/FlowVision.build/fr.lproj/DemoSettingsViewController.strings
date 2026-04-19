@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>Renommer</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>En mode vignette : W/S/A/D/E correspondent aux gestes de clic droit haut/bas/gauche/droite/haut-droit.
+En mode image : W/S zoom avant/zoom arrière, Z zoom 100 %, X ajuster au cadre, A/D image précédente/suivante.</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>Changement de profil :</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>Ouvrir / Fermer</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>Recherche rapide :</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Touche Entrée :</string>
+	<key>diV-0n-cUs.title</key>
+	<string>Raccourcis clavier :</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>Double-cliquez pour ouvrir/fermer l'image.
+Maintenez enfoncé le bouton droit/gauche de la souris et faites défiler la molette pour zoomer.
+Maintenez enfoncé le bouton central de la souris et faites glisser pour déplacer la fenêtre.
+Maintenez enfoncé le bouton gauche de la souris pour passer à un zoom de 100%.  
+Maintenez enfoncé le bouton droit de la souris pour adapter l'image à l'affichage.</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Appuyez sur Opt + 1~9 pour passer au profil correspondant.
+Appuyez sur Opt + Cmd + 1~9 pour enregistrer la disposition et le style actuels dans le profil correspondant.
+Les configurations impliquées dans le changement incluent : afficher ou non la barre latérale, le type de vue, la méthode de tri, la taille des vignettes, et les styles personnalisés (comme afficher ou non les noms de fichiers et la largeur de la bordure des vignettes).</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>Affichage d'image :</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>Gestes du clic droit :</string>
+	<key>xau-nf-fbD.title</key>
+	<string>Droite/Gauche : Passer au dossier suivant/précédent avec des images/vidéos (équivalent logique du dossier suivant lors du tri de tous les dossiers sur le disque).
+Haut : Passer au répertoire parent.
+Bas : Retourner au répertoire précédent.
+Haut-Droite : Passer au dossier suivant avec des images au même niveau que le dossier actuel.
+Bas-Droite : Fermer l'onglet/fenêtre.</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>Appuyez sur Q en mode vignette pour activer la Recherche rapide, ce qui vous permet de saisir des mots-clés de recherche en peu de temps pour localiser des fichiers. Dans ce mode, les touches numériques, les lettres et la touche de retour arrière sont utilisées pour la saisie. Pour une fonction de recherche plus complète, veuillez utiliser Cmd + F.</string>
+</dict>
+</plist>

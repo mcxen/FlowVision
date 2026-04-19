@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>عدم استخدام  FFmpeg</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>بالنسبة لمحركات الأقراص الصلبة الميكانيكية ومحركات الشبكة، يُوصى بتعيينها إلى 1. بالنسبة لمحركات الأقراص الصلبة الخارجية SSDs، يمكن زيادة هذه القيمة بشكل مناسب.</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>ينطبق هذا الإعداد على SSD الداخلي. يُوصى بتعيينه بين 4 و 8.</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>استخدم FFmpeg لمزيد من مصغرات تنسيقات الفيديو</string>
+	<key>L44-0u-7JE.title</key>
+	<string>عمق البحث في المجلد:  
+(الأقراص الخارجية)</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>عدد مستويات المجلدات الفرعية المراد البحث فيها عند إنشاء صور مصغرة للمجلد. إذا تم ضبطه على 0، لن يتم إنشاء صور مصغرة للمجلدات ولن تشير شجرة الدليل إلى وجود مجلدات فرعية بسهم في الجانب الأيسر.</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>عمق البحث في المجلد:</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>مصغرات المواضيع:</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>مثل 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>تنطبق هذه الإعدادات على وحدات التخزين الخارجية، بما في ذلك محركات الأقراص الخارجية ومحركات الشبكة والمجلدات المثبتة الأخرى.</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>حد استخدام الذاكرة:</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>تحميل المكتبة الديناميكية:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>مصغرات المواضيع:
+(الأقراص الخارجية)</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>عندما يتجاوز استخدام ذاكرة التطبيق الحد المسموح به، ستتم مسح ذاكرة التخزين المؤقت للتصوير المصغر في كل دليل تسلسليًا بناءً على آخر وقت تم الوصول فيه إليها.</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>يحتوي التطبيق على مكتبة FFmpeg مدمجة. إذا حدث استثناء أثناء إنشاء صور مصغرة للفيديو، يرجى محاولة تعطيل هذا الخيار أو إلغاء تحديد "إظهار ملفات الفيديو".</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>٨</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>بالنسبة لمحركات الشبكة، يُوصى بتعيينها على 0 (لا تقم بإنشاء صور مصغرة للمجلدات، ولن تشير شجرة الدليل إلى ما إذا كانت المجلدات الفرعية موجودة بسهم الجانب الأيسر).</string>
+</dict>
+</plist>

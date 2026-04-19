@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>Saiba mais…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>Como o Spotlight do macOS não consegue indexar discos externos, unidades de rede ou o conteúdo de diretórios excluídos nas definições de "Privacidade de Pesquisa", esta aplicação introduz uma funcionalidade de indexação melhorada: quando navega numa pasta dentro da aplicação, são registadas as etiquetas associadas aos ficheiros dentro dessa pasta.
+
+Mais tarde, quando selecionar a etiqueta correspondente na árvore de diretórios, a aplicação complementará os resultados de pesquisa do sistema ao exibir os ficheiros relevantes.</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>Ativar Índice Aprimorado</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>Etiquetas Personalizadas:</string>
+	<key>tRG-X6-q84.title</key>
+	<string>Índice Melhorado:</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>A aplicação utiliza o mecanismo de etiquetagem padrão do macOS. Por favor, assegure-se de que os nomes e cores das etiquetas nesta aplicação correspondem exatamente aos do Finder; caso contrário, poderá encontrar inconsistências nas cores das etiquetas ao exibir ou escrever etiquetas.</string>
+</dict>
+</plist>

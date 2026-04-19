@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>Byt namn</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>I miniatyrvy: W/S/A/D/E motsvarar högerklicksgester upp/ner/vänster/höger/upp-höger.
+I bildvy: W/S zooma in/zooma ut, Z zooma till 100%, X zooma för att passa, A/D föregående/nästa bild.</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>Profilväxling:</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>Öppna / Stäng</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>Snabbsökning:</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Enter-tangenten:</string>
+	<key>diV-0n-cUs.title</key>
+	<string>Tangentbordsgenvägar:</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>Dubbelklicka för att öppna/stänga bilden. 
+Håll ned höger/vänster musknapp och rulla hjulet för att zooma.
+Håll ned mittenknappen och dra för att flytta fönstret.
+Håll vänster musknapp nedtryckt för att växla till 100% zoom.
+Håll höger musknapp nedtryckt för att anpassa bilden till vyn.</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Tryck på Opt + 1~9 för att byta till motsvarande profil.
+Tryck på Opt + Cmd + 1~9 för att spara aktuell layout och stil till motsvarande profil.
+Konfigurationerna som är involverade i bytet inkluderar: om sidopanelen ska visas, vytyp, sorteringsmetod, miniatyrbildsstorlek och anpassade stilar (till exempel om filnamn ska visas och bredden på miniatyrbildens kant).</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>Bildvisning:</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>Högerklicksgester:</string>
+	<key>xau-nf-fbD.title</key>
+	<string>Höger/Vänster: Byt till nästa/föregående mapp med bilder/videor (logiskt motsvarande nästa mapp när alla mappar på disken sorteras).
+Upp: Byt till överordnad katalog.
+Ner: Återgå till föregående katalog.
+Upp-Höger: Byt till nästa mapp med bilder på samma nivå som den aktuella mappen.
+Ner-Höger: Stäng fliken/fönstret.</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>Tryck på Q i miniatyrvyn för att aktivera Snabbsökning, vilket gör att du kan ange sökord inom en kort tid för att hitta filer. I det här läget används sifferknappar, bokstavstangenter och backstegstangenten för inmatning. För en mer omfattande sökfunktion, använd Cmd + F.</string>
+</dict>
+</plist>

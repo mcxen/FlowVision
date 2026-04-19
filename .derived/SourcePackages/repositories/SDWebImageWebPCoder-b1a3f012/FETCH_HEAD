@@ -1,0 +1,120 @@
+e5bb9f76942c55ea1a37ef194a9e9e1252826e7d	not-for-merge	branch 'bug_libwebp_animated_scale_anti_alias' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5f437be1b56ddeab0c6148e61a3d3ba64c5a86b7	not-for-merge	branch 'bugfix/podspec' of https://github.com/SDWebImage/SDWebImageWebPCoder
+01f9d34996a7e6648f3af944ca958df254b7ffd4	not-for-merge	branch 'bugfix/webp_encoding_colorspace_mac' of https://github.com/SDWebImage/SDWebImageWebPCoder
+44b1aae3c9b9d235b989976fb884555d9e644746	not-for-merge	branch 'bugfix_encoding_leak' of https://github.com/SDWebImage/SDWebImageWebPCoder
+ee4f321d36b845f6ee196b2195658231417e72f0	not-for-merge	branch 'bugfix_exif_orientation_encode' of https://github.com/SDWebImage/SDWebImageWebPCoder
+b0a717871b72b9b5431c3a0b5220f85d1d8df86f	not-for-merge	branch 'feat/encode_with_frames' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1d982f6c7538fb9a51dbb1fd1c88070440a5b24b	not-for-merge	branch 'feat/limit_bytes' of https://github.com/SDWebImage/SDWebImageWebPCoder
+12d83edbcc795fb7b5c0c3cb74d739108d3357d2	not-for-merge	branch 'master' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f21f014410d79311a393d0da3f6b7cae924f0871	not-for-merge	branch 'perf/avoid_unused_copy' of https://github.com/SDWebImage/SDWebImageWebPCoder
+c0c65f1f377892753b043b3ecad4b01ec356576a	not-for-merge	branch 'performance/byte_alignment' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1a66e996bf5c41596296bf3a3c1c8ff4b7d1feba	not-for-merge	branch 'project/cocoapods_visionos' of https://github.com/SDWebImage/SDWebImageWebPCoder
+15d5bcbb1e72d650987d8676d11da2a109e5be16	not-for-merge	branch 'project/copy_private_macro_and_fix_build' of https://github.com/SDWebImage/SDWebImageWebPCoder
+2097f9bcdf6c715d0a9759cefca427b901346ebb	not-for-merge	branch 'project/unit-test-update' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6af2dcfbcd69b21e18a3fb590735f4c5106e50be	not-for-merge	branch 'test/awebp_without_rescale' of https://github.com/SDWebImage/SDWebImageWebPCoder
+e54b276e5727e2eda8f6f4d7b777ae356a12ad88	not-for-merge	'refs/pull/10/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1cef14a2b010bfb508a4d54e88a5bc54b8a328e2	not-for-merge	'refs/pull/101/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+92e7a545b2bab28be7181ee95f44d5aeb3f5e245	not-for-merge	'refs/pull/102/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1a66e996bf5c41596296bf3a3c1c8ff4b7d1feba	not-for-merge	'refs/pull/103/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+2097f9bcdf6c715d0a9759cefca427b901346ebb	not-for-merge	'refs/pull/104/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5f437be1b56ddeab0c6148e61a3d3ba64c5a86b7	not-for-merge	'refs/pull/107/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+77f602f94e7cd815c5c161b82e2227a5288967cc	not-for-merge	'refs/pull/11/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+cbc0ba930c08b943b0c4ee443c34022cadf6aff5	not-for-merge	'refs/pull/110/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+92cb639713deebae39570f4a7f445f88bf34bed7	not-for-merge	'refs/pull/12/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+aa92e07316630d3eff576d3a3cc23781fe1a67ee	not-for-merge	'refs/pull/120/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1316f5b340b81d690c3c166961b0fb8367443b2c	not-for-merge	'refs/pull/13/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5c4c2842767ab9e0c4e863bdd0e6a04cf7f1fa5b	not-for-merge	'refs/pull/14/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+16ef0cf1a751ee4c652ed0a3116604ed27510ea1	not-for-merge	'refs/pull/15/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6c27577290943cf8429b10d16ab4b448ae785686	not-for-merge	'refs/pull/16/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+9f52375a7a2deaec36b9038c4ac2894998687232	not-for-merge	'refs/pull/17/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f7f0e0a16a7525bc9fb8cc1699ee6f4b1532965c	not-for-merge	'refs/pull/2/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+0bd618548483fc0f5a76d5b211129e1a382bf2aa	not-for-merge	'refs/pull/22/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+3e3b7e30b100b40276553213e379ec939c9d2545	not-for-merge	'refs/pull/23/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+177343a71431e4f8cb447f4a7088bdd66a2b153e	not-for-merge	'refs/pull/24/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6724998472a46b2fb112f68dbd40aaaa337d38b1	not-for-merge	'refs/pull/28/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+da76f7f30c11305823a1197443b2c354673eb97c	not-for-merge	'refs/pull/3/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+7cd404cccc859740e2ed9502da9672ce9525c60d	not-for-merge	'refs/pull/30/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+672633969068b0e700b84e2aa3d66d58638ffa8c	not-for-merge	'refs/pull/31/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+0cc073a435db357939e580f4e9ad8d7c03dbb600	not-for-merge	'refs/pull/32/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+b6f4692439ffc8af19f0a792a5616c43ff8b2d68	not-for-merge	'refs/pull/33/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+a62950d23f7dbd1eb21b712a9d741366ad2a94b7	not-for-merge	'refs/pull/35/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6a0f5dc73c2a465df89b22a9fb2d20fd72d4445d	not-for-merge	'refs/pull/36/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+e25194e655a763c66acba84eccbef6499b717a34	not-for-merge	'refs/pull/37/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6c2651bb254ade4a45bb3e9ae926835f869908e2	not-for-merge	'refs/pull/38/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+9f415e90b0103e2d68a0d3c7ccc89ae48ddef849	not-for-merge	'refs/pull/39/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5b8045f028744229e6e6e6f07a7a5bb577e29715	not-for-merge	'refs/pull/4/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+878d64e3e165d948a98806d8042164144f4d0651	not-for-merge	'refs/pull/41/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+8b935e7927e859da4cdc6364510cba508cebccbe	not-for-merge	'refs/pull/42/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f70ba837c8f7b36699b272f452ed844e4afe00fa	not-for-merge	'refs/pull/43/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+40c34908fed7e100b22028d44f23992631dcd4b7	not-for-merge	'refs/pull/45/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+df994df73e1da71eb2ada60ecc4fb12180e479fe	not-for-merge	'refs/pull/48/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+de7ba8d08e2ba9b76b5c9707113f9be0f1046c58	not-for-merge	'refs/pull/49/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+3e0e45d313cabf8d646e97c1119383bce5f7d806	not-for-merge	'refs/pull/5/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+19b7465deaf2241036e6b6f8111c39a58f470bc5	not-for-merge	'refs/pull/50/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+ba51befd7c8ab9cde085bfe1a02b222b46eb002a	not-for-merge	'refs/pull/51/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+415e6b6fc1685a05455d5820ee3aa9b14b9717ab	not-for-merge	'refs/pull/52/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1903ac20f3d1af80e16f2a89d5ea9624fc9fecbd	not-for-merge	'refs/pull/53/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+44b1aae3c9b9d235b989976fb884555d9e644746	not-for-merge	'refs/pull/54/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+0d018b5601dbef793501ada7ebec8e3b77121c50	not-for-merge	'refs/pull/57/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+52b24f60a3dd9ec510d9fc5beb446f9d53c81e59	not-for-merge	'refs/pull/65/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+eefd749a1f05c3f45db9f80f3c1eb271e6ce409b	not-for-merge	'refs/pull/66/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+3775b895fb6fd7ed9d61ae7bd8bc5fc13f0b80a0	not-for-merge	'refs/pull/68/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+02595bc1d4178427e761aa7e1104ff6eb8bdfae3	not-for-merge	'refs/pull/7/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+b0a717871b72b9b5431c3a0b5220f85d1d8df86f	not-for-merge	'refs/pull/70/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f21f014410d79311a393d0da3f6b7cae924f0871	not-for-merge	'refs/pull/71/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+6af2dcfbcd69b21e18a3fb590735f4c5106e50be	not-for-merge	'refs/pull/72/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+9dae8d36b9cf35d5b5e4e4dfb797cc6d6b7ccaf5	not-for-merge	'refs/pull/73/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1d982f6c7538fb9a51dbb1fd1c88070440a5b24b	not-for-merge	'refs/pull/75/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+c0c65f1f377892753b043b3ecad4b01ec356576a	not-for-merge	'refs/pull/77/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+cf7981a3b419ea431d6501a157cbcbac8dbf408e	not-for-merge	'refs/pull/8/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+3a587b054a4a30b82e6bfcf40f671cf5ae0c0214	not-for-merge	'refs/pull/82/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1b83332943d8804a72919e22c831a1c715034718	not-for-merge	'refs/pull/82/merge' of https://github.com/SDWebImage/SDWebImageWebPCoder
+a3f284d89f9f7597a6f1bdccaca1287f78e1844e	not-for-merge	'refs/pull/85/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+74164f917ffcd44396b961a28b05d69e2a510723	not-for-merge	'refs/pull/87/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+dbcd5b27d097dc7f9abe2dd63a9a4b1b08968a4c	not-for-merge	'refs/pull/9/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+01f9d34996a7e6648f3af944ca958df254b7ffd4	not-for-merge	'refs/pull/90/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f146fa49a6d63737a97ac849b590a534659a9c3b	not-for-merge	'refs/pull/95/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+ee4f321d36b845f6ee196b2195658231417e72f0	not-for-merge	'refs/pull/96/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+15d5bcbb1e72d650987d8676d11da2a109e5be16	not-for-merge	'refs/pull/98/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+7634bf09cafed9cbf9c7c26a0017fc4d85c4ce16	not-for-merge	'refs/pull/99/head' of https://github.com/SDWebImage/SDWebImageWebPCoder
+28d6c62ad881826d8c0161fc83801962a4828ba0	not-for-merge	tag '0.1.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+da88142cc1997ce2f1698a31ec357e0c2f811145	not-for-merge	tag '0.1.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f4eedeb0382695a4680a02072d624000291af029	not-for-merge	tag '0.1.2' of https://github.com/SDWebImage/SDWebImageWebPCoder
+010ac5271405cba315be6a749c22a1fe64191055	not-for-merge	tag '0.1.3' of https://github.com/SDWebImage/SDWebImageWebPCoder
+428121e6a582d944bbbf9a97f77146af9e57ceb2	not-for-merge	tag '0.1.4' of https://github.com/SDWebImage/SDWebImageWebPCoder
+4a7e8a7619496d6b6c195972448fe780d0c6955f	not-for-merge	tag '0.1.5' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f70bad1fcf977d6e4462fa0713b6c30f7f93b60c	not-for-merge	tag '0.10.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+c2d8809c3706fc3ad7cfe46c70d760575af6e7dc	not-for-merge	tag '0.10.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5d287ad4fcd6f485023829673163e353da482abf	not-for-merge	tag '0.11.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+d6e8e6f1359c1eb35ba312b63e8ab1711e7c38bc	not-for-merge	tag '0.12.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+5399005a7e707b7ceaf23d1ace31970ee178fe17	not-for-merge	tag '0.13.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+0da80c41749de6dda308f73f264578bdcd61ae93	not-for-merge	tag '0.14.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+ad88a30e5d9b5bd96c17d77a38b4adb5b7b65822	not-for-merge	tag '0.14.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+caba76291dcea451155ce3774fc47593f2d8d965	not-for-merge	tag '0.14.2' of https://github.com/SDWebImage/SDWebImageWebPCoder
+4a98d2c5546dfdf205f78a332f6fb64d1f2ced8a	not-for-merge	tag '0.14.3' of https://github.com/SDWebImage/SDWebImageWebPCoder
+c96d124698063271372b56cfd8e847abb0f54b43	not-for-merge	tag '0.14.4' of https://github.com/SDWebImage/SDWebImageWebPCoder
+0a5bfcae0a3725063a3ba3d10473310f9c93a1b0	not-for-merge	tag '0.14.5' of https://github.com/SDWebImage/SDWebImageWebPCoder
+e6e8eb0ac808fa0a30039fc250f4fddf0823d283	not-for-merge	tag '0.14.6' of https://github.com/SDWebImage/SDWebImageWebPCoder
+a572aa094589e8925d384bf308dd21cf7edd1525	not-for-merge	tag '0.15.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+7c27f77c1174d939904c2ac6255f0a5d4c4a0c50	not-for-merge	tag '0.2.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+339a8cffe44173769a8ce7b64126f813189d1838	not-for-merge	tag '0.2.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+bffc65d3f34afefb0660c11ac8b26e7fb7bdee13	not-for-merge	tag '0.2.2' of https://github.com/SDWebImage/SDWebImageWebPCoder
+41dc65f1740b57c2c8edd60d24c944d3fbbbad5e	not-for-merge	tag '0.2.3' of https://github.com/SDWebImage/SDWebImageWebPCoder
+8d6dcad6ff2bbcf4d99b4f86952ea82499590b48	not-for-merge	tag '0.2.4' of https://github.com/SDWebImage/SDWebImageWebPCoder
+c209b5ca68580ff6636e6274cddb0505ba9d505d	not-for-merge	tag '0.2.5' of https://github.com/SDWebImage/SDWebImageWebPCoder
+18b2275475ad75d97980cd0a2c3f6902fe3f19d2	not-for-merge	tag '0.3.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+b12ddf072135126ba5fb449b0ba383ee3067e308	not-for-merge	tag '0.3.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+d152423d20edf351c700559d5554e565fed01742	not-for-merge	tag '0.4.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+dbe9f9351cd7f804ef4fe12d30dc52e7b9006633	not-for-merge	tag '0.4.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f17500d95578667e88b8f230b20f0a3384bae411	not-for-merge	tag '0.5.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+e1f878898e96a48c974273e14d5c7c4e0b722ae3	not-for-merge	tag '0.6.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+9108d360e7723ba8e04f2dda2bcf06f6dacd119f	not-for-merge	tag '0.6.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+d15330566970f6624d89dfb12de942f6cd3d9aa6	not-for-merge	tag '0.7.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+804ceb27964b02cc51c1c410576bf72419918626	not-for-merge	tag '0.8.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+ddc6376171e0125cbce8b744c8ab4b4eb4b0a1bb	not-for-merge	tag '0.8.1' of https://github.com/SDWebImage/SDWebImageWebPCoder
+3d08d27e5bc450378b7dc35d1334145aa4cca98c	not-for-merge	tag '0.8.2' of https://github.com/SDWebImage/SDWebImageWebPCoder
+f81c18bece6aeee152fd1c36a961f6ce8da6494b	not-for-merge	tag '0.8.3' of https://github.com/SDWebImage/SDWebImageWebPCoder
+2185e6f0d0efa70af14457ec3567468ed66a2c43	not-for-merge	tag '0.8.4' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1117ebd3672e0222f1db8d5a5fe13e7f1a96c844	not-for-merge	tag '0.8.5' of https://github.com/SDWebImage/SDWebImageWebPCoder
+fbc3743777912165feb455fa12b55d8a85b35857	not-for-merge	tag '0.9.0' of https://github.com/SDWebImage/SDWebImageWebPCoder
+1130ba70e25f0078ae03afda70e929c1b26e4d12	not-for-merge	tag '0.9.1' of https://github.com/SDWebImage/SDWebImageWebPCoder

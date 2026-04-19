@@ -1,0 +1,92 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "btree",
+          "kind" : "fileSystem",
+          "location" : "/Users/mcx/Documents/OpenSpring/BTree",
+          "name" : "BTree"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/mcx/Documents/OpenSpring/BTree"
+        },
+        "subpath" : "btree"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "libwebp-xcode",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/SDWebImage/libwebp-Xcode.git",
+          "name" : "libwebp"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "0d60654eeefd5d7d2bef3835804892c40225e8b2",
+            "version" : "1.5.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "libwebp-Xcode"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "sdwebimage",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/SDWebImage/SDWebImage.git",
+          "name" : "SDWebImage"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "cac9a55a3ae92478a2c95042dcc8d9695d2129ca",
+            "version" : "5.21.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "SDWebImage"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "sdwebimagewebpcoder",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/SDWebImage/SDWebImageWebPCoder.git",
+          "name" : "SDWebImageWebPCoder"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "f534cfe830a7807ecc3d0332127a502426cfa067",
+            "version" : "0.14.6"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "SDWebImageWebPCoder"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "settings",
+          "kind" : "fileSystem",
+          "location" : "/Users/mcx/Documents/OpenSpring/Settings",
+          "name" : "Settings"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/mcx/Documents/OpenSpring/Settings"
+        },
+        "subpath" : "settings"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

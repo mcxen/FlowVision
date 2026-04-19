@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>Läs mer…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>Eftersom macOS Spotlight inte kan indexera externa diskar, nätverksenheter eller innehållet i kataloger som är undantagna i inställningarna för "Sök integritet", introducerar den här appen en förbättrad indexeringsfunktion: när du bläddrar i en mapp inom appen, registrerar den taggarna som är associerade med filerna i den mappen.
+
+Senare, när du väljer motsvarande tagg i katalogträdet, kommer appen att komplettera systemets sökresultat genom att visa de relevanta filerna.</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>Aktivera förbättrat index</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>Anpassade taggar:</string>
+	<key>tRG-X6-q84.title</key>
+	<string>Förbättrat index:</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>Applikationen använder macOS standardtaggningsmekanism. Se till att taggnamnen och färgerna i denna app exakt matchar de i Finder; annars kan du stöta på inkonsekvenser i taggfärger när du visar eller skriver taggar.</string>
+</dict>
+</plist>

@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>(Multiselect)</key>
+	<string>用所选项目新建文件夹 (%d个项目)</string>
+	<key>A-B Loop</key>
+	<string>A-B循环</string>
+	<key>A-B Loop Active</key>
+	<string>A-B循环启用</string>
+	<key>A-B Loop Cancel</key>
+	<string>A-B循环取消</string>
+	<key>A-B Loop: A</key>
+	<string>A-B循环：A</string>
+	<key>A-B Loop: A Greater than B</key>
+	<string>A-B循环：A点大于B点</string>
+	<key>A-B Loop: B</key>
+	<string>A-B循环：B</string>
+	<key>Actions</key>
+	<string>操作</string>
+	<key>Add</key>
+	<string>添加</string>
+	<key>Add Current Folder</key>
+	<string>添加当前文件夹</string>
+	<key>Add Separator</key>
+	<string>添加分隔线</string>
+	<key>Adjust Window to Actual Image Size</key>
+	<string>调整窗口至图片实际大小</string>
+	<key>Adjust Window to Current Image Size</key>
+	<string>调整窗口至图片当前大小</string>
+	<key>Advanced</key>
+	<string>高级</string>
+	<key>Alias Type</key>
+	<string>替身类型</string>
+	<key>Always Generate HD Thumbnails</key>
+	<string>总是生成高清缩略图</string>
+	<key>Always Generate Standard Thumbnails</key>
+	<string>总是生成标准缩略图</string>
+	<key>Apply Filter</key>
+	<string>执行过滤</string>
+	<key>Apply to all</key>
+	<string>应用到全部</string>
+	<key>Are you sure you want to move xxx to xxx?</key>
+	<string>确定要移动 "%1$@" 到 "%2$@"?</string>
+	<key>Arrow</key>
+	<string>箭头</string>
+	<key>AudioMetadata-BitRate</key>
+	<string>比特率</string>
+	<key>AudioMetadata-ChannelLayout</key>
+	<string>声道布局</string>
+	<key>AudioMetadata-Channels</key>
+	<string>声道数</string>
+	<key>AudioMetadata-CodecLongName</key>
+	<string>编码器全名</string>
+	<key>AudioMetadata-CodecName</key>
+	<string>编码器名称</string>
+	<key>AudioMetadata-Index</key>
+	<string>索引</string>
+	<key>AudioMetadata-Language</key>
+	<string>语言</string>
+	<key>AudioMetadata-SampleRate</key>
+	<string>采样率</string>
+	<key>AudioMetadata-StreamTitle</key>
+	<string>流标题</string>
+	<key>Auto</key>
+	<string>自动</string>
+	<key>Auto Play Selected Video</key>
+	<string>自动播放选中视频</string>
+	<key>Auto Play Visible Video</key>
+	<string>自动播放可见视频</string>
+	<key>Auto Rename</key>
+	<string>自动重命名</string>
+	<key>Border Thickness</key>
+	<string>边框厚度</string>
+	<key>Cancel</key>
+	<string>取消</string>
+	<key>Cancel Auto Play Visible Video</key>
+	<string>取消自动播放可见视频</string>
+	<key>Cancel Filter</key>
+	<string>取消过滤</string>
+	<key>Case Sensitive</key>
+	<string>区分大小写</string>
+	<key>Cell Padding</key>
+	<string>单元格外边距</string>
+	<key>Center the Window</key>
+	<string>将窗口居中</string>
+	<key>Choose a file or folder</key>
+	<string>选择一个文件或文件夹</string>
+	<key>Clear</key>
+	<string>清除</string>
+	<key>Close (Double Click)</key>
+	<string>关闭 (双击)</string>
+	<key>Close Other Tabs</key>
+	<string>关闭其它标签页</string>
+	<key>Close Tab</key>
+	<string>关闭标签页</string>
+	<key>Continue</key>
+	<string>继续</string>
+	<key>Copy</key>
+	<string>复制</string>
+	<key>Copy Path</key>
+	<string>复制路径</string>
+	<key>Corner Radius</key>
+	<string>圆角半径</string>
+	<key>Custom Layout Style</key>
+	<string>自定义布局样式</string>
+	<key>Custom Layout Style...</key>
+	<string>自定义布局样式...</string>
+	<key>Custom Zoom Ratio...</key>
+	<string>自定义缩放比例...</string>
+	<key>Custom Zoom Step...</key>
+	<string>自定义缩放梯度...</string>
+	<key>Date Added</key>
+	<string>添加日期</string>
+	<key>Date Created</key>
+	<string>创建日期</string>
+	<key>Date Modified</key>
+	<string>修改日期</string>
+	<key>Default Thumbnail Size</key>
+	<string>默认缩略图大小</string>
+	<key>Delete</key>
+	<string>删除</string>
+	<key>Demo</key>
+	<string>Demo</string>
+	<key>Directory does not exist</key>
+	<string>目录不存在</string>
+	<key>Disable Automatic Play</key>
+	<string>停止自动播放</string>
+	<key>Disable Automatic Scroll</key>
+	<string>停止自动滚动</string>
+	<key>Edit Mode</key>
+	<string>编辑模式</string>
+	<key>Ellipse</key>
+	<string>椭圆</string>
+	<key>Empty</key>
+	<string>空</string>
+	<key>Enable Automatic Play</key>
+	<string>启用自动播放</string>
+	<key>Enable Automatic Scroll</key>
+	<string>启用自动滚动</string>
+	<key>Enable HDR</key>
+	<string>启用HDR</string>
+	<key>Enable Recursive Mode</key>
+	<string>开启递归模式</string>
+	<key>Enlarge the Thumbnails</key>
+	<string>放大缩略图</string>
+	<key>Enter Full Screen</key>
+	<string>进入全屏</string>
+	<key>Enter the auto play interval in seconds:</key>
+	<string>请输入自动播放的间隔时间（秒）：</string>
+	<key>Enter the scroll speed in pixels per second:</key>
+	<string>输入每秒滚动的像素数：</string>
+	<key>Eraser</key>
+	<string>橡皮擦</string>
+	<key>Error</key>
+	<string>错误</string>
+	<key>Exif-ApertureValue</key>
+	<string>光圈值 (Aperture)</string>
+	<key>Exif-Artist</key>
+	<string>作者</string>
+	<key>Exif-CameraMaker</key>
+	<string>制造商</string>
+	<key>Exif-CameraModel</key>
+	<string>相机型号</string>
+	<key>Exif-ColorModel</key>
+	<string>色彩空间</string>
+	<key>Exif-DateTimeDigitized</key>
+	<string>数字化时间</string>
+	<key>Exif-DateTimeOriginal</key>
+	<string>拍摄时间</string>
+	<key>Exif-Depth</key>
+	<string>位深度</string>
+	<key>Exif-ExposureTime</key>
+	<string>曝光时间</string>
+	<key>Exif-FNumber</key>
+	<string>光圈值 (FNumber)</string>
+	<key>Exif-FileAddedTime</key>
+	<string>文件添加时间</string>
+	<key>Exif-FileCreatedTime</key>
+	<string>文件创建时间</string>
+	<key>Exif-FileModifiedTime</key>
+	<string>文件修改时间</string>
+	<key>Exif-FileSize</key>
+	<string>文件大小</string>
+	<key>Exif-Flash</key>
+	<string>闪光灯</string>
+	<key>Exif-Flash-Off</key>
+	<string>未使用</string>
+	<key>Exif-Flash-On</key>
+	<string>开启</string>
+	<key>Exif-FocalLength</key>
+	<string>焦距</string>
+	<key>Exif-GPSAltitude</key>
+	<string>GPS 海拔</string>
+	<key>Exif-GPSLatitude</key>
+	<string>GPS 纬度</string>
+	<key>Exif-GPSLongitude</key>
+	<string>GPS 经度</string>
+	<key>Exif-ISOSpeedRatings</key>
+	<string>ISO感光度</string>
+	<key>Exif-LensModel</key>
+	<string>镜头型号</string>
+	<key>Exif-ProfileName</key>
+	<string>配置文件名称</string>
+	<key>Exif-Rating</key>
+	<string>评级</string>
+	<key>Exif-Resolution</key>
+	<string>分辨率</string>
+	<key>Exif-Software</key>
+	<string>软件</string>
+	<key>Exif-TIFFDateTime</key>
+	<string>元数据时间</string>
+	<key>Exit Edit Mode</key>
+	<string>退出编辑模式</string>
+	<key>Exit Full Screen</key>
+	<string>退出全屏</string>
+	<key>Exit Recursive Mode</key>
+	<string>退出递归模式</string>
+	<key>Failed to set this app as the default for some file types:
+</key>
+	<string>未能将此应用设置为某些文件类型的默认应用程序：
+</string>
+	<key>Favorites</key>
+	<string>收藏夹</string>
+	<key>File Already Exists</key>
+	<string>文件已存在</string>
+	<key>File Info</key>
+	<string>文件信息</string>
+	<key>File Path</key>
+	<string>文件路径</string>
+	<key>Filename</key>
+	<string>文件名</string>
+	<key>Filename Font Size</key>
+	<string>文件名字体大小</string>
+	<key>Filter</key>
+	<string>筛选</string>
+	<key>Filter by Finder Tag</key>
+	<string>按Finder标签筛选</string>
+	<key>Filter by Rating</key>
+	<string>按评级筛选</string>
+	<key>Finder Alias</key>
+	<string>Finder替身</string>
+	<key>Finder Tags</key>
+	<string>Finder标签</string>
+	<key>Folder</key>
+	<string>文件夹</string>
+	<key>Folders</key>
+	<string>目录</string>
+	<key>Follow Current Folder</key>
+	<string>跟随当前目录</string>
+	<key>General</key>
+	<string>通用</string>
+	<key>Go Back</key>
+	<string>后退</string>
+	<key>Go Forward</key>
+	<string>前进</string>
+	<key>Go To</key>
+	<string>跳转至</string>
+	<key>Grid View</key>
+	<string>网格视图</string>
+	<key>Have Reached the First</key>
+	<string>已经是第一张</string>
+	<key>Have Reached the Last</key>
+	<string>已经是最后一张</string>
+	<key>Highlighter</key>
+	<string>荧光笔</string>
+	<key>Image</key>
+	<string>图像</string>
+	<key>Images</key>
+	<string>图像</string>
+	<key>Include Folders</key>
+	<string>包含文件夹</string>
+	<key>Info</key>
+	<string>说明</string>
+	<key>Invalid current path</key>
+	<string>当前路径无效</string>
+	<key>Invalid input, please enter a positive number</key>
+	<string>输入不合法，请输入一个正数</string>
+	<key>Invalid relative path</key>
+	<string>相对路径无效</string>
+	<key>Justified View</key>
+	<string>自适应视图</string>
+	<key>Learn More...</key>
+	<string>了解更多...</string>
+	<key>Line Space Adjustment</key>
+	<string>行间距调整</string>
+	<key>Loading...</key>
+	<string>加载中...</string>
+	<key>Location</key>
+	<string>位置</string>
+	<key>Lock Mirror</key>
+	<string>锁定镜像</string>
+	<key>Lock Rotation</key>
+	<string>锁定旋转</string>
+	<key>Lock Zoom</key>
+	<string>锁定缩放</string>
+	<key>Match All (AND)</key>
+	<string>匹配全部 (AND)</string>
+	<key>Match Any (OR)</key>
+	<string>匹配任一 (OR)</string>
+	<key>Maximize Window</key>
+	<string>最大化窗口</string>
+	<key>Merge All Windows</key>
+	<string>合并所有窗口</string>
+	<key>Mirror Flip</key>
+	<string>镜像翻转</string>
+	<key>More</key>
+	<string>更多</string>
+	<key>Move Down</key>
+	<string>下移</string>
+	<key>Move Here</key>
+	<string>移动到此</string>
+	<key>Move Items</key>
+	<string>移动项目</string>
+	<key>Move Up</key>
+	<string>上移</string>
+	<key>Move to Trash</key>
+	<string>移动到废纸篓</string>
+	<key>Name</key>
+	<string>名称</string>
+	<key>New</key>
+	<string>新建</string>
+	<key>New Folder</key>
+	<string>新建文件夹</string>
+	<key>New Tab</key>
+	<string>新标签页</string>
+	<key>New Tag</key>
+	<string>新标签</string>
+	<key>New Text File</key>
+	<string>新建文本文件</string>
+	<key>New name for</key>
+	<string>请输入新的名称用于</string>
+	<key>No Color</key>
+	<string>无颜色</string>
+	<key>No Rating</key>
+	<string>无评级</string>
+	<key>Non-Grid View</key>
+	<string>非网格视图</string>
+	<key>Not Include Folders</key>
+	<string>不包含文件夹</string>
+	<key>Not Show All Types of Files</key>
+	<string>不显示所有类型文件</string>
+	<key>Not Show Hidden Files</key>
+	<string>不显示隐藏文件</string>
+	<key>OK</key>
+	<string>确定</string>
+	<key>Only images can be edited</key>
+	<string>只有图片才能编辑</string>
+	<key>Open</key>
+	<string>打开</string>
+	<key>Open With</key>
+	<string>打开方式</string>
+	<key>Open in Finder</key>
+	<string>在Finder中打开</string>
+	<key>Open in Map</key>
+	<string>在地图中打开</string>
+	<key>Open in New Tab</key>
+	<string>在新标签页中打开</string>
+	<key>Open in Terminal</key>
+	<string>在终端中打开</string>
+	<key>Open with External Player</key>
+	<string>使用外部播放器打开</string>
+	<key>Operation Logs</key>
+	<string>操作日志</string>
+	<key>Original Path</key>
+	<string>原始路径</string>
+	<key>Other</key>
+	<string>其它</string>
+	<key>Others</key>
+	<string>其它</string>
+	<key>Paste</key>
+	<string>粘贴</string>
+	<key>Path does not exist</key>
+	<string>路径不存在</string>
+	<key>Pen</key>
+	<string>画笔</string>
+	<key>Pin Window</key>
+	<string>置顶</string>
+	<key>Pin Window to Top</key>
+	<string>置顶窗口</string>
+	<key>Please select a specific tag</key>
+	<string>请选择一个具体的标签</string>
+	<key>Portable Browsing Mode</key>
+	<string>便携浏览模式</string>
+	<key>Portable Mode: Off</key>
+	<string>便携模式：关闭</string>
+	<key>Portable Mode: On</key>
+	<string>便携模式：开启</string>
+	<key>Prefer Using Embedded Thumbnails</key>
+	<string>优先使用内嵌缩略图</string>
+	<key>Quick Search</key>
+	<string>快速搜索</string>
+	<key>RAW Uses Exif Embedded Thumbnail</key>
+	<string>RAW使用Exif内嵌缩略图</string>
+	<key>Rating</key>
+	<string>评级</string>
+	<key>Readme...</key>
+	<string>说明...</string>
+	<key>Rectangle</key>
+	<string>矩形</string>
+	<key>Recursive Mode</key>
+	<string>递归浏览模式</string>
+	<key>Redo</key>
+	<string>重做</string>
+	<key>Reduce the Thumbnails</key>
+	<string>缩小缩略图</string>
+	<key>Refresh</key>
+	<string>刷新</string>
+	<key>Regex</key>
+	<string>正则表达式</string>
+	<key>Relative Path</key>
+	<string>相对路径</string>
+	<key>Remember Position</key>
+	<string>记忆位置</string>
+	<key>Remember Position: Disabled</key>
+	<string>记忆位置禁用</string>
+	<key>Remember Position: Enabled</key>
+	<string>记忆位置启用</string>
+	<key>Remove</key>
+	<string>移除</string>
+	<key>Remove All Tags</key>
+	<string>移除所有标签</string>
+	<key>Remove Current Folder</key>
+	<string>移除当前文件夹</string>
+	<key>Rename</key>
+	<string>重命名</string>
+	<key>Render Original RAW</key>
+	<string>渲染原始RAW</string>
+	<key>Replace</key>
+	<string>替换</string>
+	<key>Reset</key>
+	<string>重置</string>
+	<key>Reverse Filter</key>
+	<string>反转筛选</string>
+	<key>Rotate %d°</key>
+	<string>旋转%d°</string>
+	<key>Rotate Clockwise</key>
+	<string>顺时针旋转</string>
+	<key>Rotate Counterclockwise</key>
+	<string>逆时针旋转</string>
+	<key>Save</key>
+	<string>保存</string>
+	<key>Scan &amp; Update Enhanced Index</key>
+	<string>扫描并更新增强索引</string>
+	<key>Scan Complete</key>
+	<string>扫描完成</string>
+	<key>Scan Prompt</key>
+	<string>扫描提示</string>
+	<key>Scanning</key>
+	<string>扫描中</string>
+	<key>Scanning...</key>
+	<string>扫描中...</string>
+	<key>Search...</key>
+	<string>搜索...</string>
+	<key>Sequential Playback</key>
+	<string>顺序播放</string>
+	<key>Sequential Playback: Disabled</key>
+	<string>顺序播放禁用</string>
+	<key>Sequential Playback: Enabled</key>
+	<string>顺序播放启用</string>
+	<key>Set Auto Play Interval</key>
+	<string>设置自动播放间隔</string>
+	<key>Set Scroll Speed</key>
+	<string>设置滚动速度</string>
+	<key>Settings...</key>
+	<string>设置...</string>
+	<key>Share...</key>
+	<string>共享...</string>
+	<key>Show All</key>
+	<string>显示全部</string>
+	<key>Show All Types of Files</key>
+	<string>显示所有类型文件</string>
+	<key>Show Camera RAW Files</key>
+	<string>显示相机RAW文件</string>
+	<key>Show Exif</key>
+	<string>显示Exif信息</string>
+	<key>Show Filename</key>
+	<string>显示文件名</string>
+	<key>Show Finder Tags and Ratings</key>
+	<string>显示Finder标签和评级</string>
+	<key>Show Hidden Files</key>
+	<string>显示隐藏文件</string>
+	<key>Show Image Files</key>
+	<string>显示图像文件</string>
+	<key>Show Info</key>
+	<string>显示信息</string>
+	<key>Show RAW/HDR Badge</key>
+	<string>显示RAW/HDR标记</string>
+	<key>Show Shadow</key>
+	<string>显示阴影</string>
+	<key>Show Statistics in Window Title</key>
+	<string>在窗口标题中显示统计信息</string>
+	<key>Show Tags and Ratings</key>
+	<string>显示标签和评级</string>
+	<key>Show Video Files</key>
+	<string>显示视频文件</string>
+	<key>Show Video Metadata</key>
+	<string>显示视频元数据</string>
+	<key>Show in Finder</key>
+	<string>在Finder中显示</string>
+	<key>Show in Original Folder</key>
+	<string>在原文件夹中显示</string>
+	<key>Sidebar</key>
+	<string>侧边栏</string>
+	<key>Skip</key>
+	<string>跳过</string>
+	<key>Sort</key>
+	<string>排序</string>
+	<key>Sort Folders First</key>
+	<string>文件夹优先排序</string>
+	<key>Sort Order</key>
+	<string>排序方式</string>
+	<key>Sort Using Full Path In Collection Mode</key>
+	<string>集合模式下使用完整路径排序</string>
+	<key>Sort by EXIF Info</key>
+	<string>根据Exif信息排序</string>
+	<key>Statistic</key>
+	<string>统计信息</string>
+	<key>Stop</key>
+	<string>停止</string>
+	<key>Success</key>
+	<string>成功</string>
+	<key>Symbolic Link</key>
+	<string>符号链接</string>
+	<key>Tagging</key>
+	<string>标签</string>
+	<key>Text File</key>
+	<string>文本文件</string>
+	<key>This app is now the default for all specified file types.</key>
+	<string>此应用现在是所有指定文件类型的默认应用程序。</string>
+	<key>Thumbnail General</key>
+	<string>缩略图通用</string>
+	<key>Thumbnail Options</key>
+	<string>缩略图选项</string>
+	<key>Thumbnail Size</key>
+	<string>缩略图大小</string>
+	<key>Undo</key>
+	<string>撤销</string>
+	<key>Unpin Window from Top</key>
+	<string>取消置顶窗口</string>
+	<key>Unsupported Video Format</key>
+	<string>不支持的视频格式</string>
+	<key>Updating Index</key>
+	<string>更新索引中</string>
+	<key>Use Full Path</key>
+	<string>使用完整路径</string>
+	<key>Use Full Path in Window Title</key>
+	<string>在窗口标题中使用完整路径</string>
+	<key>Use Internal Video Player</key>
+	<string>使用内置视频播放器</string>
+	<key>Video</key>
+	<string>视频</string>
+	<key>VideoMetadata-AvgFrameRate</key>
+	<string>平均帧率</string>
+	<key>VideoMetadata-BitRate</key>
+	<string>比特率</string>
+	<key>VideoMetadata-CodecLongName</key>
+	<string>编码器全名</string>
+	<key>VideoMetadata-CodecName</key>
+	<string>编码器名称</string>
+	<key>VideoMetadata-ColorSpace</key>
+	<string>色彩空间</string>
+	<key>VideoMetadata-CreationTime</key>
+	<string>创建时间</string>
+	<key>VideoMetadata-Duration</key>
+	<string>时长</string>
+	<key>VideoMetadata-EncoderSoftwareName</key>
+	<string>编码工具名称</string>
+	<key>VideoMetadata-FormatName</key>
+	<string>格式名称</string>
+	<key>VideoMetadata-Height</key>
+	<string>高度</string>
+	<key>VideoMetadata-Index</key>
+	<string>索引</string>
+	<key>VideoMetadata-Level</key>
+	<string>级别</string>
+	<key>VideoMetadata-PixelFormat</key>
+	<string>像素格式</string>
+	<key>VideoMetadata-Profile</key>
+	<string>配置文件</string>
+	<key>VideoMetadata-RFrameRate</key>
+	<string>帧率</string>
+	<key>VideoMetadata-Width</key>
+	<string>宽度</string>
+	<key>Videos</key>
+	<string>视频</string>
+	<key>View</key>
+	<string>查看</string>
+	<key>Volume</key>
+	<string>音量</string>
+	<key>Waterfall View</key>
+	<string>瀑布流视图</string>
+	<key>Window Title</key>
+	<string>窗口标题</string>
+	<key>Zoom</key>
+	<string>缩放</string>
+	<key>Zoom In</key>
+	<string>放大</string>
+	<key>Zoom Out</key>
+	<string>缩小</string>
+	<key>ask-to-delete</key>
+	<string>你确定要将这些文件移动到废纸篓吗？</string>
+	<key>ask-to-delete-external</key>
+	<string>此目录不支持移动到废纸篓。将立即删除这些项目，此操作无法撤销。</string>
+	<key>ask-to-delete-nopermission</key>
+	<string>你确定要将这些文件移动到废纸篓吗？
+
+未授予此程序“自动化”权限。移动到废纸篓后不能使用“还原到原位置”功能。</string>
+	<key>ask-to-delete-shift</key>
+	<string>你确定要将这些文件永久删除吗？此操作无法撤销。</string>
+	<key>back-folder</key>
+	<string>返回历史目录</string>
+	<key>cannot-copy-to-self</key>
+	<string>不能将文件/文件夹复制到自身或其子目录中。</string>
+	<key>cannot-move-to-self</key>
+	<string>不能将文件/文件夹移动到自身或其子目录中。</string>
+	<key>copy-lowercase</key>
+	<string>副本</string>
+	<key>copy-to-download</key>
+	<string>复制到"下载"文件夹</string>
+	<key>do-you-want-replace</key>
+	<string>你要用正在粘贴或移动的文件替换它吗？</string>
+	<key>do-you-want-replace(move)</key>
+	<string>你要用正在移动的文件替换它吗？</string>
+	<key>do-you-want-replace(paste)</key>
+	<string>你要用正在粘贴的文件替换它吗？</string>
+	<key>empty-enclose</key>
+	<string>（空）</string>
+	<key>file-exists-continue-batch-rename</key>
+	<string>按序号批量重命名的文件与已有文件重名，例如新文件名为a_1.jpg, a_2.jpg, a_3.jpg… 但除此之外已存在一个名为a_2.jpg的文件。是否自动顺延序号以继续？</string>
+	<key>file-rightmenu-get-info</key>
+	<string>显示简介</string>
+	<key>file-rightmenu-get-statistic</key>
+	<string>显示统计</string>
+	<key>file-size</key>
+	<string>文件大小</string>
+	<key>first-time-use-prompt</key>
+	<string>双击左键关闭。
+图片：按住右键或左键滚动滚轮可以缩放。
+视频：按住右键拖动可以调整播放进度。</string>
+	<key>gen-thumb-info</key>
+	<string> - “优先使用内嵌缩略图”指优先使用内嵌于图像EXIF中的缩略图，其分辨率通常较低。但由于只需读取文件头部内容，将会明显提高对网络驱动器中图像的读取速度。互联网上多数图片为缩减文件大小删除了EXIF数据，此时程序会转而“生成标准缩略图”。
+
+ - “生成标准缩略图”指生成尺寸为512×512的中等质量缩略图。此时需要下载完整文件内容。（由于RAW图像内嵌缩略图通常分辨率较高，此模式下仍然优先使用内嵌缩略图。）
+
+ - “生成高清缩略图”指在缩略图区域精确绘制图片，建议缩略图大小大于默认值时开启此选项。此时重绘制的图像可能占用较多内存。
+
+另外，对于外部驱动器中的文件夹，默认情况下不生成其缩略图，请到“设置”-&gt;“高级”中修改相关选项。</string>
+	<key>has-exist-in-dest</key>
+	<string>目标文件夹中已存在名为"%@"的文件。</string>
+	<key>has-same-name-files</key>
+	<string>包含重名文件</string>
+	<key>has-same-name-files-info</key>
+	<string>来源文件中包含重名文件。是否自动重命名？
+
+例如自不同目录的多个名为abc.jpg的文件，将被自动重命名为abc.jpg, abc_2.jpg, abc_3.jpg...
+
+注意：请确认这项操作的影响，以防造成混乱。</string>
+	<key>image-dimensions</key>
+	<string>图像尺寸</string>
+	<key>input-new-folder-name</key>
+	<string>请输入文件夹名称：</string>
+	<key>input-new-textfile-name</key>
+	<string>请输入文件名称：</string>
+	<key>move-to-download</key>
+	<string>移动到"下载"文件夹</string>
+	<key>next-folder</key>
+	<string>下一个目录</string>
+	<key>next-sibling</key>
+	<string>平级的下一个目录</string>
+	<key>next-sibling-of-parent</key>
+	<string>上级的平级下一个目录</string>
+	<key>ocr-recog-fail</key>
+	<string>OCR功能需要macOS 13.0及以上版本</string>
+	<key>open-in-new-tab-this</key>
+	<string>在新标签页中打开此项</string>
+	<key>operation-logs-info</key>
+	<string>文件的删除、重命名、移动和粘贴操作记录。当前无内容。</string>
+	<key>optimizeWindow</key>
+	<string>合适窗口大小</string>
+	<key>pan-zoom</key>
+	<string>放大后使用滚动平移</string>
+	<key>pan-zoom-info</key>
+	<string>鼠标滚轮或者触控板滚动的默认行为是切换图片，当启用此功能时，图片被放大后滚动行为变为平移。通常用于查看长截图或者漫画等情景。</string>
+	<key>parent-folder</key>
+	<string>上级目录</string>
+	<key>portable-mode-info</key>
+	<string>在便携模式下：
+ - 打开图片时窗口会自动调整至图像的比例；
+ - 关闭图片时窗口会自动调整至屏幕的比例。</string>
+	<key>previous-folder</key>
+	<string>上一个目录</string>
+	<key>previous-sibling</key>
+	<string>平级的上一个目录</string>
+	<key>previous-sibling-of-parent</key>
+	<string>上级的平级上一个目录</string>
+	<key>qrcode-recog-fail</key>
+	<string>未能识别到二维码</string>
+	<key>qrcode-recog-result</key>
+	<string>二维码识别结果</string>
+	<key>rating-info</key>
+	<string>**关于 XMP 评级（Rating）**
+XMP 评级是一种通用的图片评分方式，用 1~5 星 标记图片优先级。
+它是行业通用元数据，不是 FlowVision 私有格式，很多支持 XMP 的软件都能识别。
+
+**XMP 是什么**
+XMP（Extensible Metadata Platform）可以理解为“写在图片里的信息卡片”，常用于保存评分、关键词、版权等可扩展信息。
+与 EXIF 主要记录相机拍摄参数（如快门、光圈、ISO）不同，XMP 更偏向可编辑的描述信息；在文件结构上，二者都位于图片的元数据区域，但属于不同的数据命名体系/数据块（可并存）。
+
+**评级信息存在哪里**
+FlowVision 将评级写入图片元数据中的 xmp:Rating 字段。
+这个信息通常嵌入在图片文件内部的元数据区域（如 JPEG 的元数据段、PNG/TIFF/HEIF/RAW 的对应元数据容器），而不是单独保存为数据库记录或文件系统的文件元信息中。
+
+**无评级的含义**
+当你选择“无评级”时，FlowVision 会清除 xmp:Rating 字段（不是写入 0）。
+这表示该图片当前未设置评级。
+
+**注意事项（重要）**
+设置或清除评级属于一次文件写入操作。
+写入后，文件的修改日期通常会更新，文件大小也可能因元数据重写而发生轻微变化。
+如果你依赖修改时间进行同步、备份或排序，建议在批量评级前先了解这一影响。</string>
+	<key>raw-use-embeded-info</key>
+	<string>启用此选项时使用其Exif内嵌缩略图，而不是渲染原始RAW。
+
+RAW文件通常自带高质量的Exif缩略图，用于相机的预览界面，是由相机内置程序校正处理过的非原始图像。通过使用这些缩略图，程序可以显著加快加载速度。</string>
+	<key>recognize-OCR</key>
+	<string>识别文本</string>
+	<key>recognize-QRCode</key>
+	<string>识别二维码</string>
+	<key>recursive-mode-info</key>
+	<string>“递归浏览模式”开启后，缩略图区域将显示文件夹及其子目录下的所有文件。勾选“包含文件夹”时，也将显示所有子文件夹本身。
+
+扫描部分系统目录或网络驱动器时，程序可能产生卡顿。
+
+另外，此模式下应用不会监听文件系统变化，因此如有外部改动（修改和删除等），请手动刷新。对于应用内的改动，为保证操作连续性，视图内图像数量过多时不会进行自动刷新，请手动刷新。</string>
+	<key>recursive-mode-nodirection</key>
+	<string>递归浏览模式下不能使用查找下一个/上一个文件夹的动作</string>
+	<key>renaming-conflict</key>
+	<string>该名称的文件已存在，请选择其他名称。</string>
+	<key>save-to-custom-profile</key>
+	<string>保存到自定义配置%@</string>
+	<key>scan-enhanced-index-info</key>
+	<string>TODO</string>
+	<key>scanned-files</key>
+	<string>当前已扫描 %d 个文件，其中图像 %d 个，视频 %d 个。是否继续？</string>
+	<key>search-help</key>
+	<string>**过滤内容**
+“执行过滤”按钮将筛选当前目录的内容，只显示符合搜索条件的项目。要恢复原始视图，可以清空搜索条件后再次点击此按钮，或者点击工具栏中的搜索图标。
+
+**搜索子文件夹**
+要实现对子目录中文件的搜索，可先启用“递归浏览模式”。
+
+**什么是正则表达式**
+正则表达式（Regular Expression）是一种用于匹配字符串中字符组合的模式。它是一种强大的文本处理工具，广泛应用于搜索、替换和文本解析等任务中。
+例如：
+^2024 可以匹配以'2024'开头的文件；
+.*modified\.[^.]+$ 可以匹配以'modified'结尾的文件（不论扩展名）；
+.*\.jpg$ 可以匹配扩展名为'.jpg'的文件。
+
+**高级搜索**
+“递归浏览模式”下可额外使用搜索选项“使用完整路径”，再结合正则表达式实现高级搜索。
+例如，文件完整路径为：
+/Users/Alice/Pictures/20220101/mypick/001.jpg  
+可使用正则表达式：
+^.*\/[^\/]*pick[^\/]*\/[^\/]+$
+匹配所有父目录名含有“pick”的文件，更复杂的正则表达式可使用大模型辅助编写。</string>
+	<key>sort-addDateA</key>
+	<string>添加日期</string>
+	<key>sort-addDateZ</key>
+	<string>添加日期(降序)</string>
+	<key>sort-createDateA</key>
+	<string>创建日期</string>
+	<key>sort-createDateZ</key>
+	<string>创建日期(降序)</string>
+	<key>sort-exif-local-warning</key>
+	<string>由于按Exif信息排序需要读取所有文件头部信息，可能造成加载速度缓慢。例如视频文件信息参考读取速度约为10个/秒。
+
+当前目录包含 %d 个图像或视频，预计最大载入耗时 %d 秒，您确定要继续吗？</string>
+	<key>sort-exif-network-warning</key>
+	<string>由于按Exif信息排序需要读取所有文件头部信息，可能造成加载速度缓慢。例如SMB网络驱动器中参考读取速度约为10个/秒。
+
+当前目录位于外部驱动器，且包含 %d 个图像或视频，预计最大载入耗时 %d 秒，您确定要继续吗？</string>
+	<key>sort-exifDateA</key>
+	<string>Exif日期</string>
+	<key>sort-exifDateZ</key>
+	<string>Exif日期(降序)</string>
+	<key>sort-exifPixelA</key>
+	<string>Exif像素数</string>
+	<key>sort-exifPixelZ</key>
+	<string>Exif像素数(降序)</string>
+	<key>sort-extA</key>
+	<string>文件类型</string>
+	<key>sort-extZ</key>
+	<string>文件类型(降序)</string>
+	<key>sort-label-date</key>
+	<string>日期</string>
+	<key>sort-label-exifDate</key>
+	<string>Exif日期</string>
+	<key>sort-label-exifPixel</key>
+	<string>Exif像素</string>
+	<key>sort-label-ext</key>
+	<string>类型</string>
+	<key>sort-label-name</key>
+	<string>名称</string>
+	<key>sort-label-random</key>
+	<string>随机</string>
+	<key>sort-label-size</key>
+	<string>大小</string>
+	<key>sort-modDateA</key>
+	<string>修改日期</string>
+	<key>sort-modDateZ</key>
+	<string>修改日期(降序)</string>
+	<key>sort-pathA</key>
+	<string>文件名</string>
+	<key>sort-pathZ</key>
+	<string>文件名(降序)</string>
+	<key>sort-random</key>
+	<string>随机</string>
+	<key>sort-readme</key>
+	<string>“集合模式下使用完整路径排序”是指在递归模式或标签集合下，如果两个文件相对当前目录的路径是
+./AAA/2.jpg
+./BBB/1.jpg
+以完整路径排序时2.jpg是第一个，而以文件名排序时1.jpg是第一个。
+
+按Exif信息排序时，需要读取每个文件头部内容，可能造成加载速度缓慢。例如SMB网络驱动器中或视频文件时，参考读取速度约为10个/秒。</string>
+	<key>sort-sizeA</key>
+	<string>文件大小</string>
+	<key>sort-sizeZ</key>
+	<string>文件大小(降序)</string>
+	<key>statistic-content</key>
+	<string>目录：%d
+文件：%d
+图像：%d
+视频：%d
+总大小：%@</string>
+	<key>switch-to-custom-profile</key>
+	<string>切换至自定义配置%@</string>
+	<key>switchToActualSize</key>
+	<string>图片默认实际大小</string>
+	<key>switchToDarkMode</key>
+	<string>黑暗模式</string>
+	<key>switchToFitToWindow</key>
+	<string>图片默认适应窗口</string>
+	<key>switchToLightMode</key>
+	<string>浅色模式</string>
+	<key>switchToSystemTheme</key>
+	<string>跟随系统主题</string>
+	<key>up-folder</key>
+	<string>上层文件夹</string>
+	<key>video-dimensions</key>
+	<string>视频尺寸</string>
+	<key>video-play-info</key>
+	<string>在播放器界面，按鼠标左键暂停播放，右键拖拽可以调整视频播放进度。键盘左右方向键可以快进快退，同时按住Cmd键时可以逐帧定位。
+
+macOS原生仅支持 "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v", "vob" 视频，其它格式仍需使用外部播放器播放。
+
+对于HEVC编码的视频，macOS内置解码器仅认可codec tag为hvc1的，而不认可tag为hev1的，可使用ffmpeg进行无损转换：ffmpeg -i input.mp4 -c copy -movflags +faststart -tag:v hvc1 output.mp4
+
+按Cmd+Shift+V可"自动播放可见视频"，指在缩略图视图下，循环播放视野范围内的视频。再次按快捷键或者切换文件夹后可退出该模式。</string>
+	<key>window-num-max</key>
+	<string>窗口数量超过限制</string>
+</dict>
+</plist>

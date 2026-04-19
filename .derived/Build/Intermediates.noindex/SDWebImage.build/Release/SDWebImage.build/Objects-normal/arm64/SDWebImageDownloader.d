@@ -1,0 +1,27 @@
+dependencies: \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Darwin.modulemap \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloader.m \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/SDWebImage.build/Release/SDWebImage.build/DerivedSources/resource_bundle_accessor.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Modules/module.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/DarwinFoundation1.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/ObjectiveC.modulemap \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloader.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageCompat.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Modules/module.modulemap \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDefine.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageOperation.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloaderConfig.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloaderRequestModifier.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloaderResponseModifier.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloaderDecryptor.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDImageLoader.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDImageCoder.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/NSData+ImageContentType.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDImageFrame.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageDownloaderOperation.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageError.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDWebImageCacheKeyFilter.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Core/SDImageCacheDefine.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Private/SDInternalMacros.h \
+  /Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/Private/SDmetamacros.h

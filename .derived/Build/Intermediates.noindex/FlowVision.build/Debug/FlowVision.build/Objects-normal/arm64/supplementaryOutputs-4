@@ -1,0 +1,37 @@
+{
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/FinderTag.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FinderTag.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FinderTag.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FinderTag.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FinderTag.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FinderTag.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/GlobalVariable.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GlobalVariable.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GlobalVariable.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GlobalVariable.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GlobalVariable.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GlobalVariable.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/LargeImage.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LargeImage.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LargeImage.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LargeImage.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LargeImage.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LargeImage.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/LayoutProfileConfig.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/Layout.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/Layout.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/Layout.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/Layout.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/Layout.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/Layout.swiftdeps"
+  }
+}

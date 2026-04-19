@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>Startseite</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Berechtigungen:</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>Ordner auswählen...</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Symbolleiste automatisch ausblenden</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>Klicken Sie auf die Schaltfläche, um diese Anwendung als Standardprogramm für gängige Bildformate festzulegen. Für andere Bildformate wie PSD und RAW, ordnen Sie sie bitte manuell zu.</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>Curser:</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>Dateizuordnungen:</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Symbolleiste:</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>Wenn diese Option aktiviert ist, kann die Multi-Tab-Leiste nicht verwendet werden 
+Starten Sie die Anwendung neu, damit die Änderungen wirksam werden</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>Bildlaufempfindlichkeit:</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Die Berechtigung "Dateien und Ordner" ist erforderlich, um Verzeichnisse und Dateien zu öffnen. Die Berechtigung "Automatisierung" ist erforderlich, um ursprüngliche Standortinformationen beim Löschen in den Papierkorb beizubehalten (ohne diese Berechtigung funktioniert die Funktion "Zurücklegen" im Papierkorb nicht).</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>Anwendung beim Schließen des letzten Fensters beenden</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>Automatisch</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>Letzter Ordner</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>Startseite</string>
+	<key>pPv-HR-smI.title</key>
+	<string>Als Standardanwendung festlegen</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>Starten Sie die Anwendung neu, damit die Änderungen wirksam werden.</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>Sprache:</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>Schließverhalten:</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>Öffnungsverhalten:</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>Berechtigungseinstellungen öffnen</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>Automatisches Ausblenden des Cursors im Vollbildmodus</string>
+</dict>
+</plist>

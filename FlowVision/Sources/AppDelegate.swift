@@ -214,6 +214,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         if let enhancedIndexEnabled = UserDefaults.standard.value(forKey: "enhancedIndexEnabled") as? Bool {
             globalVar.enhancedIndexEnabled = enhancedIndexEnabled
         }
+        if let photoFolder1Path = UserDefaults.standard.value(forKey: "photoFolder1Path") as? String {
+            globalVar.photoFolder1Path = photoFolder1Path
+        }
+        if let photoFolder1CopyShortcut = UserDefaults.standard.value(forKey: "photoFolder1CopyShortcut") as? String,
+           !photoFolder1CopyShortcut.isEmpty {
+            globalVar.photoFolder1CopyShortcut = photoFolder1CopyShortcut.uppercased()
+        }
+        if let quickRenameRule = UserDefaults.standard.value(forKey: "quickRenameRule") as? String,
+           !quickRenameRule.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            globalVar.quickRenameRule = quickRenameRule
+        }
+        if let videoShiftArrowSwitchFile = UserDefaults.standard.value(forKey: "videoShiftArrowSwitchFile") as? Bool {
+            globalVar.videoShiftArrowSwitchFile = videoShiftArrowSwitchFile
+        }
         globalVar.myFavoritesArray = defaults.array(forKey: "globalVar.myFavoritesArray") as? [String] ?? [String]()
         
         if let savedLabels = UserDefaults.standard.array(forKey: CustomTagView.userDefaultsKey) as? [[String: Any]] {
@@ -1255,4 +1269,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         getMainViewController()?.toggleSearchOverlay()
     }
 }
-

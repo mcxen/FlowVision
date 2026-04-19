@@ -341,6 +341,80 @@ extension ViewController {
         restorePasteboard(items: backupItems)
     }
     
+    func handleCopyToPhotoFolder1() {
+        if publicVar.selectedUrls().isEmpty { return }
+        
+        let targetPath = globalVar.photoFolder1Path.trimmingCharacters(in: .whitespacesAndNewlines)
+        if targetPath.isEmpty {
+            showAlert(message: NSLocalizedString("Please set Photo Folder 1 in Settings first.", comment: "请先在设置中配置图片文件夹1。"))
+            return
+        }
+        
+        var isDirectory: ObjCBool = false
+        if !FileManager.default.fileExists(atPath: targetPath, isDirectory: &isDirectory) || !isDirectory.boolValue {
+            showAlert(message: NSLocalizedString("Photo Folder 1 does not exist or is not a folder.", comment: "图片文件夹1不存在或不是文件夹。"))
+            return
+        }
+        
+        // 备份剪贴板内容
+        // Backup pasteboard content
+        let backupItems = backupPasteboard()
+        
+        handleCopy()
+        handlePaste(targetURL: URL(fileURLWithPath: targetPath, isDirectory: true))
+        
+        // 还原剪贴板内容
+        // Restore pasteboard content
+        restorePasteboard(items: backupItems)
+    }
+
+    func handleCaptureCurrentVideoFrameToCurrentFolder() {
+        guard publicVar.isInLargeView,
+              largeImageView.file.type == .video,
+              let videoURL = URL(string: largeImageView.file.path),
+              videoURL.isFileURL else {
+            return
+        }
+
+        guard let player = largeImageView.queuePlayer else {
+            showAlert(message: NSLocalizedString("Video player is not ready.", comment: "视频播放器尚未就绪。"))
+            return
+        }
+
+        var captureTime = player.currentTime()
+        if !captureTime.isValid || captureTime == .indefinite {
+            captureTime = CMTime(seconds: 0, preferredTimescale: 600)
+        }
+
+        let generator = AVAssetImageGenerator(asset: AVAsset(url: videoURL))
+        generator.appliesPreferredTrackTransform = true
+        generator.requestedTimeToleranceBefore = .zero
+        generator.requestedTimeToleranceAfter = .zero
+
+        do {
+            let cgImage = try generator.copyCGImage(at: captureTime, actualTime: nil)
+            let bitmap = NSBitmapImageRep(cgImage: cgImage)
+            guard let pngData = bitmap.representation(using: .png, properties: [:]) else {
+                showAlert(message: NSLocalizedString("Failed to encode captured frame.", comment: "编码截图失败。"))
+                return
+            }
+
+            let baseName = videoURL.deletingPathExtension().lastPathComponent
+            let ms = max(0, Int(CMTimeGetSeconds(captureTime).isFinite ? CMTimeGetSeconds(captureTime) * 1000 : 0))
+            let fileName = "\(baseName)_frame_\(ms)"
+            let outputCandidate = videoURL.deletingLastPathComponent().appendingPathComponent(fileName).appendingPathExtension("png")
+            let outputURL = getUniqueDestinationURL(for: outputCandidate)
+
+            try pngData.write(to: outputURL, options: .atomic)
+            publicVar.fileChangedCount += 1
+            scheduledRefresh()
+            largeImageView.showInfo(NSLocalizedString("Frame Saved", comment: "视频帧已保存"))
+        } catch {
+            log("Capture video frame failed: \(error)", level: .error)
+            showAlert(message: NSLocalizedString("Failed to capture current video frame.", comment: "抓取当前视频帧失败。"))
+        }
+    }
+    
     func handlePaste(targetURL: URL? = nil, pasteboard: NSPasteboard = NSPasteboard.general) {
         // 如果是剪切模式，执行移动操作而非复制
         // If in cut mode, perform move operation instead of copy
@@ -1253,6 +1327,132 @@ extension ViewController {
             }
         }
         return false
+    }
+    
+    func handleQuickRenameInCurrentFolder() -> Bool {
+        fileDB.lock()
+        let curFolder = fileDB.curFolder
+        let keys: [(SortKeyFile, FileModel)]
+        if let dirModel = fileDB.db[SortKeyDir(curFolder)] {
+            keys = getMapKeysFile(dirModel.files)
+        } else {
+            keys = []
+        }
+        fileDB.unlock()
+        
+        let urls: [URL] = keys.compactMap { (_, file) in
+            guard !file.isDir else { return nil }
+            return URL(string: file.path)
+        }
+        
+        if urls.isEmpty {
+            showAlert(message: NSLocalizedString("No files to rename in current folder.", comment: "当前目录没有可重命名的文件。"))
+            return false
+        }
+        
+        let folderName: String = {
+            guard let folderURL = URL(string: curFolder) else { return "Folder" }
+            let name = folderURL.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+            return name.isEmpty ? "Folder" : (name.removingPercentEncoding ?? name)
+        }()
+        
+        let rule = {
+            let trimmed = globalVar.quickRenameRule.trimmingCharacters(in: .whitespacesAndNewlines)
+            return trimmed.isEmpty ? "{folder}_{index}" : trimmed
+        }()
+        
+        let originalPathSet = Set(urls.map { $0.path.lowercased() })
+        var plannedPathSet = Set<String>()
+        var finalNames: [(originalUrl: URL, finalUrl: URL)] = []
+        
+        for (idx, originalUrl) in urls.enumerated() {
+            let index = idx + 1
+            var baseName = rule
+                .replacingOccurrences(of: "{folder}", with: folderName)
+                .replacingOccurrences(of: "{index}", with: "\(index)")
+            
+            baseName = baseName.trimmingCharacters(in: .whitespacesAndNewlines)
+            if baseName.isEmpty {
+                baseName = "\(folderName)_\(index)"
+            }
+            
+            let ext = originalUrl.pathExtension
+            var suffix = 1
+            var finalUrl = originalUrl
+            
+            while true {
+                let candidateBase = (suffix == 1) ? baseName : "\(baseName)_\(suffix)"
+                let candidateName = ext.isEmpty ? candidateBase : "\(candidateBase).\(ext)"
+                let candidateURL = originalUrl.deletingLastPathComponent().appendingPathComponent(candidateName)
+                let candidatePathLower = candidateURL.path.lowercased()
+                
+                let existsAndNotInOriginalSet =
+                    FileManager.default.fileExists(atPath: candidateURL.path) &&
+                    !originalPathSet.contains(candidatePathLower)
+                let isPlannedConflict = plannedPathSet.contains(candidatePathLower)
+                
+                if !existsAndNotInOriginalSet && !isPlannedConflict {
+                    finalUrl = candidateURL
+                    plannedPathSet.insert(candidatePathLower)
+                    break
+                }
+                suffix += 1
+            }
+            
+            finalNames.append((originalUrl: originalUrl, finalUrl: finalUrl))
+        }
+        
+        let operationLog = "[QuickRename] \(folderName) -> \(rule)"
+        globalVar.operationLogs.append(operationLog)
+        
+        publicVar.isInFileOperation = true
+        defer { publicVar.isInFileOperation = false }
+        
+        var allSuccess = true
+        var tempNames: [(tempUrl: URL, finalUrl: URL)] = []
+        
+        for item in finalNames {
+            let tempName = "temp_rename_\(UUID().uuidString)"
+            let tempUrl = item.originalUrl.deletingLastPathComponent().appendingPathComponent(tempName)
+            do {
+                try FileManager.default.moveItem(at: item.originalUrl, to: tempUrl)
+                tempNames.append((tempUrl: tempUrl, finalUrl: item.finalUrl))
+            } catch {
+                log("Quick rename temp move failed: \(error)", level: .error)
+                allSuccess = false
+                break
+            }
+        }
+        
+        if allSuccess {
+            for item in tempNames {
+                do {
+                    try FileManager.default.moveItem(at: item.tempUrl, to: item.finalUrl)
+                    publicVar.fileChangedCount += 1
+                } catch {
+                    log("Quick rename final move failed: \(error)", level: .error)
+                    allSuccess = false
+                    break
+                }
+            }
+        }
+        
+        if allSuccess && !finalNames.isEmpty {
+            EnhancedIndex.handleFilesMoved(finalNames.map { (oldPath: $0.originalUrl.path, newPath: $0.finalUrl.path) })
+            publicVar.filesForLocateAfterChange = finalNames.map { $0.finalUrl.absoluteString }
+        }
+        
+        var ifRefresh = true
+        if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+            fileDB.lock()
+            ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
+            fileDB.unlock()
+        }
+        if ifRefresh {
+            scheduledRefresh()
+        }
+        
+        return allSuccess
     }
     
     func applyCutItemsDimEffect() {

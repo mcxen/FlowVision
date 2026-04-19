@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>Miniatura:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>Negro en pantalla completa</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>Buscar:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Opciones al usar Cmd + F para buscar, solo efectivas en modo de coincidencia normal.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Excluir Directorio:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>Mantener estado:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>Para chino use iniciales en Pinyin para la búsqueda</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>Miniaturas de carpetas apiladas en lugar de en mosaico</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Navegación en Bucle</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>Fondo:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>Dado que macOS solo admite de forma nativa formatos de video como "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" y "vob", otros formatos aún necesitan reproducirse usando un reproductor externo</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>Haga clic en los bordes para cambiar las imágenes</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>Mantener el estado recursivo y de filtro al cambiar de directorios</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>Negro en pantalla completa</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Vista de imagen:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>Desplaza la rueda del mouse para hacer zoom en lugar de cambiar imágenes</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>Negro</string>
+	<key>UCD-KL-13f.title</key>
+	<string>Fondo:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>Vidrio</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Para los directorios en la lista de exclusión, las imágenes dentro de ellos no se utilizarán al generar miniaturas para ellos mismos o sus carpetas principales.</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>Miniatura aleatoria de carpeta</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>Vista de video:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>Cristal</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>Para el chino usa el pinyin completo para la búsqueda</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>Usar Reproductor de Video Interno</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>Negro</string>
+</dict>
+</plist>

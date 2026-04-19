@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>No usar FFmpeg</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>Para discos duros mecánicos y unidades de red, se recomienda configurarlo en 1. Para SSDs externos, este valor se puede aumentar apropiadamente.</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>Esta configuración se aplica al SSD interno. Se recomienda configurarlo entre 4 y 8.</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>Usar FFmpeg para Más Miniaturas de Formato de Video</string>
+	<key>L44-0u-7JE.title</key>
+	<string>Profundidad de Búsqueda de Carpetas:
+(Volúmenes externos)</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>El número de niveles de subcarpetas a buscar al generar miniaturas de carpetas. Si se establece en 0, no se generarán miniaturas de carpetas, y el árbol de directorios no indicará si existen subcarpetas mediante una flecha en el lado izquierdo.</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>Profundidad de Búsqueda de Carpetas:</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>Hilos de Miniaturas:</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>p. ej. 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>Estas configuraciones se aplican a volúmenes externos, incluidas unidades externas, unidades de red y otros directorios montados.</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>Límite de uso de memoria:</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>Cargar biblioteca dinámica:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>Hilos de miniaturas:
+(Volúmenes externos)</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>Cuando el uso de memoria de la aplicación excede el límite, la caché de renderizado de miniaturas en cada directorio se borrará secuencialmente según el tiempo de último acceso</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>La aplicación tiene una biblioteca de FFmpeg integrada. Si se produce una excepción al generar miniaturas de video, intente desactivar esta opción o desmarcar "Mostrar archivos de video".</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>8</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>Para las unidades de red, se recomienda establecerlo en 0 (no generar miniaturas de carpetas, y el árbol de directorios no indicará si existen subcarpetas mediante la flecha del lado izquierdo)</string>
+</dict>
+</plist>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>首頁</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>權限：</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>選擇資料夾...</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>自動隱藏工具欄</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>點擊按鈕以將此應用程序設置為常見圖像格式的默認程序。對於其他圖像格式，如PSD和RAW，請手動關聯。</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>游標：</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>檔案關聯：</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>工具列：</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>啟用此選項時，無法使用多標籤欄。重啟應用程式以使變更生效</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>滾動靈敏度:</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>需要“文件和文件夾”權限才能打開目錄和文件。將文件刪除至垃圾桶時需要“自動化”權限才能保留原始位置資訊（若無此權限，垃圾桶中的“放回”功能將無法使用）。</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>關閉最後一個窗口時退出應用程序</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>自動</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>上一個資料夾</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>主頁</string>
+	<key>pPv-HR-smI.title</key>
+	<string>設為預設應用程式</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>重新啟動應用程式以使更改生效</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>語言:</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>關閉行為：</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>開啟行為：</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>開啟權限設定</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>全屏時自動隱藏光標</string>
+</dict>
+</plist>

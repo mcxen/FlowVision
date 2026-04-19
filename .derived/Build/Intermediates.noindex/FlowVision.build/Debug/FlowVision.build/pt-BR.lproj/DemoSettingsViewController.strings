@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>Renomear</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>Na visualização de miniaturas: W/S/A/D/E correspondem aos gestos de clique com o botão direito para cima/baixo/esquerda/direita/acima-direita.
+Na visualização de imagem: W/S para ampliar/reduzir, Z para zoom a 100%, X para ajustar, A/D imagem anterior/próxima.</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>Alternância de Perfil:</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>Abrir / Fechar</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>Busca Rápida:</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Tecla Enter:</string>
+	<key>diV-0n-cUs.title</key>
+	<string>Atalhos de Teclado:</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>Clique duas vezes para abrir/fechar a imagem. 
+Mantenha o botão direito/esquerdo do mouse pressionado e role a roda para dar zoom.
+Mantenha o botão do meio do mouse pressionado e arraste para mover a janela.
+Pressione longamente o botão esquerdo do mouse para alternar para zoom de 100%.
+Pressione longamente o botão direito do mouse para ajustar a imagem à visualização.</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Pressione Opt + 1~9 para alternar para o perfil correspondente.
+Pressione Opt + Cmd + 1~9 para salvar o layout e estilo atual no perfil correspondente.
+As configurações envolvidas na alternância incluem: exibir ou não a barra lateral, tipo de visualização, método de ordenação, tamanho das miniaturas e estilos personalizados (como exibir ou não nomes de arquivos e a largura da borda da miniatura).</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>Visualização de Imagem:</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>Gestos do Botão Direito:</string>
+	<key>xau-nf-fbD.title</key>
+	<string>Direita/Esquerda: Alternar para a próxima/anterior pasta com imagens/vídeos (logicamente equivalente à próxima pasta ao ordenar todas as pastas no disco).
+Cima: Alternar para o diretório pai.
+Baixo: Retornar ao diretório anterior.
+Cima-Direita: Alternar para a próxima pasta com imagens no mesmo nível da pasta atual.
+Baixo-Direita: Fechar a aba/janela.</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>Pressione Q na visualização de miniaturas para ativar a Busca Rápida, permitindo que você insira palavras-chave de pesquisa em um curto espaço de tempo para localizar arquivos. Neste modo, teclas numéricas, teclas de letras e a tecla de retrocesso são usadas para entrada. Para uma função de busca mais abrangente, use Cmd + F.</string>
+</dict>
+</plist>

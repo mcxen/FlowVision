@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>Página inicial</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Permissões:</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>Selecionar Pasta...</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Ocultar automaticamente a barra de ferramentas</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>Clique no botão para definir este aplicativo como o programa padrão para formatos de imagem comuns. Para outros formatos de imagem, como PSD e RAW, associe-os manualmente.</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>Cursor:</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>Associações de Arquivo:</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Barra de ferramentas:</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>Quando esta opção está ativada, a barra de várias abas não pode ser usada. Reinicie o aplicativo para que as alterações tenham efeito.</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>Sensibilidade de Rolagem</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>É necessária a permissão de "Arquivos e Pastas" para abrir diretórios e arquivos. É necessária a permissão de "Automação" para reter as informações de localização original ao excluir para a Lixeira (sem essa permissão, o recurso "Recolocar" na Lixeira não funcionará).</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>Sair do aplicativo ao fechar a última janela</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>Automático</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>Última Pasta</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>Página inicial</string>
+	<key>pPv-HR-smI.title</key>
+	<string>Definir como Aplicativo Padrão</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>Reinicie o aplicativo para que as alterações tenham efeito</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>Idioma:</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>Comportamento ao Fechar:</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>Comportamento de Abertura:</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>Abrir Configurações de Permissões</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>Ocultar Cursor Automaticamente Quando em Tela Cheia</string>
+</dict>
+</plist>

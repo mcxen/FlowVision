@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>축소판:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>전체 화면 시 검정색</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>검색:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Cmd + F를 사용하여 검색할 때의 옵션으로, 일반 일치 모드에서만 효과적입니다.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>디렉토리 제외:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>상태 유지:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>중국어 검색에 병음 이니셜 사용</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>폴더 썸네일이 타일 대신 겹쳐져 있습니다</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>루프 탐색</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>배경:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>macOS는 "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v", "vob"와 같은 비디오 형식만 기본적으로 지원하므로 다른 형식은 외부 플레이어를 사용하여 재생해야 합니다</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>모서리를 클릭하여 이미지를 전환하세요</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>디렉토리를 전환할 때 재귀 및 필터 상태 유지</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>전체 화면 시 검정색</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>이미지 보기:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>마우스 휠 스크롤로 이미지를 전환하는 대신 확대하기</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>검정</string>
+	<key>UCD-KL-13f.title</key>
+	<string>배경:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>유리</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>제외 목록에 있는 디렉토리에 대해, 그 안의 이미지는 자신이나 부모 폴더의 썸네일 생성 시 사용되지 않습니다</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>임의 폴더 썸네일</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>비디오 보기:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>유리</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>중국어 검색에 전체 병음을 사용</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>내부 비디오 플레이어 사용</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>검정색</string>
+</dict>
+</plist>

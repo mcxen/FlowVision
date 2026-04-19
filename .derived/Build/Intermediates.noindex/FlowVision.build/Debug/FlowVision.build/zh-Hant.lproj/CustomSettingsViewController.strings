@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>縮圖:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>全螢幕時為黑色</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>搜尋：</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>在使用 Cmd + F 搜索時的選項，僅在正常匹配模式下有效</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>排除目錄：</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>維持狀態：</string>
+	<key>Apw-rY-geq.title</key>
+	<string>對於中文使用拼音首字母來搜尋</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>資料夾縮圖堆疊而非平鋪</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>循環瀏覽</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>背景</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>由於 macOS 僅原生支持 "mp4"、"mov"、"m2ts"、"ts"、"mpeg"、"mpg"、"m4v" 和 "vob" 等視頻格式，其他格式仍需使用外部播放器播放</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>按一下邊緣以切換影像</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>切換目錄時保持遞迴和篩選狀態</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>全螢幕時為黑色</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>影像檢視</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>滾動鼠標滾輪以縮放而非切換圖片</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>黑色</string>
+	<key>UCD-KL-13f.title</key>
+	<string>背景：</string>
+	<key>VzX-hy-erv.title</key>
+	<string>玻璃</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>在排除清單中的目錄中，生成它們自身或其父檔案夾的縮圖時，其內的圖片將不會被使用</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>隨機資料夾縮圖</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>影片視圖：</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>玻璃</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>對於中文使用全拼搜索</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>使用內部視頻播放器</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>黑色</string>
+</dict>
+</plist>

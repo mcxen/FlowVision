@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>Miniatuur:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>Zwart bij Volledig Scherm</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>Zoeken:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Opties bij het gebruik van Cmd + F voor zoeken, alleen effectief in de normale zoekmodus.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Map Directory Uit:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>Staat behouden:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>Voor Chinees Initialen van Pinyin gebruiken voor zoeken</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>Mapminiaturen van mappen gestapeld in plaats van betegeld</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Loop Bladeren</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>Achtergrond:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>Aangezien macOS van nature alleen videoformaten zoals "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" en "vob" ondersteunt, moeten andere formaten nog steeds worden afgespeeld met een externe speler.</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>Klik op de randen om afbeeldingen te wisselen</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>Behoud recursieve en filterstatus bij het wisselen van mappen</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>Zwart bij Volledig Scherm</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Beeldweergave:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>Scroll met muiswiel om in te zoomen in plaats van afbeeldingen te wisselen</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>Zwart</string>
+	<key>UCD-KL-13f.title</key>
+	<string>Achtergrond:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>Glas</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Voor mappen in de uitsluitingslijst worden afbeeldingen daarin niet gebruikt bij het genereren van miniaturen voor henzelf of hun bovenliggende mappen.</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>Willekeurige Map Miniatuurafbeelding</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>Videoweergave:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>Glas</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>Voor Chinees Volledig Pinyin Gebruiken voor Zoeken</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>Interne videospeler gebruiken</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>Zwart</string>
+</dict>
+</plist>

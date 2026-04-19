@@ -1,0 +1,37 @@
+{
+  "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/FFmpegKit.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FFmpegKit.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FFmpegKit.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FFmpegKit.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FFmpegKit.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/FFmpegKit.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/ArrowKeyLocate.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/WindowManagement.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/WindowManagement.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/WindowManagement.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/WindowManagement.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/WindowManagement.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/WindowManagement.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomCollectionView.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionView.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionView.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionView.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionView.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionView.swiftdeps"
+  }
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>名前を変更</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>サムネイル表示: W/S/A/D/E は右クリックジェスチャーの上下左右および右上に対応します   
+画像表示: W/S でズームイン/ズームアウト, Z で 100% にズーム, X でフィットにズーム, A/D で前/次の画像</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>プロファイル切り替え:</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>開く / 閉じる</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>クイック検索:</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Enterキー:</string>
+	<key>diV-0n-cUs.title</key>
+	<string>キーボードショートカット:</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>画像を開閉するにはダブルクリック。
+ズームするには右/左のマウスボタンを押しながらホイールをスクロール。
+ウィンドウを移動するには中ボタンを押しながらドラッグ。
+左ボタンを長押しして100%ズームに切り替え。
+右ボタンを長押しして画像を表示に合わせる。</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Opt + 1〜9 を押して対応するプロファイルに切り替えます。
+Alt + Cmd + 1〜9 を押して現在のレイアウトとスタイルを対応するプロファイルに保存します 。
+切り替えに関与する設定にはサイドバーを表示するか否かビュータイプソート方法サムネイルサイズカスタムスタイル（ファイル名を表示するかどうかやサムネイル枠の幅など）が含まれます。</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>画像閲覧:</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>右クリックジェスチャー</string>
+	<key>xau-nf-fbD.title</key>
+	<string>右/左: 次/前の画像/ビデオを含むフォルダに切り替えます (ディスク上のすべてのフォルダを並べ替えたときに論理的に次のフォルダに相当します )
+上: 親ディレクトリに切り替えます
+下: 前のディレクトリに戻ります
+上右: 現在のフォルダーと同じレベルで画像を含む次のフォルダに切り替えます
+下右: タブ/ウィンドウを閉じます</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>サムネイルビューでQを押してクイック検索を有効にすると、短時間で検索キーワードを入力してファイルを見つけることができます。このモードでは、数字キー、文字キー、およびバックスペースキーが入力に使用されます。より包括的な検索機能については、Cmd + Fを使用してください。</string>
+</dict>
+</plist>

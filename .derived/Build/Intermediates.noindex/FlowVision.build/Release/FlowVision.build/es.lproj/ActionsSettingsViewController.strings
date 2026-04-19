@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>Renombrar</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>En vista de miniaturas: W/S/A/D/E corresponden a gestos de clic derecho arriba/abajo/izquierda/derecha/arriba-derecha.
+En vista de imagen: W/S acercar/alejar, Z zoom al 100%, X ajustar zoom, A/D imagen anterior/siguiente.</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>Cambio de Perfil:</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>Abrir / Cerrar</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>Búsqueda rápida:</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Tecla Enter:</string>
+	<key>diV-0n-cUs.title</key>
+	<string>Atajos de teclado:</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>Haz doble clic para abrir/cerrar la imagen.
+Mantén presionado el botón derecho/izquierdo del ratón y desplaza la rueda para hacer zoom.
+Mantén presionado el botón central del ratón y arrastra para mover la ventana.
+Mantén presionado el botón izquierdo del ratón para cambiar al zoom del 100%.
+Mantén presionado el botón derecho del ratón para ajustar la imagen a la vista.</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Presiona Opt + 1~9 para cambiar al perfil correspondiente.  
+Presiona Opt + Cmd + 1~9 para guardar el diseño y estilo actuales en el perfil correspondiente.  
+Las configuraciones involucradas en el cambio incluyen: si mostrar la barra lateral, tipo de vista, método de clasificación, tamaño de la miniatura y estilos personalizados (como si mostrar los nombres de archivo y el ancho del borde de la miniatura).</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>Visualización de imágenes:</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>Gestos de clic derecho:</string>
+	<key>xau-nf-fbD.title</key>
+	<string>Derecha/Izquierda: Cambiar a la carpeta siguiente/anterior con imágenes/videos (lógicamente equivalente a la siguiente carpeta al ordenar todas las carpetas en el disco).
+Arriba: Cambiar al directorio superior.
+Abajo: Volver al directorio anterior.
+Arriba-Derecha: Cambiar a la siguiente carpeta con imágenes en el mismo nivel que la carpeta actual.
+Abajo-Derecha: Cerrar la pestaña/ventana.</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>Presiona Q en vista de miniaturas para activar la Búsqueda Rápida, permitiéndote ingresar palabras clave de búsqueda en poco tiempo para localizar archivos. En este modo, las teclas numéricas, las letras y la tecla de retroceso se usan para la entrada. Para una función de búsqueda más completa, por favor usa Cmd + F.</string>
+</dict>
+</plist>

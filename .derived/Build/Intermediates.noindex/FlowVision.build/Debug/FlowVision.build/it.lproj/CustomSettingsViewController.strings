@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>Anteprima:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>Nero a schermo intero</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>Cerca:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Opzioni per la ricerca con Cmd + F, efficaci solo in modalità di corrispondenza normale.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Escludi Directory:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>Mantieni stato:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>Per il cinese utilizza le iniziali in Pinyin per la ricerca</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>Miniautine delle cartelle sovrapposte invece di affiancate</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Navigazione in loop</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>Sfondo:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>Poiché macOS supporta nativamente solo formati video come "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" e "vob", gli altri formati devono ancora essere riprodotti utilizzando un lettore esterno.</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>Fare clic sui bordi per cambiare immagine</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>Mantieni stato ricorsivo e filtro durante il cambio di directory</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>Nero a schermo intero</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Vista immagine:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>Scorri la rotella del mouse per ingrandire invece di cambiare immagine</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>Nero</string>
+	<key>UCD-KL-13f.title</key>
+	<string>Sfondo:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>Vetro</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Per le directory nell'elenco di esclusione, le immagini al loro interno non saranno utilizzate quando si generano le miniature per le directory stesse o per le cartelle superiori.</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>Anteprima della cartella casuale</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>Visualizzazione video:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>Vetro</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>Per il cinese usa il pinyin completo per la ricerca</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>Usa il lettore video interno</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>Nero</string>
+</dict>
+</plist>

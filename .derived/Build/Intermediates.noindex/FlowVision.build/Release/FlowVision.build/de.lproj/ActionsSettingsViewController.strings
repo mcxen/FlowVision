@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5Ss-iK-SRx.title</key>
+	<string>Umbenennen</string>
+	<key>Ple-dV-Ujq.title</key>
+	<string>In der Miniaturansicht: W/S/A/D/E entsprechen Rechtsklick-Gesten hoch/runter/links/rechts/rechts-oben.  
+In der Bildansicht: W/S vergrößern/verkleinern, Z auf 100% zoomen, X anpassen, A/D vorheriges/nächstes Bild.</string>
+	<key>VtW-9m-Sj8.title</key>
+	<string>Profilwechsel:</string>
+	<key>Ztd-qQ-cwH.title</key>
+	<string>Öffnen / Schließen</string>
+	<key>bjd-tP-l6n.title</key>
+	<string>Schnellsuche:</string>
+	<key>dKs-LJ-cIZ.title</key>
+	<string>Eingabetaste:</string>
+	<key>diV-0n-cUs.title</key>
+	<string>Tastenkombinationen:</string>
+	<key>jjU-gf-0lm.title</key>
+	<string>Doppelklicken, um das Bild zu öffnen/schließen.
+Halten Sie die rechte/linke Maustaste gedrückt und scrollen Sie das Rad, um zu zoomen.
+Halten Sie die mittlere Maustaste gedrückt und ziehen Sie, um das Fenster zu verschieben.
+Halten Sie die linke Maustaste lange gedrückt, um auf 100 % Zoom zu wechseln.
+Halten Sie die rechte Maustaste lange gedrückt, um das Bild an die Ansicht anzupassen.</string>
+	<key>kUa-1f-s4l.title</key>
+	<string>Drücken Sie Opt + 1~9, um zum entsprechenden Profil zu wechseln.
+Drücken Sie Opt + Cmd + 1~9, um das aktuelle Layout und den Stil im entsprechenden Profil zu speichern.
+Die bei einem Wechsel betroffenen Konfigurationen umfassen: ob die Seitenleiste angezeigt wird, Anzeigetyp, Sortiermethode, Miniaturgröße und benutzerdefinierte Stile (wie zum Beispiel, ob Dateinamen angezeigt werden und die Breite des Miniaturrahmens).</string>
+	<key>p6V-rJ-gwR.title</key>
+	<string>Bildanzeige:</string>
+	<key>qK4-Oc-vMt.title</key>
+	<string>Rechtsklick-Gesten:</string>
+	<key>xau-nf-fbD.title</key>
+	<string>Rechts/Links: Zum nächsten/vorherigen Ordner mit Bildern/Videos wechseln (logisch äquivalent zum nächsten Ordner bei der Sortierung aller Ordner auf der Festplatte).
+Oben: Zum übergeordneten Verzeichnis wechseln.
+Unten: Zum vorherigen Verzeichnis zurückkehren.
+Oben-Rechts: Zum nächsten Ordner mit Bildern auf derselben Ebene wie der aktuelle Ordner wechseln.
+Unten-Rechts: Tab/Fenster schließen.</string>
+	<key>xwz-xM-bF8.title</key>
+	<string>Drücken Sie Q in der Miniaturansicht, um die Schnellsuche zu aktivieren. Dadurch können Sie innerhalb kurzer Zeit Suchbegriffe eingeben, um Dateien zu finden. In diesem Modus werden Zifferntasten, Buchstabentasten und die Rücktaste für die Eingabe verwendet. Für eine umfassendere Suchfunktion verwenden Sie bitte Cmd + F.</string>
+</dict>
+</plist>

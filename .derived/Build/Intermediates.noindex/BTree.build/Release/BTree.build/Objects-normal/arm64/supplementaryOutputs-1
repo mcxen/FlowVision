@@ -1,0 +1,12 @@
+{
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTree.swift" : {
+    "abi-baseline-json" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.abi.json",
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.dia",
+    "objc-header" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-Swift.h",
+    "swiftdoc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.swiftdoc",
+    "swiftmodule" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.swiftmodule",
+    "swiftsourceinfo" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.swiftsourceinfo"
+  }
+}

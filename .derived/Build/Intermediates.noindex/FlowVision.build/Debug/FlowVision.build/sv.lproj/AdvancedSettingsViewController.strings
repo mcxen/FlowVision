@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>Använd inte FFmpeg</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>För mekaniska hårddiskar och nätverksenheter rekommenderas det att ställa in den på 1. För externa SSD-enheter kan detta värde ökas lämpligt.</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>Denna inställning gäller den interna SSD:n. Det rekommenderas att ställa in den mellan 4 och 8.</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>Använd FFmpeg för fler videoformatminiatyrer</string>
+	<key>L44-0u-7JE.title</key>
+	<string>Mappsökningsdjup:
+(Externa volymer)</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>Antalet undermappnivåer att söka när mapptumnaglar genereras. Om det ställs in på 0 kommer inga mapptumnaglar att genereras, och trädkatalogen kommer inte att indikera om undermappar finns genom en pil på vänster sida.</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>Mappsökningsdjup:</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>Miniatyrtrådar:</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>t.ex. 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>Dessa inställningar gäller externa volymer, inklusive externa enheter, nätverksenheter och andra monterade kataloger.</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>Begränsning av minnesanvändning:</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>Ladda dynamiskt bibliotek:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>Miniatyrtrådar:
+(Externa volymer)</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>När applikationens minnesanvändning överskrider gränsen kommer miniatyrrenderingscachen i varje katalog att rensas sekventiellt baserat på senaste åtkomsttid.</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>Applikationen har ett inbyggt FFmpeg-bibliotek. Om undantag uppstår när videominiatyrer genereras, prova att inaktivera detta alternativ eller avmarkera "Visa videofiler".</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>8</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>För nätverksenheter rekommenderas det att ställa in det till 0 (generera inte mappminiatyrer, och mappträdet kommer inte att indikera om undermappar finns med vänsterpilen).</string>
+</dict>
+</plist>

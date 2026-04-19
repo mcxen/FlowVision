@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>サムネイル:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>全画面時は黒</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>検索：</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Cmd + F を使用した検索時のオプション、通常のマッチングモードでのみ有効です。</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>ディレクトリを除外:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>状態を維持</string>
+	<key>Apw-rY-geq.title</key>
+	<string>中国語の検索にピンインの頭文字を使用</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>フォルダのサムネイルをタイル表示の代わりに積み重ねて表示</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>ループ閲覧</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>背景</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>macOSは「mp4」、「mov」、「m2ts」、「ts」、「mpeg」、「mpg」、「m4v」、「vob」などのビデオフォーマットのみをネイティブにサポートしているため、他のフォーマットは外部プレーヤーを使用して再生する必要があります</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>エッジをクリックすると画像が切り替わります</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>ディレクトリを切り替えるときに再帰とフィルター状態を保持</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>全画面時は黒</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>イメージビュー</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>マウスホイールをスクロールして画像を切り替える代わりにズーム</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>ブラック</string>
+	<key>UCD-KL-13f.title</key>
+	<string>背景:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>ガラス</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>除外リスト内のディレクトリにある画像は、ディレクトリ自体または親フォルダのサムネイル生成時に使用されません。</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>ランダムフォルダーサムネイル</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>ビデオビュー：</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>ガラス</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>中国語では検索に全ピンインを使用</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>内部ビデオプレーヤーを使用</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>黒色</string>
+</dict>
+</plist>

@@ -1616,6 +1616,9 @@
         }
       }
     },
+    "Apply" : {
+      "comment" : "应用"
+    },
     "Apply Filter" : {
       "comment" : "执行过滤",
       "localizations" : {
@@ -5320,6 +5323,9 @@
           }
         }
       }
+    },
+    "Copy Shortcut:" : {
+      "comment" : "复制快捷键："
     },
     "copy-lowercase" : {
       "comment" : "copy(首字母小写)",
@@ -11401,6 +11407,12 @@
         }
       }
     },
+    "Failed to capture current video frame." : {
+      "comment" : "抓取当前视频帧失败。"
+    },
+    "Failed to encode captured frame." : {
+      "comment" : "编码截图失败。"
+    },
     "Failed to set this app as the default for some file types:\n" : {
       "comment" : "未能将此应用设置为某些文件类型的默认应用程序：\n",
       "localizations" : {
@@ -11590,6 +11602,9 @@
           }
         }
       }
+    },
+    "File Actions:" : {
+      "comment" : "文件操作："
     },
     "File Already Exists" : {
       "comment" : "文件已存在",
@@ -13300,6 +13315,9 @@
           }
         }
       }
+    },
+    "Frame Saved" : {
+      "comment" : "视频帧已保存"
     },
     "gen-thumb-info" : {
       "comment" : "对于高清缩略图的说明...",
@@ -18336,6 +18354,9 @@
         }
       }
     },
+    "No files to rename in current folder." : {
+      "comment" : "当前目录没有可重命名的文件。"
+    },
     "No Rating" : {
       "comment" : "无评级",
       "localizations" : {
@@ -20996,6 +21017,12 @@
         }
       }
     },
+    "Photo Folder 1 does not exist or is not a folder." : {
+      "comment" : "图片文件夹1不存在或不是文件夹。"
+    },
+    "Photo Folder 1:" : {
+      "comment" : "图片文件夹1："
+    },
     "Pin Window" : {
       "comment" : "置顶",
       "localizations" : {
@@ -21280,6 +21307,9 @@
           }
         }
       }
+    },
+    "Please set Photo Folder 1 in Settings first." : {
+      "comment" : "请先在设置中配置图片文件夹1。"
     },
     "Portable Browsing Mode" : {
       "comment" : "便携浏览模式",
@@ -22041,6 +22071,9 @@
         }
       }
     },
+    "Profile Switching:" : {
+      "comment" : "配置切换："
+    },
     "qrcode-recog-fail" : {
       "comment" : "未能识别到二维码",
       "localizations" : {
@@ -22230,6 +22263,12 @@
           }
         }
       }
+    },
+    "Quick Rename" : {
+      "comment" : "快速重命名"
+    },
+    "Quick Rename Rule:" : {
+      "comment" : "快速重命名规则："
     },
     "Quick Search" : {
       "comment" : "快速搜索",
@@ -26315,6 +26354,9 @@
           }
         }
       }
+    },
+    "Select Folder" : {
+      "comment" : "选择文件夹"
     },
     "Sequential Playback" : {
       "comment" : "（视频）顺序播放",
@@ -34295,6 +34337,12 @@
           }
         }
       }
+    },
+    "Video player is not ready." : {
+      "comment" : "视频播放器尚未就绪。"
+    },
+    "Video Shift+←/→ Next/Prev" : {
+      "comment" : "视频 Shift+左右 上/下文件"
     },
     "video-dimensions" : {
       "comment" : "视频尺寸",

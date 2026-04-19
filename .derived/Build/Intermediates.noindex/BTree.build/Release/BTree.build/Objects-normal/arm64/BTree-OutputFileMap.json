@@ -1,0 +1,91 @@
+{
+  "" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.dia",
+    "emit-module-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary-emit-module.dia",
+    "pch" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree-primary.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTree.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTree.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeBuilder.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeBuilder.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeBuilder.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeBuilder.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeComparisons.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeComparisons.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeComparisons.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeComparisons.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeCursor.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeCursor.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeCursor.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeCursor.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeIndex.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIndex.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIndex.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIndex.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeIterator.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIterator.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIterator.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeIterator.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeMerger.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeMerger.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeMerger.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeMerger.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreeNode.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeNode.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeNode.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreeNode.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BTreePath.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreePath.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreePath.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BTreePath.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/BridgedList.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/BridgedList.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BridgedList.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/BridgedList.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/Compatibility.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/Compatibility.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Compatibility.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Compatibility.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/List.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/List.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/List.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/List.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/Map.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/Map.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Map.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Map.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/SortedBag.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedBag.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedBag.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedBag.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/SortedSet.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedSet.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedSet.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/SortedSet.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/BTree/Sources/Weak.swift" : {
+    "index-unit-output-path" : "/BTree.build/Release/BTree.build/Objects-normal/arm64/Weak.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Weak.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/BTree.build/Release/BTree.build/Objects-normal/arm64/Weak.o"
+  }
+}

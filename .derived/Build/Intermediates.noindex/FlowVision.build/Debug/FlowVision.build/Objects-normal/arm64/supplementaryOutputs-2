@@ -1,0 +1,44 @@
+{
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/AdvancedSettingsViewController.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/EventHandler.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/EventHandler.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/EventHandler.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/EventHandler.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/EventHandler.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/EventHandler.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/KeyShortcut.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/KeyShortcut.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/KeyShortcut.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/KeyShortcut.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/KeyShortcut.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/KeyShortcut.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomCollectionViewItem.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomPathControl.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomPathControl.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomPathControl.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomPathControl.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomPathControl.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/CustomPathControl.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/ImageEditingView.swift" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ImageEditingView.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ImageEditingView.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ImageEditingView.dia",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ImageEditingView.o",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Debug/FlowVision.build/Objects-normal/arm64/ImageEditingView.swiftdeps"
+  }
+}

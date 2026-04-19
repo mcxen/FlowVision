@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>不要使用FFmpeg</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>對於機械硬碟和網路磁碟機，建議設定為1。對於外接式固態硬碟，此數值可以適當增加。</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>此設定僅適用於內部SSD。建議設置在4到8之間。</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>使用 FFmpeg 生成更多影片格式縮圖</string>
+	<key>L44-0u-7JE.title</key>
+	<string>資料夾搜尋深度：
+（外部卷）</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>用於生成文件夾縮圖時搜索的子文件夾級別數量。 如果設為 0，則不會生成文件夾縮圖，目錄樹也不會通過左側箭頭顯示是否存在子文件夾</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>資料夾搜索深度：</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>縮略圖執行緒：</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>例如 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>這些設定適用於外部卷，包括外接硬碟、網路磁碟機和其他掛載的目錄。</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>記憶體使用上限：</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>載入動態庫:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>縮略圖執行緒：
+（外部卷）</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>當應用程式的記憶體使用量超過限制時，將根據最後存取時間依序清除每個目錄的縮圖渲染快取。</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>應用程式內建了FFmpeg庫。如果在生成視頻縮略圖時發生異常，請嘗試停用此選項或取消選中「顯示視頻文件」。</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>8</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>對於網路磁碟機，建議設置為 0（不生成資料夾縮圖，且目錄樹不會透過左側箭頭顯示子資料夾是否存在）。</string>
+</dict>
+</plist>

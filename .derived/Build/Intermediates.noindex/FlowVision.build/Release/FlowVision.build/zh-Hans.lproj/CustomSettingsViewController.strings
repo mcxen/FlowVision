@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>缩略图：</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>仅全屏时黑色</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>搜索：</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>使用 Cmd + F 搜索时的选项，仅在普通匹配模式下生效。</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>排除目录：</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>状态保持：</string>
+	<key>Apw-rY-geq.title</key>
+	<string>使用汉语拼音首字母搜索</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>文件夹缩略图叠放而不是平铺</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>循环浏览</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>背景：</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>由于macOS原生仅支持 "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v", "vob" 视频，其它格式仍需使用外部播放器播放。</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>点击边缘切换图像</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>切换目录时保持递归和过滤状态</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>仅全屏时黑色</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>图像视图：</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>滚动鼠标滚轮以缩放而不是切换图像</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>黑色</string>
+	<key>UCD-KL-13f.title</key>
+	<string>背景：</string>
+	<key>VzX-hy-erv.title</key>
+	<string>玻璃</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>对于在排除列表中的目录，生成自身和其父级文件夹缩略图时不会使用其中的图像。</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>随机文件夹缩略图</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>视频视图：</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>玻璃</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>使用汉语拼音全拼搜索</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>使用内置视频播放器</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>黑色</string>
+</dict>
+</plist>

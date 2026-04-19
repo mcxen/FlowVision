@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>了解更多…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>由於 macOS Spotlight 無法索引外部磁碟、網路驅動器或在「搜尋隱私」設定中排除的目錄內容，這個應用程式引入了一個增強的索引功能：當您在應用程式中瀏覽資料夾時，它會記錄該資料夾內檔案的標籤。
+
+稍後，當您在目錄樹中選擇相應的標籤時，應用程式將透過顯示相關檔案來補充系統的搜尋結果。</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>啟用增強索引</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>自訂標籤：</string>
+	<key>tRG-X6-q84.title</key>
+	<string>增強索引：</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>此應用程式使用 macOS 的標準標籤機制。請確保此應用程式中的標籤名稱和顏色與 Finder 中的完全匹配，否則在顯示或寫入標籤時可能會遇到標籤顏色不一致的情況。</string>
+</dict>
+</plist>

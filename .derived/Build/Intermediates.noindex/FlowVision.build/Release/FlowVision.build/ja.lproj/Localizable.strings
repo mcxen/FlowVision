@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>(Multiselect)</key>
+	<string>選択項目で新しいフォルダー (%d アイテム)</string>
+	<key>A-B Loop</key>
+	<string>A-Bループ</string>
+	<key>A-B Loop Active</key>
+	<string>A-Bループ有効</string>
+	<key>A-B Loop Cancel</key>
+	<string>A-Bループキャンセル</string>
+	<key>A-B Loop: A</key>
+	<string>A-B ループ: A</string>
+	<key>A-B Loop: A Greater than B</key>
+	<string>A-Bループ：AがBより大きい</string>
+	<key>A-B Loop: B</key>
+	<string>A-Bループ：B</string>
+	<key>Actions</key>
+	<string>アクション</string>
+	<key>Add</key>
+	<string>追加</string>
+	<key>Add Current Folder</key>
+	<string>現在のフォルダーを追加</string>
+	<key>Add Separator</key>
+	<string>セパレーターを追加</string>
+	<key>Adjust Window to Actual Image Size</key>
+	<string>ウィンドウを実際の画像サイズに調整</string>
+	<key>Adjust Window to Current Image Size</key>
+	<string>ウィンドウを現在の画像サイズに調整</string>
+	<key>Advanced</key>
+	<string>上級</string>
+	<key>Alias Type</key>
+	<string>エイリアスタイプ</string>
+	<key>Always Generate HD Thumbnails</key>
+	<string>常にHDサムネイルを生成</string>
+	<key>Always Generate Standard Thumbnails</key>
+	<string>常に標準のサムネイルを生成する</string>
+	<key>Apply Filter</key>
+	<string>フィルターを適用</string>
+	<key>Apply to all</key>
+	<string>すべてに適用</string>
+	<key>Are you sure you want to move xxx to xxx?</key>
+	<string>"%1$@"を"%2$@"に移動してもよろしいですか?</string>
+	<key>Arrow</key>
+	<string>矢印</string>
+	<key>AudioMetadata-BitRate</key>
+	<string>ビットレート</string>
+	<key>AudioMetadata-ChannelLayout</key>
+	<string>チャンネルレイアウト</string>
+	<key>AudioMetadata-Channels</key>
+	<string>チャンネル</string>
+	<key>AudioMetadata-CodecLongName</key>
+	<string>コーデックの完全な名前</string>
+	<key>AudioMetadata-CodecName</key>
+	<string>コーデック名</string>
+	<key>AudioMetadata-Index</key>
+	<string>インデックス</string>
+	<key>AudioMetadata-Language</key>
+	<string>言語</string>
+	<key>AudioMetadata-SampleRate</key>
+	<string>サンプルレート</string>
+	<key>AudioMetadata-StreamTitle</key>
+	<string>ストリームタイトル</string>
+	<key>Auto</key>
+	<string>オート</string>
+	<key>Auto Play Selected Video</key>
+	<string>選択されたビデオを自動再生</string>
+	<key>Auto Play Visible Video</key>
+	<string>可視ビデオを自動再生</string>
+	<key>Auto Rename</key>
+	<string>自動リネーム</string>
+	<key>Border Thickness</key>
+	<string>枠線の太さ</string>
+	<key>Cancel</key>
+	<string>キャンセル</string>
+	<key>Cancel Auto Play Visible Video</key>
+	<string>表示中止の明示動画の自動再生</string>
+	<key>Cancel Filter</key>
+	<string>フィルターをキャンセル</string>
+	<key>Case Sensitive</key>
+	<string>大文字と小文字を区別</string>
+	<key>Cell Padding</key>
+	<string>セルの余白</string>
+	<key>Center the Window</key>
+	<string>ウィンドウを中央に配置</string>
+	<key>Choose a file or folder</key>
+	<string>ファイルまたはフォルダを選択する</string>
+	<key>Clear</key>
+	<string>クリア</string>
+	<key>Close (Double Click)</key>
+	<string>閉じる（ダブルクリック）</string>
+	<key>Close Other Tabs</key>
+	<string>他のタブを閉じる</string>
+	<key>Close Tab</key>
+	<string>タブを閉じる</string>
+	<key>Continue</key>
+	<string>続行</string>
+	<key>Copy</key>
+	<string>コピー</string>
+	<key>Copy Path</key>
+	<string>パスをコピー</string>
+	<key>Corner Radius</key>
+	<string>コーナー半径</string>
+	<key>Custom Layout Style</key>
+	<string>カスタムレイアウトスタイル</string>
+	<key>Custom Layout Style...</key>
+	<string>カスタムレイアウトスタイル...</string>
+	<key>Custom Zoom Ratio...</key>
+	<string>カスタムズーム倍率...</string>
+	<key>Custom Zoom Step...</key>
+	<string>カスタムズームステップ...</string>
+	<key>Date Added</key>
+	<string>追加日</string>
+	<key>Date Created</key>
+	<string>作成日</string>
+	<key>Date Modified</key>
+	<string>変更日時</string>
+	<key>Default Thumbnail Size</key>
+	<string>デフォルトのサムネイルサイズ</string>
+	<key>Delete</key>
+	<string>削除</string>
+	<key>Demo</key>
+	<string>デモ</string>
+	<key>Directory does not exist</key>
+	<string>ディレクトリが存在しません</string>
+	<key>Disable Automatic Play</key>
+	<string>自動再生を無効にする</string>
+	<key>Disable Automatic Scroll</key>
+	<string>自動スクロールを無効にする</string>
+	<key>Edit Mode</key>
+	<string>編集モード</string>
+	<key>Ellipse</key>
+	<string>楕円</string>
+	<key>Empty</key>
+	<string>空</string>
+	<key>Enable Automatic Play</key>
+	<string>自動再生を有効にする</string>
+	<key>Enable Automatic Scroll</key>
+	<string>自動スクロールを有効にする</string>
+	<key>Enable HDR</key>
+	<string>HDRを有効にする</string>
+	<key>Enable Recursive Mode</key>
+	<string>再帰モードを有効にする</string>
+	<key>Enlarge the Thumbnails</key>
+	<string>サムネイルを拡大</string>
+	<key>Enter Full Screen</key>
+	<string>全画面表示</string>
+	<key>Enter the auto play interval in seconds:</key>
+	<string>自動再生の間隔を秒数で入力してください:</string>
+	<key>Enter the scroll speed in pixels per second:</key>
+	<string>1秒あたりのスクロール速度をピクセル単位で入力してください: </string>
+	<key>Eraser</key>
+	<string>消しゴム</string>
+	<key>Error</key>
+	<string>エラー</string>
+	<key>Exif-ApertureValue</key>
+	<string>絞り値</string>
+	<key>Exif-Artist</key>
+	<string>アーティスト</string>
+	<key>Exif-CameraMaker</key>
+	<string>メーカー</string>
+	<key>Exif-CameraModel</key>
+	<string>カメラモデル</string>
+	<key>Exif-ColorModel</key>
+	<string>カラーモデル</string>
+	<key>Exif-DateTimeDigitized</key>
+	<string>デジタル化日時</string>
+	<key>Exif-DateTimeOriginal</key>
+	<string>撮影日時</string>
+	<key>Exif-Depth</key>
+	<string>深度</string>
+	<key>Exif-ExposureTime</key>
+	<string>露光時間</string>
+	<key>Exif-FNumber</key>
+	<string>F値</string>
+	<key>Exif-FileAddedTime</key>
+	<string>ファイルの追加時間</string>
+	<key>Exif-FileCreatedTime</key>
+	<string>ファイル作成時間</string>
+	<key>Exif-FileModifiedTime</key>
+	<string>ファイルの更新日時</string>
+	<key>Exif-FileSize</key>
+	<string>ファイルサイズ</string>
+	<key>Exif-Flash</key>
+	<string>フラッシュ</string>
+	<key>Exif-Flash-Off</key>
+	<string>オフ</string>
+	<key>Exif-Flash-On</key>
+	<string>オン</string>
+	<key>Exif-FocalLength</key>
+	<string>焦点距離</string>
+	<key>Exif-GPSAltitude</key>
+	<string>GPS高度</string>
+	<key>Exif-GPSLatitude</key>
+	<string>GPS緯度</string>
+	<key>Exif-GPSLongitude</key>
+	<string>GPS経度</string>
+	<key>Exif-ISOSpeedRatings</key>
+	<string>ISO感度</string>
+	<key>Exif-LensModel</key>
+	<string>レンズモデル</string>
+	<key>Exif-ProfileName</key>
+	<string>プロファイル名</string>
+	<key>Exif-Rating</key>
+	<string>評価</string>
+	<key>Exif-Resolution</key>
+	<string>解像度</string>
+	<key>Exif-Software</key>
+	<string>ソフトウェア</string>
+	<key>Exif-TIFFDateTime</key>
+	<string>TIFF日時</string>
+	<key>Exit Edit Mode</key>
+	<string>編集モードを終了</string>
+	<key>Exit Full Screen</key>
+	<string>全画面を終了</string>
+	<key>Exit Recursive Mode</key>
+	<string>再帰モードを終了</string>
+	<key>Failed to set this app as the default for some file types:
+</key>
+	<string>このアプリを一部のファイルタイプのデフォルトとして設定できませんでした：</string>
+	<key>Favorites</key>
+	<string>お気に入り</string>
+	<key>File Already Exists</key>
+	<string>ファイルはすでに存在します</string>
+	<key>File Info</key>
+	<string>ファイル情報</string>
+	<key>File Path</key>
+	<string>ファイルパス</string>
+	<key>Filename</key>
+	<string>ファイル名</string>
+	<key>Filename Font Size</key>
+	<string>ファイル名フォントサイズ</string>
+	<key>Filter</key>
+	<string>フィルター</string>
+	<key>Filter by Finder Tag</key>
+	<string>Finderタグでフィルタリング</string>
+	<key>Filter by Rating</key>
+	<string>評価でフィルター</string>
+	<key>Finder Alias</key>
+	<string>ファインダーエイリアス</string>
+	<key>Finder Tags</key>
+	<string>Finderタグ</string>
+	<key>Folder</key>
+	<string>フォルダー</string>
+	<key>Folders</key>
+	<string>フォルダー</string>
+	<key>Follow Current Folder</key>
+	<string>現在のフォルダーを追跡</string>
+	<key>General</key>
+	<string>一般</string>
+	<key>Go Back</key>
+	<string>戻る</string>
+	<key>Go Forward</key>
+	<string>進む</string>
+	<key>Go To</key>
+	<string>移動</string>
+	<key>Grid View</key>
+	<string>グリッドビュー</string>
+	<key>Have Reached the First</key>
+	<string>最初の画像に達しました</string>
+	<key>Have Reached the Last</key>
+	<string>最後に到達しました</string>
+	<key>Highlighter</key>
+	<string>ハイライター</string>
+	<key>Image</key>
+	<string>画像</string>
+	<key>Images</key>
+	<string>画像</string>
+	<key>Include Folders</key>
+	<string>フォルダーを含める</string>
+	<key>Info</key>
+	<string>情報</string>
+	<key>Invalid current path</key>
+	<string>現在のパスが無効です</string>
+	<key>Invalid input, please enter a positive number</key>
+	<string>無効な入力です。正の数値を入力してください</string>
+	<key>Invalid relative path</key>
+	<string>無効な相対パス</string>
+	<key>Justified View</key>
+	<string>ジャスティファイドビュー</string>
+	<key>Learn More...</key>
+	<string>詳細を確認...</string>
+	<key>Line Space Adjustment</key>
+	<string>行間スペース調整</string>
+	<key>Loading...</key>
+	<string>読み込み中...</string>
+	<key>Location</key>
+	<string>ロケーション</string>
+	<key>Lock Mirror</key>
+	<string>ミラーをロック</string>
+	<key>Lock Rotation</key>
+	<string>回転をロック</string>
+	<key>Lock Zoom</key>
+	<string>ズームを固定</string>
+	<key>Match All (AND)</key>
+	<string>すべて一致 (AND)</string>
+	<key>Match Any (OR)</key>
+	<string>任意を一致 (OR)</string>
+	<key>Maximize Window</key>
+	<string>ウィンドウを最大化</string>
+	<key>Merge All Windows</key>
+	<string>すべてのウィンドウを結合</string>
+	<key>Mirror Flip</key>
+	<string>左右反転</string>
+	<key>More</key>
+	<string>もっと</string>
+	<key>Move Down</key>
+	<string>下に移動</string>
+	<key>Move Here</key>
+	<string>ここに移動</string>
+	<key>Move Items</key>
+	<string>アイテムを移動</string>
+	<key>Move Up</key>
+	<string>上に移動</string>
+	<key>Move to Trash</key>
+	<string>ゴミ箱に移動</string>
+	<key>Name</key>
+	<string>名前</string>
+	<key>New</key>
+	<string>新規作成</string>
+	<key>New Folder</key>
+	<string>新しいフォルダー</string>
+	<key>New Tab</key>
+	<string>新しいタブ</string>
+	<key>New Tag</key>
+	<string>新しいタグ</string>
+	<key>New Text File</key>
+	<string>新しいテキストファイル</string>
+	<key>New name for</key>
+	<string>の新しい名前</string>
+	<key>No Color</key>
+	<string>色なし</string>
+	<key>No Rating</key>
+	<string>評価なし</string>
+	<key>Non-Grid View</key>
+	<string>非グリッドビュー</string>
+	<key>Not Include Folders</key>
+	<string>フォルダーを含めない</string>
+	<key>Not Show All Types of Files</key>
+	<string>すべての種類のファイルを表示しない</string>
+	<key>Not Show Hidden Files</key>
+	<string>隠しファイルを表示しない</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>Only images can be edited</key>
+	<string>画像のみ編集できます</string>
+	<key>Open</key>
+	<string>開く</string>
+	<key>Open With</key>
+	<string>で開く</string>
+	<key>Open in Finder</key>
+	<string>Finderで開く</string>
+	<key>Open in Map</key>
+	<string>マップで開く</string>
+	<key>Open in New Tab</key>
+	<string>新しいタブで開く</string>
+	<key>Open in Terminal</key>
+	<string>ターミナルで開く</string>
+	<key>Open with External Player</key>
+	<string>外部プレーヤーで開く</string>
+	<key>Operation Logs</key>
+	<string>操作ログ</string>
+	<key>Original Path</key>
+	<string>オリジナルパス</string>
+	<key>Other</key>
+	<string>その他</string>
+	<key>Others</key>
+	<string>その他</string>
+	<key>Paste</key>
+	<string>貼り付け</string>
+	<key>Path does not exist</key>
+	<string>パスが存在しません</string>
+	<key>Pen</key>
+	<string>ペン</string>
+	<key>Pin Window</key>
+	<string>ウィンドウを固定</string>
+	<key>Pin Window to Top</key>
+	<string>ウィンドウを最前面に固定</string>
+	<key>Please select a specific tag</key>
+	<string>特定のタグを選択してください</string>
+	<key>Portable Browsing Mode</key>
+	<string>ポータブルブラウジングモード</string>
+	<key>Portable Mode: Off</key>
+	<string>ポータブルモード：オフ</string>
+	<key>Portable Mode: On</key>
+	<string>ポータブルモード：オン</string>
+	<key>Prefer Using Embedded Thumbnails</key>
+	<string>埋め込みサムネイルの使用を優先</string>
+	<key>Quick Search</key>
+	<string>クイック検索</string>
+	<key>RAW Uses Exif Embedded Thumbnail</key>
+	<string>RAWはExif埋め込みサムネイルを使用</string>
+	<key>Rating</key>
+	<string>評価</string>
+	<key>Readme...</key>
+	<string>お読みください...</string>
+	<key>Rectangle</key>
+	<string>四角形</string>
+	<key>Recursive Mode</key>
+	<string>再帰モード</string>
+	<key>Redo</key>
+	<string>やり直し</string>
+	<key>Reduce the Thumbnails</key>
+	<string>サムネイルを小さくする</string>
+	<key>Refresh</key>
+	<string>リフレッシュ</string>
+	<key>Regex</key>
+	<string>正規表現</string>
+	<key>Relative Path</key>
+	<string>相対パス</string>
+	<key>Remember Position</key>
+	<string>位置を記憶</string>
+	<key>Remember Position: Disabled</key>
+	<string>位置を記憶する：無効</string>
+	<key>Remember Position: Enabled</key>
+	<string>位置を記憶：有効</string>
+	<key>Remove</key>
+	<string>削除</string>
+	<key>Remove All Tags</key>
+	<string>すべてのタグを削除</string>
+	<key>Remove Current Folder</key>
+	<string>現在のフォルダを削除</string>
+	<key>Rename</key>
+	<string>名前を変更</string>
+	<key>Render Original RAW</key>
+	<string>オリジナルRAWをレンダリング</string>
+	<key>Replace</key>
+	<string>交換</string>
+	<key>Reset</key>
+	<string>リセット</string>
+	<key>Reverse Filter</key>
+	<string>フィルターを反転</string>
+	<key>Rotate %d°</key>
+	<string>%d度回転</string>
+	<key>Rotate Clockwise</key>
+	<string>右回りに回転</string>
+	<key>Rotate Counterclockwise</key>
+	<string>反時計回りに回転</string>
+	<key>Save</key>
+	<string>保存</string>
+	<key>Scan &amp; Update Enhanced Index</key>
+	<string>スキャンして強化インデックスを更新</string>
+	<key>Scan Complete</key>
+	<string>スキャン完了</string>
+	<key>Scan Prompt</key>
+	<string>スキャンプロンプト</string>
+	<key>Scanning</key>
+	<string>スキャン中</string>
+	<key>Scanning...</key>
+	<string>スキャン中...</string>
+	<key>Search...</key>
+	<string>検索...</string>
+	<key>Sequential Playback</key>
+	<string>連続再生</string>
+	<key>Sequential Playback: Disabled</key>
+	<string>連続再生: 無効</string>
+	<key>Sequential Playback: Enabled</key>
+	<string>シーケンシャル再生: 有効</string>
+	<key>Set Auto Play Interval</key>
+	<string>自動再生間隔を設定する</string>
+	<key>Set Scroll Speed</key>
+	<string>スクロール速度を設定</string>
+	<key>Settings...</key>
+	<string>設定...</string>
+	<key>Share...</key>
+	<string>共有…</string>
+	<key>Show All</key>
+	<string>すべて表示</string>
+	<key>Show All Types of Files</key>
+	<string>すべてのファイルタイプを表示</string>
+	<key>Show Camera RAW Files</key>
+	<string>カメラのRAWファイルを表示</string>
+	<key>Show Exif</key>
+	<string>Exifを表示</string>
+	<key>Show Filename</key>
+	<string>ファイル名を表示</string>
+	<key>Show Finder Tags and Ratings</key>
+	<string>Finderタグと評価を表示</string>
+	<key>Show Hidden Files</key>
+	<string>隠しファイルを表示</string>
+	<key>Show Image Files</key>
+	<string>画像ファイルを表示</string>
+	<key>Show Info</key>
+	<string>情報を表示</string>
+	<key>Show RAW/HDR Badge</key>
+	<string>RAW/HDRバッジを表示</string>
+	<key>Show Shadow</key>
+	<string>シャドウを表示</string>
+	<key>Show Statistics in Window Title</key>
+	<string>ウィンドウタイトルに統計情報を表示</string>
+	<key>Show Tags and Ratings</key>
+	<string>タグと評価を表示</string>
+	<key>Show Video Files</key>
+	<string>ビデオファイルを表示</string>
+	<key>Show Video Metadata</key>
+	<string>ビデオメタデータを表示</string>
+	<key>Show in Finder</key>
+	<string>Finder で表示</string>
+	<key>Show in Original Folder</key>
+	<string>元のフォルダーに表示</string>
+	<key>Sidebar</key>
+	<string>サイドバー</string>
+	<key>Skip</key>
+	<string>スキップ</string>
+	<key>Sort</key>
+	<string>並べ替え</string>
+	<key>Sort Folders First</key>
+	<string>フォルダーを先にソート</string>
+	<key>Sort Order</key>
+	<string>並び替え順序</string>
+	<key>Sort Using Full Path In Collection Mode</key>
+	<string>コレクションモードでの完全なパスを使用した並べ替え</string>
+	<key>Sort by EXIF Info</key>
+	<string>EXIF情報で並べ替え</string>
+	<key>Statistic</key>
+	<string>統計</string>
+	<key>Stop</key>
+	<string>停止</string>
+	<key>Success</key>
+	<string>成功</string>
+	<key>Symbolic Link</key>
+	<string>シンボリックリンク</string>
+	<key>Tagging</key>
+	<string>タグ付け</string>
+	<key>Text File</key>
+	<string>テキストファイル</string>
+	<key>This app is now the default for all specified file types.</key>
+	<string>このアプリは、すべての指定されたファイルタイプのデフォルトになりました。</string>
+	<key>Thumbnail General</key>
+	<string>サムネイル一般</string>
+	<key>Thumbnail Options</key>
+	<string>サムネイルオプション</string>
+	<key>Thumbnail Size</key>
+	<string>サムネイルサイズ</string>
+	<key>Undo</key>
+	<string>元に戻す</string>
+	<key>Unpin Window from Top</key>
+	<string>ウィンドウをトップから固定解除</string>
+	<key>Unsupported Video Format</key>
+	<string>サポートされていないビデオ形式</string>
+	<key>Updating Index</key>
+	<string>インデックスを更新中</string>
+	<key>Use Full Path</key>
+	<string>フルパスを使用</string>
+	<key>Use Full Path in Window Title</key>
+	<string>ウィンドウタイトルにフルパスを使用</string>
+	<key>Use Internal Video Player</key>
+	<string>内部ビデオプレーヤーを使用</string>
+	<key>Video</key>
+	<string>ビデオ</string>
+	<key>VideoMetadata-AvgFrameRate</key>
+	<string>平均フレームレート</string>
+	<key>VideoMetadata-BitRate</key>
+	<string>ビットレート</string>
+	<key>VideoMetadata-CodecLongName</key>
+	<string>コーデックの完全名</string>
+	<key>VideoMetadata-CodecName</key>
+	<string>コーデック名</string>
+	<key>VideoMetadata-ColorSpace</key>
+	<string>カラー スペース</string>
+	<key>VideoMetadata-CreationTime</key>
+	<string>作成時間</string>
+	<key>VideoMetadata-Duration</key>
+	<string>期間</string>
+	<key>VideoMetadata-EncoderSoftwareName</key>
+	<string>エンコーダーソフトウェア名</string>
+	<key>VideoMetadata-FormatName</key>
+	<string>フォーマット名</string>
+	<key>VideoMetadata-Height</key>
+	<string>高さ</string>
+	<key>VideoMetadata-Index</key>
+	<string>インデックス</string>
+	<key>VideoMetadata-Level</key>
+	<string>レベル</string>
+	<key>VideoMetadata-PixelFormat</key>
+	<string>ピクセル形式</string>
+	<key>VideoMetadata-Profile</key>
+	<string>プロファイル</string>
+	<key>VideoMetadata-RFrameRate</key>
+	<string>フレームレート</string>
+	<key>VideoMetadata-Width</key>
+	<string>幅</string>
+	<key>Videos</key>
+	<string>ビデオ</string>
+	<key>View</key>
+	<string>表示</string>
+	<key>Volume</key>
+	<string>音量</string>
+	<key>Waterfall View</key>
+	<string>ウォーターフォールビュー</string>
+	<key>Window Title</key>
+	<string>ウィンドウのタイトル</string>
+	<key>Zoom</key>
+	<string>ズーム</string>
+	<key>Zoom In</key>
+	<string>ズームイン</string>
+	<key>Zoom Out</key>
+	<string>縮小</string>
+	<key>ask-to-delete</key>
+	<string>これらのファイルをゴミ箱に移動してもよろしいですか</string>
+	<key>ask-to-delete-external</key>
+	<string>このディレクトリはゴミ箱への移動をサポートしていません。これらのアイテムは直ちに削除され、この操作は元に戻せません。</string>
+	<key>ask-to-delete-nopermission</key>
+	<string>これらのファイルをゴミ箱に移動してもよろしいですか？
+
+このプログラムには「オートメーション」権限が与えられていません。ゴミ箱に移動した後、「元の場所に戻す」機能を使用することはできません。</string>
+	<key>ask-to-delete-shift</key>
+	<string>これらのファイルを永久に削除してもよろしいですか? この操作は元に戻せません。</string>
+	<key>back-folder</key>
+	<string>戻る</string>
+	<key>cannot-copy-to-self</key>
+	<string>ファイルやフォルダーを自身またはそのサブディレクトリにコピーすることはできません</string>
+	<key>cannot-move-to-self</key>
+	<string>ファイルまたはフォルダーを自身やそのサブディレクトリに移動することはできません</string>
+	<key>copy-lowercase</key>
+	<string>コピー</string>
+	<key>copy-to-download</key>
+	<string>「ダウンロード」フォルダにコピー</string>
+	<key>do-you-want-replace</key>
+	<string>貼り付けまたは移動しているファイルで置き換えますか</string>
+	<key>do-you-want-replace(move)</key>
+	<string>移動中のファイルで置き換えますか？</string>
+	<key>do-you-want-replace(paste)</key>
+	<string>貼り付けたファイルで置き換えますか</string>
+	<key>empty-enclose</key>
+	<string>(空)</string>
+	<key>file-exists-continue-batch-rename</key>
+	<string>シーケンス番号で一括リネームされたファイルが既存のファイルと競合しています。新しいファイル名は a_1.jpg、a_2.jpg、a_3.jpg... のようになりますが、既に a_2.jpg という名前のファイルが存在しています。続行するためにシーケンス番号を自動的に増加させますか？</string>
+	<key>file-rightmenu-get-info</key>
+	<string>情報を表示</string>
+	<key>file-rightmenu-get-statistic</key>
+	<string>統計を表示</string>
+	<key>file-size</key>
+	<string>サイズ</string>
+	<key>first-time-use-prompt</key>
+	<string>左ボタンをダブルクリックして閉じます
+画像: 右または左ボタンを押しながらホイールをスクロールしてズームインまたはズームアウト
+ビデオ: 右マウスボタンを押し続けてドラッグし、再生進行を調整します</string>
+	<key>gen-thumb-info</key>
+	<string>- 「埋め込みサムネイルを優先使用する」とは、通常解像度が低い画像のEXIFデータに埋め込まれたサムネイルを優先的に使用することを指します。しかし、ファイルヘッダーの内容だけを読み取る必要があるため、ネットワークドライブ上の画像を読み取る速度が大幅に向上します。インターネット上のほとんどの画像はファイルサイズを削減するためにEXIFデータが削除されているため、その場合プログラムは「標準サムネイルを生成」に切り替わります。
+
+- 「標準サムネイルを生成」とは、サイズが512×512の中程度の品質のサムネイルを作成することを指します。この場合、ファイル全体の内容をダウンロードする必要があります。（RAW画像の埋め込みサムネイルは通常高解像度であるため、このモードでも埋め込みサムネイルが優先されます。）
+
+- 「高精細サムネイルを生成」とは、サムネイルエリアで画像を正確にレンダリングすることを含み、サムネイルサイズがデフォルトの値より大きい場合にこのオプションを有効にすることをお勧めします。この時点で再レンダリングされた画像がより多くのメモリを消費する可能性があります。
+
+また、外部ドライブのフォルダに対してはデフォルトでサムネイルが生成されません。「設定」 -&gt; 「詳細」へ進み、関連オプションを修正してください。</string>
+	<key>has-exist-in-dest</key>
+	<string>宛先フォルダに同名のファイル「%@」が既に存在します</string>
+	<key>has-same-name-files</key>
+	<string>同名ファイルがあります</string>
+	<key>has-same-name-files-info</key>
+	<string>ソースファイルには同じ名前のファイルが含まれています。自動的に名前を変更しますか？
+
+例えば、異なるディレクトリの複数のabc.jpgという名前のファイルは、自動的にabc.jpg、abc_2.jpg、abc_3.jpgのように名前が変更されます...
+
+注: この操作の影響を確認し混乱を防いでください。</string>
+	<key>image-dimensions</key>
+	<string>寸法</string>
+	<key>input-new-folder-name</key>
+	<string>新しいフォルダー名を入力:</string>
+	<key>input-new-textfile-name</key>
+	<string>ファイル名を入力してください:</string>
+	<key>move-to-download</key>
+	<string>「ダウンロード」フォルダに移動</string>
+	<key>next-folder</key>
+	<string>次のフォルダー</string>
+	<key>next-sibling</key>
+	<string>次の同レベル</string>
+	<key>next-sibling-of-parent</key>
+	<string>親の次の兄弟</string>
+	<key>ocr-recog-fail</key>
+	<string>OCR機能を使用するには、macOS 13.0以降が必要です</string>
+	<key>open-in-new-tab-this</key>
+	<string>新しいタブでこれを開く</string>
+	<key>operation-logs-info</key>
+	<string>ファイルの削除、名前変更、移動、貼り付け操作の記録 現在、内容がありません</string>
+	<key>optimizeWindow</key>
+	<string>最適ウィンドウサイズ</string>
+	<key>pan-zoom</key>
+	<string>ズーム後のパンスクロールを有効にする</string>
+	<key>pan-zoom-info</key>
+	<string>マウスホイールやタッチパッドのスクロールのデフォルトの動作は画像を切り替えることです。この機能が有効になると、画像をズームインした後、スクロール動作がパンに変わります。これは通常、長いスクリーンショットや漫画を表示するために使用されます。</string>
+	<key>parent-folder</key>
+	<string>親フォルダ</string>
+	<key>portable-mode-info</key>
+	<string>ポータブルモードでは：
+ - 画像を開くと、ウィンドウが自動的に画像のサイズに合わせてリサイズされます
+ - 画像を閉じると、ウィンドウが自動的に画面の割合にリサイズされます</string>
+	<key>previous-folder</key>
+	<string>前のフォルダー</string>
+	<key>previous-sibling</key>
+	<string>前の兄弟要素</string>
+	<key>previous-sibling-of-parent</key>
+	<string>親の前の兄弟</string>
+	<key>qrcode-recog-fail</key>
+	<string>QRコードを認識できませんでした</string>
+	<key>qrcode-recog-result</key>
+	<string>QRコード認識結果</string>
+	<key>rating-info</key>
+	<string>**XMP評価について**  
+XMP評価は、画像の優先順位を示すために1から5の星を使ったユニバーサルな画像スコアリング方法です。これは業界標準のメタデータであり、FlowVisionの専有フォーマットではなく、多くのXMP互換ソフトウェアアプリケーションに認識されます。
+
+**XMPとは何ですか？**  
+XMP（Extensible Metadata Platform）は、画像内に埋め込まれた「情報カード」として考えることができ、評価、キーワード、著作権情報などの編集可能なメタデータを保存するために一般的に使用されます。シャッタースピード、絞り、ISOなどのカメラ設定を主に記録するEXIFとは異なり、XMPは記述的でユーザーが編集可能なデータを重視しています。ファイル構造の観点からは、どちらも画像のメタデータ領域に存在しますが、異なるデータ命名システムやデータブロックに属しており、共存することができます。
+
+**評価情報はどこに保存されますか？**  
+FlowVisionは、評価を画像のメタデータ内のxmp:Ratingフィールドに書き込みます。この情報は通常、画像ファイルのメタデータセクション、例えばJPEGファイルのメタデータセグメントやPNG、TIFF、HEIF、RAW形式の対応するメタデータコンテナ内に埋め込まれますが、データベースレコードやファイルシステムのメタデータとして別々に保存されることはありません。
+
+**「評価なし」とはどういう意味ですか？**  
+「評価なし」を選択すると、FlowVisionはxmp:Ratingフィールドをクリアします（値を0に設定するわけではありません）。これにより、画像に現在評価が割り当てられていないことを示します。
+
+**重要な注意事項**  
+評価の設定またはクリアはファイルへの書き込みを伴います。書き込み後は通常、ファイルの変更日が更新され、メタデータが再書き込みされるため、ファイルサイズもわずかに変わる可能性があります。同期、バックアップ、またはソートに変更時間を使用している場合、バッチ評価を実行する前にこの影響を理解しておくことをお勧めします。</string>
+	<key>raw-use-embeded-info</key>
+	<string>このオプションを有効にすると、元のRAWをレンダリングする代わりに、埋め込まれたExifサムネイルを使用します。
+
+RAWファイルには通常、カメラのプレビューインターフェース用の高品質なExifサムネイルが付属しており、カメラの内蔵プログラムによって修正・処理された非オリジナル画像です。これらのサムネイルを使用することで、プログラムは読み込み時間を大幅に短縮できます。</string>
+	<key>recognize-OCR</key>
+	<string>テキストを認識</string>
+	<key>recognize-QRCode</key>
+	<string>QRコードを認識</string>
+	<key>recursive-mode-info</key>
+	<string>「再帰的ブラウジングモード」を有効にすると、サムネイル領域にはフォルダー内およびそのサブディレクトリ内のすべてのファイルが表示されます。「フォルダーを含む」がチェックされている場合、すべてのサブフォルダー自体も表示されます。
+
+特定のシステムディレクトリやネットワークドライブをスキャンすると、プログラムが遅くなることがあります。
+
+さらに、このモードではアプリケーションはファイルシステムの変更を監視しないため、外部での変更（編集や削除など）がある場合は手動で更新してください。アプリケーション内の変更については、運用の連続性を確保するため、表示される画像が多すぎる場合、自動更新は行われませんので、手動で更新してください。</string>
+	<key>recursive-mode-nodirection</key>
+	<string>再帰モードでは、次または前のフォルダーを見つけるアクションを実行できません</string>
+	<key>renaming-conflict</key>
+	<string>この名前のファイルはすでに存在します。別の名前を選んでください。</string>
+	<key>save-to-custom-profile</key>
+	<string>カスタムプロファイル %@ に保存</string>
+	<key>scan-enhanced-index-info</key>
+	<string>ToDo</string>
+	<key>scanned-files</key>
+	<string>現在までに %d 件のファイルをスキャンしました。うち、画像 %d 件、動画 %d 件です。続行しますか？</string>
+	<key>search-help</key>
+	<string>**コンテンツをフィルター**
+「フィルターを適用」ボタンは、現在のディレクトリのコンテンツをフィルターし、検索条件に一致する項目のみを表示します。元のビューに戻すには、検索条件をクリアしてこのボタンを再度クリックするか、ツールバーの検索アイコンをクリックします。
+
+**サブフォルダを検索**
+サブディレクトリ内のファイルを検索するには、まず「再帰的ブラウズモード」を有効にします。
+
+**正規表現とは何ですか？**
+正規表現（regex）は、文字列内の文字の組み合わせに一致させるためのパターンです。検索、置換、解析などのタスクに広く使用される強力なテキスト処理ツールです。
+例えば：
+^2024 は '2024' で始まるファイルに一致します。
+.*modified\.[^.]+$ は 'modified' で終わるファイルに一致します（拡張子に関係なく）。
+.*\.jpg$ は '.jpg' 拡張子のファイルに一致します。
+
+**高度な検索**
+「再帰的ブラウズモード」では、「フルパスを使用」オプションを使用し、正規表現と組み合わせて高度な検索を行うことができます。
+例えば、次のようなフルファイルパスがある場合：
+/Users/Alice/Pictures/20220101/mypick/001.jpg
+次の正規表現を使用して：
+^.*\/[^\/]*pick[^\/]*\/[^\/]+$
+親ディレクトリ名に「pick」を含むすべてのファイルに一致させることができます。より複雑な正規表現パターンについては、大規模言語モデルを使用して作成を支援することができます。</string>
+	<key>sort-addDateA</key>
+	<string>追加日で並べ替え</string>
+	<key>sort-addDateZ</key>
+	<string>追加日で並べ替え（降順）</string>
+	<key>sort-createDateA</key>
+	<string>作成日で並べ替え</string>
+	<key>sort-createDateZ</key>
+	<string>作成日で並べ替え（降順）</string>
+	<key>sort-exif-local-warning</key>
+	<string>Exif情報でソートするにはすべてのファイルのヘッダーを読み込む必要があり、読み込み速度が遅くなる可能性があります。例えば、ビデオファイル情報の参照読み込み速度は1秒あたり約10です。
+
+現在のディレクトリには、%d枚の画像またはビデオが含まれており、最大読み込み時間は約%d秒です。続けますか？</string>
+	<key>sort-exif-network-warning</key>
+	<string>Exif情報によるソートはすべてのファイルのヘッダーを読み込む必要があり、読み込み速度が遅くなる可能性があります。例えば、SMBネットワークドライブの基準読み取り速度は1秒あたり約10です。
+
+現在のディレクトリは外付けドライブ上にあり、%d枚の画像または動画が含まれており、最大読み込み時間は約%d秒です。本当に続行しますか？</string>
+	<key>sort-exifDateA</key>
+	<string>Exif日付で並べ替え</string>
+	<key>sort-exifDateZ</key>
+	<string>Exif日付で並べ替え（降順）</string>
+	<key>sort-exifPixelA</key>
+	<string>Exifピクセルサイズで並べ替え</string>
+	<key>sort-exifPixelZ</key>
+	<string>Exifピクセルサイズで並べ替え（降順）</string>
+	<key>sort-extA</key>
+	<string>ファイルタイプで並べ替え</string>
+	<key>sort-extZ</key>
+	<string>ファイルタイプで並べ替え（降順）</string>
+	<key>sort-label-date</key>
+	<string>日付</string>
+	<key>sort-label-exifDate</key>
+	<string>Exif日付</string>
+	<key>sort-label-exifPixel</key>
+	<string>Exifピクセル</string>
+	<key>sort-label-ext</key>
+	<string>タイプ</string>
+	<key>sort-label-name</key>
+	<string>名前</string>
+	<key>sort-label-random</key>
+	<string>ランダム</string>
+	<key>sort-label-size</key>
+	<string>サイズ</string>
+	<key>sort-modDateA</key>
+	<string>更新日で並べ替え</string>
+	<key>sort-modDateZ</key>
+	<string>更新日で並べ替え（降順）</string>
+	<key>sort-pathA</key>
+	<string>ファイル名で並べ替え</string>
+	<key>sort-pathZ</key>
+	<string>ファイル名で並べ替え (降順)</string>
+	<key>sort-random</key>
+	<string>ランダムに並べ替え</string>
+	<key>sort-readme</key>
+	<string>「コレクションモードでフルパスによるソート」とは、再帰モードやタグコレクションを扱う場合において、次のように現在のディレクトリに対して相対的なパスを持つ2つのファイルが存在するとき、
+./AAA/2.jpg
+./BBB/1.jpg
+はフルパスでソートする際には2.jpgが先に来るが、ファイル名でソートする際には1.jpgが先に来ることを意味します。
+
+Exif情報でソートする場合、各ファイルのヘッダーを読み込む必要があり、読み込み速度が遅くなる可能性があります。例えば、SMBネットワークドライブ上やビデオファイルでは、通常の読み込み速度は1秒あたり約10ファイルです。</string>
+	<key>sort-sizeA</key>
+	<string>ファイルサイズで並べ替え</string>
+	<key>sort-sizeZ</key>
+	<string>ファイルサイズで並べ替え（降順）</string>
+	<key>statistic-content</key>
+	<string>フォルダー数: %d  
+ファイル数: %d  
+画像数: %d  
+ビデオ数: %d  
+合計サイズ: %@</string>
+	<key>switch-to-custom-profile</key>
+	<string>カスタムプロファイル%@に切り替える</string>
+	<key>switchToActualSize</key>
+	<string>画像のデフォルトの実際のサイズ</string>
+	<key>switchToDarkMode</key>
+	<string>ダークモード</string>
+	<key>switchToFitToWindow</key>
+	<string>画像をデフォルトでウィンドウに合わせる</string>
+	<key>switchToLightMode</key>
+	<string>ライトモード</string>
+	<key>switchToSystemTheme</key>
+	<string>システムに合わせる</string>
+	<key>up-folder</key>
+	<string>上位フォルダ</string>
+	<key>video-dimensions</key>
+	<string>寸法</string>
+	<key>video-play-info</key>
+	<string>プレイヤーインターフェイスでは、左クリックで再生が一時停止し、右クリックドラッグでビデオ再生の進行を調整できます。 キーボードの左右の矢印キーで早送りと巻き戻しができ、Cmdキーを押し続けるとコマ送りナビゲーションが可能です。
+
+macOSは、「mp4」、「mov」、「m2ts」、「ts」、「mpeg」、「mpg」、「m4v」、「vob」などのビデオフォーマットをネイティブにサポートしています。その他のフォーマットは再生に外部プレーヤーが必要です。
+
+HEVCエンコードされたビデオでは、macOSの内蔵デコーダはhvc1のコーデックタグのみを認識し、hev1のタグは認識しません。FFmpegを使用して無劣化変換を行うことができます: ffmpeg -i input.mp4 -c copy -movflags +faststart -tag:v hvc1 output.mp4。
+
+Cmd+Shift+Vを押すと「可視ビデオの自動再生」となり、サムネイルビューで可視エリア内のビデオをループ再生します。このショートカットを再び押すか、フォルダを切り替えるとこのモードを終了します。</string>
+	<key>window-num-max</key>
+	<string>ウィンドウの数が制限を超えています</string>
+</dict>
+</plist>

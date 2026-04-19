@@ -1,0 +1,4 @@
+module SDWebImage {
+umbrella header "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/SDWebImage/SDWebImage/include/SDWebImage/SDWebImage.h"
+export *
+}

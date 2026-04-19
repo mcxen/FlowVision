@@ -1,0 +1,12 @@
+{
+  "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/DerivedSources/resource_bundle_accessor.swift" : {
+    "abi-baseline-json" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings.abi.json",
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings-primary.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings-primary.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings-primary.dia",
+    "objc-header" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings-Swift.h",
+    "swiftdoc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings.swiftdoc",
+    "swiftmodule" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings.swiftmodule",
+    "swiftsourceinfo" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/Settings.build/Release/Settings.build/Objects-normal/arm64/Settings.swiftsourceinfo"
+  }
+}

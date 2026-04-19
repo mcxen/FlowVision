@@ -1,0 +1,271 @@
+{
+  "" : {
+    "const-values" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary.swiftconstvalues",
+    "dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary.d",
+    "diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary.dia",
+    "emit-module-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary-emit-module.dia",
+    "pch" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FlowVision-primary.swiftdeps"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/AppDelegate.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AppDelegate.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/Common.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Common.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Common.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Common.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/DataModel.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DataModel.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DataModel.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DataModel.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/Enum.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Enum.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Enum.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Enum.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/FFmpegKit.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FFmpegKit.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FFmpegKit.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FFmpegKit.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/FinderTag.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FinderTag.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FinderTag.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FinderTag.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/GlobalVariable.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GlobalVariable.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GlobalVariable.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GlobalVariable.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/ImageProcess.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageProcess.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageProcess.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageProcess.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/Log.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Log.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Log.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Log.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/RefCode.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RefCode.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RefCode.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RefCode.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/TempVariable.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TempVariable.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TempVariable.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TempVariable.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Common/VideoProcess.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/VideoProcess.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/VideoProcess.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/VideoProcess.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/ActionsSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ActionsSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ActionsSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ActionsSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/AdvancedSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AdvancedSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/CustomSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/DemoSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DemoSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DemoSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DemoSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/GeneralSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneralSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneralSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/GeneralSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/SettingsViews/TaggingSettingsViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TaggingSettingsViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TaggingSettingsViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/TaggingSettingsViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/ArrowKeyLocate.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ArrowKeyLocate.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/AutoScrollPlay.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AutoScrollPlay.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AutoScrollPlay.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/AutoScrollPlay.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/DirTree.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DirTree.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DirTree.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DirTree.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/EventHandler.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/EventHandler.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/EventHandler.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/EventHandler.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/FileOperation.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileOperation.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileOperation.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileOperation.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/FileSystem.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileSystem.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileSystem.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FileSystem.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/KeyShortcut.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/KeyShortcut.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/KeyShortcut.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/KeyShortcut.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/LargeImage.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImage.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImage.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImage.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/LayoutManagement.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutManagement.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutManagement.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutManagement.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/LayoutProfileConfig.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LayoutProfileConfig.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/MemoryManagement.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/MemoryManagement.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/MemoryManagement.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/MemoryManagement.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/ProgressBar.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ProgressBar.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ProgressBar.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ProgressBar.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/RightMouseGesture.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RightMouseGesture.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RightMouseGesture.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/RightMouseGesture.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/Search.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Search.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Search.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Search.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/ViewControllerExtension/WindowManagement.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowManagement.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowManagement.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowManagement.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CoreAreaView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CoreAreaView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CoreAreaView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CoreAreaView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomCollectionView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomCollectionViewItem.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewItem.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomCollectionViewManager.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewManager.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewManager.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomCollectionViewManager.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomEffectView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomEffectView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomEffectView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomEffectView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomImageView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomImageView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomImageView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomImageView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomOutlineView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomOutlineViewManager.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineViewManager.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineViewManager.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomOutlineViewManager.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomPathControl.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomPathControl.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomPathControl.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomPathControl.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomProfileView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomProfileView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomProfileView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomProfileView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/CustomSplitView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSplitView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSplitView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/CustomSplitView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/DrawingView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DrawingView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DrawingView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/DrawingView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/FavoritesPopoverViewController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FavoritesPopoverViewController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FavoritesPopoverViewController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/FavoritesPopoverViewController.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/ImageEditingView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageEditingView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageEditingView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/ImageEditingView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/LargeImageView.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImageView.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImageView.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/LargeImageView.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/Views/Layout.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Layout.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Layout.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/Layout.o"
+  },
+  "/Users/mcx/Documents/OpenSpring/FlowVision/FlowVision/Sources/WindowController.swift" : {
+    "index-unit-output-path" : "/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowController.o",
+    "llvm-bc" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowController.bc",
+    "object" : "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/Build/Intermediates.noindex/FlowVision.build/Release/FlowVision.build/Objects-normal/arm64/WindowController.o"
+  }
+}

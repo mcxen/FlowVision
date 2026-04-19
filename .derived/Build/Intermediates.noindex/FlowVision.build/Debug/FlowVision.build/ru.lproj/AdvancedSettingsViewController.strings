@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1V0-bu-KPz.title</key>
+	<string>Не использовать FFmpeg</string>
+	<key>A97-Bz-qH3.title</key>
+	<string>Для механических жестких дисков и сетевых накопителей рекомендуется установить значение 1 Для внешних SSD это значение можно увеличить при необходимости</string>
+	<key>EWL-HL-RdL.title</key>
+	<string>4</string>
+	<key>FwL-1J-M3z.title</key>
+	<string>Этот параметр применяется к внутреннему SSD. Рекомендуется установить его в пределах от 4 до 8.</string>
+	<key>G15-Qe-p8C.title</key>
+	<string>Использовать FFmpeg для эскизов большего числа видеоформатов</string>
+	<key>L44-0u-7JE.title</key>
+	<string>Глубина поиска папок:
+(Внешние тома)</string>
+	<key>Tb5-5a-q2X.title</key>
+	<string>Число уровней вложенности для поиска при создании эскизов папок. Если установлено значение 0, эскизы папок не будут созданы, и в дереве каталогов не будет указано, существуют ли подпапки с помощью стрелки слева.</string>
+	<key>U1E-PH-Kdi.title</key>
+	<string>0</string>
+	<key>UN1-r8-SEh.title</key>
+	<string>Глубина поиска папок:</string>
+	<key>UWB-wJ-kV4.title</key>
+	<string>Потоки для миниатюр:</string>
+	<key>VVf-Z7-kSI.title</key>
+	<string>например, 4G</string>
+	<key>WIz-pH-xsE.title</key>
+	<string>1</string>
+	<key>YPT-xM-oyn.title</key>
+	<string>Эти настройки применяются к внешним томам, включая внешние накопители, сетевые диски и другие монтированные каталоги.</string>
+	<key>a8Q-Mw-3Xn.title</key>
+	<string>Лимит использования памяти:</string>
+	<key>bnu-AS-zpg.title</key>
+	<string>Загрузить динамическую библиотеку:</string>
+	<key>fpm-qG-HXc.title</key>
+	<string>Потоки для миниатюр:
+(Внешние тома)</string>
+	<key>lIW-EQ-tyL.title</key>
+	<string>Когда использование памяти приложением превышает ограничение, кэш миниатюр в каждом каталоге будет поочередно очищаться на основе времени последнего доступа.</string>
+	<key>o1C-Ac-oMz.title</key>
+	<string>Программа имеет встроенную библиотеку FFmpeg. Если возникает исключение при создании эскизов видео, попробуйте отключить эту опцию или снять флажок "Показывать видеофайлы"</string>
+	<key>qvY-7X-FWO.title</key>
+	<string>8</string>
+	<key>v0X-zl-sTc.title</key>
+	<string>Для сетевых дисков рекомендуется установить значение 0 (не генерировать миниатюры папок, и дерево директорий не будет указывать на наличие подпапок стрелкой слева).</string>
+</dict>
+</plist>

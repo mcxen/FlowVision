@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>Saiba mais…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>Como o Spotlight do macOS não pode indexar discos externos, unidades de rede ou o conteúdo de diretórios excluídos nas configurações de "Privacidade de Pesquisa", este aplicativo introduz um recurso de indexação aprimorado: quando você navega por uma pasta dentro do aplicativo, ele registra as tags associadas aos arquivos dentro dessa pasta.
+
+Mais tarde, quando você seleciona a tag correspondente na árvore de diretórios, o aplicativo complementará os resultados de pesquisa do sistema exibindo os arquivos relevantes.</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>Ativar Índice Aprimorado</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>Tags Personalizados:</string>
+	<key>tRG-X6-q84.title</key>
+	<string>Índice Aprimorado:</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>O aplicativo usa o mecanismo de marcação padrão do macOS. Certifique-se de que os nomes e cores das tags neste aplicativo correspondam exatamente aos do Finder; caso contrário, você pode encontrar inconsistências nas cores das tags ao exibir ou escrever tags.</string>
+</dict>
+</plist>

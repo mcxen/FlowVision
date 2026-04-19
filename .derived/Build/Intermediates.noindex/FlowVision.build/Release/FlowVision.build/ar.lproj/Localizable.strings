@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>(Multiselect)</key>
+	<string>مجلد جديد مع التحديد (%d عنصر)</string>
+	<key>A-B Loop</key>
+	<string>A-B تكرار</string>
+	<key>A-B Loop Active</key>
+	<string>دورة A-B نشطة</string>
+	<key>A-B Loop Cancel</key>
+	<string>إلغاء A-B لوب</string>
+	<key>A-B Loop: A</key>
+	<string>حلقة A-B: A</string>
+	<key>A-B Loop: A Greater than B</key>
+	<string>حلقه A-B: A أكبر من B</string>
+	<key>A-B Loop: B</key>
+	<string>تكرار A-B: B</string>
+	<key>Actions</key>
+	<string>إجراءات</string>
+	<key>Add</key>
+	<string>إضافة</string>
+	<key>Add Current Folder</key>
+	<string>إضافة المجلد الحالي</string>
+	<key>Add Separator</key>
+	<string>إضافة فاصل</string>
+	<key>Adjust Window to Actual Image Size</key>
+	<string>ضبط النافذة على حجم الصورة الفعلي</string>
+	<key>Adjust Window to Current Image Size</key>
+	<string>ضبط النافذة ليناسب حجم الصورة الحالي</string>
+	<key>Advanced</key>
+	<string>خيارات متقدمة</string>
+	<key>Alias Type</key>
+	<string>نوع الاسم المستعار</string>
+	<key>Always Generate HD Thumbnails</key>
+	<string>دائمًا قم بإنشاء صور مصغرة عالية الدقة</string>
+	<key>Always Generate Standard Thumbnails</key>
+	<string>دائمًا توليد مصغرات قياسية</string>
+	<key>Apply Filter</key>
+	<string>تطبيق الفلتر</string>
+	<key>Apply to all</key>
+	<string>تطبيق على الكل</string>
+	<key>Are you sure you want to move xxx to xxx?</key>
+	<string>هل أنت متأكد أنك تريد نقل "%1$@" إلى "%2$@"؟</string>
+	<key>Arrow</key>
+	<string>سهم</string>
+	<key>AudioMetadata-BitRate</key>
+	<string>معدل البت</string>
+	<key>AudioMetadata-ChannelLayout</key>
+	<string>تخطيط القناة</string>
+	<key>AudioMetadata-Channels</key>
+	<string>القنوات</string>
+	<key>AudioMetadata-CodecLongName</key>
+	<string>الاسم الطويل للترميز</string>
+	<key>AudioMetadata-CodecName</key>
+	<string>اسم الترميز</string>
+	<key>AudioMetadata-Index</key>
+	<string>فهرس</string>
+	<key>AudioMetadata-Language</key>
+	<string>اللغة</string>
+	<key>AudioMetadata-SampleRate</key>
+	<string>معدل العينة</string>
+	<key>AudioMetadata-StreamTitle</key>
+	<string>عنوان البث</string>
+	<key>Auto</key>
+	<string>تلقائي</string>
+	<key>Auto Play Selected Video</key>
+	<string>تشغيل الفيديو المحدد تلقائيًا</string>
+	<key>Auto Play Visible Video</key>
+	<string>التشغيل التلقائي للفيديو المرئي</string>
+	<key>Auto Rename</key>
+	<string>إعادة تسمية تلقائية</string>
+	<key>Border Thickness</key>
+	<string>سُمك الحدود</string>
+	<key>Cancel</key>
+	<string>إلغاء</string>
+	<key>Cancel Auto Play Visible Video</key>
+	<string>إلغاء التشغيل التلقائي للفيديو المرئي</string>
+	<key>Cancel Filter</key>
+	<string>إلغاء الفلتر</string>
+	<key>Case Sensitive</key>
+	<string>حالة حساسة</string>
+	<key>Cell Padding</key>
+	<string>تباعد الخلية</string>
+	<key>Center the Window</key>
+	<string>توسيط النافذة</string>
+	<key>Choose a file or folder</key>
+	<string>اختر ملفًا أو مجلدًا</string>
+	<key>Clear</key>
+	<string>مسح</string>
+	<key>Close (Double Click)</key>
+	<string>إغلاق (نقرتان مزدوجتان)</string>
+	<key>Close Other Tabs</key>
+	<string>إغلاق علامات التبويب الأخرى</string>
+	<key>Close Tab</key>
+	<string>إغلاق علامة التبويب</string>
+	<key>Continue</key>
+	<string>متابعة</string>
+	<key>Copy</key>
+	<string>نسخ</string>
+	<key>Copy Path</key>
+	<string>نسخ المسار</string>
+	<key>Corner Radius</key>
+	<string>نصف قطر الزاوية</string>
+	<key>Custom Layout Style</key>
+	<string>نمط التخطيط المخصص</string>
+	<key>Custom Layout Style...</key>
+	<string>نمط تخطيط مخصص...</string>
+	<key>Custom Zoom Ratio...</key>
+	<string>نسبة التكبير المخصصة...</string>
+	<key>Custom Zoom Step...</key>
+	<string>خطوة تكبير مخصصة...</string>
+	<key>Date Added</key>
+	<string>تاريخ الإضافة</string>
+	<key>Date Created</key>
+	<string>تاريخ الإنشاء</string>
+	<key>Date Modified</key>
+	<string>تاريخ التعديل</string>
+	<key>Default Thumbnail Size</key>
+	<string>الحجم الافتراضي للصورة المصغرة</string>
+	<key>Delete</key>
+	<string>حذف</string>
+	<key>Demo</key>
+	<string>تجريبي</string>
+	<key>Directory does not exist</key>
+	<string>الدليل غير موجود</string>
+	<key>Disable Automatic Play</key>
+	<string>تعطيل التشغيل التلقائي</string>
+	<key>Disable Automatic Scroll</key>
+	<string>تعطيل التمرير التلقائي</string>
+	<key>Edit Mode</key>
+	<string>وضع التحرير</string>
+	<key>Ellipse</key>
+	<string>قطع ناقص</string>
+	<key>Empty</key>
+	<string>فارغ</string>
+	<key>Enable Automatic Play</key>
+	<string>تمكين التشغيل التلقائي</string>
+	<key>Enable Automatic Scroll</key>
+	<string>تمكين التمرير التلقائي</string>
+	<key>Enable HDR</key>
+	<string>تمكين HDR</string>
+	<key>Enable Recursive Mode</key>
+	<string>تمكين الوضع التكراري</string>
+	<key>Enlarge the Thumbnails</key>
+	<string>تكبير الصور المصغرة</string>
+	<key>Enter Full Screen</key>
+	<string>أدخل ملء الشاشة</string>
+	<key>Enter the auto play interval in seconds:</key>
+	<string>أدخل فترة التشغيل التلقائي بالثواني:</string>
+	<key>Enter the scroll speed in pixels per second:</key>
+	<string>أدخل سرعة التمرير بوحدة البكسل في الثانية:</string>
+	<key>Eraser</key>
+	<string>ممحاة</string>
+	<key>Error</key>
+	<string>خطأ</string>
+	<key>Exif-ApertureValue</key>
+	<string>قيمة الفتحة</string>
+	<key>Exif-Artist</key>
+	<string>فنان</string>
+	<key>Exif-CameraMaker</key>
+	<string>صنع</string>
+	<key>Exif-CameraModel</key>
+	<string>طراز الكاميرا</string>
+	<key>Exif-ColorModel</key>
+	<string>نموذج اللون</string>
+	<key>Exif-DateTimeDigitized</key>
+	<string>تاريخ ووقت التحويل الرقمي</string>
+	<key>Exif-DateTimeOriginal</key>
+	<string>تاريخ ووقت الالتقاط</string>
+	<key>Exif-Depth</key>
+	<string>عمق</string>
+	<key>Exif-ExposureTime</key>
+	<string>وقت التعرض</string>
+	<key>Exif-FNumber</key>
+	<string>قيمة الفتحة</string>
+	<key>Exif-FileAddedTime</key>
+	<string>وقت إضافة الملف</string>
+	<key>Exif-FileCreatedTime</key>
+	<string>وقت إنشاء الملف</string>
+	<key>Exif-FileModifiedTime</key>
+	<string>وقت تعديل الملف</string>
+	<key>Exif-FileSize</key>
+	<string>حجم الملف</string>
+	<key>Exif-Flash</key>
+	<string>فلاش</string>
+	<key>Exif-Flash-Off</key>
+	<string>إيقاف</string>
+	<key>Exif-Flash-On</key>
+	<string>تشغيل</string>
+	<key>Exif-FocalLength</key>
+	<string>البعد البؤري</string>
+	<key>Exif-GPSAltitude</key>
+	<string>ارتفاع GPS</string>
+	<key>Exif-GPSLatitude</key>
+	<string>خط عرض GPS</string>
+	<key>Exif-GPSLongitude</key>
+	<string>خط طول GPS</string>
+	<key>Exif-ISOSpeedRatings</key>
+	<string>تقييمات سرعة ISO</string>
+	<key>Exif-LensModel</key>
+	<string>طراز العدسة</string>
+	<key>Exif-ProfileName</key>
+	<string>اسم الملف الشخصي</string>
+	<key>Exif-Rating</key>
+	<string>التقييم</string>
+	<key>Exif-Resolution</key>
+	<string>الدقة</string>
+	<key>Exif-Software</key>
+	<string>برامج</string>
+	<key>Exif-TIFFDateTime</key>
+	<string>تاريخ ووقت TIFF</string>
+	<key>Exit Edit Mode</key>
+	<string>خروج من وضع التحرير</string>
+	<key>Exit Full Screen</key>
+	<string>إنهاء ملء الشاشة</string>
+	<key>Exit Recursive Mode</key>
+	<string>الخروج من الوضع التكراري</string>
+	<key>Failed to set this app as the default for some file types:
+</key>
+	<string>فشل في تعيين هذا التطبيق كإعداد افتراضي لبعض أنواع الملفات:</string>
+	<key>Favorites</key>
+	<string>المفضلة</string>
+	<key>File Already Exists</key>
+	<string>الملف موجود بالفعل</string>
+	<key>File Info</key>
+	<string>معلومات الملف</string>
+	<key>File Path</key>
+	<string>مسار الملف</string>
+	<key>Filename</key>
+	<string>اسم الملف</string>
+	<key>Filename Font Size</key>
+	<string>حجم خط اسم الملف</string>
+	<key>Filter</key>
+	<string>تصفية</string>
+	<key>Filter by Finder Tag</key>
+	<string>تصفية حسب علامة الباحث</string>
+	<key>Filter by Rating</key>
+	<string>التصفية حسب التقييم</string>
+	<key>Finder Alias</key>
+	<string>البحث عن الاسم المستعار</string>
+	<key>Finder Tags</key>
+	<string>علامات الباحث</string>
+	<key>Folder</key>
+	<string>مجلد</string>
+	<key>Folders</key>
+	<string>المجلدات</string>
+	<key>Follow Current Folder</key>
+	<string>متابعة المجلد الحالي</string>
+	<key>General</key>
+	<string>عام</string>
+	<key>Go Back</key>
+	<string>ارجع</string>
+	<key>Go Forward</key>
+	<string>تقدم للأمام</string>
+	<key>Go To</key>
+	<string>الانتقال إلى</string>
+	<key>Grid View</key>
+	<string>عرض الشبكة</string>
+	<key>Have Reached the First</key>
+	<string>وصلت إلى الأولى</string>
+	<key>Have Reached the Last</key>
+	<string>تم الوصول إلى النهاية الأخيرة</string>
+	<key>Highlighter</key>
+	<string>قلم تمييز</string>
+	<key>Image</key>
+	<string>صورة</string>
+	<key>Images</key>
+	<string>صور</string>
+	<key>Include Folders</key>
+	<string>تضمين المجلدات</string>
+	<key>Info</key>
+	<string>معلومات</string>
+	<key>Invalid current path</key>
+	<string>مسار حالي غير صالح</string>
+	<key>Invalid input, please enter a positive number</key>
+	<string>إدخال غير صالح، يرجى إدخال رقم موجب</string>
+	<key>Invalid relative path</key>
+	<string>مسار نسبي غير صالح</string>
+	<key>Justified View</key>
+	<string>عرض مضبوط</string>
+	<key>Learn More...</key>
+	<string>تعلم المزيد...</string>
+	<key>Line Space Adjustment</key>
+	<string>ضبط تباعد الأسطر</string>
+	<key>Loading...</key>
+	<string>جارٍ التحميل...</string>
+	<key>Location</key>
+	<string>موقع</string>
+	<key>Lock Mirror</key>
+	<string>قفل المرآة</string>
+	<key>Lock Rotation</key>
+	<string>قفل التدوير</string>
+	<key>Lock Zoom</key>
+	<string>قفل التكبير</string>
+	<key>Match All (AND)</key>
+	<string>مطابقة الكل (و)</string>
+	<key>Match Any (OR)</key>
+	<string>مطابقة أي (أو)</string>
+	<key>Maximize Window</key>
+	<string>تكبير النافذة</string>
+	<key>Merge All Windows</key>
+	<string>دمج جميع النوافذ</string>
+	<key>Mirror Flip</key>
+	<string>انعكاس المرآة</string>
+	<key>More</key>
+	<string>المزيد</string>
+	<key>Move Down</key>
+	<string>تحريك لأسفل</string>
+	<key>Move Here</key>
+	<string>انقل هنا</string>
+	<key>Move Items</key>
+	<string>نقل العناصر</string>
+	<key>Move Up</key>
+	<string>تحريك لأعلى</string>
+	<key>Move to Trash</key>
+	<string>نقل إلى سلة المهملات</string>
+	<key>Name</key>
+	<string>الاسم</string>
+	<key>New</key>
+	<string>جديد</string>
+	<key>New Folder</key>
+	<string>مجلد جديد</string>
+	<key>New Tab</key>
+	<string>علامة تبويب جديدة</string>
+	<key>New Tag</key>
+	<string>علامة جديدة</string>
+	<key>New Text File</key>
+	<string>إنشاء ملف نصي جديد</string>
+	<key>New name for</key>
+	<string>اسم جديد لـ</string>
+	<key>No Color</key>
+	<string>بدون لون</string>
+	<key>No Rating</key>
+	<string>لا يوجد تقييم</string>
+	<key>Non-Grid View</key>
+	<string>عرض غير شبكي</string>
+	<key>Not Include Folders</key>
+	<string>عدم تضمين المجلدات</string>
+	<key>Not Show All Types of Files</key>
+	<string>عدم إظهار جميع أنواع الملفات</string>
+	<key>Not Show Hidden Files</key>
+	<string>عدم إظهار الملفات المخفية</string>
+	<key>OK</key>
+	<string>حسناً</string>
+	<key>Only images can be edited</key>
+	<string>يمكن تحرير الصور فقط</string>
+	<key>Open</key>
+	<string>افتح</string>
+	<key>Open With</key>
+	<string>افتح باستخدام</string>
+	<key>Open in Finder</key>
+	<string>افتح في الباحث</string>
+	<key>Open in Map</key>
+	<string>فتح في الخريطة</string>
+	<key>Open in New Tab</key>
+	<string>افتح في تبويب جديد</string>
+	<key>Open in Terminal</key>
+	<string>افتح في الطرفية</string>
+	<key>Open with External Player</key>
+	<string>فتح بمشغل خارجي</string>
+	<key>Operation Logs</key>
+	<string>سجلات العمليات</string>
+	<key>Original Path</key>
+	<string>المسار الأصلي</string>
+	<key>Other</key>
+	<string>أخرى</string>
+	<key>Others</key>
+	<string>أخرى</string>
+	<key>Paste</key>
+	<string>لصق</string>
+	<key>Path does not exist</key>
+	<string>المسار غير موجود</string>
+	<key>Pen</key>
+	<string>قلم</string>
+	<key>Pin Window</key>
+	<string>تثبيت النافذة</string>
+	<key>Pin Window to Top</key>
+	<string>تثبيت النافذة في المقدمة</string>
+	<key>Please select a specific tag</key>
+	<string>يرجى اختيار علامة محددة</string>
+	<key>Portable Browsing Mode</key>
+	<string>وضع التصفح المحمول</string>
+	<key>Portable Mode: Off</key>
+	<string>وضعية المحمول: إيقاف</string>
+	<key>Portable Mode: On</key>
+	<string>الوضع المحمول: تشغيل</string>
+	<key>Prefer Using Embedded Thumbnails</key>
+	<string>يفضل استخدام الصور المصغرة المدمجة</string>
+	<key>Quick Search</key>
+	<string>البحث السريع</string>
+	<key>RAW Uses Exif Embedded Thumbnail</key>
+	<string>ملف RAW يستخدم الصورة المصغرة المضمّنة في Exif</string>
+	<key>Rating</key>
+	<string>تصنيف</string>
+	<key>Readme...</key>
+	<string>التعليمات...</string>
+	<key>Rectangle</key>
+	<string>مستطيل</string>
+	<key>Recursive Mode</key>
+	<string>وضع العودية</string>
+	<key>Redo</key>
+	<string>إعادة</string>
+	<key>Reduce the Thumbnails</key>
+	<string>خفض الصور المصغرة</string>
+	<key>Refresh</key>
+	<string>تحديث</string>
+	<key>Regex</key>
+	<string>التعبير النمطي</string>
+	<key>Relative Path</key>
+	<string>المسار النسبي</string>
+	<key>Remember Position</key>
+	<string>تذكر الموقع</string>
+	<key>Remember Position: Disabled</key>
+	<string>تذكر الموضع: معطل</string>
+	<key>Remember Position: Enabled</key>
+	<string>تذكر الموضع: ممكّن</string>
+	<key>Remove</key>
+	<string>إزالة</string>
+	<key>Remove All Tags</key>
+	<string>إزالة جميع العلامات</string>
+	<key>Remove Current Folder</key>
+	<string>إزالة المجلد الحالي</string>
+	<key>Rename</key>
+	<string>إعادة تسمية</string>
+	<key>Render Original RAW</key>
+	<string>عرض RAW الأصلي</string>
+	<key>Replace</key>
+	<string>استبدل</string>
+	<key>Reset</key>
+	<string>إعادة تعيين</string>
+	<key>Reverse Filter</key>
+	<string>عكس الفلتر</string>
+	<key>Rotate %d°</key>
+	<string>تدوير %d°</string>
+	<key>Rotate Clockwise</key>
+	<string>تدوير باتجاه عقارب الساعة</string>
+	<key>Rotate Counterclockwise</key>
+	<string>تدوير عكس اتجاه عقارب الساعة</string>
+	<key>Save</key>
+	<string>حفظ</string>
+	<key>Scan &amp; Update Enhanced Index</key>
+	<string>مسح وتحديث الفهرس المحسّن</string>
+	<key>Scan Complete</key>
+	<string>تم الفحص</string>
+	<key>Scan Prompt</key>
+	<string>إجراء الفحص</string>
+	<key>Scanning</key>
+	<string>جاري المسح</string>
+	<key>Scanning...</key>
+	<string>جار المسح...</string>
+	<key>Search...</key>
+	<string>بحث...</string>
+	<key>Sequential Playback</key>
+	<string>تشغيل تتابعي</string>
+	<key>Sequential Playback: Disabled</key>
+	<string>التشغيل المتسلسل: معطل</string>
+	<key>Sequential Playback: Enabled</key>
+	<string>التشغيل المتسلسل: مُفعّل</string>
+	<key>Set Auto Play Interval</key>
+	<string>ضبط فترة التشغيل التلقائي</string>
+	<key>Set Scroll Speed</key>
+	<string>تعيين سرعة التمرير</string>
+	<key>Settings...</key>
+	<string>الإعدادات...</string>
+	<key>Share...</key>
+	<string>مشاركة...</string>
+	<key>Show All</key>
+	<string>إظهار الكل</string>
+	<key>Show All Types of Files</key>
+	<string>إظهار جميع أنواع الملفات</string>
+	<key>Show Camera RAW Files</key>
+	<string>عرض ملفات RAW للكاميرا</string>
+	<key>Show Exif</key>
+	<string>عرض Exif</string>
+	<key>Show Filename</key>
+	<string>إظهار اسم الملف</string>
+	<key>Show Finder Tags and Ratings</key>
+	<string>إظهار علامات Finder والتقييمات</string>
+	<key>Show Hidden Files</key>
+	<string>إظهار الملفات المخفية</string>
+	<key>Show Image Files</key>
+	<string>عرض ملفات الصور</string>
+	<key>Show Info</key>
+	<string>عرض المعلومات</string>
+	<key>Show RAW/HDR Badge</key>
+	<string>إظهار شارة RAW/HDR</string>
+	<key>Show Shadow</key>
+	<string>إظهار الظل</string>
+	<key>Show Statistics in Window Title</key>
+	<string>إظهار الإحصائيات في عنوان النافذة</string>
+	<key>Show Tags and Ratings</key>
+	<string>إظهار العلامات والتقييمات</string>
+	<key>Show Video Files</key>
+	<string>إظهار ملفات الفيديو</string>
+	<key>Show Video Metadata</key>
+	<string>عرض بيانات تعريف الفيديو</string>
+	<key>Show in Finder</key>
+	<string>عرض في الباحث</string>
+	<key>Show in Original Folder</key>
+	<string>إظهار في المجلد الأصلي</string>
+	<key>Sidebar</key>
+	<string>الشريط الجانبي</string>
+	<key>Skip</key>
+	<string>تخطي</string>
+	<key>Sort</key>
+	<string>فرز</string>
+	<key>Sort Folders First</key>
+	<string>فرز المجلدات أولاً</string>
+	<key>Sort Order</key>
+	<string>ترتيب الفرز</string>
+	<key>Sort Using Full Path In Collection Mode</key>
+	<string>الفرز باستخدام المسار الكامل في وضع التجميع</string>
+	<key>Sort by EXIF Info</key>
+	<string>الفرز حسب معلومات EXIF</string>
+	<key>Statistic</key>
+	<string>إحصائية</string>
+	<key>Stop</key>
+	<string>توقف</string>
+	<key>Success</key>
+	<string>نجاح</string>
+	<key>Symbolic Link</key>
+	<string>ارتباط رمزي</string>
+	<key>Tagging</key>
+	<string>الوسوم</string>
+	<key>Text File</key>
+	<string>ملف نصي</string>
+	<key>This app is now the default for all specified file types.</key>
+	<string>هذا التطبيق هو الآن الافتراضي لجميع أنواع الملفات المحددة</string>
+	<key>Thumbnail General</key>
+	<string>صورة مصغرة عامة</string>
+	<key>Thumbnail Options</key>
+	<string>خيارات الصورة المصغرة</string>
+	<key>Thumbnail Size</key>
+	<string>حجم الصورة المصغرة</string>
+	<key>Undo</key>
+	<string>تراجع</string>
+	<key>Unpin Window from Top</key>
+	<string>إلغاء تثبيت النافذة من الأعلى</string>
+	<key>Unsupported Video Format</key>
+	<string>تنسيق الفيديو غير مدعوم</string>
+	<key>Updating Index</key>
+	<string>تحديث الفهرس</string>
+	<key>Use Full Path</key>
+	<string>استخدام المسار الكامل</string>
+	<key>Use Full Path in Window Title</key>
+	<string>استخدم المسار الكامل في عنوان النافذة</string>
+	<key>Use Internal Video Player</key>
+	<string>استخدام مشغل الفيديو الداخلي</string>
+	<key>Video</key>
+	<string>فيديو</string>
+	<key>VideoMetadata-AvgFrameRate</key>
+	<string>متوسط معدل الإطارات</string>
+	<key>VideoMetadata-BitRate</key>
+	<string>معدل البت</string>
+	<key>VideoMetadata-CodecLongName</key>
+	<string>اسم الترميز الكامل</string>
+	<key>VideoMetadata-CodecName</key>
+	<string>اسم التشفير</string>
+	<key>VideoMetadata-ColorSpace</key>
+	<string>مجال اللون</string>
+	<key>VideoMetadata-CreationTime</key>
+	<string>وقت الإنشاء</string>
+	<key>VideoMetadata-Duration</key>
+	<string>المدة</string>
+	<key>VideoMetadata-EncoderSoftwareName</key>
+	<string>اسم برنامج التشفير</string>
+	<key>VideoMetadata-FormatName</key>
+	<string>تنسيق الاسم</string>
+	<key>VideoMetadata-Height</key>
+	<string>ارتفاع</string>
+	<key>VideoMetadata-Index</key>
+	<string>مؤشر</string>
+	<key>VideoMetadata-Level</key>
+	<string>المستوى</string>
+	<key>VideoMetadata-PixelFormat</key>
+	<string>تنسيق البيكسل</string>
+	<key>VideoMetadata-Profile</key>
+	<string>الملف الشخصي</string>
+	<key>VideoMetadata-RFrameRate</key>
+	<string>معدل الإطارات</string>
+	<key>VideoMetadata-Width</key>
+	<string>العرض</string>
+	<key>Videos</key>
+	<string>مقاطع الفيديو</string>
+	<key>View</key>
+	<string>عرض</string>
+	<key>Volume</key>
+	<string>حجم الصوت</string>
+	<key>Waterfall View</key>
+	<string>عرض الشلال</string>
+	<key>Window Title</key>
+	<string>عنوان النافذة</string>
+	<key>Zoom</key>
+	<string>تكبير</string>
+	<key>Zoom In</key>
+	<string>تكبير</string>
+	<key>Zoom Out</key>
+	<string>تصغير</string>
+	<key>ask-to-delete</key>
+	<string>هل أنت متأكد أنك تريد نقل هذه الملفات إلى المهملات؟</string>
+	<key>ask-to-delete-external</key>
+	<string>هذا الدليل لا يدعم النقل إلى سلة المهملات. سيتم حذف هذه العناصر فورًا ولا يمكن التراجع عن هذا الإجراء.</string>
+	<key>ask-to-delete-nopermission</key>
+	<string>هل أنت متأكد أنك تريد نقل هذه الملفات إلى سلة المهملات؟
+
+لم يتم منح إذن "التشغيل الآلي" لهذا البرنامج. بعد النقل إلى سلة المهملات، لا يمكن استخدام وظيفة "إعادة إلى الموقع الأصلي".</string>
+	<key>ask-to-delete-shift</key>
+	<string>هل أنت متأكد من أنك تريد حذف هذه الملفات نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.</string>
+	<key>back-folder</key>
+	<string>رجوع</string>
+	<key>cannot-copy-to-self</key>
+	<string>لا يمكن نسخ ملف/مجلد إلى نفسه أو إلى مجلد فرعي له</string>
+	<key>cannot-move-to-self</key>
+	<string>لا يمكن نقل ملف/مجلد إلى نفسه أو إلى الدليل الفرعي الخاص به.</string>
+	<key>copy-lowercase</key>
+	<string>نسخ</string>
+	<key>copy-to-download</key>
+	<string>نسخ إلى مجلد "التنزيلات"</string>
+	<key>do-you-want-replace</key>
+	<string>هل تريد استبداله بالملف الذي تقوم بلصقه أو نقله؟</string>
+	<key>do-you-want-replace(move)</key>
+	<string>هل تريد استبداله بالملف الذي تقوم بنقله؟</string>
+	<key>do-you-want-replace(paste)</key>
+	<string>هل تريد استبداله بالملف الذي تلصقه؟</string>
+	<key>empty-enclose</key>
+	<string>(فارغ)</string>
+	<key>file-exists-continue-batch-rename</key>
+	<string>هل يجب زيادة الرقم التسلسلي تلقائيًا للاستمرار؟</string>
+	<key>file-rightmenu-get-info</key>
+	<string>الحصول على المعلومات</string>
+	<key>file-rightmenu-get-statistic</key>
+	<string>عرض الإحصائيات</string>
+	<key>file-size</key>
+	<string>الحجم</string>
+	<key>first-time-use-prompt</key>
+	<string>انقر نقراً مزدوجاً على الزر الأيسر للإغلاق
+الصورة: اضغط مع الاستمرار على الزر الأيمن أو الأيسر ومرر العجلة للتكبير أو التصغير
+الفيديو: اضغط مع الاستمرار على زر الماوس الأيمن واسحب لضبط تقدم التشغيل</string>
+	<key>gen-thumb-info</key>
+	<string>- "تفضيل استخدام الصور المصغرة المضمنة" يشير إلى إعطاء الأولوية لاستخدام الصور المصغرة المضمنة ضمن بيانات EXIF للصورة، والتي تكون عادة بدقة أقل. ولكن، حيث أنه فقط المحتوى الموجود في ترويسة الملف يحتاج للقراءة، يمكن أن يحسن بشكل كبير من سرعة قراءة الصور على محرك أقراص الشبكة. حيث أن معظم الصور على الإنترنت يتم إزالة بيانات EXIF منها لتقليل حجم الملف، سيتحول البرنامج بعد ذلك إلى "إنشاء الصور المصغرة القياسية".
+
+- "إنشاء الصور المصغرة القياسية" يشير إلى إنشاء صور مصغرة بجودة متوسطة بحجم 512×512. في هذه الحالة، يحتاج إلى تنزيل محتوى الملف بالكامل. (نظرًا لأن الصور المصغرة المضمنة في صور RAW تكون عادة بدقة أعلى، فإن صورها المصغرة المضمنة لا تزال مفضلة في هذا الوضع.)
+
+- "إنشاء الصور المصغرة عالية الوضوح" يتضمن إعادة عرض الصورة بدقة في منطقة الصورة المصغرة، ويوصى بتمكين هذا الخيار عندما يكون حجم الصورة المصغرة أكبر من القيمة الافتراضية. في هذه المرحلة، قد تستهلك الصورة المعاد عرضها ذاكرة أكثر.
+
+بالإضافة إلى ذلك، لا يتم إنشاء صور مصغرة للمجلدات على الأقراص الخارجية افتراضيًا. يرجى الانتقال إلى "الإعدادات" -&gt; "متقدم" لتعديل الخيارات ذات الصلة.</string>
+	<key>has-exist-in-dest</key>
+	<string>يوجد بالفعل ملف باسم "%@" في مجلد الوجهة</string>
+	<key>has-same-name-files</key>
+	<string>يوجد ملفات بنفس الاسم</string>
+	<key>has-same-name-files-info</key>
+	<string>يحتوي الملف المصدر على ملفات بنفس الاسم. هل يجب إعادة تسميتها تلقائيًا؟
+
+على سبيل المثال، سيتم إعادة تسمية ملفات متعددة باسم abc.jpg من أدلة مختلفة تلقائيًا إلى abc.jpg وabc_2.jpg وabc_3.jpg...
+
+ملاحظة: يرجى تأكيد تأثير هذه العملية لمنع حدوث ارتباك.</string>
+	<key>image-dimensions</key>
+	<string>الأبعاد</string>
+	<key>input-new-folder-name</key>
+	<string>أدخل اسم المجلد الجديد:</string>
+	<key>input-new-textfile-name</key>
+	<string>الرجاء إدخال اسم الملف:</string>
+	<key>move-to-download</key>
+	<string>النقل إلى مجلد "التنزيلات"</string>
+	<key>next-folder</key>
+	<string>المجلد التالي</string>
+	<key>next-sibling</key>
+	<string>القريب التالي</string>
+	<key>next-sibling-of-parent</key>
+	<string>الأخ التالي للعنصر الأصل</string>
+	<key>ocr-recog-fail</key>
+	<string>تتطلب وظيفة التعرف الضوئي على الحروف macOS 13.0 أو أحدث.</string>
+	<key>open-in-new-tab-this</key>
+	<string>افتح هذا في تبويب جديد</string>
+	<key>operation-logs-info</key>
+	<string>سجلات عمليات حذف الملفات وإعادة تسميتها ونقلها ولصقها. لا يوجد حاليًا أي محتوى.</string>
+	<key>optimizeWindow</key>
+	<string>حجم النافذة الأمثل</string>
+	<key>pan-zoom</key>
+	<string>قم بتفعيل التمرير البانورامي بعد التكبير</string>
+	<key>pan-zoom-info</key>
+	<string>السلوك الافتراضي لعجلة الفأرة أو التمرير بلوحة اللمس هو تبديل الصور. عندما يتم تفعيل هذه الميزة، بعد تكبير الصورة، يتغير سلوك التمرير إلى التحريك. يُستخدم هذا عادةً لعرض لقطات شاشة طويلة أو رسومات هزلية.</string>
+	<key>parent-folder</key>
+	<string>المجلد الرئيسي</string>
+	<key>portable-mode-info</key>
+	<string>في الوضع المحمول: - عند فتح صورة، يتم تغيير حجم النافذة تلقائيًا لتطابق أبعاد الصورة؛ - عند إغلاق صورة، يتم تغيير حجم النافذة تلقائيًا إلى نسبة من الشاشة.</string>
+	<key>previous-folder</key>
+	<string>المجلد السابق</string>
+	<key>previous-sibling</key>
+	<string>الأخ السابق</string>
+	<key>previous-sibling-of-parent</key>
+	<string>الشقيق السابق للأصل</string>
+	<key>qrcode-recog-fail</key>
+	<string>فشل في التعرف على رمز الاستجابة السريعة</string>
+	<key>qrcode-recog-result</key>
+	<string>نتيجة التعرف على رمز QR</string>
+	<key>rating-info</key>
+	<string>**حول تقييمات XMP**  
+تقييمات XMP هي طريقة تقييم صور عالمية تستخدم 1 إلى 5 نجوم لتحديد أولوية الصورة. إنها بيانات وصفية بمعيار صناعي وليست صيغة خاصة من FlowVision، ويمكن التعرف عليها من قبل العديد من تطبيقات البرامج المتوافقة مع XMP.
+
+**ما هو XMP؟**  
+يمكن اعتبار XMP (Extensible Metadata Platform) كـ "بطاقة معلومات متضمنة داخل الصورة" تُستخدم عادة لتخزين البيانات الوصفية القابلة للتحرير مثل التقييمات والكلمات الرئيسية ومعلومات حقوق النشر. على عكس EXIF الذي يسجل غالبًا إعدادات الكاميرا مثل سرعة الغالق والفتحة وISO، يركز XMP على البيانات الوصفية القابلة للوصف والتحرير من قبل المستخدم. في هيكل الملف، كلاهما يقيم في منطقة البيانات الوصفية للصورة ولكن ينتميان إلى أنظمة تسمية بيانات أو كتل بيانات مختلفة ويمكن أن يتعايشا.
+
+**أين يتم تخزين معلومات التقييم؟**  
+يكتب FlowVision التقييمات في حقل xmp:Rating داخل البيانات الوصفية للصورة. يتم تضمين هذه المعلومات عادةً داخل قسم البيانات الوصفية لملف الصورة، على سبيل المثال في جزء البيانات الوصفية لملفات JPEG أو في الحاويات المناسبة للبيانات الوصفية لصيغ PNG وTIFF وHEIF وRAW، بدلاً من تخزينها بشكل منفصل كسجل قاعدة بيانات أو بيانات وصفية لنظام الملفات.
+
+**ماذا يعني "بدون تقييم"؟**  
+عند اختيارك "بدون تقييم"، يقوم FlowVision بإزالة حقل xmp:Rating (لا يكتب قيمة 0). هذا يشير إلى أن الصورة ليس لديها تقييم مُعين حاليًا.
+
+**ملاحظات هامة**  
+يتضمن إعداد أو إزالة تقييم كتابة للملف. بعد الكتابة، سيتم عادةً تحديث تاريخ تعديل الملف، وقد يتغير حجم الملف قليلاً أيضًا نظرًا لإعادة كتابة البيانات الوصفية. إذا كنت تعتمد على وقت التعديل للمزامنة أو النسخ الاحتياطي أو الفرز، من المستحسن فهم هذا التأثير قبل إجراء تقييمات بشكل دفعي.</string>
+	<key>raw-use-embeded-info</key>
+	<string>عند تفعيل هذا الخيار، استخدم الصورة المصغرة المدمجة في Exif بدلاً من عرض RAW الأصلي. تأتي ملفات RAW عادةً مع صور مصغرة عالية الجودة لـExif لواجهة معاينة الكاميرا، وهي صور غير أصلية تم تصحيحها ومعالجتها بواسطة برنامج الكاميرا المدمج. باستخدام هذه الصور المصغرة، يمكن للبرنامج تحسين أوقات التحميل بشكل كبير.</string>
+	<key>recognize-OCR</key>
+	<string>التعرف على النص</string>
+	<key>recognize-QRCode</key>
+	<string>التعرف على رمز الاستجابة السريعة</string>
+	<key>recursive-mode-info</key>
+	<string>بمجرد تفعيل "وضع التصفح التكراري" سيعرض منطقة الصور المصغرة جميع الملفات داخل المجلد ومجلداته الفرعية. عند تحديد "تضمين المجلدات"، ستُعرض جميع المجلدات الفرعية نفسها أيضًا.
+
+قد يتسبب مسح بعض الدلائل النظامية أو محركات الشبكة في تأخر البرنامج.
+
+بالإضافة إلى ذلك، في هذا الوضع، لن تقوم التطبيقات بمراقبة تغييرات نظام الملفات، لذا في حال وجود تعديلات خارجية (مثل التحرير أو الحذف)، يُرجى التحديث يدويًا. بالنسبة للتغييرات داخل التطبيق، لضمان استمرارية التشغيل، لن يحدث التحديث التلقائي إذا كان هناك العديد من الصور في العرض؛ يُرجى التحديث يدويًا.</string>
+	<key>recursive-mode-nodirection</key>
+	<string>في الوضع التكراري، لا يمكن تنفيذ الإجراء للعثور على المجلد التالي/السابق.</string>
+	<key>renaming-conflict</key>
+	<string>يوجد بالفعل ملف بهذا الاسم. الرجاء اختيار اسم آخر.</string>
+	<key>save-to-custom-profile</key>
+	<string>حفظ في الملف الشخصي المخصص %@</string>
+	<key>scan-enhanced-index-info</key>
+	<string>قيد الانتظار</string>
+	<key>scanned-files</key>
+	<string>حاليًا تم فحص %d ملفات، بما في ذلك %d صور و%d مقاطع فيديو. هل ترغب في المتابعة؟</string>
+	<key>search-help</key>
+	<string>**تصفية المحتوى**  
+يقوم زر "تطبيق التصفية" بتصفية محتويات الدليل الحالي، ويعرض فقط العناصر التي تطابق معايير البحث. لاستعادة العرض الأصلي، قم بمسح معايير البحث وانقر على هذا الزر مرة أخرى، أو انقر على أيقونة البحث في شريط الأدوات.
+
+**البحث في المجلدات الفرعية**  
+للبحث عن الملفات في الأدلة الفرعية، قم أولاً بتمكين "وضع التصفح المتكرر".
+
+**ما هي التعبيرات العادية؟**  
+التعبيرات العادية (regex) هي أنماط تُستخدم لمطابقة تركيبات الأحرف داخل السلاسل. إنها أداة قوية لمعالجة النصوص تُستخدم على نطاق واسع في مهام مثل البحث والاستبدال وتحليل النصوص.  
+على سبيل المثال:  
+^2024 يمكن أن يطابق الملفات التي تبدأ بـ '2024';  
+.*modified\.[^.]+$ يمكن أن يطابق الملفات التي تنتهي بـ 'modified' (بغض النظر عن الامتداد);  
+.*\.jpg$ يمكن أن يطابق الملفات ذات الامتداد '.jpg'.
+
+**البحث المتقدم**  
+في "وضع التصفح المتكرر"، يمكنك استخدام خيار "استخدام المسار الكامل" ودمجه مع التعبيرات العادية لإجراء عمليات بحث متقدمة.  
+على سبيل المثال، بالنظر إلى مسار ملف كامل مثل:  
+/Users/Alice/Pictures/20220101/mypick/001.jpg  
+يمكنك استخدام التعبير العادي:  
+^.*\/[^\/]*pick[^\/]*\/[^\/]+$  
+لمطابقة جميع الملفات التي تحتوي أسماء أدلة الوالدين الخاصة بها على "pick". للحصول على أنماط regex أكثر تعقيدًا، يمكنك استخدام نماذج اللغة الكبيرة للمساعدة في كتابتها.</string>
+	<key>sort-addDateA</key>
+	<string>الترتيب حسب تاريخ الإضافة</string>
+	<key>sort-addDateZ</key>
+	<string>الترتيب حسب تاريخ الإضافة (تنازلي)</string>
+	<key>sort-createDateA</key>
+	<string>الترتيب حسب تاريخ الإنشاء</string>
+	<key>sort-createDateZ</key>
+	<string>الترتيب حسب تاريخ الإنشاء (تنازلي)</string>
+	<key>sort-exif-local-warning</key>
+	<string>يتطلب الفرز بواسطة معلومات Exif قراءة رؤوس جميع الملفات، مما قد يؤدي إلى بطء في سرعة التحميل. على سبيل المثال، سرعة قراءة مرجعية لمعلومات ملفات الفيديو هي حوالي 10 ملفاً في الثانية.
+
+الدليل الحالي يحتوي على %d من الصور أو الفيديوهات مع وقت تحميل أقصى متوقع يبلغ %d ثانية. هل أنت متأكد أنك تريد المتابعة؟</string>
+	<key>sort-exif-network-warning</key>
+	<string>يتطلب الفرز بواسطة معلومات Exif قراءة رؤوس جميع الملفات، مما قد يؤدي إلى بطء في سرعة التحميل. على سبيل المثال، تكون سرعة القراءة المرجعية على قرص شبكة SMB حوالي 10 ملفًا في الثانية.
+
+يقع الدليل الحالي على محرك خارجي ويحتوي على %d صور أو فيديوهات، مع تقدير أقصى لوقت التحميل يبلغ %d ثانية. هل أنت متأكد أنك تريد المتابعة؟</string>
+	<key>sort-exifDateA</key>
+	<string>الترتيب حسب تاريخ Exif</string>
+	<key>sort-exifDateZ</key>
+	<string>الترتيب حسب تاريخ Exif (تنازلي)</string>
+	<key>sort-exifPixelA</key>
+	<string>الترتيب حسب حجم بكسل Exif</string>
+	<key>sort-exifPixelZ</key>
+	<string>الترتيب حسب حجم بكسل Exif (تنازلي)</string>
+	<key>sort-extA</key>
+	<string>الفرز حسب نوع الملف</string>
+	<key>sort-extZ</key>
+	<string>الفرز حسب نوع الملف (تنازلي)</string>
+	<key>sort-label-date</key>
+	<string>تاريخ</string>
+	<key>sort-label-exifDate</key>
+	<string>تاريخ Exif</string>
+	<key>sort-label-exifPixel</key>
+	<string>ExifPixel</string>
+	<key>sort-label-ext</key>
+	<string>اكتب</string>
+	<key>sort-label-name</key>
+	<string>الاسم</string>
+	<key>sort-label-random</key>
+	<string>عشوائي</string>
+	<key>sort-label-size</key>
+	<string>الحجم</string>
+	<key>sort-modDateA</key>
+	<string>الترتيب حسب تاريخ التعديل</string>
+	<key>sort-modDateZ</key>
+	<string>الترتيب حسب تاريخ التعديل (تنازلي)</string>
+	<key>sort-pathA</key>
+	<string>الترتيب حسب اسم الملف</string>
+	<key>sort-pathZ</key>
+	<string>الترتيب حسب اسم الملف (تنازلي)</string>
+	<key>sort-random</key>
+	<string>فرز عشوائيًا</string>
+	<key>sort-readme</key>
+	<string>يعني "الفرز حسب المسار الكامل في وضع التجميع" أنه في وضع التكراري أو عند العمل مع مجموعات العلامات، إذا كان لملفين المسارات التالية بالنسبة للدليل الحالي:
+./AAA/2.jpg
+./BBB/1.jpg
+فإن 2.jpg سيأتي أولاً عند الفرز حسب المسار الكامل، بينما 1.jpg سيأتي أولاً عند الفرز حسب اسم الملف.
+
+عند الفرز وفقًا لمعلومات Exif، يجب قراءة رأس كل ملف، مما قد يؤدي إلى سرعات تحميل أبطأ. على سبيل المثال، على محرك شبكة SMB أو مع ملفات الفيديو، يكون معدل القراءة النموذجي حوالي 10 ملفات في الثانية.</string>
+	<key>sort-sizeA</key>
+	<string>الترتيب حسب حجم الملف</string>
+	<key>sort-sizeZ</key>
+	<string>الترتيب حسب حجم الملف (تنازلي)</string>
+	<key>statistic-content</key>
+	<string>عدد المجلدات: %d
+عدد الملفات: %d
+عدد الصور: %d
+عدد مقاطع الفيديو: %d
+الإجمالي: %@</string>
+	<key>switch-to-custom-profile</key>
+	<string>الانتقال إلى الملف الشخصي المُخصص %@</string>
+	<key>switchToActualSize</key>
+	<string>حجم الصورة الفعلي الافتراضي</string>
+	<key>switchToDarkMode</key>
+	<string>الوضع الداكن</string>
+	<key>switchToFitToWindow</key>
+	<string>تلقائي ملاءمة الصورة للنافذة</string>
+	<key>switchToLightMode</key>
+	<string>الوضع الفاتح</string>
+	<key>switchToSystemTheme</key>
+	<string>تتبع النظام</string>
+	<key>up-folder</key>
+	<string>المجلد المغلق</string>
+	<key>video-dimensions</key>
+	<string>الأبعاد</string>
+	<key>video-play-info</key>
+	<string>في واجهة المشغل، يؤدي الضغط على زر الماوس الأيسر إلى إيقاف التشغيل مؤقتًا، وسحب زر الماوس الأيمن يضبط تقدم تشغيل الفيديو. يمكن لمفاتيح الأسهم اليسرى واليمنى في لوحة المفاتيح التقديم السريع والترجيع، ومع الضغط المستمر على مفتاح Cmd يمكن التنقل إطار بإطار.
+
+يدعم macOS أصالة صيغ الفيديو مثل "mp4"، "mov"، "m2ts"، "ts"، "mpeg"، "mpg"، "m4v"، و"vob". أما تنسيقات أخرى فلا تزال تحتاج إلى مشغل خارجي للتشغيل.
+
+بالنسبة للفيديوهات المشفرة بتقنية HEVC، فالمفكك المدمج في macOS يتعرف فقط على أعلام تشفير hvc1 ولا يتعرف على أعلام hev1. يمكنك استخدام FFmpeg لإجراء تحويل بدون فقدان للجودة: ffmpeg -i input.mp4 -c copy -movflags +faststart -tag:v hvc1 output.mp4.
+
+اضغط على Cmd+Shift+V لتفعيل "تشغيل الفيديوهات المرئية تلقائيًا"، مما يعني في عرض الصور المصغرة، سيتم تكرار تشغيل الفيديوهات داخل المنطقة المرئية. بالضغط على الاختصار مرة أخرى أو بالتبديل بين المجلدات ستخرج من هذا الوضع.</string>
+	<key>window-num-max</key>
+	<string>عدد النوافذ يتجاوز الحد</string>
+</dict>
+</plist>

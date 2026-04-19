@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>Página principal</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Permisos:</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>Seleccionar carpeta...</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Ocultar automáticamente la barra de herramientas</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>Haz clic en el botón para establecer esta aplicación como el programa predeterminado para formatos de imagen comunes. Para otros formatos de imagen como PSD y RAW, asócialos manualmente.</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>Cursor:</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>Asociaciones de archivos:</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Barra de herramientas:</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>Cuando esta opción está habilitada, la barra de pestañas múltiples no se puede usar
+Reinicie la aplicación para que los cambios surtan efecto</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>Sensibilidad de desplazamiento:</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Se requiere permiso de "Archivos y Carpetas" para abrir directorios y archivos. Se requiere permiso de "Automatización" para conservar la información de ubicación original al eliminar a la Papelera (sin este permiso, la función de "Restaurar" en la Papelera no funcionará).</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>Salir de la aplicación al cerrar la última ventana</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>Automático</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>Última carpeta</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>Página principal</string>
+	<key>pPv-HR-smI.title</key>
+	<string>Establecer como aplicación predeterminada</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>Reinicie la aplicación para que los cambios surtan efecto.</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>Idioma:</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>Comportamiento de cierre:</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>Comportamiento de apertura:</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>Abrir configuración de permisos</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>Ocultar cursor automáticamente en pantalla completa</string>
+</dict>
+</plist>

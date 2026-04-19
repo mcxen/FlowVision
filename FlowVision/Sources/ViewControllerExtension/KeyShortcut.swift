@@ -8,6 +8,30 @@ import Cocoa
 
 extension ViewController {
     
+    private func isPhotoFolder1CopyShortcutTriggered(characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
+        guard noModifierKey else { return false }
+        
+        let shortcut = globalVar.photoFolder1CopyShortcut.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if shortcut.isEmpty { return false }
+        
+        switch shortcut {
+        case "F1": return specialKey == .f1
+        case "F2": return specialKey == .f2
+        case "F3": return specialKey == .f3
+        case "F4": return specialKey == .f4
+        case "F5": return specialKey == .f5
+        case "F6": return specialKey == .f6
+        case "F7": return specialKey == .f7
+        case "F8": return specialKey == .f8
+        case "F9": return specialKey == .f9
+        case "F10": return specialKey == .f10
+        case "F11": return specialKey == .f11
+        case "F12": return specialKey == .f12
+        default:
+            return characters.uppercased() == shortcut
+        }
+    }
+    
     func KeyShortcutManager (event: NSEvent) -> NSEvent?
     {
         // 检查事件的窗口是否是当前窗口，如果不是、也非弹窗状态，就不处理，事件继续传递
@@ -143,6 +167,13 @@ extension ViewController {
         }
         
         if publicVar.isKeyEventEnabled {
+            // 自定义快捷键：复制到图片文件夹1
+            // Custom shortcut: copy to Photo Folder 1
+            if publicVar.isCollectionViewFirstResponder &&
+               isPhotoFolder1CopyShortcutTriggered(characters: characters, specialKey: specialKey, noModifierKey: noModifierKey) {
+                handleCopyToPhotoFolder1()
+                return nil
+            }
             
             // 检查按键是否是 "A" 键
             // Check if key is "A"
@@ -348,6 +379,16 @@ extension ViewController {
                 }
                 return nil
             }
+
+            // 检查按键是否是 Command+"E" 键（视频截图到当前文件夹）
+            // Check if key is Command+"E" (capture current video frame to current folder)
+            if characters == "e" && isOnlyCommandPressed {
+                if publicVar.isInLargeView,
+                   largeImageView.file.type == .video {
+                    handleCaptureCurrentVideoFrameToCurrentFolder()
+                    return nil
+                }
+            }
             
             // 检查按键是否是 Command+⬅️➡️ 键
             // Check if key is Command+⬅️➡️
@@ -358,6 +399,21 @@ extension ViewController {
                         largeImageView.seekVideoByFrame(direction: -1)
                     }else{
                         largeImageView.seekVideoByFrame(direction: 1)
+                    }
+                    return nil
+                }
+            }
+
+            // 检查按键是否是 Shift+⬅️➡️ 键（视频切换上/下文件）
+            // Check if key is Shift+⬅️➡️ (video switch previous/next file)
+            if (specialKey == .leftArrow || specialKey == .rightArrow) && isOnlyShiftPressed {
+                if globalVar.videoShiftArrowSwitchFile,
+                   publicVar.isInLargeView,
+                   largeImageView.file.type == .video {
+                    if specialKey == .leftArrow {
+                        previousLargeImage()
+                    } else {
+                        nextLargeImage()
                     }
                     return nil
                 }
@@ -907,17 +963,6 @@ extension ViewController {
                     return nil
                 }else{
                     adjustThumbSizeByDirection(direction: 0)
-                    return nil
-                }
-            }
-            
-            // 检查按键是否是 "N" 键
-            // Check if key is "N"
-            if characters == "n" && noModifierKey {
-                // 如果焦点在CollectionView
-                // If focus is in CollectionView
-                if publicVar.isCollectionViewFirstResponder{
-                    handleCopyToDownload()
                     return nil
                 }
             }

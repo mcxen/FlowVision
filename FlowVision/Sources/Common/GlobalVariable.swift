@@ -104,6 +104,10 @@ class GlobalVar{
     var dirTreeAutoExpand = true
     var largeImageViewShowTagsAndRating = true
     var enhancedIndexEnabled = true
+    var photoFolder1Path: String = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first?.path ?? homeDirectory
+    var photoFolder1CopyShortcut: String = "N"
+    var quickRenameRule: String = "{folder}_{index}"
+    var videoShiftArrowSwitchFile = true
     
     // 可记忆设置变量
     // Rememberable settings variables
@@ -206,4 +210,3 @@ func getSystemVolumeName() -> String? {
         return nil
     }
 }
-

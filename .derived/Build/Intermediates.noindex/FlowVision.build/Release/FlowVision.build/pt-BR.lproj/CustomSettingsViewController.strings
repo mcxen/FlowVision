@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>Miniatura:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>Preto em Tela Cheia</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>Buscar:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Opções ao usar Cmd + F para busca, somente efetivas no modo de correspondência normal.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Excluir Diretório:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>Manter Estado:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>Para chinês use iniciais Pinyin para pesquisa</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>Miniaturas de Pasta Empilhadas em Vez de Lado a Lado</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Navegação em Loop</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>Fundo:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>Como o macOS suporta nativamente apenas formatos de vídeo como "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" e "vob", outros formatos ainda precisam ser reproduzidos usando um player externo.</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>Clique nas Bordas para Alternar Imagens</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>Manter estado recursivo e de filtro ao trocar de diretórios</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>Preto em Tela Cheia</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Visualização de Imagem:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>Role a roda do mouse para ampliar em vez de alternar imagens</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>Preto</string>
+	<key>UCD-KL-13f.title</key>
+	<string>Plano de fundo:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>Vidro</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>Para diretórios na lista de exclusão, as imagens dentro deles não serão usadas ao gerar miniaturas para eles mesmos ou suas pastas principais.</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>Miniatura Aleatória da Pasta</string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>Visualização do vídeo:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>Vidro</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>Para Chinês Use Pinyin Completo para Pesquisa</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>Usar reprodutor de vídeo interno</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>Preto</string>
+</dict>
+</plist>

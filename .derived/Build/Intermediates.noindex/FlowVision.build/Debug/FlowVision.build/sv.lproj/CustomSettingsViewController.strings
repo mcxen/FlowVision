@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>5e8-7g-fZU.title</key>
+	<string>Miniatyr:</string>
+	<key>6Ac-mJ-ewA.title</key>
+	<string>Svart i fullskärm</string>
+	<key>6Lz-fa-9PG.title</key>
+	<string>Sök:</string>
+	<key>7DQ-m2-6si.title</key>
+	<string>Alternativ när du använder Cmd + F för sökning, endast effektivt i normalt matchningsläge.</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>Uteslut katalog:</string>
+	<key>AIL-Oh-a8t.title</key>
+	<string>Bibehåll tillstånd:</string>
+	<key>Apw-rY-geq.title</key>
+	<string>För kinesiska använd pinyin-initialer för sökning</string>
+	<key>Bue-hM-I6g.title</key>
+	<string>Mappminiatyrer staplade istället för sida vid sida</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>Loopbläddring</string>
+	<key>EH7-uQ-m4z.title</key>
+	<string>Bakgrund:</string>
+	<key>Jbl-Lw-mRw.title</key>
+	<string>Eftersom macOS inbyggt endast stödjer videoformat som "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" och "vob", behöver andra format fortfarande spelas upp med en extern spelare</string>
+	<key>KUU-ge-HUE.title</key>
+	<string>
+
+
+
+
+</string>
+	<key>LhC-eA-T51.title</key>
+	<string>Klicka på kanterna för att byta bilder</string>
+	<key>Mne-y2-Qd1.title</key>
+	<string>Behåll rekursivt och filtertillstånd vid byte av kataloger</string>
+	<key>Nbp-B1-O0u.title</key>
+	<string>Svart i helskärm</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>Bildvy:</string>
+	<key>Qaf-Kv-J4c.title</key>
+	<string>Rulla mushjulet för att zooma istället för att byta bilder</string>
+	<key>R9S-O7-fTS.title</key>
+	<string>Svart</string>
+	<key>UCD-KL-13f.title</key>
+	<string>Bakgrund:</string>
+	<key>VzX-hy-erv.title</key>
+	<string>Glas</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>För kataloger i exkluderingslistan kommer bilder i dessa inte att användas vid generering av miniatyrer för dem själva eller deras överordnade mappar.</string>
+	<key>j7K-4t-OSf.title</key>
+	<string>Slumpmässig Mappminiatyr </string>
+	<key>pgf-uX-6Yv.title</key>
+	<string>Videovy:</string>
+	<key>sUH-oK-7AD.title</key>
+	<string>Glas</string>
+	<key>yBn-Nt-UPF.title</key>
+	<string>För kinesiska använd hela pinyin för sökning</string>
+	<key>zOi-UL-JWi.title</key>
+	<string>Använd intern videospelare</string>
+	<key>zfm-X4-cgj.title</key>
+	<string>Svart</string>
+</dict>
+</plist>

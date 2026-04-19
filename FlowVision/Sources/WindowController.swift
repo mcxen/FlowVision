@@ -307,6 +307,7 @@ extension NSToolbarItem.Identifier {
     static let more = NSToolbarItem.Identifier("com.example.more")
     static let favorites = NSToolbarItem.Identifier("com.example.favorites")
     static let thumbSize = NSToolbarItem.Identifier("com.example.thumbSize")
+    static let quickRename = NSToolbarItem.Identifier("com.example.quickRename")
     static let isRecursiveMode = NSToolbarItem.Identifier("com.example.isRecursiveMode")
     static let isSearchFilterOn = NSToolbarItem.Identifier("com.example.isSearchFilterOn")
     static let isTagFilterOn = NSToolbarItem.Identifier("com.example.isTagFilterOn")
@@ -377,6 +378,7 @@ extension WindowController: NSToolbarDelegate {
                 }
                 identifiers.append(.viewToggle)
                 identifiers.append(.thumbSize)
+                identifiers.append(.quickRename)
                 identifiers.append(.sort)
             }
         }
@@ -798,6 +800,15 @@ extension WindowController: NSToolbarDelegate {
             toolbarItem.view = button
             toolbarItem.label = NSLocalizedString("Thumbnail Size", comment: "缩略图大小")
             toolbarItem.paletteLabel = NSLocalizedString("Thumbnail Size", comment: "缩略图大小")
+            toolbarItem.visibilityPriority = .low
+            
+        case .quickRename:
+            let button = NSButton(title: "", image: NSImage(systemSymbolName: "textformat.123", accessibilityDescription: "")!, target: self, action: #selector(quickRenameAction(_:)))
+            setButtonStyle(button)
+            button.toolTip = NSLocalizedString("Quick Rename", comment: "快速重命名")
+            toolbarItem.view = button
+            toolbarItem.label = NSLocalizedString("Quick Rename", comment: "快速重命名")
+            toolbarItem.paletteLabel = NSLocalizedString("Quick Rename", comment: "快速重命名")
             toolbarItem.visibilityPriority = .low
             
         case .isAutoPlayVisibleVideo:
@@ -1286,6 +1297,11 @@ extension WindowController: NSToolbarDelegate {
         guard let thumbSize = sender.representedObject as? Int else { return }
         guard let viewController = contentViewController as? ViewController else {return}
         viewController.changeThumbSize(thumbSize: thumbSize)
+    }
+    
+    @objc func quickRenameAction(_ sender: Any?) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        _ = viewController.handleQuickRenameInCurrentFolder()
     }
     
     @objc func showMoreMenu(_ sender: Any?) {

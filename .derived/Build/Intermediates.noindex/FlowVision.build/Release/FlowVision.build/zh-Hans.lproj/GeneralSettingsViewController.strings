@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>6dV-cD-yRh.title</key>
+	<string>主页</string>
+	<key>7aF-tg-6Qj.title</key>
+	<string>权限设置：</string>
+	<key>BFV-85-Ue3.title</key>
+	<string>选择目录…</string>
+	<key>EBi-bb-P2R.title</key>
+	<string>自动隐藏工具栏</string>
+	<key>NOF-sJ-b0B.title</key>
+	<string>点击按钮将此应用设置为常见图像格式的默认程序。其它图像格式例如PSD和RAW等请手动关联。</string>
+	<key>NRe-qh-vzH.title</key>
+	<string>鼠标指针：</string>
+	<key>PZ6-Ug-5uU.title</key>
+	<string>文件关联：</string>
+	<key>QHt-c1-9Ji.title</key>
+	<string>工具栏：</string>
+	<key>QqU-Xz-7dB.title</key>
+	<string>启用此选项时不能使用多标签页栏。重启应用以使更改生效。</string>
+	<key>Uce-9P-gQt.title</key>
+	<string>滚动灵敏度：</string>
+	<key>Z13-dJ-JBv.title</key>
+	<string>需要“文件和文件夹”权限以打开目录和文件。
+需要“自动化”权限以支持删除到废纸篓时保留原位置信息（不授予时无法在废纸篓使用“还原到原位置”功能）。</string>
+	<key>dB2-6s-xY8.title</key>
+	<string>关闭最后一个窗口时退出程序</string>
+	<key>hGF-9Y-ejC.title</key>
+	<string>Auto</string>
+	<key>mMX-oZ-Z7y.title</key>
+	<string>上次的目录</string>
+	<key>nKY-fu-OXx.title</key>
+	<string>主页</string>
+	<key>pPv-HR-smI.title</key>
+	<string>设为默认应用</string>
+	<key>qe3-7u-Trn.title</key>
+	<string>重启应用以使更改生效。</string>
+	<key>s9c-vd-E8g.title</key>
+	<string>界面语言：</string>
+	<key>uKy-ok-dDi.title</key>
+	<string>关闭行为：</string>
+	<key>uga-eQ-cEz.title</key>
+	<string>打开行为：</string>
+	<key>x5i-CI-gSv.title</key>
+	<string>打开权限设置</string>
+	<key>xbd-RA-zT3.title</key>
+	<string>全屏时自动隐藏光标</string>
+</dict>
+</plist>

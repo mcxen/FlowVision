@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>(Multiselect)</key>
+	<string>Nuova cartella con selezione (%d elementi)</string>
+	<key>A-B Loop</key>
+	<string>Loop A-B</string>
+	<key>A-B Loop Active</key>
+	<string>Ciclo A-B attivo</string>
+	<key>A-B Loop Cancel</key>
+	<string>Annulla Ciclo A-B</string>
+	<key>A-B Loop: A</key>
+	<string>Loop A-B: A</string>
+	<key>A-B Loop: A Greater than B</key>
+	<string>Loop A-B: A maggiore di B</string>
+	<key>A-B Loop: B</key>
+	<string>Loop A-B: B</string>
+	<key>Actions</key>
+	<string>Azioni</string>
+	<key>Add</key>
+	<string>Aggiungi</string>
+	<key>Add Current Folder</key>
+	<string>Aggiungi cartella corrente</string>
+	<key>Add Separator</key>
+	<string>Aggiungi separatore</string>
+	<key>Adjust Window to Actual Image Size</key>
+	<string>Adatta la finestra alla dimensione reale dell'immagine</string>
+	<key>Adjust Window to Current Image Size</key>
+	<string>Adatta finestra alla dimensione attuale dell'immagine</string>
+	<key>Advanced</key>
+	<string>Avanzate</string>
+	<key>Alias Type</key>
+	<string>Tipo di alias</string>
+	<key>Always Generate HD Thumbnails</key>
+	<string>Genera sempre miniature HD</string>
+	<key>Always Generate Standard Thumbnails</key>
+	<string>Genera sempre miniature standard</string>
+	<key>Apply Filter</key>
+	<string>Applica filtro</string>
+	<key>Apply to all</key>
+	<string>Applica a tutti</string>
+	<key>Are you sure you want to move xxx to xxx?</key>
+	<string>Sei sicuro di voler spostare "%1$@" in "%2$@"?</string>
+	<key>Arrow</key>
+	<string>Freccia</string>
+	<key>AudioMetadata-BitRate</key>
+	<string>Velocità in bit</string>
+	<key>AudioMetadata-ChannelLayout</key>
+	<string>Disposizione canali</string>
+	<key>AudioMetadata-Channels</key>
+	<string>Canali</string>
+	<key>AudioMetadata-CodecLongName</key>
+	<string>Nome completo del codec</string>
+	<key>AudioMetadata-CodecName</key>
+	<string>Nome codec</string>
+	<key>AudioMetadata-Index</key>
+	<string>Indice</string>
+	<key>AudioMetadata-Language</key>
+	<string>Lingua</string>
+	<key>AudioMetadata-SampleRate</key>
+	<string>Frequenza di campionamento</string>
+	<key>AudioMetadata-StreamTitle</key>
+	<string>Titolo del flusso</string>
+	<key>Auto</key>
+	<string>Auto</string>
+	<key>Auto Play Selected Video</key>
+	<string>Riproduci automaticamente il video selezionato</string>
+	<key>Auto Play Visible Video</key>
+	<string>Riproduzione automatica del video visibile</string>
+	<key>Auto Rename</key>
+	<string>Rinomina automaticamente</string>
+	<key>Border Thickness</key>
+	<string>Spessore bordo</string>
+	<key>Cancel</key>
+	<string>Annulla</string>
+	<key>Cancel Auto Play Visible Video</key>
+	<string>Annulla la riproduzione automatica del video visibile</string>
+	<key>Cancel Filter</key>
+	<string>Annulla filtro</string>
+	<key>Case Sensitive</key>
+	<string>Distingui maiuscole e minuscole</string>
+	<key>Cell Padding</key>
+	<string>Padding celle</string>
+	<key>Center the Window</key>
+	<string>Centra la finestra</string>
+	<key>Choose a file or folder</key>
+	<string>Scegli un file o una cartella</string>
+	<key>Clear</key>
+	<string>Annulla</string>
+	<key>Close (Double Click)</key>
+	<string>Chiudi (Doppio clic)</string>
+	<key>Close Other Tabs</key>
+	<string>Chiudi altre schede</string>
+	<key>Close Tab</key>
+	<string>Chiudi scheda</string>
+	<key>Continue</key>
+	<string>Continua</string>
+	<key>Copy</key>
+	<string>Copia</string>
+	<key>Copy Path</key>
+	<string>Copia percorso</string>
+	<key>Corner Radius</key>
+	<string>Raggio angolare</string>
+	<key>Custom Layout Style</key>
+	<string>Stile di Layout Personalizzato</string>
+	<key>Custom Layout Style...</key>
+	<string>Stile di layout personalizzato...</string>
+	<key>Custom Zoom Ratio...</key>
+	<string>Rapporto zoom personalizzato...</string>
+	<key>Custom Zoom Step...</key>
+	<string>Passaggio zoom personalizzato...</string>
+	<key>Date Added</key>
+	<string>Data aggiunta</string>
+	<key>Date Created</key>
+	<string>Data di creazione</string>
+	<key>Date Modified</key>
+	<string>Data di modifica</string>
+	<key>Default Thumbnail Size</key>
+	<string>Dimensione predefinita della miniatura</string>
+	<key>Delete</key>
+	<string>Elimina</string>
+	<key>Demo</key>
+	<string>Demo</string>
+	<key>Directory does not exist</key>
+	<string>La directory non esiste</string>
+	<key>Disable Automatic Play</key>
+	<string>Disabilita riproduzione automatica</string>
+	<key>Disable Automatic Scroll</key>
+	<string>Disabilita scorrimento automatico</string>
+	<key>Edit Mode</key>
+	<string>Modalità di modifica </string>
+	<key>Ellipse</key>
+	<string>Ellisse</string>
+	<key>Empty</key>
+	<string>Vuoto</string>
+	<key>Enable Automatic Play</key>
+	<string>Abilita riproduzione automatica</string>
+	<key>Enable Automatic Scroll</key>
+	<string>Abilita Scorrimento Automatico</string>
+	<key>Enable HDR</key>
+	<string>Abilita HDR</string>
+	<key>Enable Recursive Mode</key>
+	<string>Abilita modalità ricorsiva</string>
+	<key>Enlarge the Thumbnails</key>
+	<string>Ingrandisci le miniature</string>
+	<key>Enter Full Screen</key>
+	<string>Entra a schermo intero</string>
+	<key>Enter the auto play interval in seconds:</key>
+	<string>Inserisci l'intervallo di riproduzione automatica in secondi:</string>
+	<key>Enter the scroll speed in pixels per second:</key>
+	<string>Inserisci la velocità di scorrimento in pixel al secondo:</string>
+	<key>Eraser</key>
+	<string>Gomma</string>
+	<key>Error</key>
+	<string>Errore</string>
+	<key>Exif-ApertureValue</key>
+	<string>Valore di apertura</string>
+	<key>Exif-Artist</key>
+	<string>Artista</string>
+	<key>Exif-CameraMaker</key>
+	<string>Marca</string>
+	<key>Exif-CameraModel</key>
+	<string>Modello Fotocamera</string>
+	<key>Exif-ColorModel</key>
+	<string>Modello di colore</string>
+	<key>Exif-DateTimeDigitized</key>
+	<string>Data e ora di digitalizzazione</string>
+	<key>Exif-DateTimeOriginal</key>
+	<string>Data e ora di scatto</string>
+	<key>Exif-Depth</key>
+	<string>Profondità</string>
+	<key>Exif-ExposureTime</key>
+	<string>Tempo di esposizione</string>
+	<key>Exif-FNumber</key>
+	<string>Numero F</string>
+	<key>Exif-FileAddedTime</key>
+	<string>Ora di aggiunta del file</string>
+	<key>Exif-FileCreatedTime</key>
+	<string>Orario di creazione del file</string>
+	<key>Exif-FileModifiedTime</key>
+	<string>Ora di Modifica del File</string>
+	<key>Exif-FileSize</key>
+	<string>Dimensione file</string>
+	<key>Exif-Flash</key>
+	<string>Flash</string>
+	<key>Exif-Flash-Off</key>
+	<string>Spento</string>
+	<key>Exif-Flash-On</key>
+	<string>Acceso</string>
+	<key>Exif-FocalLength</key>
+	<string>Lunghezza focale</string>
+	<key>Exif-GPSAltitude</key>
+	<string>Altitudine GPS</string>
+	<key>Exif-GPSLatitude</key>
+	<string>Latitudine GPS</string>
+	<key>Exif-GPSLongitude</key>
+	<string>Longitudine GPS</string>
+	<key>Exif-ISOSpeedRatings</key>
+	<string>Valori ISO</string>
+	<key>Exif-LensModel</key>
+	<string>Modello obiettivo</string>
+	<key>Exif-ProfileName</key>
+	<string>Nome profilo</string>
+	<key>Exif-Rating</key>
+	<string>Valutazione</string>
+	<key>Exif-Resolution</key>
+	<string>Risoluzione</string>
+	<key>Exif-Software</key>
+	<string>Software</string>
+	<key>Exif-TIFFDateTime</key>
+	<string>Ora e data TIFF</string>
+	<key>Exit Edit Mode</key>
+	<string>Esci dalla modalità di modifica</string>
+	<key>Exit Full Screen</key>
+	<string>Esci dalla modalità a schermo intero</string>
+	<key>Exit Recursive Mode</key>
+	<string>Esci dalla modalità ricorsiva</string>
+	<key>Failed to set this app as the default for some file types:
+</key>
+	<string>Impossibile impostare questa app come predefinita per alcuni tipi di file:</string>
+	<key>Favorites</key>
+	<string>Preferiti</string>
+	<key>File Already Exists</key>
+	<string>Il file esiste già</string>
+	<key>File Info</key>
+	<string>Informazioni file</string>
+	<key>File Path</key>
+	<string>Percorso del file</string>
+	<key>Filename</key>
+	<string>Nome file</string>
+	<key>Filename Font Size</key>
+	<string>Dimensione carattere nome file</string>
+	<key>Filter</key>
+	<string>Filtro</string>
+	<key>Filter by Finder Tag</key>
+	<string>Filtra per etichetta Finder</string>
+	<key>Filter by Rating</key>
+	<string>Filtra per valutazione</string>
+	<key>Finder Alias</key>
+	<string>Alias Finder</string>
+	<key>Finder Tags</key>
+	<string>Tag del Finder</string>
+	<key>Folder</key>
+	<string>Cartella</string>
+	<key>Folders</key>
+	<string>Cartelle</string>
+	<key>Follow Current Folder</key>
+	<string>Segui la cartella corrente</string>
+	<key>General</key>
+	<string>Generale</string>
+	<key>Go Back</key>
+	<string>Torna indietro</string>
+	<key>Go Forward</key>
+	<string>Vai Avanti</string>
+	<key>Go To</key>
+	<string>Vai a</string>
+	<key>Grid View</key>
+	<string>Vista griglia</string>
+	<key>Have Reached the First</key>
+	<string>Hai Raggiunto la Prima</string>
+	<key>Have Reached the Last</key>
+	<string>Hai raggiunto l'ultima</string>
+	<key>Highlighter</key>
+	<string>Evidenziatore</string>
+	<key>Image</key>
+	<string>Immagine</string>
+	<key>Images</key>
+	<string>Immagini</string>
+	<key>Include Folders</key>
+	<string>Includi cartelle</string>
+	<key>Info</key>
+	<string>Info</string>
+	<key>Invalid current path</key>
+	<string>Percorso corrente non valido</string>
+	<key>Invalid input, please enter a positive number</key>
+	<string>Input non valido, inserisci un numero positivo</string>
+	<key>Invalid relative path</key>
+	<string>Percorso relativo non valido</string>
+	<key>Justified View</key>
+	<string>Visualizzazione giustificata</string>
+	<key>Learn More...</key>
+	<string>Scopri di più...</string>
+	<key>Line Space Adjustment</key>
+	<string>Regolazione dello spazio tra le righe</string>
+	<key>Loading...</key>
+	<string>Caricamento in corso...</string>
+	<key>Location</key>
+	<string>Posizione</string>
+	<key>Lock Mirror</key>
+	<string>Blocca Specchio</string>
+	<key>Lock Rotation</key>
+	<string>Blocca rotazione</string>
+	<key>Lock Zoom</key>
+	<string>Blocca Zoom</string>
+	<key>Match All (AND)</key>
+	<string>Corrispondenza totale (AND)</string>
+	<key>Match Any (OR)</key>
+	<string>Corrispondenza qualsiasi (OR)</string>
+	<key>Maximize Window</key>
+	<string>Massimizza finestra</string>
+	<key>Merge All Windows</key>
+	<string>Unisci tutte le finestre</string>
+	<key>Mirror Flip</key>
+	<string>Ribalta Specchio</string>
+	<key>More</key>
+	<string>Altro</string>
+	<key>Move Down</key>
+	<string>Sposta giù</string>
+	<key>Move Here</key>
+	<string>Sposta qui</string>
+	<key>Move Items</key>
+	<string>Sposta elementi</string>
+	<key>Move Up</key>
+	<string>Sposta su</string>
+	<key>Move to Trash</key>
+	<string>Sposta nel Cestino</string>
+	<key>Name</key>
+	<string>Nome</string>
+	<key>New</key>
+	<string>Nuovo</string>
+	<key>New Folder</key>
+	<string>Nuova Cartella</string>
+	<key>New Tab</key>
+	<string>Nuova scheda</string>
+	<key>New Tag</key>
+	<string>Nuovo tag</string>
+	<key>New Text File</key>
+	<string>Crea nuovo file di testo</string>
+	<key>New name for</key>
+	<string>Nuovo nome per</string>
+	<key>No Color</key>
+	<string>Nessun colore</string>
+	<key>No Rating</key>
+	<string>Nessuna valutazione</string>
+	<key>Non-Grid View</key>
+	<string>Visualizzazione non a griglia</string>
+	<key>Not Include Folders</key>
+	<string>Non includere cartelle</string>
+	<key>Not Show All Types of Files</key>
+	<string>Non mostrare tutti i tipi di file</string>
+	<key>Not Show Hidden Files</key>
+	<string>Non mostrare i file nascosti</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>Only images can be edited</key>
+	<string>Solo le immagini possono essere modificate</string>
+	<key>Open</key>
+	<string>Apri</string>
+	<key>Open With</key>
+	<string>Apri con</string>
+	<key>Open in Finder</key>
+	<string>Apri in Finder</string>
+	<key>Open in Map</key>
+	<string>Apri nella mappa</string>
+	<key>Open in New Tab</key>
+	<string>Apri in una nuova scheda</string>
+	<key>Open in Terminal</key>
+	<string>Apri nel terminale</string>
+	<key>Open with External Player</key>
+	<string>Apri con lettore esterno</string>
+	<key>Operation Logs</key>
+	<string>Registri delle operazioni</string>
+	<key>Original Path</key>
+	<string>Percorso originale</string>
+	<key>Other</key>
+	<string>Altro</string>
+	<key>Others</key>
+	<string>Altri</string>
+	<key>Paste</key>
+	<string>Incolla</string>
+	<key>Path does not exist</key>
+	<string>Il percorso non esiste</string>
+	<key>Pen</key>
+	<string>Penna</string>
+	<key>Pin Window</key>
+	<string>Fissa finestra</string>
+	<key>Pin Window to Top</key>
+	<string>Fissa finestra in alto</string>
+	<key>Please select a specific tag</key>
+	<string>Seleziona un tag specifico</string>
+	<key>Portable Browsing Mode</key>
+	<string>Modalità di Navigazione Portatile</string>
+	<key>Portable Mode: Off</key>
+	<string>Modalità Portatile: Disattivata</string>
+	<key>Portable Mode: On</key>
+	<string>Modalità portatile: On</string>
+	<key>Prefer Using Embedded Thumbnails</key>
+	<string>Preferire l'uso delle miniature incorporate</string>
+	<key>Quick Search</key>
+	<string>Ricerca rapida</string>
+	<key>RAW Uses Exif Embedded Thumbnail</key>
+	<string>RAW usa la miniatura incorporata Exif</string>
+	<key>Rating</key>
+	<string>Valutazione</string>
+	<key>Readme...</key>
+	<string>Leggimi...</string>
+	<key>Rectangle</key>
+	<string>Rettangolo</string>
+	<key>Recursive Mode</key>
+	<string>Modalità Ricorsiva</string>
+	<key>Redo</key>
+	<string>Ripeti</string>
+	<key>Reduce the Thumbnails</key>
+	<string>Riduci le miniature</string>
+	<key>Refresh</key>
+	<string>Aggiorna</string>
+	<key>Regex</key>
+	<string>Regex</string>
+	<key>Relative Path</key>
+	<string>Percorso relativo</string>
+	<key>Remember Position</key>
+	<string>Ricorda posizione</string>
+	<key>Remember Position: Disabled</key>
+	<string>Ricorda posizione: disabilitato</string>
+	<key>Remember Position: Enabled</key>
+	<string>Memorizza Posizione: Abilitato</string>
+	<key>Remove</key>
+	<string>Rimuovere</string>
+	<key>Remove All Tags</key>
+	<string>Rimuovi tutti i tag</string>
+	<key>Remove Current Folder</key>
+	<string>Rimuovi la cartella corrente</string>
+	<key>Rename</key>
+	<string>Rinomina</string>
+	<key>Render Original RAW</key>
+	<string>Esegui rendering RAW originale</string>
+	<key>Replace</key>
+	<string>Sostituisci</string>
+	<key>Reset</key>
+	<string>Ripristina</string>
+	<key>Reverse Filter</key>
+	<string>Inverti filtro</string>
+	<key>Rotate %d°</key>
+	<string>Ruota di %d°</string>
+	<key>Rotate Clockwise</key>
+	<string>Ruota in senso orario</string>
+	<key>Rotate Counterclockwise</key>
+	<string>Ruota in senso antiorario</string>
+	<key>Save</key>
+	<string>Salva</string>
+	<key>Scan &amp; Update Enhanced Index</key>
+	<string>Scansiona e aggiorna l'indice migliorato</string>
+	<key>Scan Complete</key>
+	<string>Scansione completa</string>
+	<key>Scan Prompt</key>
+	<string>Richiesta di scansione</string>
+	<key>Scanning</key>
+	<string>Scansione</string>
+	<key>Scanning...</key>
+	<string>Scansione in corso...</string>
+	<key>Search...</key>
+	<string>Cerca...</string>
+	<key>Sequential Playback</key>
+	<string>Riproduzione Sequenziale</string>
+	<key>Sequential Playback: Disabled</key>
+	<string>Riproduzione sequenziale: disabilitata</string>
+	<key>Sequential Playback: Enabled</key>
+	<string>Riproduzione sequenziale: Abilitata</string>
+	<key>Set Auto Play Interval</key>
+	<string>Imposta intervallo di riproduzione automatica</string>
+	<key>Set Scroll Speed</key>
+	<string>Imposta velocità di scorrimento</string>
+	<key>Settings...</key>
+	<string>Impostazioni...</string>
+	<key>Share...</key>
+	<string>Condividi...</string>
+	<key>Show All</key>
+	<string>Mostra tutto</string>
+	<key>Show All Types of Files</key>
+	<string>Mostra tutti i tipi di file</string>
+	<key>Show Camera RAW Files</key>
+	<string>Mostra file RAW della fotocamera</string>
+	<key>Show Exif</key>
+	<string>Mostra Exif</string>
+	<key>Show Filename</key>
+	<string>Mostra nome file</string>
+	<key>Show Finder Tags and Ratings</key>
+	<string>Mostra tag e valutazioni del Finder</string>
+	<key>Show Hidden Files</key>
+	<string>Mostra file nascosti</string>
+	<key>Show Image Files</key>
+	<string>Mostra file immagine</string>
+	<key>Show Info</key>
+	<string>Mostra informazioni</string>
+	<key>Show RAW/HDR Badge</key>
+	<string>Mostra badge RAW/HDR</string>
+	<key>Show Shadow</key>
+	<string>Mostra ombra</string>
+	<key>Show Statistics in Window Title</key>
+	<string>Mostra statistiche nel titolo della finestra</string>
+	<key>Show Tags and Ratings</key>
+	<string>Mostra tag e valutazioni</string>
+	<key>Show Video Files</key>
+	<string>Mostra file video</string>
+	<key>Show Video Metadata</key>
+	<string>Mostra i metadati video</string>
+	<key>Show in Finder</key>
+	<string>Mostra nel Finder</string>
+	<key>Show in Original Folder</key>
+	<string>Mostra nella cartella originale</string>
+	<key>Sidebar</key>
+	<string>Barra laterale</string>
+	<key>Skip</key>
+	<string>Salta</string>
+	<key>Sort</key>
+	<string>Ordina</string>
+	<key>Sort Folders First</key>
+	<string>Ordina Cartelle Prima</string>
+	<key>Sort Order</key>
+	<string>Ordine di ordinamento</string>
+	<key>Sort Using Full Path In Collection Mode</key>
+	<string>Ordina usando il percorso completo in modalità raccolta</string>
+	<key>Sort by EXIF Info</key>
+	<string>Ordina per informazioni EXIF</string>
+	<key>Statistic</key>
+	<string>Statistiche</string>
+	<key>Stop</key>
+	<string>Ferma</string>
+	<key>Success</key>
+	<string>Successo</string>
+	<key>Symbolic Link</key>
+	<string>Collegamento simbolico</string>
+	<key>Tagging</key>
+	<string>Tagging</string>
+	<key>Text File</key>
+	<string>文件 di testo</string>
+	<key>This app is now the default for all specified file types.</key>
+	<string>Questa app è ora l'app predefinita per tutti i tipi di file specificati</string>
+	<key>Thumbnail General</key>
+	<string>Miniatura Generale</string>
+	<key>Thumbnail Options</key>
+	<string>Opzioni miniature</string>
+	<key>Thumbnail Size</key>
+	<string>Dimensione della miniatura</string>
+	<key>Undo</key>
+	<string>Annulla</string>
+	<key>Unpin Window from Top</key>
+	<string>Sblocca finestra dalla parte superiore</string>
+	<key>Unsupported Video Format</key>
+	<string>Formato video non supportato</string>
+	<key>Updating Index</key>
+	<string>Aggiornamento dell'indice</string>
+	<key>Use Full Path</key>
+	<string>Usa il percorso completo</string>
+	<key>Use Full Path in Window Title</key>
+	<string>Utilizza il percorso completo nel titolo della finestra</string>
+	<key>Use Internal Video Player</key>
+	<string>Usa Lettore Video Interno</string>
+	<key>Video</key>
+	<string>Video</string>
+	<key>VideoMetadata-AvgFrameRate</key>
+	<string>Frequenza media dei fotogrammi</string>
+	<key>VideoMetadata-BitRate</key>
+	<string>Bitrate</string>
+	<key>VideoMetadata-CodecLongName</key>
+	<string>Nome completo codec</string>
+	<key>VideoMetadata-CodecName</key>
+	<string>Nome codec</string>
+	<key>VideoMetadata-ColorSpace</key>
+	<string>SpazioColore</string>
+	<key>VideoMetadata-CreationTime</key>
+	<string>Ora di creazione</string>
+	<key>VideoMetadata-Duration</key>
+	<string>Durata</string>
+	<key>VideoMetadata-EncoderSoftwareName</key>
+	<string>Nome del software di codifica</string>
+	<key>VideoMetadata-FormatName</key>
+	<string>Nome formato</string>
+	<key>VideoMetadata-Height</key>
+	<string>Altezza</string>
+	<key>VideoMetadata-Index</key>
+	<string>Indice</string>
+	<key>VideoMetadata-Level</key>
+	<string>Livello</string>
+	<key>VideoMetadata-PixelFormat</key>
+	<string>Formato pixel</string>
+	<key>VideoMetadata-Profile</key>
+	<string>Profilo</string>
+	<key>VideoMetadata-RFrameRate</key>
+	<string>Frequenza dei fotogrammi</string>
+	<key>VideoMetadata-Width</key>
+	<string>Larghezza</string>
+	<key>Videos</key>
+	<string>Video</string>
+	<key>View</key>
+	<string>Visualizza</string>
+	<key>Volume</key>
+	<string>Volume</string>
+	<key>Waterfall View</key>
+	<string>Vista a cascata</string>
+	<key>Window Title</key>
+	<string>Titolo della finestra</string>
+	<key>Zoom</key>
+	<string>Zoom</string>
+	<key>Zoom In</key>
+	<string>Ingrandire</string>
+	<key>Zoom Out</key>
+	<string>Rimpicciolisci</string>
+	<key>ask-to-delete</key>
+	<string>Sei sicuro di voler spostare questi file nel cestino?</string>
+	<key>ask-to-delete-external</key>
+	<string>Questa directory non supporta lo spostamento nel cestino. Questi elementi verranno eliminati immediatamente e questa azione non può essere annullata.</string>
+	<key>ask-to-delete-nopermission</key>
+	<string>Sei sicuro di voler spostare questi file nel cestino?
+
+Il permesso di "Automazione" non è stato concesso a questo programma. Dopo lo spostamento nel cestino, la funzione "Ripristina nella posizione originale" non può essere utilizzata.</string>
+	<key>ask-to-delete-shift</key>
+	<string>Sei sicuro di voler eliminare definitivamente questi file? Questa azione non può essere annullata.</string>
+	<key>back-folder</key>
+	<string>Indietro</string>
+	<key>cannot-copy-to-self</key>
+	<string>Non è possibile copiare un file/cartella su se stesso o nella sua sottodirectory</string>
+	<key>cannot-move-to-self</key>
+	<string>Impossibile spostare un file/cartella in se stesso o nella sua sottodirectory.</string>
+	<key>copy-lowercase</key>
+	<string>copia</string>
+	<key>copy-to-download</key>
+	<string>Copia nella cartella "Download"</string>
+	<key>do-you-want-replace</key>
+	<string>Vuoi sostituirlo con il file che stai incollando o spostando?</string>
+	<key>do-you-want-replace(move)</key>
+	<string>Vuoi sostituirlo con il file che stai spostando?</string>
+	<key>do-you-want-replace(paste)</key>
+	<string>Vuoi sostituirlo con il file che stai incollando?</string>
+	<key>empty-enclose</key>
+	<string>(Vuoto)</string>
+	<key>file-exists-continue-batch-rename</key>
+	<string>I file rinominati in batch per numero di sequenza confliggono con file esistenti, ad esempio, i nuovi nomi dei file sono a_1.jpg, a_2.jpg, a_3.jpg... ma c'è già un file chiamato a_2.jpg. Il numero di sequenza dovrebbe essere incrementato automaticamente per continuare?</string>
+	<key>file-rightmenu-get-info</key>
+	<string>Ottieni informazioni</string>
+	<key>file-rightmenu-get-statistic</key>
+	<string>Ottieni statistica</string>
+	<key>file-size</key>
+	<string>Dimensione</string>
+	<key>first-time-use-prompt</key>
+	<string>Fai doppio clic sul pulsante sinistro per chiudere. Immagine: tieni premuto il pulsante destro o sinistro e scorri la rotellina per ingrandire o ridurre. Video: tieni premuto il pulsante destro del mouse e trascina per regolare il progresso della riproduzione.</string>
+	<key>gen-thumb-info</key>
+	<string>- "Preferire l'uso di miniature incorporate" si riferisce a dare priorità all'uso delle miniature incorporate nei dati EXIF dell'immagine, che di solito hanno una risoluzione inferiore. Tuttavia, poiché è necessario leggere solo il contenuto dell'intestazione del file, può migliorare notevolmente la velocità di lettura delle immagini su un'unità di rete. Poiché la maggior parte delle immagini su Internet ha i dati EXIF rimossi per ridurre le dimensioni del file, il programma passerà quindi a "generare miniature standard."
+
+- "Generare miniature standard" si riferisce alla creazione di miniature di qualità media con una dimensione di 512×512. In questo caso, è necessario scaricare l'intero contenuto del file. (Poiché le miniature incorporate nelle immagini RAW di solito hanno una risoluzione più alta, le loro miniature incorporate sono ancora preferite in questa modalità.)
+
+- "Generare miniature ad alta definizione" comporta il rendering preciso dell'immagine nell'area della miniatura, ed è consigliabile abilitare questa opzione quando la dimensione della miniatura è maggiore del valore predefinito. A questo punto, l'immagine ri-renderizzata può consumare più memoria.
+
+Inoltre, le miniature non vengono generate per le cartelle su unità esterne per impostazione predefinita. Si prega di andare su "Impostazioni" -&gt; "Avanzate" per modificare le opzioni pertinenti.</string>
+	<key>has-exist-in-dest</key>
+	<string>Esiste già un file con il nome "%@" nella cartella di destinazione</string>
+	<key>has-same-name-files</key>
+	<string>Ha file con lo stesso nome</string>
+	<key>has-same-name-files-info</key>
+	<string>Il file sorgente contiene file con lo stesso nome. Dovrebbero essere rinominati automaticamente?
+
+Ad esempio, più file denominati abc.jpg da directory diverse verranno automaticamente rinominati in abc.jpg, abc_2.jpg, abc_3.jpg...
+
+Nota: Conferma l'impatto di questa operazione per evitare confusione.</string>
+	<key>image-dimensions</key>
+	<string>Dimensioni</string>
+	<key>input-new-folder-name</key>
+	<string>Inserisci il nome della nuova cartella: </string>
+	<key>input-new-textfile-name</key>
+	<string>Si prega di inserire il nome del file:</string>
+	<key>move-to-download</key>
+	<string>Sposta nella cartella "Download"</string>
+	<key>next-folder</key>
+	<string>Cartella successiva</string>
+	<key>next-sibling</key>
+	<string>Prossimo Sibling</string>
+	<key>next-sibling-of-parent</key>
+	<string>Prossimo Fratello del Genitore</string>
+	<key>ocr-recog-fail</key>
+	<string>La funzione OCR richiede macOS 13.0 o successivo.</string>
+	<key>open-in-new-tab-this</key>
+	<string>Apri questo in una nuova scheda</string>
+	<key>operation-logs-info</key>
+	<string>Registri delle operazioni di eliminazione, rinominazione, spostamento e incolla di file. Attualmente non c'è contenuto.</string>
+	<key>optimizeWindow</key>
+	<string>Dimensione ottimale della finestra</string>
+	<key>pan-zoom</key>
+	<string>Attiva scorrimento panoramico dopo lo zoom</string>
+	<key>pan-zoom-info</key>
+	<string>Il comportamento predefinito della rotella del mouse o dello scorrimento del touchpad è di cambiare immagini. Quando questa funzione è abilitata, dopo l'ingrandimento dell'immagine, il comportamento di scorrimento cambia in spostamento. Questo è generalmente utilizzato per visualizzare lunghe schermate o fumetti.</string>
+	<key>parent-folder</key>
+	<string>Cartella principale</string>
+	<key>portable-mode-info</key>
+	<string>In Modalità Portatile:
+ - Quando si apre un'immagine, la finestra si ridimensiona automaticamente per adattarsi alle dimensioni dell'immagine;
+ - Quando si chiude un'immagine, la finestra si ridimensiona automaticamente a una proporzione dello schermo</string>
+	<key>previous-folder</key>
+	<string>Cartella Precedente</string>
+	<key>previous-sibling</key>
+	<string>Fratello precedente</string>
+	<key>previous-sibling-of-parent</key>
+	<string>Fratello precedente del genitore</string>
+	<key>qrcode-recog-fail</key>
+	<string>Impossibile riconoscere il codice QR</string>
+	<key>qrcode-recog-result</key>
+	<string>Risultato Riconoscimento Codice QR</string>
+	<key>rating-info</key>
+	<string>**Informazioni sulle valutazioni XMP** Le valutazioni XMP sono un metodo universale di punteggio delle immagini che utilizza da 1 a 5 stelle per indicare la priorità dell'immagine. Sono metadati standard di settore, non un formato proprietario di FlowVision, e possono essere riconosciuti da molte applicazioni software compatibili con XMP.
+
+**Che cos'è XMP?** XMP (Extensible Metadata Platform) può essere pensato come una "scheda informativa incorporata nell'immagine", comunemente utilizzato per memorizzare metadati modificabili come valutazioni, parole chiave e informazioni sul copyright. A differenza di EXIF, che registra principalmente le impostazioni della fotocamera come la velocità dell'otturatore, l'apertura e l'ISO, XMP si concentra maggiormente sui dati descrittivi e modificabili dall'utente. In termini di struttura del file, entrambi risiedono nell'area dei metadati dell'immagine ma appartengono a diversi sistemi di denominazione dei dati o blocchi di dati e possono coesistere.
+
+**Dove viene memorizzata l'informazione sulla valutazione?** FlowVision scrive le valutazioni nel campo xmp:Rating all'interno dei metadati dell'immagine. Queste informazioni sono tipicamente incorporate nella sezione dei metadati del file immagine, ad esempio nel segmento dei metadati dei file JPEG o nei corrispondenti contenitori di metadati dei formati PNG, TIFF, HEIF e RAW, piuttosto che essere memorizzate separatamente come record del database o come metadati del file system.
+
+**Cosa significa “Nessuna valutazione”?** Quando selezioni "Nessuna valutazione", FlowVision cancella il campo xmp:Rating (non scrive un valore di 0). Ciò indica che attualmente l'immagine non ha alcuna valutazione assegnata.
+
+**Note importanti** Impostare o cancellare una valutazione comporta la scrittura del file. Dopo la scrittura, la data di modifica del file verrà solitamente aggiornata e la dimensione del file potrebbe anche cambiare leggermente a causa della riscrittura dei metadati. Se fai affidamento sul tempo di modifica per la sincronizzazione, i backup o l'ordinamento, è consigliabile comprendere questo impatto prima di eseguire valutazioni batch.</string>
+	<key>raw-use-embeded-info</key>
+	<string>Quando questa opzione è abilitata, utilizzare la miniatura Exif incorporata invece di renderizzare il RAW originale.
+
+I file RAW vengono solitamente forniti con miniature Exif di alta qualità per l'interfaccia di anteprima della fotocamera, che sono immagini non originali corrette e elaborate dal programma incorporato della fotocamera. Utilizzando queste miniature, il programma può accelerare significativamente i tempi di caricamento.</string>
+	<key>recognize-OCR</key>
+	<string>Riconosci Testo</string>
+	<key>recognize-QRCode</key>
+	<string>Riconosci codice QR</string>
+	<key>recursive-mode-info</key>
+	<string>Una volta abilitata la "Modalità di Navigazione Ricorsiva", l'area delle miniature mostrerà tutti i file presenti in una cartella e nelle sue sottodirectory. Quando è selezionato "Includi Cartelle", verranno visualizzate anche tutte le sottocartelle stesse.
+
+La scansione di alcune directory di sistema o unità di rete potrebbe causare rallentamenti nel programma.
+
+Inoltre, in questa modalità, l'applicazione non controllerà le modifiche al file system, quindi in caso di modifiche esterne (come modifiche o eliminazioni), aggiorna manualmente. Per le modifiche all'interno dell'applicazione, al fine di garantire la continuità operativa, l'aggiornamento automatico non avverrà se ci sono troppe immagini nella vista; aggiorna manualmente.</string>
+	<key>recursive-mode-nodirection</key>
+	<string>In modalità ricorsiva, l'azione per trovare la cartella successiva/precedente non può essere eseguita</string>
+	<key>renaming-conflict</key>
+	<string>Un file con questo nome esiste già. Si prega di scegliere un nome diverso.</string>
+	<key>save-to-custom-profile</key>
+	<string>Salva nel profilo personalizzato %@</string>
+	<key>scan-enhanced-index-info</key>
+	<string>DA FARE</string>
+	<key>scanned-files</key>
+	<string>Attualmente scansionati %d file, inclusi %d immagini e %d video. Vuoi continuare?</string>
+	<key>search-help</key>
+	<string>**Filtra contenuto**  
+Il pulsante “Applica filtro” filtra i contenuti della directory corrente, visualizzando solo gli elementi che corrispondono ai criteri di ricerca. Per ripristinare la visualizzazione originale, cancella i criteri di ricerca e fai clic nuovamente su questo pulsante, oppure fai clic sull'icona di ricerca nella barra degli strumenti.
+
+**Cerca nelle sottocartelle**  
+Per cercare file nelle sottodirectory, abilita prima la “Modalità di navigazione ricorsiva”.
+
+**Cosa sono le espressioni regolari?**  
+Le espressioni regolari (regex) sono modelli utilizzati per abbinare combinazioni di caratteri all'interno delle stringhe. Sono uno strumento potente per l'elaborazione del testo ampiamente utilizzato per attività come la ricerca, la sostituzione e l'analisi del testo.  
+Ad esempio:  
+^2024 può abbinare file che iniziano con '2024';  
+.*modified\.[^.]+$ può abbinare file che terminano con 'modified' (indipendentemente dall'estensione);  
+.*\.jpg$ può abbinare file con l'estensione '.jpg'.
+
+**Ricerca avanzata**  
+In “Modalità di navigazione ricorsiva,” puoi inoltre utilizzare l'opzione “Usa percorso completo” e combinarla con espressioni regolari per eseguire ricerche avanzate.  
+Ad esempio, dato un percorso file completo come:  
+/Users/Alice/Pictures/20220101/mypick/001.jpg  
+puoi utilizzare l'espressione regolare:  
+^.*\/[^\/]*pick[^\/]*\/[^\/]+$  
+per abbinare tutti i file i cui nomi delle directory padre contengono “pick.” Per modelli regex più complessi, puoi utilizzare modelli di linguaggio di grandi dimensioni per assisterti nella loro scrittura.</string>
+	<key>sort-addDateA</key>
+	<string>Ordina per data di aggiunta</string>
+	<key>sort-addDateZ</key>
+	<string>Ordina per data di aggiunta (decrescente)</string>
+	<key>sort-createDateA</key>
+	<string>Ordina per data di creazione</string>
+	<key>sort-createDateZ</key>
+	<string>Ordina per data di creazione (decrescente)</string>
+	<key>sort-exif-local-warning</key>
+	<string>Ordinare in base alle informazioni Exif richiede la lettura degli header di tutti i file, il che potrebbe comportare una velocità di caricamento lenta. Ad esempio, la velocità di lettura di riferimento per le informazioni sui file video è di circa 10 al secondo
+
+La directory corrente contiene %d immagini o video, con un tempo di caricamento massimo stimato di %d secondi. Sei sicuro di voler continuare?</string>
+	<key>sort-exif-network-warning</key>
+	<string>L'ordinamento per informazioni Exif richiede la lettura delle intestazioni di tutti i file, il che potrebbe comportare velocità di caricamento lente. Ad esempio, la velocità di riferimento per la lettura su un'unità di rete SMB è circa 10 al secondo.
+
+La directory corrente si trova su un'unità esterna e contiene %d immagini o video, con un tempo massimo di caricamento stimato di %d secondi. Sei sicuro di voler continuare?</string>
+	<key>sort-exifDateA</key>
+	<string>Ordina per data Exif</string>
+	<key>sort-exifDateZ</key>
+	<string>Ordina per data Exif (decrescente)</string>
+	<key>sort-exifPixelA</key>
+	<string>Ordina per dimensione pixel Exif</string>
+	<key>sort-exifPixelZ</key>
+	<string>Ordina per dimensione pixel Exif (decrescente)</string>
+	<key>sort-extA</key>
+	<string>Ordina per tipo di file</string>
+	<key>sort-extZ</key>
+	<string>Ordina per tipo di file (decrescente)</string>
+	<key>sort-label-date</key>
+	<string>Data</string>
+	<key>sort-label-exifDate</key>
+	<string>DataExif</string>
+	<key>sort-label-exifPixel</key>
+	<string>ExifPixel</string>
+	<key>sort-label-ext</key>
+	<string>Tipo</string>
+	<key>sort-label-name</key>
+	<string>Nome</string>
+	<key>sort-label-random</key>
+	<string>Casuale</string>
+	<key>sort-label-size</key>
+	<string>Dimensione</string>
+	<key>sort-modDateA</key>
+	<string>Ordina per data di modifica</string>
+	<key>sort-modDateZ</key>
+	<string>Ordina per data di modifica (decrescente)</string>
+	<key>sort-pathA</key>
+	<string>Ordina per nome file</string>
+	<key>sort-pathZ</key>
+	<string>Ordina per nome file (decrescente)</string>
+	<key>sort-random</key>
+	<string>Ordina casualmente</string>
+	<key>sort-readme</key>
+	<string>"Ordinamento per percorso completo in modalità raccolta" significa che, in modalità ricorsiva o quando si lavora con raccolte di tag, se due file hanno i seguenti percorsi relativi alla directory corrente:
+./AAA/2.jpg
+./BBB/1.jpg
+allora 2.jpg verrà prima quando ordinato per percorso completo, mentre 1.jpg verrà prima quando ordinato per nome file.
+
+Quando si ordina per informazioni Exif, l'intestazione di ciascun file deve essere letta, il che può comportare velocità di caricamento più lente. Ad esempio, su un'unità di rete SMB o con file video, la velocità di lettura tipica è di circa 10 file al secondo.</string>
+	<key>sort-sizeA</key>
+	<string>Ordina per dimensione file</string>
+	<key>sort-sizeZ</key>
+	<string>Ordina per dimensione file (decrescente)</string>
+	<key>statistic-content</key>
+	<string>Conteggio cartelle: %d
+Conteggio file: %d
+Conteggio immagini: %d
+Conteggio video: %d
+Dimensione totale: %@</string>
+	<key>switch-to-custom-profile</key>
+	<string>Passa a Profilo Personalizzato %@</string>
+	<key>switchToActualSize</key>
+	<string>Dimensione attuale predefinita immagine</string>
+	<key>switchToDarkMode</key>
+	<string>Modalità scura</string>
+	<key>switchToFitToWindow</key>
+	<string>Immagine predefinita adatta alla finestra</string>
+	<key>switchToLightMode</key>
+	<string>Modalità chiara</string>
+	<key>switchToSystemTheme</key>
+	<string>Abbinare il sistema</string>
+	<key>up-folder</key>
+	<string>Cartella contenitore</string>
+	<key>video-dimensions</key>
+	<string>Dimensioni</string>
+	<key>video-play-info</key>
+	<string>Nell'interfaccia del lettore, premere il pulsante sinistro del mouse mette in pausa la riproduzione, mentre trascinando con il tasto destro si regola il progresso della riproduzione video. I tasti freccia sinistra e destra della tastiera permettono di avanzare veloce e riavvolgere, e tenendo premuto il tasto Cmd è possibile navigare fotogramma per fotogramma.
+
+macOS supporta nativamente formati video come "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" e "vob". Altri formati richiedono ancora un lettore esterno per la riproduzione.
+
+Per i video codificati in HEVC, il decoder integrato di macOS riconosce solo i tag codec hvc1 e non riconosce i tag hev1. È possibile utilizzare FFmpeg per eseguire una conversione senza perdita di qualità: ffmpeg -i input.mp4 -c copy -movflags +faststart -tag:v hvc1 output.mp4.
+
+Premi Cmd+Shift+V per "Riproduci automaticamente i video visibili", il che significa che in modalità anteprima, loop dei video all'interno dell'area visibile. Premendo nuovamente la scorciatoia o cambiando cartelle si uscirà da questa modalità.</string>
+	<key>window-num-max</key>
+	<string>Il numero di finestre supera il limite</string>
+</dict>
+</plist>

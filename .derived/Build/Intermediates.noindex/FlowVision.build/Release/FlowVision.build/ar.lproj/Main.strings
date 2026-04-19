@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1UK-8n-QPP.title</key>
+	<string>تخصيص شريط الأدوات…</string>
+	<key>1Xt-HY-uBw.title</key>
+	<string>فلوفيجن</string>
+	<key>1b7-l0-nxx.title</key>
+	<string>بحث</string>
+	<key>1tx-W0-xDw.title</key>
+	<string>أخفض</string>
+	<key>2h7-ER-AoG.title</key>
+	<string>رفع</string>
+	<key>2oI-Rn-ZJC.title</key>
+	<string>تحويلات</string>
+	<key>3IN-sU-3Bg.title</key>
+	<string>التهجئة</string>
+	<key>3Om-Ey-2VK.title</key>
+	<string>استخدام الافتراضي</string>
+	<key>3W1-Yw-Gn8.title</key>
+	<string>إظهار ملفات الصور</string>
+	<key>3rS-ZA-NoH.title</key>
+	<string>الكلام</string>
+	<key>46P-cB-AYj.title</key>
+	<string>تضييق</string>
+	<key>4EN-yA-p0u.title</key>
+	<string>بحث</string>
+	<key>4J7-dP-txa.title</key>
+	<string>إدخال ملء الشاشة</string>
+	<key>4sb-4s-VLi.title</key>
+	<string>إنهاء FlowVision</string>
+	<key>5QF-Oa-p0T.title</key>
+	<string>تحرير</string>
+	<key>5Vv-lz-BsD.title</key>
+	<string>نسخ النمط</string>
+	<key>5Wy-TF-lsK.title</key>
+	<string>عرض الشلال</string>
+	<key>5kV-Vb-QxS.title</key>
+	<string>حول FlowVision</string>
+	<key>6W0-Wg-Cpn.title</key>
+	<string>توسيط النافذة</string>
+	<key>6dh-zS-Vam.title</key>
+	<string>إعادة</string>
+	<key>6gk-QR-1IE.title</key>
+	<string>ضبط النافذة إلى حجم الصورة الفعلي</string>
+	<key>78Y-hA-62v.title</key>
+	<string>تصحيح الإملاء تلقائياً</string>
+	<key>8mr-sm-Yjd.title</key>
+	<string>اتجاه الكتابة</string>
+	<key>9ic-FL-obx.title</key>
+	<string>استبدالات</string>
+	<key>9yt-4B-nSM.title</key>
+	<string>النسخ/القص الذكي</string>
+	<key>9zb-jY-FJF.title</key>
+	<string>تعديل النافذة لتتناسب مع حجم الصورة الحالي</string>
+	<key>AYu-sK-qS6.title</key>
+	<string>القائمة الرئيسية</string>
+	<key>BIe-WV-g2r.title</key>
+	<string>الوضع الداكن</string>
+	<key>BOF-NM-1cW.title</key>
+	<string>التفضيلات…</string>
+	<key>BbQ-LX-eib.title</key>
+	<string>السجل</string>
+	<key>BgM-ve-c93.title</key>
+	<string>من اليسار إلى اليمين</string>
+	<key>Bw7-FT-i3A.title</key>
+	<string>حفظ باسم…</string>
+	<key>DDg-tZ-gPX.title</key>
+	<string>معلومات</string>
+	<key>DVo-aG-piG.title</key>
+	<string>إغلاق</string>
+	<key>DWy-O2-bdK.title</key>
+	<string>المفضلة</string>
+	<key>Dv1-io-Yv7.title</key>
+	<string>التدقيق الإملائي والنحوي</string>
+	<key>EGa-rJ-Y1T.title</key>
+	<string>نمط تخطيط مخصص...</string>
+	<key>ExL-hL-CrO.title</key>
+	<string>مجلد جديد</string>
+	<key>F2S-fz-NVQ.title</key>
+	<string>مساعدة</string>
+	<key>FKE-Sm-Kum.title</key>
+	<string>مساعدة FlowVision</string>
+	<key>Fal-I4-PZk.title</key>
+	<string>نص</string>
+	<key>FeM-D8-WVr.title</key>
+	<string>البدائل</string>
+	<key>GB9-OM-e27.title</key>
+	<string>عريض</string>
+	<key>GEO-Iw-cKr.title</key>
+	<string>تنسيق</string>
+	<key>GUa-eO-cwY.title</key>
+	<string>استخدام الإفتراضي</string>
+	<key>Gi5-1S-RQB.title</key>
+	<string>الخط</string>
+	<key>H1b-Si-o9J.title</key>
+	<string>اتجاه الكتابة</string>
+	<key>H8h-7b-M4v.title</key>
+	<string>عرض</string>
+	<key>HFQ-gK-NFA.title</key>
+	<string>استبدال النص</string>
+	<key>HFo-cy-zxI.title</key>
+	<string>إظهار الإملاء والنحو</string>
+	<key>HOx-iw-zko.title</key>
+	<string>تكبير النافذة</string>
+	<key>HyV-fh-RgO.title</key>
+	<string>عرض</string>
+	<key>I0S-gh-46l.title</key>
+	<string>منخفضة</string>
+	<key>I6E-O3-RVP.title</key>
+	<string>مطابقة النظام</string>
+	<key>IAo-SY-fd9.title</key>
+	<string>افتح…</string>
+	<key>IQv-IB-iLA.title</key>
+	<string>نافذة رئيسية</string>
+	<key>J5U-5w-g23.title</key>
+	<string>ضبط</string>
+	<key>J7y-lM-qPV.title</key>
+	<string>استخدام لا شيء</string>
+	<key>JDd-s3-eWr.title</key>
+	<string>عرض نافذة السجل</string>
+	<key>KRw-yH-fgB.title</key>
+	<string>تصحيح</string>
+	<key>KaW-ft-85H.title</key>
+	<string>الرجوع إلى المحفوظ</string>
+	<key>Kd2-mp-pUS.title</key>
+	<string>إظهار الكل</string>
+	<key>LE2-aR-0XJ.title</key>
+	<string>اجعل الكل في المقدمة</string>
+	<key>LVM-kO-fVI.title</key>
+	<string>لصق المسطرة</string>
+	<key>Lbh-J2-qVU.title</key>
+	<string>من اليسار إلى اليمين</string>
+	<key>MFt-GP-W33.title</key>
+	<string>إلغاء التحديد</string>
+	<key>MkV-Pr-PK5.title</key>
+	<string>نسخ المسطرة</string>
+	<key>Mm8-sr-yAa.title</key>
+	<string>سجلات العمليات</string>
+	<key>NMo-om-nkz.title</key>
+	<string>الخدمات</string>
+	<key>Nop-cj-93Q.title</key>
+	<string>افتراضي</string>
+	<key>Nop-qv-3GL.title</key>
+	<string>إقرأني...</string>
+	<key>OY7-WF-poV.title</key>
+	<string>تصغير</string>
+	<key>OaQ-X3-Vso.title</key>
+	<string>الخط الأساسي</string>
+	<key>Olw-nP-bQN.title</key>
+	<string>إخفاء فلوفيجن</string>
+	<key>OwM-mh-QMV.title</key>
+	<string>بحث عن السابق</string>
+	<key>Oyz-dy-DGm.title</key>
+	<string>إيقاف التحدث</string>
+	<key>Ptp-SP-VEL.title</key>
+	<string>أكبر</string>
+	<key>Q5e-8K-NDq.title</key>
+	<string>عرض الخطوط</string>
+	<key>R4o-n2-Eq4.title</key>
+	<string>تكبير</string>
+	<key>RB4-Sm-HuC.title</key>
+	<string>من اليمين إلى اليسار</string>
+	<key>Rir-dR-V3t.title</key>
+	<string>علامة تبويب جديدة</string>
+	<key>Rqc-34-cIF.title</key>
+	<string>مرتفع</string>
+	<key>Ruw-6m-B2m.title</key>
+	<string>تحديد الكل</string>
+	<key>S0p-oC-mLd.title</key>
+	<string>القفز إلى التحديد</string>
+	<key>S31-Ni-z5u.title</key>
+	<string>إظهار جميع أنواع الملفات</string>
+	<key>SAw-E9-7Mm.title</key>
+	<string>عرض الشبكة</string>
+	<key>Tbh-PX-yFW.title</key>
+	<string>إظهار الملفات المخفية</string>
+	<key>Td7-aD-5lo.title</key>
+	<string>نافذة</string>
+	<key>UBJ-dq-OJx.title</key>
+	<string>خطأ</string>
+	<key>UEZ-Bs-lqG.title</key>
+	<string>اجعل الحروف كبيرة</string>
+	<key>UYl-gy-bK8.title</key>
+	<string>عرض ملفات الفيديو</string>
+	<key>VCB-ff-DEq.title</key>
+	<string>تأمين الدوران</string>
+	<key>VIY-Ag-zcb.title</key>
+	<string>توسيط</string>
+	<key>Vdr-fp-XzO.title</key>
+	<string>إخفاء الآخرين</string>
+	<key>Vjx-xi-njq.title</key>
+	<string>مائل</string>
+	<key>W48-6f-4Dl.title</key>
+	<string>تحرير</string>
+	<key>WRG-CD-K1S.title</key>
+	<string>تسطير</string>
+	<key>Was-JA-tGl.title</key>
+	<string>جديد</string>
+	<key>WeT-3V-zwk.title</key>
+	<string>اللصق ومطابقة النمط</string>
+	<key>Xz5-n4-O0W.title</key>
+	<string>بحث…</string>
+	<key>YEy-JH-Tfz.title</key>
+	<string>بحث واستبدال…</string>
+	<key>YGs-j5-SAR.title</key>
+	<string>افتراضي</string>
+	<key>Ynk-f8-cLZ.title</key>
+	<string>ابدأ التحدث</string>
+	<key>Yr6-zE-34v.title</key>
+	<string>الشريط الجانبي</string>
+	<key>ZM1-6Q-yy1.title</key>
+	<string>محاذاة لليسار</string>
+	<key>ZvO-Gk-QUH.title</key>
+	<string>فقرة</string>
+	<key>aEU-QL-iYf.title</key>
+	<string>الإبقاء على النافذة الحالية في المقدمة</string>
+	<key>aHz-iD-6dU.title</key>
+	<string>عرض التفاصيل</string>
+	<key>aTl-1u-JFS.title</key>
+	<string>طباعة…</string>
+	<key>aUF-d1-5bR.title</key>
+	<string>نافذة</string>
+	<key>aXa-aM-Jaq.title</key>
+	<string>الخط</string>
+	<key>agt-UL-0e3.title</key>
+	<string>استخدام الافتراضي</string>
+	<key>bgn-CT-cEk.title</key>
+	<string>عرض الألوان</string>
+	<key>bib-Uj-vzu.title</key>
+	<string>ملف</string>
+	<key>buJ-ug-pKt.title</key>
+	<string>استخدام التحديد للبحث</string>
+	<key>c8a-y6-VQd.title</key>
+	<string>تحويلات</string>
+	<key>cDB-IK-hbR.title</key>
+	<string>عدم الاستخدام</string>
+	<key>cqv-fj-IhA.title</key>
+	<string>تحديد</string>
+	<key>cwL-P1-jid.title</key>
+	<string>روابط ذكية</string>
+	<key>d9M-CD-aMd.title</key>
+	<string>اجعلها أحرف صغيرة</string>
+	<key>d9c-me-L2H.title</key>
+	<string>نص</string>
+	<key>d9h-3l-mAH.title</key>
+	<string>تلقائي ملاءمة الصورة مع النافذة</string>
+	<key>dMs-cI-mzQ.title</key>
+	<string>ملف</string>
+	<key>dRJ-4n-Yzg.title</key>
+	<string>التراجع</string>
+	<key>fDm-Nj-S0c.title</key>
+	<string>المفضلة</string>
+	<key>gVA-U4-sdL.title</key>
+	<string>لصق</string>
+	<key>gd3-kJ-Wxy.title</key>
+	<string>يستخدم RAW الصورة المصغرة المضمنة في Exif</string>
+	<key>geW-lc-Njk.title</key>
+	<string>عرض ملفات RAW للكاميرا</string>
+	<key>hQb-2v-fYv.title</key>
+	<string>علامات ترقيم ذكية</string>
+	<key>hz2-CU-CR7.title</key>
+	<string>تحقق من المستند الآن</string>
+	<key>hz9-B4-Xy5.title</key>
+	<string>الخدمات</string>
+	<key>i1d-Er-qST.title</key>
+	<string>أصغر حجمًا</string>
+	<key>iPW-fb-GmX.title</key>
+	<string>الوضع الفاتح</string>
+	<key>ijk-EB-dga.title</key>
+	<string>الأساس</string>
+	<key>jBQ-r6-VK2.title</key>
+	<string>كرن</string>
+	<key>jFq-tB-4Kx.title</key>
+	<string>من اليمين إلى اليسار</string>
+	<key>jxT-CU-nIS.title</key>
+	<string>تنسيق</string>
+	<key>k1x-0c-asG.title</key>
+	<string>قفل المرآة</string>
+	<key>kIP-vf-haE.title</key>
+	<string>إظهار الشريط الجانبي</string>
+	<key>kyz-IP-P6r.title</key>
+	<string>تفعيل تمرير التحريك بعد التكبير</string>
+	<key>laV-c7-CBO.title</key>
+	<string>سجل</string>
+	<key>mK6-2p-4JG.title</key>
+	<string>تحقق من النحو مع الإملاء</string>
+	<key>nCr-ZC-bbS.title</key>
+	<string>حذر</string>
+	<key>nLO-cW-deo.title</key>
+	<string>الموقع الرسمي</string>
+	<key>o6e-r0-MWq.title</key>
+	<string>الربط</string>
+	<key>oas-Oc-fiZ.title</key>
+	<string>فتح المستندات الأخيرة</string>
+	<key>ogc-rX-tC1.title</key>
+	<string>أرخِ</string>
+	<key>pB9-hf-avc.title</key>
+	<string>إظهار علامات Finder والتقييمات</string>
+	<key>pa3-QI-u2k.title</key>
+	<string>حذف</string>
+	<key>pxx-59-PXV.title</key>
+	<string>حفظ…</string>
+	<key>pzo-yf-TTx.title</key>
+	<string>حجم الصورة الفعلي الافتراضي</string>
+	<key>q09-fT-Sye.title</key>
+	<string>ابحث عن التالي</string>
+	<key>rIE-So-qGu.title</key>
+	<string>عرض بتنسيق مبرر</string>
+	<key>rTb-Na-yZj.title</key>
+	<string>تثبيت التكبير</string>
+	<key>rbD-Rh-wIN.title</key>
+	<string>تحقق من الهجاء أثناء الكتابة</string>
+	<key>rgM-f4-ycn.title</key>
+	<string>الشرطة الذكية</string>
+	<key>sAs-4N-lmx.title</key>
+	<string>تحريك هنا</string>
+	<key>snW-S8-Cw5.title</key>
+	<string>إظهار شريط الأدوات</string>
+	<key>tRr-pd-1PS.title</key>
+	<string>كاشفات البيانات</string>
+	<key>tXI-mr-wws.title</key>
+	<string>فتح الأخير</string>
+	<key>tlD-Oa-oAM.title</key>
+	<string>ضبط التباعد بين الحروف</string>
+	<key>tmG-gn-Pce.title</key>
+	<string>حجم النافذة الأمثل</string>
+	<key>uQy-DD-JDr.title</key>
+	<string>فلوفيجن</string>
+	<key>uRl-iY-unG.title</key>
+	<string>قص</string>
+	<key>vKC-jM-MkH.title</key>
+	<string>لصق النمط</string>
+	<key>vLm-3I-IUL.title</key>
+	<string>إظهار المسطرة</string>
+	<key>vNY-rz-j42.title</key>
+	<string>مسح القائمة</string>
+	<key>vmV-6d-7jI.title</key>
+	<string>تحويل إلى أحرف كبيرة</string>
+	<key>w0m-vy-SC9.title</key>
+	<string>الأحرف المترابطة</string>
+	<key>wPC-H1-Utm.title</key>
+	<string>السجل</string>
+	<key>wb2-vD-lq4.title</key>
+	<string>محاذاة لليمين</string>
+	<key>wpr-3q-Mcd.title</key>
+	<string>مساعدة</string>
+	<key>x3v-GG-iWU.title</key>
+	<string>نسخ</string>
+	<key>xQD-1f-W4t.title</key>
+	<string>استخدم الكل</string>
+	<key>xrE-MZ-jX0.title</key>
+	<string>الكلام</string>
+	<key>xsi-wT-VTt.title</key>
+	<string>بحث…</string>
+	<key>z6F-FW-3nz.title</key>
+	<string>عرض البدائل</string>
+	<key>z7K-bZ-CoE.title</key>
+	<string>اقرأني...</string>
+	<key>zA0-N5-kvv.title</key>
+	<string>انتقل إلى المجلد...</string>
+	<key>zBc-1w-QcQ.title</key>
+	<string>إعادة فتح الألسنة المغلقة</string>
+</dict>
+</plist>

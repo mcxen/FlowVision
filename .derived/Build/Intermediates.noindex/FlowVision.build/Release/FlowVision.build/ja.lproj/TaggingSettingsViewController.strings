@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>詳細を確認する…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>macOS Spotlightは外部ディスク、ネットワークドライブ、または「検索プライバシー」設定で除外されたディレクトリの内容をインデックス化できないため、このアプリは強化されたインデックス機能を導入します: アプリ内でフォルダを閲覧すると、そのフォルダ内のファイルに関連付けられたタグを記録します。
+
+後でディレクトリツリーで対応するタグを選択すると、アプリは関連するファイルを表示することでシステムの検索結果を補完します。</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>拡張インデックスを有効にする</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>カスタムタグ:</string>
+	<key>tRG-X6-q84.title</key>
+	<string>拡張インデックス:</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>このアプリケーションはmacOSの標準タグ付け機能を使用しています。このアプリ内のタグ名と色がFinderのものと完全に一致していることを確認してください。そうしないと、タグを表示または書き込む際にタグの色に不一致が生じる可能性があります。</string>
+</dict>
+</plist>

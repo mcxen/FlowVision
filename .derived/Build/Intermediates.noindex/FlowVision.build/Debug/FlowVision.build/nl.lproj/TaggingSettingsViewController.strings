@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>0t2-fb-lpk.title</key>
+	<string>Meer informatie…</string>
+	<key>6PU-he-9gg.title</key>
+	<string>Omdat macOS Spotlight geen externe schijven, netwerkschijven of de inhoud van mappen die zijn uitgesloten in de "Zoekprivacy"-instellingen kan indexeren, introduceert deze app een verbeterde indexeringsfunctie: wanneer je een map binnen de app doorbladert, registreert het de tags die aan de bestanden in die map zijn gekoppeld.
+
+Later, wanneer je de overeenkomstige tag in de directoryboom selecteert, zal de app de zoekresultaten van het systeem aanvullen door de relevante bestanden weer te geven.</string>
+	<key>Elm-3Y-yxv.title</key>
+	<string>Verbeterde index inschakelen</string>
+	<key>R7m-7o-ENQ.title</key>
+	<string>Aangepaste tags:</string>
+	<key>tRG-X6-q84.title</key>
+	<string>Verbeterde index:</string>
+	<key>yE8-sl-Qa9.title</key>
+	<string>De applicatie gebruikt het standaard tagmechanisme van macOS. Zorg ervoor dat de tagnamen en kleuren in deze app exact overeenkomen met die in Finder; anders kunt u inconsistenties in tagkleuren tegenkomen bij het weergeven of schrijven van tags.</string>
+</dict>
+</plist>

@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>(Multiselect)</key>
+	<string>Ny mapp med markering (%d objekt)</string>
+	<key>A-B Loop</key>
+	<string>A-B Loop</string>
+	<key>A-B Loop Active</key>
+	<string>A-B Loop aktiv</string>
+	<key>A-B Loop Cancel</key>
+	<string>A-B Loop Avbryt</string>
+	<key>A-B Loop: A</key>
+	<string>A-B Loopa: A</string>
+	<key>A-B Loop: A Greater than B</key>
+	<string>A-B Loop: A större än B</string>
+	<key>A-B Loop: B</key>
+	<string>A-B slinga: B</string>
+	<key>Actions</key>
+	<string>Åtgärder</string>
+	<key>Add</key>
+	<string>Lägg till</string>
+	<key>Add Current Folder</key>
+	<string>Lägg till aktuell mapp</string>
+	<key>Add Separator</key>
+	<string>Lägg till avgränsare</string>
+	<key>Adjust Window to Actual Image Size</key>
+	<string>Justera fönstret till den faktiska bildstorleken</string>
+	<key>Adjust Window to Current Image Size</key>
+	<string>Justera fönster till aktuell bildstorlek</string>
+	<key>Advanced</key>
+	<string>Avancerat</string>
+	<key>Alias Type</key>
+	<string>Alias-typ</string>
+	<key>Always Generate HD Thumbnails</key>
+	<string>Generera alltid HD-miniatyrer</string>
+	<key>Always Generate Standard Thumbnails</key>
+	<string>Generera alltid standardminiatyrer</string>
+	<key>Apply Filter</key>
+	<string>Tillämpa filter</string>
+	<key>Apply to all</key>
+	<string>Applicera på alla</string>
+	<key>Are you sure you want to move xxx to xxx?</key>
+	<string>Är du säker på att du vill flytta "%1$@" till "%2$@"?</string>
+	<key>Arrow</key>
+	<string>Pil</string>
+	<key>AudioMetadata-BitRate</key>
+	<string>Bithastighet</string>
+	<key>AudioMetadata-ChannelLayout</key>
+	<string>Kanallayout</string>
+	<key>AudioMetadata-Channels</key>
+	<string>Kanaler</string>
+	<key>AudioMetadata-CodecLongName</key>
+	<string>Codec långt namn</string>
+	<key>AudioMetadata-CodecName</key>
+	<string>Codec-namn</string>
+	<key>AudioMetadata-Index</key>
+	<string>Index</string>
+	<key>AudioMetadata-Language</key>
+	<string>Språk</string>
+	<key>AudioMetadata-SampleRate</key>
+	<string>Samplingsfrekvens</string>
+	<key>AudioMetadata-StreamTitle</key>
+	<string>Strömtitel</string>
+	<key>Auto</key>
+	<string>Auto</string>
+	<key>Auto Play Selected Video</key>
+	<string>Automatisk uppspelning av vald video</string>
+	<key>Auto Play Visible Video</key>
+	<string>Spela upp synlig video automatiskt</string>
+	<key>Auto Rename</key>
+	<string>Byt namn automatiskt</string>
+	<key>Border Thickness</key>
+	<string>Kanttjocklek</string>
+	<key>Cancel</key>
+	<string>Avbryt</string>
+	<key>Cancel Auto Play Visible Video</key>
+	<string>Avbryt automatisk uppspelning av synlig video</string>
+	<key>Cancel Filter</key>
+	<string>Avbryt filter</string>
+	<key>Case Sensitive</key>
+	<string>Skiftlägeskänslig</string>
+	<key>Cell Padding</key>
+	<string>Cellutfyllnad</string>
+	<key>Center the Window</key>
+	<string>Centrera fönstret</string>
+	<key>Choose a file or folder</key>
+	<string>Välj en fil eller mapp</string>
+	<key>Clear</key>
+	<string>Rensa</string>
+	<key>Close (Double Click)</key>
+	<string>Stäng (Dubbelklicka)</string>
+	<key>Close Other Tabs</key>
+	<string>Stäng andra flikar</string>
+	<key>Close Tab</key>
+	<string>Stäng flik</string>
+	<key>Continue</key>
+	<string>Fortsätt</string>
+	<key>Copy</key>
+	<string>Kopiera</string>
+	<key>Copy Path</key>
+	<string>Kopiera sökväg</string>
+	<key>Corner Radius</key>
+	<string>Hörnradie</string>
+	<key>Custom Layout Style</key>
+	<string>Anpassad layoutstil</string>
+	<key>Custom Layout Style...</key>
+	<string>Anpassad layoutstil...</string>
+	<key>Custom Zoom Ratio...</key>
+	<string>Anpassad zoomförhållande...</string>
+	<key>Custom Zoom Step...</key>
+	<string>Anpassad zoomsteg...</string>
+	<key>Date Added</key>
+	<string>Datum tillagd</string>
+	<key>Date Created</key>
+	<string>Skapelsedatum</string>
+	<key>Date Modified</key>
+	<string>Datum ändrad</string>
+	<key>Default Thumbnail Size</key>
+	<string>Standard miniatyrstorlek</string>
+	<key>Delete</key>
+	<string>Radera</string>
+	<key>Demo</key>
+	<string>Demo</string>
+	<key>Directory does not exist</key>
+	<string>Katalogen finns inte</string>
+	<key>Disable Automatic Play</key>
+	<string>Inaktivera automatisk uppspelning</string>
+	<key>Disable Automatic Scroll</key>
+	<string>Inaktivera automatisk rullning</string>
+	<key>Edit Mode</key>
+	<string>Redigeringsläge</string>
+	<key>Ellipse</key>
+	<string>Ellips</string>
+	<key>Empty</key>
+	<string>Tom</string>
+	<key>Enable Automatic Play</key>
+	<string>Aktivera automatisk uppspelning</string>
+	<key>Enable Automatic Scroll</key>
+	<string>Aktivera automatisk rullning</string>
+	<key>Enable HDR</key>
+	<string>Aktivera HDR</string>
+	<key>Enable Recursive Mode</key>
+	<string>Aktivera rekursivt läge</string>
+	<key>Enlarge the Thumbnails</key>
+	<string>Förstora miniatyrbilderna</string>
+	<key>Enter Full Screen</key>
+	<string>Gå in i helskärm</string>
+	<key>Enter the auto play interval in seconds:</key>
+	<string>Ange intervallet för automatisk uppspelning i sekunder:</string>
+	<key>Enter the scroll speed in pixels per second:</key>
+	<string>Ange rullningshastigheten i pixlar per sekund:</string>
+	<key>Eraser</key>
+	<string>Suddgummi</string>
+	<key>Error</key>
+	<string>Fel</string>
+	<key>Exif-ApertureValue</key>
+	<string>Bländarvärde</string>
+	<key>Exif-Artist</key>
+	<string>Artist</string>
+	<key>Exif-CameraMaker</key>
+	<string>Tillverkare</string>
+	<key>Exif-CameraModel</key>
+	<string>Kameramodell</string>
+	<key>Exif-ColorModel</key>
+	<string>Färgläge</string>
+	<key>Exif-DateTimeDigitized</key>
+	<string>Datum och tid digitaliserad</string>
+	<key>Exif-DateTimeOriginal</key>
+	<string>Datum och tidpunkt då bilden togs</string>
+	<key>Exif-Depth</key>
+	<string>Djup</string>
+	<key>Exif-ExposureTime</key>
+	<string>Exponeringstid</string>
+	<key>Exif-FNumber</key>
+	<string>F-nummer</string>
+	<key>Exif-FileAddedTime</key>
+	<string>Filens tillagda tid</string>
+	<key>Exif-FileCreatedTime</key>
+	<string>Filens skapandetid</string>
+	<key>Exif-FileModifiedTime</key>
+	<string>Tid för filändring</string>
+	<key>Exif-FileSize</key>
+	<string>Filstorlek</string>
+	<key>Exif-Flash</key>
+	<string>Blixt</string>
+	<key>Exif-Flash-Off</key>
+	<string>Av</string>
+	<key>Exif-Flash-On</key>
+	<string>På</string>
+	<key>Exif-FocalLength</key>
+	<string>Brännvidd</string>
+	<key>Exif-GPSAltitude</key>
+	<string>GPS Höjd</string>
+	<key>Exif-GPSLatitude</key>
+	<string>GPS Latitud</string>
+	<key>Exif-GPSLongitude</key>
+	<string>GPS Longitud</string>
+	<key>Exif-ISOSpeedRatings</key>
+	<string>ISO-hastigheter</string>
+	<key>Exif-LensModel</key>
+	<string>Linsmodell</string>
+	<key>Exif-ProfileName</key>
+	<string>Profilnamn</string>
+	<key>Exif-Rating</key>
+	<string>Betyg</string>
+	<key>Exif-Resolution</key>
+	<string>Upplösning</string>
+	<key>Exif-Software</key>
+	<string>Mjukvara</string>
+	<key>Exif-TIFFDateTime</key>
+	<string>TIFF Datum Tid</string>
+	<key>Exit Edit Mode</key>
+	<string>Avsluta redigeringsläge</string>
+	<key>Exit Full Screen</key>
+	<string>Avsluta helskärm</string>
+	<key>Exit Recursive Mode</key>
+	<string>Avsluta rekursivt läge</string>
+	<key>Failed to set this app as the default for some file types:
+</key>
+	<string>Kunde inte ställa in denna app som standard för vissa filtyper:</string>
+	<key>Favorites</key>
+	<string>Favoriter</string>
+	<key>File Already Exists</key>
+	<string>Filen finns redan</string>
+	<key>File Info</key>
+	<string>Filinformation</string>
+	<key>File Path</key>
+	<string>Filsökväg</string>
+	<key>Filename</key>
+	<string>Filnamn</string>
+	<key>Filename Font Size</key>
+	<string>Filnamn teckenstorlek</string>
+	<key>Filter</key>
+	<string>Filtrera</string>
+	<key>Filter by Finder Tag</key>
+	<string>Filtrera efter Finder-tagg</string>
+	<key>Filter by Rating</key>
+	<string>Filtrera efter betyg</string>
+	<key>Finder Alias</key>
+	<string>Finder-alias</string>
+	<key>Finder Tags</key>
+	<string>Finder-taggar</string>
+	<key>Folder</key>
+	<string>Mapp</string>
+	<key>Folders</key>
+	<string>Mappar</string>
+	<key>Follow Current Folder</key>
+	<string>Följ aktuell mapp</string>
+	<key>General</key>
+	<string>Allmänt</string>
+	<key>Go Back</key>
+	<string>Gå tillbaka</string>
+	<key>Go Forward</key>
+	<string>Gå framåt</string>
+	<key>Go To</key>
+	<string>Gå till</string>
+	<key>Grid View</key>
+	<string>Rutnätsvy</string>
+	<key>Have Reached the First</key>
+	<string>Har nått den första</string>
+	<key>Have Reached the Last</key>
+	<string>Har nått den sista</string>
+	<key>Highlighter</key>
+	<string>Överstrykningspenna</string>
+	<key>Image</key>
+	<string>Bild</string>
+	<key>Images</key>
+	<string>Bilder</string>
+	<key>Include Folders</key>
+	<string>Inkludera Mappar</string>
+	<key>Info</key>
+	<string>Info</string>
+	<key>Invalid current path</key>
+	<string>Ogiltig aktuell sökväg</string>
+	<key>Invalid input, please enter a positive number</key>
+	<string>Ogiltig inmatning, ange ett positivt nummer</string>
+	<key>Invalid relative path</key>
+	<string>Ogiltig relativ sökväg</string>
+	<key>Justified View</key>
+	<string>Justerad vy</string>
+	<key>Learn More...</key>
+	<string>Lär dig mer...</string>
+	<key>Line Space Adjustment</key>
+	<string>Radavståndsjustering</string>
+	<key>Loading...</key>
+	<string>Laddar...</string>
+	<key>Location</key>
+	<string>Plats</string>
+	<key>Lock Mirror</key>
+	<string>Lås spegel</string>
+	<key>Lock Rotation</key>
+	<string>Lås rotation</string>
+	<key>Lock Zoom</key>
+	<string>Lås zoom</string>
+	<key>Match All (AND)</key>
+	<string>Matcha alla (OCH)</string>
+	<key>Match Any (OR)</key>
+	<string>Matcha någon (ELLER)</string>
+	<key>Maximize Window</key>
+	<string>Maximera fönster</string>
+	<key>Merge All Windows</key>
+	<string>Sammanfoga alla fönster</string>
+	<key>Mirror Flip</key>
+	<string>Spegelvänd</string>
+	<key>More</key>
+	<string>Mer</string>
+	<key>Move Down</key>
+	<string>Flytta ned</string>
+	<key>Move Here</key>
+	<string>Flytta hit</string>
+	<key>Move Items</key>
+	<string>Flytta objekt</string>
+	<key>Move Up</key>
+	<string>Flytta upp</string>
+	<key>Move to Trash</key>
+	<string>Flytta till Papperskorgen</string>
+	<key>Name</key>
+	<string>Namn</string>
+	<key>New</key>
+	<string>Ny</string>
+	<key>New Folder</key>
+	<string>Ny mapp</string>
+	<key>New Tab</key>
+	<string>Ny flik</string>
+	<key>New Tag</key>
+	<string>Ny tagg</string>
+	<key>New Text File</key>
+	<string>Skapa en ny textfil</string>
+	<key>New name for</key>
+	<string>Nytt namn för</string>
+	<key>No Color</key>
+	<string>Ingen färg</string>
+	<key>No Rating</key>
+	<string>Ingen bedömning</string>
+	<key>Non-Grid View</key>
+	<string>Icke-rutnätsvy</string>
+	<key>Not Include Folders</key>
+	<string>Inkludera inte mappar</string>
+	<key>Not Show All Types of Files</key>
+	<string>Visa inte alla filtyper</string>
+	<key>Not Show Hidden Files</key>
+	<string>Visa inte dolda filer</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>Only images can be edited</key>
+	<string>Endast bilder kan redigeras</string>
+	<key>Open</key>
+	<string>Öppna</string>
+	<key>Open With</key>
+	<string>Öppna med</string>
+	<key>Open in Finder</key>
+	<string>Öppna i Finder</string>
+	<key>Open in Map</key>
+	<string>Öppna i Karta</string>
+	<key>Open in New Tab</key>
+	<string>Öppna i ny flik</string>
+	<key>Open in Terminal</key>
+	<string>Öppna i Terminalen</string>
+	<key>Open with External Player</key>
+	<string>Öppna med extern spelare</string>
+	<key>Operation Logs</key>
+	<string>Driftsloggar</string>
+	<key>Original Path</key>
+	<string>Ursprunglig sökväg</string>
+	<key>Other</key>
+	<string>Annat</string>
+	<key>Others</key>
+	<string>Övriga</string>
+	<key>Paste</key>
+	<string>Klistra in</string>
+	<key>Path does not exist</key>
+	<string>Sökvägen finns inte</string>
+	<key>Pen</key>
+	<string>Penna</string>
+	<key>Pin Window</key>
+	<string>Fäst fönster</string>
+	<key>Pin Window to Top</key>
+	<string>Fäst fönster överst</string>
+	<key>Please select a specific tag</key>
+	<string>Vänligen välj en specifik tagg</string>
+	<key>Portable Browsing Mode</key>
+	<string>Bärbart bläddringsläge</string>
+	<key>Portable Mode: Off</key>
+	<string>Bärbart läge: Av</string>
+	<key>Portable Mode: On</key>
+	<string>Portabelt läge: På</string>
+	<key>Prefer Using Embedded Thumbnails</key>
+	<string>Föredra att använda inbäddade miniatyrer</string>
+	<key>Quick Search</key>
+	<string>Snabbsökning</string>
+	<key>RAW Uses Exif Embedded Thumbnail</key>
+	<string>RAW Använder Exif Inbäddad Miniatyrbild</string>
+	<key>Rating</key>
+	<string>Betyg</string>
+	<key>Readme...</key>
+	<string>Läs mig...</string>
+	<key>Rectangle</key>
+	<string>Rektangel</string>
+	<key>Recursive Mode</key>
+	<string>Rekursivt läge</string>
+	<key>Redo</key>
+	<string>Gör om</string>
+	<key>Reduce the Thumbnails</key>
+	<string>Minska miniatyrerna</string>
+	<key>Refresh</key>
+	<string>Uppdatera</string>
+	<key>Regex</key>
+	<string>Regex</string>
+	<key>Relative Path</key>
+	<string>Relativ sökväg</string>
+	<key>Remember Position</key>
+	<string>Kom ihåg position</string>
+	<key>Remember Position: Disabled</key>
+	<string>Kom ihåg position: inaktiverad</string>
+	<key>Remember Position: Enabled</key>
+	<string>Kom ihåg position: Aktiverad</string>
+	<key>Remove</key>
+	<string>Ta bort</string>
+	<key>Remove All Tags</key>
+	<string>Ta bort alla taggar</string>
+	<key>Remove Current Folder</key>
+	<string>Ta bort nuvarande mapp</string>
+	<key>Rename</key>
+	<string>Byt namn</string>
+	<key>Render Original RAW</key>
+	<string>Rendera original RAW</string>
+	<key>Replace</key>
+	<string>Ersätt</string>
+	<key>Reset</key>
+	<string>Återställ</string>
+	<key>Reverse Filter</key>
+	<string>Omvänd Filter</string>
+	<key>Rotate %d°</key>
+	<string>Rotera %d°</string>
+	<key>Rotate Clockwise</key>
+	<string>Rotera medurs</string>
+	<key>Rotate Counterclockwise</key>
+	<string>Rotera motursols</string>
+	<key>Save</key>
+	<string>Spara</string>
+	<key>Scan &amp; Update Enhanced Index</key>
+	<string>Skanna och uppdatera förbättrat index</string>
+	<key>Scan Complete</key>
+	<string>Skanning slutförd</string>
+	<key>Scan Prompt</key>
+	<string>Skanningsprompt</string>
+	<key>Scanning</key>
+	<string>Skannar</string>
+	<key>Scanning...</key>
+	<string>Skannar...</string>
+	<key>Search...</key>
+	<string>Sök...</string>
+	<key>Sequential Playback</key>
+	<string>Sekventiell uppspelning</string>
+	<key>Sequential Playback: Disabled</key>
+	<string>Sekventiell uppspelning: Inaktiverad</string>
+	<key>Sequential Playback: Enabled</key>
+	<string>Sekventiell uppspelning: Aktiverad</string>
+	<key>Set Auto Play Interval</key>
+	<string>Ange automatisk uppspelningsintervall</string>
+	<key>Set Scroll Speed</key>
+	<string>Ställ in rullningshastighet</string>
+	<key>Settings...</key>
+	<string>Inställningar...</string>
+	<key>Share...</key>
+	<string>Dela...</string>
+	<key>Show All</key>
+	<string>Visa alla</string>
+	<key>Show All Types of Files</key>
+	<string>Visa alla filtyper</string>
+	<key>Show Camera RAW Files</key>
+	<string>Visa kamera-RAW-filer</string>
+	<key>Show Exif</key>
+	<string>Visa Exif</string>
+	<key>Show Filename</key>
+	<string>Visa filnamn</string>
+	<key>Show Finder Tags and Ratings</key>
+	<string>Visa Finder-taggar och betyg</string>
+	<key>Show Hidden Files</key>
+	<string>Visa dolda filer</string>
+	<key>Show Image Files</key>
+	<string>Visa bildfiler</string>
+	<key>Show Info</key>
+	<string>Visa information</string>
+	<key>Show RAW/HDR Badge</key>
+	<string>Visa RAW/HDR-märke</string>
+	<key>Show Shadow</key>
+	<string>Visa skugga</string>
+	<key>Show Statistics in Window Title</key>
+	<string>Visa statistik i fönstertiteln</string>
+	<key>Show Tags and Ratings</key>
+	<string>Visa taggar och betyg</string>
+	<key>Show Video Files</key>
+	<string>Visa videofiler</string>
+	<key>Show Video Metadata</key>
+	<string>Visa videometadata</string>
+	<key>Show in Finder</key>
+	<string>Visa i Finder</string>
+	<key>Show in Original Folder</key>
+	<string>Visa i ursprungsfolder</string>
+	<key>Sidebar</key>
+	<string>Sidopanel</string>
+	<key>Skip</key>
+	<string>Hoppa över</string>
+	<key>Sort</key>
+	<string>Sortera</string>
+	<key>Sort Folders First</key>
+	<string>Sortera mappar först</string>
+	<key>Sort Order</key>
+	<string>Sorteringsordning</string>
+	<key>Sort Using Full Path In Collection Mode</key>
+	<string>Sortera med fullständig sökväg i samlingsläge</string>
+	<key>Sort by EXIF Info</key>
+	<string>Sortera efter EXIF-info</string>
+	<key>Statistic</key>
+	<string>Statistik</string>
+	<key>Stop</key>
+	<string>Stoppa</string>
+	<key>Success</key>
+	<string>Framgång</string>
+	<key>Symbolic Link</key>
+	<string>Symbolisk länk</string>
+	<key>Tagging</key>
+	<string>Taggning</string>
+	<key>Text File</key>
+	<string>textfil</string>
+	<key>This app is now the default for all specified file types.</key>
+	<string>Denna app är nu standard för alla angivna filtyper</string>
+	<key>Thumbnail General</key>
+	<string>Miniatyr Allmänt</string>
+	<key>Thumbnail Options</key>
+	<string>Miniatyralternativ</string>
+	<key>Thumbnail Size</key>
+	<string>Miniatyrbildstorlek</string>
+	<key>Undo</key>
+	<string>Ångra</string>
+	<key>Unpin Window from Top</key>
+	<string>Ta bort fönstret från toppen</string>
+	<key>Unsupported Video Format</key>
+	<string>Ej stödd videoformat</string>
+	<key>Updating Index</key>
+	<string>Uppdaterar index</string>
+	<key>Use Full Path</key>
+	<string>Använd fullständig sökväg</string>
+	<key>Use Full Path in Window Title</key>
+	<string>Använd hela sökvägen i fönstertiteln</string>
+	<key>Use Internal Video Player</key>
+	<string>Använd intern videospelare</string>
+	<key>Video</key>
+	<string>Video</string>
+	<key>VideoMetadata-AvgFrameRate</key>
+	<string>Genomsnittlig bildfrekvens</string>
+	<key>VideoMetadata-BitRate</key>
+	<string>Datahastighet</string>
+	<key>VideoMetadata-CodecLongName</key>
+	<string>Codec Långt Namn</string>
+	<key>VideoMetadata-CodecName</key>
+	<string>Codec-namn</string>
+	<key>VideoMetadata-ColorSpace</key>
+	<string>Färgrymd</string>
+	<key>VideoMetadata-CreationTime</key>
+	<string>Skapandetid</string>
+	<key>VideoMetadata-Duration</key>
+	<string>Varaktighet</string>
+	<key>VideoMetadata-EncoderSoftwareName</key>
+	<string>Namn på kodare-programvara</string>
+	<key>VideoMetadata-FormatName</key>
+	<string>Formatera namn</string>
+	<key>VideoMetadata-Height</key>
+	<string>Höjd</string>
+	<key>VideoMetadata-Index</key>
+	<string>Index</string>
+	<key>VideoMetadata-Level</key>
+	<string>Nivå</string>
+	<key>VideoMetadata-PixelFormat</key>
+	<string>Pixelformat</string>
+	<key>VideoMetadata-Profile</key>
+	<string>Profil</string>
+	<key>VideoMetadata-RFrameRate</key>
+	<string>Bildhastighet</string>
+	<key>VideoMetadata-Width</key>
+	<string>Bredd</string>
+	<key>Videos</key>
+	<string>videor</string>
+	<key>View</key>
+	<string>Visa</string>
+	<key>Volume</key>
+	<string>Volym</string>
+	<key>Waterfall View</key>
+	<string>Vattenfallsvy</string>
+	<key>Window Title</key>
+	<string>Fönstertitel</string>
+	<key>Zoom</key>
+	<string>Zooma</string>
+	<key>Zoom In</key>
+	<string>Zooma in</string>
+	<key>Zoom Out</key>
+	<string>Zooma ut</string>
+	<key>ask-to-delete</key>
+	<string>Är du säker på att du vill flytta dessa filer till papperskorgen?</string>
+	<key>ask-to-delete-external</key>
+	<string>Denna katalog stöder inte att flyttas till papperskorgen. Dessa objekt kommer att raderas omedelbart och denna åtgärd kan inte ångras.</string>
+	<key>ask-to-delete-nopermission</key>
+	<string>Är du säker på att du vill flytta dessa filer till papperskorgen?
+
+Programmets "Automatisering" behörighet har inte beviljats. Efter att ha flyttat till papperskorgen kan funktionen "Återställ till ursprunglig plats" inte användas.</string>
+	<key>ask-to-delete-shift</key>
+	<string>Är du säker på att du vill ta bort dessa filer permanent? Denna åtgärd kan inte ångras.</string>
+	<key>back-folder</key>
+	<string>Tillbaka</string>
+	<key>cannot-copy-to-self</key>
+	<string>Kan inte kopiera en fil/mapp till sig själv eller dess undermapp.</string>
+	<key>cannot-move-to-self</key>
+	<string>Kan inte flytta en fil/mapp till sig själv eller dess undermapp</string>
+	<key>copy-lowercase</key>
+	<string>kopiera</string>
+	<key>copy-to-download</key>
+	<string>Kopiera till mappen "Nerladdningar"</string>
+	<key>do-you-want-replace</key>
+	<string>Vill du ersätta den med filen du håller på att klistra in eller flytta?</string>
+	<key>do-you-want-replace(move)</key>
+	<string>Vill du ersätta det med filen du flyttar?</string>
+	<key>do-you-want-replace(paste)</key>
+	<string>Vill du ersätta det med filen du klistrar in?</string>
+	<key>empty-enclose</key>
+	<string>(Tom)</string>
+	<key>file-exists-continue-batch-rename</key>
+	<string>De filer som har döpts om i grupp efter sekvensnummer krockar med befintliga filer, exempelvis har de nya filnamnen a_1.jpg, a_2.jpg, a_3.jpg... men det finns redan en fil med namnet a_2.jpg. Ska sekvensnumret automatiskt ökas för att fortsätta?</string>
+	<key>file-rightmenu-get-info</key>
+	<string>Hämta info</string>
+	<key>file-rightmenu-get-statistic</key>
+	<string>Få statistik</string>
+	<key>file-size</key>
+	<string>Storlek</string>
+	<key>first-time-use-prompt</key>
+	<string>Dubbelklicka på vänster knapp för att stänga
+Bild: Håll ned höger eller vänster knapp och rulla hjulet för att zooma in eller ut
+Video: Håll ned höger musknapp och dra för att justera uppspelningsprogressionen</string>
+	<key>gen-thumb-info</key>
+	<string>"Föredra att använda inbäddade miniatyrer" avser att prioritera användningen av miniatyrer inbäddade i bildens EXIF-data, som vanligtvis har lägre upplösning. Eftersom endast filhuvudens innehåll behöver läsas kan det dock avsevärt förbättra hastigheten för att läsa bilder på en nätverksenhet. Eftersom de flesta bilder på internet har sin EXIF-data borttagen för att minska filstorleken, kommer programmet då att växla till "generera standardminiatyrer."
+
+"Generera standardminiatyrer" avser att skapa miniatyrbilder av medelkvalitet med en storlek på 512×512. I detta fall måste hela filens innehåll laddas ner. (Eftersom inbäddade miniatyrer i RAW-bilder vanligtvis har högre upplösning, föredras deras inbäddade miniatyrer fortfarande i detta läge.)
+
+"Generera högupplösta miniatyrer" innebär att rendera bilden exakt inom miniatyrområdet, och det rekommenderas att aktivera detta alternativ när miniatyrstorleken är större än standardvärdet. Vid denna tidpunkt kan den omrenderade bilden förbruka mer minne.
+
+Dessutom genereras inte miniatyrer för mappar på externa enheter som standard. Gå till "Inställningar" -&gt; "Avancerat" för att ändra relevanta alternativ.</string>
+	<key>has-exist-in-dest</key>
+	<string>En fil med namnet "%@" finns redan i målmappen.</string>
+	<key>has-same-name-files</key>
+	<string>Har filer med samma namn</string>
+	<key>has-same-name-files-info</key>
+	<string>Källfilen innehåller filer med samma namn. Ska de automatiskt döpas om?
+
+Till exempel kommer flera filer med namnet abc.jpg från olika kataloger automatiskt döpas om till abc.jpg, abc_2.jpg, abc_3.jpg...
+
+Obs: Bekräfta effekten av denna åtgärd för att undvika förvirring.</string>
+	<key>image-dimensions</key>
+	<string>Dimensioner</string>
+	<key>input-new-folder-name</key>
+	<string>Ange nytt mappnamn: </string>
+	<key>input-new-textfile-name</key>
+	<string>Ange filnamn:</string>
+	<key>move-to-download</key>
+	<string>Flytta till mappen "Nedladdningar"</string>
+	<key>next-folder</key>
+	<string>Nästa mapp</string>
+	<key>next-sibling</key>
+	<string>Nästa syskon</string>
+	<key>next-sibling-of-parent</key>
+	<string>Nästa syskon till förälder</string>
+	<key>ocr-recog-fail</key>
+	<string>OCR-funktionen kräver macOS 13.0 eller senare.</string>
+	<key>open-in-new-tab-this</key>
+	<string>Öppna detta i ny flik</string>
+	<key>operation-logs-info</key>
+	<string>Dokumentation av borttagning, namnbyte, flytt och inklistring av filer. Det finns för närvarande inget innehåll.</string>
+	<key>optimizeWindow</key>
+	<string>Optimal fönsterstorlek</string>
+	<key>pan-zoom</key>
+	<string>Aktivera panorering efter zoom</string>
+	<key>pan-zoom-info</key>
+	<string>Musens eller styrplattans rullningsbeteende är som standard att byta bilder. När denna funktion är aktiverad ändras rullningsbeteendet till panorering efter att bilden har zoomats in. Detta används vanligtvis för att visa långa skärmdumpar eller serier.</string>
+	<key>parent-folder</key>
+	<string>Överordnad mapp</string>
+	<key>portable-mode-info</key>
+	<string>I bärbart läge:
+ - När en bild öppnas ändras fönstrets storlek automatiskt för att matcha bildens dimensioner;
+ - När en bild stängs ändras fönstrets storlek automatiskt till en proportion av skärmen</string>
+	<key>previous-folder</key>
+	<string>Föregående mapp</string>
+	<key>previous-sibling</key>
+	<string>Föregående syskon</string>
+	<key>previous-sibling-of-parent</key>
+	<string>Föregående syskon till överordnad</string>
+	<key>qrcode-recog-fail</key>
+	<string>Kunde inte känna igen QR-kod</string>
+	<key>qrcode-recog-result</key>
+	<string>Resultat av QR-kodigenkänning</string>
+	<key>rating-info</key>
+	<string>**Om XMP-betyg** XMP-betyg är en universell bildscoreringsmetod som använder 1 till 5 stjärnor för att ange bildens prioritet. De är industristandardmetadata, inte ett proprietärt FlowVision-format, och kan kännas igen av många XMP-kompatibla programvaror.
+
+**Vad är XMP?** XMP (Extensible Metadata Platform) kan betraktas som ett ”informationskort inbäddat i bilden”, vanligtvis använt för att lagra redigerbar metadata som betyg, nyckelord och upphovsrättsinformation. Till skillnad från EXIF, som främst registrerar kamerainställningar som slutartid, bländare och ISO, fokuserar XMP mer på beskrivande, användarredigerbara data. När det gäller filstruktur finns båda i bildens metadataområde men tillhör olika namngivningssystem eller datablock och kan samexistera.
+
+**Var lagras betygsinformationen?** FlowVision skriver betyg i fältet xmp:Rating inom bildens metadata. Denna information är normalt inbäddad i bildfilens metadatasektion—till exempel i metadata segmentet av JPEG-filer eller i motsvarande metadatabehållare för PNG, TIFF, HEIF och RAW-format—snarare än att lagras separat som en databasinspelning eller som filsystemmetadata.
+
+**Vad betyder ”Ingen betyg”?** När du väljer ”Ingen betyg” rensar FlowVision fältet xmp:Rating (det skriver inte ett värde på 0). Detta indikerar att bilden för närvarande inte har något betyg tilldelat.
+
+**Viktiga anteckningar** Att sätta eller rensa ett betyg innebär att man skriver till filen. Efter att ha skrivit, kommer vanligtvis filens ändringsdatum att uppdateras, och filstorleken kan också ändras något på grund av att metadata skrivs om. Om du förlitar dig på ändringstid för synkronisering, säkerhetskopior eller sortering, är det lämpligt att förstå denna påverkan innan du utför batchbetyg.</string>
+	<key>raw-use-embeded-info</key>
+	<string>När detta alternativ är aktiverat, använd den inbäddade Exif-miniatyren istället för att återge den ursprungliga RAW-filen.
+
+RAW-filer kommer vanligtvis med högkvalitativa Exif-miniatyrer för kamerans förhandsgranskningsgränssnitt, vilka är icke-originalbilder korrigerade och bearbetade av kamerans inbyggda program. Genom att använda dessa miniatyrer kan programmet avsevärt snabba upp laddningstiderna.</string>
+	<key>recognize-OCR</key>
+	<string>Identifiera text</string>
+	<key>recognize-QRCode</key>
+	<string>Identifiera QR-kod</string>
+	<key>recursive-mode-info</key>
+	<string>När "Rekursiv bläddringsläge" är aktiverat kommer miniatyrområdet att visa alla filer inom en mapp och dess undermappar. När "Inkludera mappar" är markerat kommer alla undermappar själva också att visas.
+
+Skanning av vissa systemmappar eller nätverksenheter kan orsaka att programmet blir långsammare.
+
+Dessutom, i detta läge, kommer applikationen inte att övervaka ändringar i filsystemet, så om det finns externa ändringar (såsom redigeringar eller raderingar), vänligen uppdatera manuellt. För ändringar inom applikationen, för att säkerställa driftkontinuitet, kommer automatisk uppdatering inte att ske om det finns för många bilder i vyn; vänligen uppdatera manuellt.</string>
+	<key>recursive-mode-nodirection</key>
+	<string>I rekursivt läge kan åtgärden att hitta nästa/föregående mapp inte utföras.</string>
+	<key>renaming-conflict</key>
+	<string>Det finns redan en fil med det här namnet. Välj ett annat namn.</string>
+	<key>save-to-custom-profile</key>
+	<string>Spara till anpassad profil %@</string>
+	<key>scan-enhanced-index-info</key>
+	<string>Att göra</string>
+	<key>scanned-files</key>
+	<string>För närvarande scannade %d filer, inklusive %d bilder och %d videor. Vill du fortsätta?</string>
+	<key>search-help</key>
+	<string>**Filtrera innehåll**  
+Knappen "Tillämpa filter" filtrerar innehållet i den aktuella katalogen och visar endast objekt som matchar sökkriterierna. För att återställa den ursprungliga vyn, rensa sökkriterierna och klicka på den här knappen igen, eller klicka på sökikonen i verktygsfältet.
+
+**Sök i undermappar**  
+För att söka filer i underkataloger, aktivera först "Rekursivt bläddringsläge".
+
+**Vad är reguljära uttryck?**  
+Reguljära uttryck (regex) är mönster som används för att matcha teckenkombinationer inom strängar. De är ett kraftfullt textbehandlingsverktyg som används i stor utsträckning för uppgifter som att söka, ersätta och analysera text.  
+Till exempel:  
+^2024 kan matcha filer som börjar med '2024';  
+.*modified\.[^.]+$ kan matcha filer som slutar med 'modified' (oavsett filändelse);  
+.*\.jpg$ kan matcha filer med filändelsen '.jpg'.
+
+**Avancerad sökning**  
+I "Rekursivt bläddringsläge" kan du dessutom använda alternativet "Använd fullständig sökväg" och kombinera det med reguljära uttryck för att utföra avancerade sökningar.  
+Till exempel, givet en fullständig filsökväg som:  
+/Users/Alice/Pictures/20220101/mypick/001.jpg  
+kan du använda det reguljära uttrycket:  
+^.*\/[^\/]*pick[^\/]*\/[^\/]+$  
+för att matcha alla filer vars överordnade katalognamn innehåller "pick". För mer komplexa regex-mönster kan du använda stora språkmodeller för att hjälpa till att skriva dem.</string>
+	<key>sort-addDateA</key>
+	<string>Sortera efter tillagd datum</string>
+	<key>sort-addDateZ</key>
+	<string>Sortera efter tillagd datum (fallande)</string>
+	<key>sort-createDateA</key>
+	<string>Sortera efter skapelsedatum</string>
+	<key>sort-createDateZ</key>
+	<string>Sortera efter skapelsedatum (fallande)</string>
+	<key>sort-exif-local-warning</key>
+	<string>Sortering efter Exif-information kräver läsning av alla filers headers, vilket kan resultera i långsamma laddningstider. Till exempel är referensavläsningshastigheten för videofilinformation cirka 10 per sekund. 
+
+Den nuvarande katalogen innehåller %d bilder eller videor, med en uppskattad maximal laddningstid på %d sekunder. Är du säker på att du vill fortsätta?</string>
+	<key>sort-exif-network-warning</key>
+	<string>Sortering efter Exif-information kräver att läsa rubrikerna för alla filer, vilket kan resultera i långsam laddningstid. Till exempel är referensläsningshastigheten på en SMB-nätverksenhet cirka 10 per sekund.
+
+Den aktuella katalogen finns på en extern enhet och innehåller %d bilder eller videor, med en uppskattad maximal laddningstid på %d sekunder. Är du säker på att du vill fortsätta?</string>
+	<key>sort-exifDateA</key>
+	<string>Sortera efter Exif-datum</string>
+	<key>sort-exifDateZ</key>
+	<string>Sortera efter Exif-datum (fallande)</string>
+	<key>sort-exifPixelA</key>
+	<string>Sortera efter Exif-pixelstorlek</string>
+	<key>sort-exifPixelZ</key>
+	<string>Sortera efter Exif-pixelstorlek (fallande)</string>
+	<key>sort-extA</key>
+	<string>Sortera efter filtyp</string>
+	<key>sort-extZ</key>
+	<string>Sortera efter filtyp (fallande)</string>
+	<key>sort-label-date</key>
+	<string>Datum</string>
+	<key>sort-label-exifDate</key>
+	<string>ExifDatum</string>
+	<key>sort-label-exifPixel</key>
+	<string>ExifPixel</string>
+	<key>sort-label-ext</key>
+	<string>Typ</string>
+	<key>sort-label-name</key>
+	<string>Namn</string>
+	<key>sort-label-random</key>
+	<string>Slumpmässig</string>
+	<key>sort-label-size</key>
+	<string>Storlek</string>
+	<key>sort-modDateA</key>
+	<string>Sortera efter ändringsdatum</string>
+	<key>sort-modDateZ</key>
+	<string>Sortera efter ändringsdatum (fallande)</string>
+	<key>sort-pathA</key>
+	<string>Sortera efter filnamn</string>
+	<key>sort-pathZ</key>
+	<string>Sortera efter filnamn (fallande)</string>
+	<key>sort-random</key>
+	<string>Sortera slumpmässigt</string>
+	<key>sort-readme</key>
+	<string>"Sortera efter fullständig sökväg i samlingsläge" betyder att om man arbetar rekursivt eller med taggsamlingar, och två filer har följande sökvägar relativt den aktuella katalogen:
+./AAA/2.jpg
+./BBB/1.jpg
+så kommer 2.jpg först när man sorterar efter fullständig sökväg, medan 1.jpg kommer först när man sorterar efter filnamn.
+
+När man sorterar efter Exif-information måste varje fils header läsas, vilket kan resultera i långsammare laddningshastigheter. Till exempel, på en SMB-nätverksenhet eller med videofiler, är den typiska läshastigheten cirka 10 filer per sekund.</string>
+	<key>sort-sizeA</key>
+	<string>Sortera efter filstorlek</string>
+	<key>sort-sizeZ</key>
+	<string>Sortera efter filstorlek (fallande)</string>
+	<key>statistic-content</key>
+	<string>Antal mappar: %d
+Antal filer: %d
+Antal bilder: %d
+Antal videor: %d
+Total storlek: %@</string>
+	<key>switch-to-custom-profile</key>
+	<string>Byt till Anpassad Profil %@</string>
+	<key>switchToActualSize</key>
+	<string>Standardbildens faktiska storlek</string>
+	<key>switchToDarkMode</key>
+	<string>Mörkt läge</string>
+	<key>switchToFitToWindow</key>
+	<string>Bildens standardpassform till fönster</string>
+	<key>switchToLightMode</key>
+	<string>Ljust läge</string>
+	<key>switchToSystemTheme</key>
+	<string>Anpassa efter systemet</string>
+	<key>up-folder</key>
+	<string>Inneslutande mapp</string>
+	<key>video-dimensions</key>
+	<string>Dimensioner</string>
+	<key>video-play-info</key>
+	<string>I spelargränssnittet pausar uppspelningen när du trycker på vänster musknapp, och högerklicksdragning justerar videons uppspelningsprogression. Tangentbordets vänster- och högerpiltangenter kan snabbspola framåt och bakåt, och genom att hålla Cmd-tangenten nere kan du navigera bildruta för bildruta.
+
+macOS stöder inbyggt videoformat som "mp4", "mov", "m2ts", "ts", "mpeg", "mpg", "m4v" och "vob". Andra format kräver fortfarande en extern spelare för uppspelning.
+
+För HEVC-kodade videor känner macOS inbyggda avkodare endast igen codec-taggarna hvc1 och inte taggarna hev1. Du kan använda FFmpeg för att utföra en förlustfri konvertering: ffmpeg -i input.mp4 -c copy -movflags +faststart -tag:v hvc1 output.mp4.
+
+Tryck Ctrl+Shift+V för att "Auto Play Visible Videos," vilket innebär att i miniatyrvy, kommer den att loopa videor inom det synliga området. Om du trycker på snabbkommandot igen eller byter mapp kommer du att avsluta detta läge.</string>
+	<key>window-num-max</key>
+	<string>Antalet fönster överskrider gränsen.</string>
+</dict>
+</plist>
