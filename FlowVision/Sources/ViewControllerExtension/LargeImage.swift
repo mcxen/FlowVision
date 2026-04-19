@@ -218,6 +218,8 @@ extension ViewController {
                 let resolvedAbsPath = resolved.absoluteString
                 if resolved.hasDirectoryPath {
                     switchDirByDirection(direction: .zero, dest: resolvedAbsPath, stackDeep: 0)
+                } else if isSupportedArchiveURL(resolved) {
+                    _ = openArchiveAsVirtualFolder(resolved)
                 } else if globalVar.HandledImageAndRawExtensions.contains(resolved.pathExtension.lowercased()) ||
                     (globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(resolved.pathExtension.lowercased())) {
                     if let appDelegate = NSApplication.shared.delegate as? AppDelegate {
@@ -234,6 +236,8 @@ extension ViewController {
             
             if(url.hasDirectoryPath){
                 switchDirByDirection(direction: .zero, dest: item.file.path, stackDeep: 0)
+            } else if isSupportedArchiveURL(url) {
+                _ = openArchiveAsVirtualFolder(url)
             }
             else if !globalVar.HandledImageAndRawExtensions.contains(url.pathExtension.lowercased()) &&
                 !(globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(item.file.ext)) {
@@ -965,13 +969,21 @@ extension ViewController {
                             if let animateImage = getAnimateImage(url: url, rotate: rotate) {
                                 largeImage = animateImage
                             } else {
-                                largeImage = NSImage(contentsOf: url)?.rotated(by: CGFloat(-90*rotate))
+                                if let data = getArchiveEntryDataIfNeeded(url: url) {
+                                    largeImage = NSImage(data: data)?.rotated(by: CGFloat(-90*rotate))
+                                } else {
+                                    largeImage = NSImage(contentsOf: url)?.rotated(by: CGFloat(-90*rotate))
+                                }
                             }
                         }else{
                             largeImage = getResizedImage(url: url, size: largeSize, rotate: rotate, isRawUseEmbeddedThumb: publicVar.isRawUseEmbeddedThumb)
                             if largeImage == nil {
                                 lastResizeFailed = true
-                                largeImage = NSImage(contentsOf: url)?.rotated(by: CGFloat(-90*rotate))
+                                if let data = getArchiveEntryDataIfNeeded(url: url) {
+                                    largeImage = NSImage(data: data)?.rotated(by: CGFloat(-90*rotate))
+                                } else {
+                                    largeImage = NSImage(contentsOf: url)?.rotated(by: CGFloat(-90*rotate))
+                                }
                             }
                         }
                     }

@@ -497,6 +497,10 @@ extension WindowController: NSToolbarDelegate {
                 var pathItems: [CustomPathControlItem] = []
                 
                 let isVirtualFinderTagsFolder = pathString.hasPrefix("VirtualFinderTagsFolder")
+                let isVirtualFavoritesFolder = pathString.hasPrefix("VirtualFavoritesFolder")
+                let isVirtualHistoryFolder = pathString.hasPrefix("VirtualHistoryFolder")
+                let isVirtualArchiveFolder = pathString.hasPrefix("VirtualArchiveFolder")
+                let isVirtualFolder = isVirtualFinderTagsFolder || isVirtualFavoritesFolder || isVirtualHistoryFolder || isVirtualArchiveFolder
                 
                 for (i,component) in components.enumerated() {
                     if component == "" {continue}
@@ -509,12 +513,22 @@ extension WindowController: NSToolbarDelegate {
 
                     if isVirtualFinderTagsFolder && i == 0 {
                         item.title = NSLocalizedString("Finder Tags", comment: "Finder标签")
+                    } else if isVirtualFavoritesFolder && i == 0 {
+                        item.title = NSLocalizedString("Favorites", comment: "收藏")
+                    } else if isVirtualHistoryFolder && i == 0 {
+                        item.title = NSLocalizedString("History", comment: "历史")
+                    } else if isVirtualArchiveFolder && i == 0 {
+                        item.title = NSLocalizedString("Archive", comment: "压缩包")
+                    } else if isVirtualArchiveFolder && i == 1,
+                              let archivePath = component.removingPercentEncoding,
+                              let archiveURL = URL(string: archivePath) {
+                        item.title = archiveURL.lastPathComponent
                     }
 
                     pathItems.append(item)
                 }
                 
-                if !isVirtualFinderTagsFolder {
+                if !isVirtualFolder {
                     let rootItem = CustomPathControlItem()
                     rootItem.title = ROOT_NAME
                     rootItem.myUrl = URL(string: "file:///")
@@ -1690,26 +1704,11 @@ extension WindowController: NSToolbarDelegate {
         viewController.fileDB.lock()
         let curFolder=viewController.fileDB.curFolder
         viewController.fileDB.unlock()
-        if !globalVar.myFavoritesArray.contains(curFolder) {
-            globalVar.myFavoritesArray.append(curFolder)
-            let defaults = UserDefaults.standard
-            defaults.set(globalVar.myFavoritesArray, forKey: "globalVar.myFavoritesArray")
-        }
+        _ = addFavoritePath(curFolder)
     }
     @objc func deleteFavorite(_ sender: NSMenuItem) {
         guard let folderPath = sender.representedObject as? String else { return }
-        
-        // 在这里处理删除逻辑
-        // Handle delete logic here
-        if let index = globalVar.myFavoritesArray.firstIndex(of: folderPath) {
-            globalVar.myFavoritesArray.remove(at: index)
-            let defaults = UserDefaults.standard
-            defaults.set(globalVar.myFavoritesArray, forKey: "globalVar.myFavoritesArray")
-        }
-        
-        // 更新菜单以反映更改
-        // Update menu to reflect changes
-        // menuNeedsUpdate(favoritesMenu)
+        _ = removeFavoritePath(folderPath)
     }
     @objc func moveUpFavorite(_ sender: NSMenuItem) {
         guard let index = sender.representedObject as? Int, index > 0 else { return }

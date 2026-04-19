@@ -951,6 +951,9 @@
         }
       }
     },
+    "Add Current Folder to Favorites" : {
+      "comment" : "收藏当前目录"
+    },
     "Add Separator" : {
       "comment" : "添加分隔线",
       "localizations" : {
@@ -1045,6 +1048,9 @@
           }
         }
       }
+    },
+    "Add to Favorites" : {
+      "comment" : "添加到收藏"
     },
     "Adjust Window to Actual Image Size" : {
       "comment" : "调整窗口至图片实际大小",
@@ -1808,6 +1814,9 @@
           }
         }
       }
+    },
+    "Archive" : {
+      "comment" : "压缩包"
     },
     "Are you sure you want to move xxx to xxx?" : {
       "comment" : "确定要移动 xxx 到 xxx?",
@@ -5039,6 +5048,18 @@
         }
       }
     },
+    "Compress" : {
+      "comment" : "压缩"
+    },
+    "Compress (.zip)" : {
+      "comment" : "压缩为 zip"
+    },
+    "Compress and Delete Source" : {
+      "comment" : "压缩并删除源文件"
+    },
+    "Compression failed." : {
+      "comment" : "压缩失败。"
+    },
     "Continue" : {
       "comment" : "继续",
       "localizations" : {
@@ -6277,6 +6298,12 @@
         }
       }
     },
+    "Default compression password is empty." : {
+      "comment" : "默认压缩密码为空。"
+    },
+    "Default compression password is empty. Please set it in Settings." : {
+      "comment" : "默认压缩密码为空，请先在设置中配置。"
+    },
     "Default Thumbnail Size" : {
       "comment" : "默认缩略图大小",
       "localizations" : {
@@ -6371,6 +6398,9 @@
           }
         }
       }
+    },
+    "Default to encrypted zip using password above" : {
+      "comment" : "默认使用上面的密码进行加密压缩"
     },
     "Delete" : {
       "comment" : "删除",
@@ -7891,6 +7921,15 @@
           }
         }
       }
+    },
+    "Encrypt and Compress..." : {
+      "comment" : "加密压缩..."
+    },
+    "Encrypt with Default Password" : {
+      "comment" : "使用默认密码加密压缩"
+    },
+    "Encrypt ZIP" : {
+      "comment" : "加密压缩 ZIP"
     },
     "Enlarge the Thumbnails" : {
       "comment" : "放大缩略图",
@@ -11413,6 +11452,9 @@
     "Failed to encode captured frame." : {
       "comment" : "编码截图失败。"
     },
+    "Failed to execute zip." : {
+      "comment" : "执行压缩失败。"
+    },
     "Failed to set this app as the default for some file types:\n" : {
       "comment" : "未能将此应用设置为某些文件类型的默认应用程序：\n",
       "localizations" : {
@@ -11509,7 +11551,7 @@
       }
     },
     "Favorites" : {
-      "comment" : "收藏夹",
+      "comment" : "收藏\n收藏夹",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -14458,6 +14500,9 @@
           }
         }
       }
+    },
+    "History" : {
+      "comment" : "历史"
     },
     "Image" : {
       "comment" : "图像",
@@ -20162,6 +20207,9 @@
         }
       }
     },
+    "Optional" : {
+      "comment" : "可选"
+    },
     "Original Path" : {
       "comment" : "原始路径",
       "localizations" : {
@@ -20732,6 +20780,9 @@
         }
       }
     },
+    "Password cannot be empty." : {
+      "comment" : "密码不能为空。"
+    },
     "Paste" : {
       "comment" : "粘贴",
       "localizations" : {
@@ -21213,6 +21264,9 @@
         }
       }
     },
+    "Please input ZIP password:" : {
+      "comment" : "请输入 ZIP 密码："
+    },
     "Please select a specific tag" : {
       "comment" : "请选择具体的标签",
       "localizations" : {
@@ -21307,6 +21361,9 @@
           }
         }
       }
+    },
+    "Please select items from the same folder." : {
+      "comment" : "请在同一目录下选择要压缩的项目。"
     },
     "Please set Photo Folder 1 in Settings first." : {
       "comment" : "请先在设置中配置图片文件夹1。"
@@ -22263,6 +22320,9 @@
           }
         }
       }
+    },
+    "Quick Compress" : {
+      "comment" : "快速压缩"
     },
     "Quick Rename" : {
       "comment" : "快速重命名"
@@ -24454,6 +24514,9 @@
           }
         }
       }
+    },
+    "Remove from Favorites" : {
+      "comment" : "取消收藏"
     },
     "Rename" : {
       "comment" : "重命名",
@@ -27212,6 +27275,9 @@
           }
         }
       }
+    },
+    "Show Archive Files" : {
+      "comment" : "显示压缩文件"
     },
     "Show Camera RAW Files" : {
       "comment" : "显示相机RAW文件",
@@ -36244,6 +36310,9 @@
         }
       }
     },
+    "Virtual entries cannot be compressed." : {
+      "comment" : "虚拟目录或压缩包内虚拟条目不支持压缩。"
+    },
     "Volume" : {
       "comment" : "音量",
       "localizations" : {
@@ -36623,6 +36692,9 @@
           }
         }
       }
+    },
+    "ZIP Password:" : {
+      "comment" : "ZIP 默认密码："
     },
     "Zoom" : {
       "comment" : "缩放",

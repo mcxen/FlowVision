@@ -20,6 +20,9 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
     private var photoFolder1PathField = NSTextField()
     private var photoFolder1ShortcutPopup = NSPopUpButton()
     private var videoShiftArrowSwitchFileCheckbox = NSButton()
+    private var showArchiveFileTypeCheckbox = NSButton()
+    private var compressionUseDefaultPasswordCheckbox = NSButton()
+    private var compressionDefaultPasswordField = NSSecureTextField()
     
     private let shortcutCandidates: [String] = {
         let letters = (65...90).compactMap { UnicodeScalar($0).map { String($0) } }
@@ -66,6 +69,8 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         panel.alignment = .leading
         panel.edgeInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         panel.translatesAutoresizingMaskIntoConstraints = false
+        panel.setContentHuggingPriority(.required, for: .vertical)
+        panel.setContentCompressionResistancePriority(.required, for: .vertical)
         
         let renameRow = NSStackView()
         renameRow.orientation = .horizontal
@@ -134,6 +139,44 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         spacer.widthAnchor.constraint(equalToConstant: 116).isActive = true
         videoSwitchRow.addArrangedSubview(spacer)
         videoSwitchRow.addArrangedSubview(videoShiftArrowSwitchFileCheckbox)
+        
+        showArchiveFileTypeCheckbox = NSButton(checkboxWithTitle: NSLocalizedString("Show Archive Files", comment: "显示压缩文件"), target: self, action: #selector(applyInlineFileActionSettings))
+        showArchiveFileTypeCheckbox.state = globalVar.showArchiveFileType ? .on : .off
+
+        let archiveSwitchRow = NSStackView()
+        archiveSwitchRow.orientation = .horizontal
+        archiveSwitchRow.spacing = 8
+        archiveSwitchRow.alignment = .centerY
+        let archiveSpacer = NSView()
+        archiveSpacer.translatesAutoresizingMaskIntoConstraints = false
+        archiveSpacer.widthAnchor.constraint(equalToConstant: 116).isActive = true
+        archiveSwitchRow.addArrangedSubview(archiveSpacer)
+        archiveSwitchRow.addArrangedSubview(showArchiveFileTypeCheckbox)
+
+        let compressPasswordRow = NSStackView()
+        compressPasswordRow.orientation = .horizontal
+        compressPasswordRow.spacing = 8
+        compressPasswordRow.alignment = .centerY
+        let compressLabel = NSTextField(labelWithString: NSLocalizedString("ZIP Password:", comment: "ZIP 默认密码："))
+        compressLabel.setContentHuggingPriority(.required, for: .horizontal)
+        compressionDefaultPasswordField = NSSecureTextField()
+        compressionDefaultPasswordField.stringValue = globalVar.compressionDefaultPassword
+        compressionDefaultPasswordField.placeholderString = NSLocalizedString("Optional", comment: "可选")
+        compressionDefaultPasswordField.widthAnchor.constraint(greaterThanOrEqualToConstant: 180).isActive = true
+        compressPasswordRow.addArrangedSubview(compressLabel)
+        compressPasswordRow.addArrangedSubview(compressionDefaultPasswordField)
+
+        let compressDefaultRow = NSStackView()
+        compressDefaultRow.orientation = .horizontal
+        compressDefaultRow.spacing = 8
+        compressDefaultRow.alignment = .centerY
+        let compressSpacer = NSView()
+        compressSpacer.translatesAutoresizingMaskIntoConstraints = false
+        compressSpacer.widthAnchor.constraint(equalToConstant: 116).isActive = true
+        compressionUseDefaultPasswordCheckbox = NSButton(checkboxWithTitle: NSLocalizedString("Default to encrypted zip using password above", comment: "默认使用上面的密码进行加密压缩"), target: self, action: #selector(applyInlineFileActionSettings))
+        compressionUseDefaultPasswordCheckbox.state = globalVar.compressionUseDefaultPassword ? .on : .off
+        compressDefaultRow.addArrangedSubview(compressSpacer)
+        compressDefaultRow.addArrangedSubview(compressionUseDefaultPasswordCheckbox)
 
         shortcutRow.addArrangedSubview(shortcutLabel)
         shortcutRow.addArrangedSubview(photoFolder1ShortcutPopup)
@@ -142,8 +185,11 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         panel.addArrangedSubview(folderRow)
         panel.addArrangedSubview(shortcutRow)
         panel.addArrangedSubview(videoSwitchRow)
+        panel.addArrangedSubview(archiveSwitchRow)
+        panel.addArrangedSubview(compressPasswordRow)
+        panel.addArrangedSubview(compressDefaultRow)
 
-        guard let container = grid.cell(atColumnIndex: 1, rowIndex: targetRow).contentView as? NSView else { return }
+        guard let container = grid.cell(atColumnIndex: 1, rowIndex: targetRow).contentView else { return }
         container.subviews.forEach { $0.removeFromSuperview() }
         container.addSubview(panel)
         NSLayoutConstraint.activate([
@@ -152,6 +198,9 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
             panel.topAnchor.constraint(equalTo: container.topAnchor),
             panel.bottomAnchor.constraint(equalTo: container.bottomAnchor)
         ])
+        
+        let minHeight = max(180, panel.fittingSize.height + 12)
+        grid.row(at: targetRow).height = minHeight
     }
     
     @objc private func selectPhotoFolder1Inline() {
@@ -185,5 +234,14 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         
         globalVar.videoShiftArrowSwitchFile = (videoShiftArrowSwitchFileCheckbox.state == .on)
         UserDefaults.standard.set(globalVar.videoShiftArrowSwitchFile, forKey: "videoShiftArrowSwitchFile")
+        
+        globalVar.showArchiveFileType = (showArchiveFileTypeCheckbox.state == .on)
+        UserDefaults.standard.set(globalVar.showArchiveFileType, forKey: "showArchiveFileType")
+
+        globalVar.compressionDefaultPassword = compressionDefaultPasswordField.stringValue
+        UserDefaults.standard.set(globalVar.compressionDefaultPassword, forKey: "compressionDefaultPassword")
+
+        globalVar.compressionUseDefaultPassword = (compressionUseDefaultPasswordCheckbox.state == .on)
+        UserDefaults.standard.set(globalVar.compressionUseDefaultPassword, forKey: "compressionUseDefaultPassword")
     }
 }

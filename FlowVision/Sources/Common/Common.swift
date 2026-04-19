@@ -129,6 +129,152 @@ func getFileSchemeAbsPath(_ path: String) -> String {
     return pathWithScheme
 }
 
+let VIRTUAL_FINDER_TAGS_PREFIX = "file:///VirtualFinderTagsFolder"
+let VIRTUAL_FAVORITES_PREFIX = "file:///VirtualFavoritesFolder"
+let VIRTUAL_HISTORY_PREFIX = "file:///VirtualHistoryFolder"
+let VIRTUAL_ARCHIVE_PREFIX = "file:///VirtualArchiveFolder"
+
+func isVirtualFolderPath(_ path: String) -> Bool {
+    return path.hasPrefix(VIRTUAL_FINDER_TAGS_PREFIX)
+    || path.hasPrefix(VIRTUAL_FAVORITES_PREFIX)
+    || path.hasPrefix(VIRTUAL_HISTORY_PREFIX)
+    || path.hasPrefix(VIRTUAL_ARCHIVE_PREFIX)
+}
+
+func isReadOnlyVirtualFolderPath(_ path: String) -> Bool {
+    return isVirtualFolderPath(path)
+}
+
+func isVirtualArchivePath(_ path: String) -> Bool {
+    return path.hasPrefix(VIRTUAL_ARCHIVE_PREFIX)
+}
+
+func isVirtualArchiveRootPath(_ path: String) -> Bool {
+    guard isVirtualArchivePath(path) else { return false }
+    let prefix = "\(VIRTUAL_ARCHIVE_PREFIX)/"
+    guard path.hasPrefix(prefix) else { return false }
+    let remain = String(path.dropFirst(prefix.count))
+    return !remain.isEmpty && !remain.contains("/")
+}
+
+func isVirtualArchiveEntryPath(_ path: String) -> Bool {
+    guard isVirtualArchivePath(path) else { return false }
+    let prefix = "\(VIRTUAL_ARCHIVE_PREFIX)/"
+    guard path.hasPrefix(prefix) else { return false }
+    let remain = String(path.dropFirst(prefix.count))
+    let comps = remain.split(separator: "/", omittingEmptySubsequences: true)
+    return comps.count >= 2
+}
+
+func parseVirtualArchivePath(_ path: String) -> (archiveURL: URL, entryPath: String?)? {
+    let prefix = "\(VIRTUAL_ARCHIVE_PREFIX)/"
+    guard path.hasPrefix(prefix) else { return nil }
+    let remain = String(path.dropFirst(prefix.count))
+    guard !remain.isEmpty else { return nil }
+    let comps = remain.split(separator: "/", maxSplits: 1, omittingEmptySubsequences: true)
+    guard let encodedArchive = comps.first else {
+        return nil
+    }
+    let archiveAbsPath = String(encodedArchive).removingPercentEncoding ?? String(encodedArchive)
+    let archiveURL: URL?
+    if let parsed = URL(string: archiveAbsPath) {
+        archiveURL = parsed
+    } else if archiveAbsPath.hasPrefix("file://") {
+        let rawPath = String(archiveAbsPath.dropFirst("file://".count)).removingPercentEncoding
+            ?? String(archiveAbsPath.dropFirst("file://".count))
+        archiveURL = URL(fileURLWithPath: rawPath)
+    } else {
+        archiveURL = nil
+    }
+    guard let archiveURL else { return nil }
+    if comps.count == 1 {
+        return (archiveURL, nil)
+    }
+    let encodedEntryPath = String(comps[1])
+    let entryPath = encodedEntryPath.removingPercentEncoding ?? encodedEntryPath
+    return (archiveURL, entryPath)
+}
+
+private let archiveEntryDataCache = NSCache<NSString, NSData>()
+
+func getArchiveEntryData(archiveURL: URL, entryPath: String) -> Data? {
+    let cacheKey = "\(archiveURL.absoluteString)|\(entryPath)" as NSString
+    if let cached = archiveEntryDataCache.object(forKey: cacheKey) {
+        return Data(referencing: cached)
+    }
+
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/bsdtar")
+    process.arguments = ["-xOf", archiveURL.path, entryPath]
+    let stdOut = Pipe()
+    let stdErr = Pipe()
+    process.standardOutput = stdOut
+    process.standardError = stdErr
+
+    do {
+        try process.run()
+    } catch {
+        log("Archive stream failed: \(error)", level: .error)
+        return nil
+    }
+    
+    // Read stdout first to avoid pipe deadlock on large entries.
+    // If the child writes more than pipe capacity, waiting first may block forever.
+    let data = stdOut.fileHandleForReading.readDataToEndOfFile()
+    process.waitUntilExit()
+
+    guard process.terminationStatus == 0 else {
+        if let err = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8), !err.isEmpty {
+            log("Archive stream failed: \(err)", level: .warn)
+        }
+        return nil
+    }
+    
+    archiveEntryDataCache.setObject(data as NSData, forKey: cacheKey)
+    return data
+}
+
+func getArchiveEntryDataIfNeeded(url: URL) -> Data? {
+    guard let parsed = parseVirtualArchivePath(url.absoluteString),
+          let entryPath = parsed.entryPath else {
+        return nil
+    }
+    return getArchiveEntryData(archiveURL: parsed.archiveURL, entryPath: entryPath)
+}
+
+private func normalizeFavoriteFolderPath(_ rawPath: String) -> String? {
+    guard let rawURL = URL(string: getFileSchemeAbsPath(rawPath)) else { return nil }
+    if rawURL.hasDirectoryPath {
+        return rawURL.absoluteString
+    }
+    return rawURL.deletingLastPathComponent().absoluteString
+}
+
+@discardableResult
+func addFavoritePath(_ rawPath: String) -> Bool {
+    guard let folderPath = normalizeFavoriteFolderPath(rawPath), !folderPath.isEmpty else { return false }
+    if globalVar.myFavoritesArray.contains(folderPath) {
+        return false
+    }
+    globalVar.myFavoritesArray.append(folderPath)
+    UserDefaults.standard.set(globalVar.myFavoritesArray, forKey: "globalVar.myFavoritesArray")
+    return true
+}
+
+@discardableResult
+func removeFavoritePath(_ rawPath: String) -> Bool {
+    guard let folderPath = normalizeFavoriteFolderPath(rawPath), !folderPath.isEmpty else { return false }
+    guard let index = globalVar.myFavoritesArray.firstIndex(of: folderPath) else { return false }
+    globalVar.myFavoritesArray.remove(at: index)
+    UserDefaults.standard.set(globalVar.myFavoritesArray, forKey: "globalVar.myFavoritesArray")
+    return true
+}
+
+func isFavoritePath(_ rawPath: String) -> Bool {
+    guard let folderPath = normalizeFavoriteFolderPath(rawPath), !folderPath.isEmpty else { return false }
+    return globalVar.myFavoritesArray.contains(folderPath)
+}
+
 func getFileSchemeAbsParentFolderPath(_ path: String) -> String {
     var pathNoScheme = path.hasPrefix("file://") ? String(path.dropFirst("file://".count)) : path
     pathNoScheme = pathNoScheme.removingPercentEncoding!.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!

@@ -9,6 +9,10 @@ import AVFoundation
 import DiskArbitration
 
 extension ViewController {
+    enum CompressMode {
+        case plainZip
+        case encryptedZip(password: String)
+    }
     
     @discardableResult
     func handleFilePromiseDrop(targetURL: URL, pasteboard: NSPasteboard) -> Bool {
@@ -368,6 +372,141 @@ extension ViewController {
         restorePasteboard(items: backupItems)
     }
 
+    func promptCompressionPassword(initialValue: String = "") -> String? {
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Encrypt ZIP", comment: "加密压缩 ZIP")
+        alert.informativeText = NSLocalizedString("Please input ZIP password:", comment: "请输入 ZIP 密码：")
+        alert.alertStyle = .informational
+        alert.icon = NSImage(named: NSImage.infoName)
+
+        let passwordField = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 260, height: 24))
+        passwordField.stringValue = initialValue
+        alert.accessoryView = passwordField
+
+        alert.addButton(withTitle: NSLocalizedString("OK", comment: "确定"))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: "取消"))
+
+        let old = publicVar.isKeyEventEnabled
+        publicVar.isKeyEventEnabled = false
+        DispatchQueue.main.async { _ = passwordField.becomeFirstResponder() }
+        let response = alert.runModal()
+        publicVar.isKeyEventEnabled = old
+
+        guard response == .alertFirstButtonReturn else { return nil }
+        let password = passwordField.stringValue
+        if password.isEmpty {
+            showAlert(message: NSLocalizedString("Password cannot be empty.", comment: "密码不能为空。"))
+            return nil
+        }
+        return password
+    }
+
+    private func makeZipDestinationURL(for urls: [URL]) -> URL? {
+        guard !urls.isEmpty else { return nil }
+        let parent = urls[0].deletingLastPathComponent()
+        if urls.count == 1 {
+            let base = urls[0].deletingPathExtension().lastPathComponent
+            return getUniqueDestinationURL(for: parent.appendingPathComponent(base).appendingPathExtension("zip"), isInPlace: false)
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        let stamp = formatter.string(from: Date())
+        return getUniqueDestinationURL(for: parent.appendingPathComponent("Archive_\(stamp)").appendingPathExtension("zip"), isInPlace: false)
+    }
+
+    private func buildCompressCommand(urls: [URL], destination: URL, mode: CompressMode) -> (args: [String], workDir: URL)? {
+        guard !urls.isEmpty else { return nil }
+        let workDir = urls[0].deletingLastPathComponent()
+        var relativeNames: [String] = []
+        for url in urls {
+            if url.deletingLastPathComponent() != workDir {
+                return nil
+            }
+            relativeNames.append(url.lastPathComponent)
+        }
+        var args: [String] = ["-r", "-y"]
+        switch mode {
+        case .plainZip:
+            break
+        case .encryptedZip(let password):
+            args += ["-P", password]
+        }
+        args.append(destination.path)
+        args.append(contentsOf: relativeNames)
+        return (args, workDir)
+    }
+
+    @discardableResult
+    func handleCompress(urls inputUrls: [URL] = [], mode: CompressMode, deleteOriginal: Bool) -> Bool {
+        var urls = inputUrls
+        if urls.isEmpty {
+            urls = publicVar.selectedUrls()
+        }
+        if urls.isEmpty { return false }
+
+        if urls.contains(where: { isReadOnlyVirtualFolderPath($0.absoluteString) || isVirtualArchiveEntryPath($0.absoluteString) }) {
+            showAlert(message: NSLocalizedString("Virtual entries cannot be compressed.", comment: "虚拟目录或压缩包内虚拟条目不支持压缩。"))
+            return false
+        }
+
+        let sortedUrls = urls.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
+        guard let destinationURL = makeZipDestinationURL(for: sortedUrls) else { return false }
+        guard let (args, workDir) = buildCompressCommand(urls: sortedUrls, destination: destinationURL, mode: mode) else {
+            showAlert(message: NSLocalizedString("Please select items from the same folder.", comment: "请在同一目录下选择要压缩的项目。"))
+            return false
+        }
+
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/zip")
+        process.currentDirectoryURL = workDir
+        process.arguments = args
+        let stdErr = Pipe()
+        process.standardError = stdErr
+        process.standardOutput = Pipe()
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            showAlert(message: NSLocalizedString("Failed to execute zip.", comment: "执行压缩失败。"))
+            log("zip execute failed: \(error)", level: .error)
+            return false
+        }
+
+        guard process.terminationStatus == 0 else {
+            let errMsg = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+            if !errMsg.isEmpty { log("zip failed: \(errMsg)", level: .error) }
+            showAlert(message: NSLocalizedString("Compression failed.", comment: "压缩失败。"))
+            return false
+        }
+
+        publicVar.fileChangedCount += 1
+        publicVar.filesForLocateAfterChange = [destinationURL.absoluteString]
+        var logText = "[Compress] \(sortedUrls.count) item(s) -> \(destinationURL.lastPathComponent)"
+        if deleteOriginal {
+            for url in sortedUrls {
+                _ = try? FileManager.default.trashItem(at: url, resultingItemURL: nil)
+            }
+            publicVar.fileChangedCount += sortedUrls.count
+            logText += " + delete source"
+        }
+        globalVar.operationLogs.append(logText)
+        scheduledRefresh()
+        return true
+    }
+
+    @discardableResult
+    func handleCompressByDefaultSetting(urls: [URL] = [], deleteOriginal: Bool = false) -> Bool {
+        if globalVar.compressionUseDefaultPassword {
+            let password = globalVar.compressionDefaultPassword.trimmingCharacters(in: .whitespacesAndNewlines)
+            if password.isEmpty {
+                showAlert(message: NSLocalizedString("Default compression password is empty. Please set it in Settings.", comment: "默认压缩密码为空，请先在设置中配置。"))
+                return false
+            }
+            return handleCompress(urls: urls, mode: .encryptedZip(password: password), deleteOriginal: deleteOriginal)
+        }
+        return handleCompress(urls: urls, mode: .plainZip, deleteOriginal: deleteOriginal)
+    }
+
     func handleCaptureCurrentVideoFrameToCurrentFolder() {
         guard publicVar.isInLargeView,
               largeImageView.file.type == .video,
@@ -522,7 +661,7 @@ extension ViewController {
                 triggerFinderSound()
                 publicVar.filesForLocateAfterChange = successfulDestURLs
                 var ifRefresh = true
-                if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
                     fileDB.lock()
                     ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
                     fileDB.unlock()
@@ -779,7 +918,7 @@ extension ViewController {
                     pasteboard.clearContents()
                 }
                 var ifRefresh = true
-                if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
                     fileDB.lock()
                     ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
                     fileDB.unlock()
@@ -1040,7 +1179,7 @@ extension ViewController {
                 // 手动刷新
                 // Manually refresh
                 var ifRefresh = true
-                if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
                     fileDB.lock()
                     ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
                     fileDB.unlock()
@@ -1313,7 +1452,7 @@ extension ViewController {
                 // 手动刷新
                 // Manually refresh
                 var ifRefresh = true
-                if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
                     fileDB.lock()
                     ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
                     fileDB.unlock()
@@ -1443,7 +1582,7 @@ extension ViewController {
         }
         
         var ifRefresh = true
-        if publicVar.isRecursiveMode || curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+        if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
             fileDB.lock()
             ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
             fileDB.unlock()

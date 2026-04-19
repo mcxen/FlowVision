@@ -108,6 +108,9 @@ class GlobalVar{
     var photoFolder1CopyShortcut: String = "N"
     var quickRenameRule: String = "{folder}_{index}"
     var videoShiftArrowSwitchFile = true
+    var showArchiveFileType = true
+    var compressionDefaultPassword: String = ""
+    var compressionUseDefaultPassword = false
     
     // 可记忆设置变量
     // Rememberable settings variables

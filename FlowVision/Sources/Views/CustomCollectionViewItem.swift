@@ -625,7 +625,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
             tooltipParts.append("\(relativePathLabel): \(relativePath)")
         }
 
-        if curFolder.hasPrefix("file:///VirtualFinderTagsFolder") {
+        if isVirtualFolderPath(curFolder) {
             let parentDirectoryLabel = NSLocalizedString("Location", comment: "位置")
             var parentDirectory = (filePath as NSString).deletingLastPathComponent
             if parentDirectory.hasPrefix("file:") {
@@ -1072,7 +1072,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 }
 
                 let curFolder = getViewController(collectionView!)!.fileDB.curFolder
-                let isVirtualFinderTagsFolder = curFolder.hasPrefix("file:///VirtualFinderTagsFolder")
+                let isReadOnlyVirtualFolder = isReadOnlyVirtualFolderPath(curFolder)
                 
                 // 弹出菜单
                 // Show context menu
@@ -1105,7 +1105,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 }
 
                 let isRecursive = getViewController(collectionView!)?.publicVar.isRecursiveMode ?? false
-                let canShowParent = selectedCount == 1 && (isRecursive || getViewController(collectionView!)!.fileDB.curFolder.hasPrefix("file:///VirtualFinderTagsFolder"))
+                let canShowParent = selectedCount == 1 && (isRecursive || isVirtualFolderPath(getViewController(collectionView!)!.fileDB.curFolder))
                 if canShowParent, let url = URL(string: file.path) {
                     let parentURL = url.deletingLastPathComponent()
                     if !parentURL.path.isEmpty && parentURL.absoluteString != url.absoluteString {
@@ -1132,11 +1132,33 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 actionItemGetInfo.keyEquivalentModifierMask = []
                 
                 menu.addItem(NSMenuItem.separator())
+
+                if selectedCount == 1 {
+                    if isFavoritePath(file.path) {
+                        menu.addItem(withTitle: NSLocalizedString("Remove from Favorites", comment: "取消收藏"), action: #selector(actRemoveFromFavorites), keyEquivalent: "")
+                    } else {
+                        menu.addItem(withTitle: NSLocalizedString("Add to Favorites", comment: "添加到收藏"), action: #selector(actAddToFavorites), keyEquivalent: "")
+                    }
+                    menu.addItem(NSMenuItem.separator())
+                }
                 
                 let actionItemDelete = menu.addItem(withTitle: NSLocalizedString("Move to Trash", comment: "移动到废纸篓"), action: #selector(actDelete), keyEquivalent: "\u{8}")
                 actionItemDelete.keyEquivalentModifierMask = []
                 // actionItemDelete.isEnabled = (items.count>0)
                 
+                let compressMenu = NSMenu()
+                let compressMenuItem = NSMenuItem(title: NSLocalizedString("Compress", comment: "压缩"), action: nil, keyEquivalent: "")
+                compressMenuItem.submenu = compressMenu
+                compressMenu.addItem(withTitle: NSLocalizedString("Quick Compress", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
+                compressMenu.addItem(withTitle: NSLocalizedString("Compress (.zip)", comment: "压缩为 zip"), action: #selector(actCompressZip), keyEquivalent: "")
+                compressMenu.addItem(withTitle: NSLocalizedString("Compress and Delete Source", comment: "压缩并删除源文件"), action: #selector(actCompressZipAndDelete), keyEquivalent: "")
+                compressMenu.addItem(NSMenuItem.separator())
+                compressMenu.addItem(withTitle: NSLocalizedString("Encrypt and Compress...", comment: "加密压缩..."), action: #selector(actEncryptAndCompress), keyEquivalent: "")
+                if !globalVar.compressionDefaultPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    compressMenu.addItem(withTitle: NSLocalizedString("Encrypt with Default Password", comment: "使用默认密码加密压缩"), action: #selector(actEncryptCompressWithDefaultPassword), keyEquivalent: "")
+                }
+                menu.addItem(compressMenuItem)
+
                 menu.addItem(NSMenuItem.separator())
                 
                 let actionItemRename = menu.addItem(withTitle: NSLocalizedString("Rename", comment: "重命名"), action: #selector(actRename), keyEquivalent: "r")
@@ -1147,11 +1169,11 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 let actionItemCopyPath = menu.addItem(withTitle: NSLocalizedString("Copy Path", comment: "复制路径"), action: #selector(actCopyPath), keyEquivalent: "")
                 
                 let actionItemPaste = menu.addItem(withTitle: NSLocalizedString("Paste", comment: "粘贴"), action: #selector(actPaste), keyEquivalent: "v")
-                actionItemPaste.isEnabled = canPasteOrMove && !isVirtualFinderTagsFolder
+                actionItemPaste.isEnabled = canPasteOrMove && !isReadOnlyVirtualFolder
                 
                 let actionItemMove = menu.addItem(withTitle: NSLocalizedString("Move Here", comment: "移动到此"), action: #selector(actMove), keyEquivalent: "v")
                 actionItemMove.keyEquivalentModifierMask = [.command,.option]
-                actionItemMove.isEnabled = canPasteOrMove && !isVirtualFinderTagsFolder
+                actionItemMove.isEnabled = canPasteOrMove && !isReadOnlyVirtualFolder
                 
                 let actionItemShare = menu.addItem(withTitle: NSLocalizedString("Share...", comment: "共享..."), action: #selector(actShare(_:)), keyEquivalent: "")
 
@@ -1273,7 +1295,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 let newMenu = NSMenu()
                 let newMenuItem = NSMenuItem(title: NSLocalizedString("New", comment: "新建"), action: nil, keyEquivalent: "")
                 newMenuItem.submenu = newMenu
-                newMenuItem.isEnabled = !isVirtualFinderTagsFolder
+                newMenuItem.isEnabled = !isReadOnlyVirtualFolder
                 
                 // 添加新建文件夹选项
                 // Add new folder option
@@ -1341,8 +1363,48 @@ class CustomCollectionViewItem: NSCollectionViewItem {
         showInformationLong(title: NSLocalizedString("Info", comment: "说明"), message: NSLocalizedString("rating-info", comment: "对于评级的说明..."))
     }
 
+    @objc func actAddToFavorites() {
+        if addFavoritePath(file.path) {
+            getViewController(collectionView!)?.refreshTreeView()
+        }
+    }
+
+    @objc func actRemoveFromFavorites() {
+        if removeFavoritePath(file.path) {
+            getViewController(collectionView!)?.refreshTreeView()
+        }
+    }
+
     @objc func actRefresh() {
         getViewController(collectionView!)?.handleUserRefresh()
+    }
+
+    @objc func actQuickCompress() {
+        _ = getViewController(collectionView!)?.handleCompressByDefaultSetting()
+    }
+
+    @objc func actCompressZip() {
+        _ = getViewController(collectionView!)?.handleCompress(mode: .plainZip, deleteOriginal: false)
+    }
+
+    @objc func actCompressZipAndDelete() {
+        _ = getViewController(collectionView!)?.handleCompress(mode: .plainZip, deleteOriginal: true)
+    }
+
+    @objc func actEncryptAndCompress() {
+        guard let vc = getViewController(collectionView!) else { return }
+        let initial = globalVar.compressionDefaultPassword
+        guard let password = vc.promptCompressionPassword(initialValue: initial) else { return }
+        _ = vc.handleCompress(mode: .encryptedZip(password: password), deleteOriginal: false)
+    }
+
+    @objc func actEncryptCompressWithDefaultPassword() {
+        let password = globalVar.compressionDefaultPassword.trimmingCharacters(in: .whitespacesAndNewlines)
+        if password.isEmpty {
+            showAlert(message: NSLocalizedString("Default compression password is empty.", comment: "默认压缩密码为空。"))
+            return
+        }
+        _ = getViewController(collectionView!)?.handleCompress(mode: .encryptedZip(password: password), deleteOriginal: false)
     }
     
     @objc func actOpen() {
