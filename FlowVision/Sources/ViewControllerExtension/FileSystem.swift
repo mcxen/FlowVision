@@ -154,10 +154,11 @@ extension ViewController {
         for rawLine in output.components(separatedBy: .newlines) {
             let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
             if line.isEmpty { continue }
-            if line.hasSuffix("/") { continue }
-            let ext = URL(fileURLWithPath: line).pathExtension.lowercased()
+            let decodedLine = decodeBsdtarEscapedPath(line)
+            if decodedLine.hasSuffix("/") { continue }
+            let ext = URL(fileURLWithPath: decodedLine).pathExtension.lowercased()
             if globalVar.HandledImageAndRawExtensions.contains(ext) {
-                entries.append(line)
+                entries.append(decodedLine)
             }
         }
         entries.sort { $0.localizedStandardCompare($1) == .orderedAscending }
@@ -1135,6 +1136,16 @@ extension ViewController {
         // 跳转父级目录
         // Jump to parent directory
         if direction == .up {
+            // In virtual archive view, Command+Up should leave archive and go to
+            // the real parent directory of the archive file (e.g. SMB folder).
+            if isVirtualArchivePath(curFolder),
+               let parsed = parseVirtualArchivePath(curFolder) {
+                let realParent = parsed.archiveURL.deletingLastPathComponent().absoluteString
+                if !realParent.isEmpty {
+                    switchDirByDirection(direction: .zero, dest: realParent, skip: true, stackDeep: stackDeep+1)
+                    return
+                }
+            }
             fileDB.lock()
             let newFolderPath=URL(string: fileDB.curFolder)!.deletingLastPathComponent().absoluteString
             fileDB.unlock()

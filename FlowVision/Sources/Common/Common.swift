@@ -197,41 +197,106 @@ func parseVirtualArchivePath(_ path: String) -> (archiveURL: URL, entryPath: Str
 
 private let archiveEntryDataCache = NSCache<NSString, NSData>()
 
+func decodeBsdtarEscapedPath(_ text: String) -> String {
+    let chars = Array(text.utf8)
+    var out: [UInt8] = []
+    var i = 0
+    while i < chars.count {
+        let c = chars[i]
+        if c == 92, i + 1 < chars.count { // '\'
+            // Octal form: \ooo
+            if i + 3 < chars.count,
+               chars[i + 1] >= 48, chars[i + 1] <= 55,
+               chars[i + 2] >= 48, chars[i + 2] <= 55,
+               chars[i + 3] >= 48, chars[i + 3] <= 55 {
+                let value = Int(chars[i + 1] - 48) * 64
+                    + Int(chars[i + 2] - 48) * 8
+                    + Int(chars[i + 3] - 48)
+                out.append(UInt8(value))
+                i += 4
+                continue
+            }
+            // Common escapes
+            let n = chars[i + 1]
+            switch n {
+            case 92: out.append(92) // \\
+            case 110: out.append(10) // \n
+            case 114: out.append(13) // \r
+            case 116: out.append(9) // \t
+            default:
+                out.append(n)
+            }
+            i += 2
+            continue
+        }
+        out.append(c)
+        i += 1
+    }
+    return String(bytes: out, encoding: .utf8) ?? text
+}
+
+func encodeBsdtarEscapedPath(_ text: String) -> String {
+    var result = ""
+    for byte in text.utf8 {
+        if byte >= 0x80 || byte == 0x5C {
+            result += String(format: "\\%03o", byte)
+        } else {
+            result.append(Character(UnicodeScalar(byte)))
+        }
+    }
+    return result
+}
+
 func getArchiveEntryData(archiveURL: URL, entryPath: String) -> Data? {
     let cacheKey = "\(archiveURL.absoluteString)|\(entryPath)" as NSString
     if let cached = archiveEntryDataCache.object(forKey: cacheKey) {
         return Data(referencing: cached)
     }
-
-    let process = Process()
-    process.executableURL = URL(fileURLWithPath: "/usr/bin/bsdtar")
-    process.arguments = ["-xOf", archiveURL.path, entryPath]
-    let stdOut = Pipe()
-    let stdErr = Pipe()
-    process.standardOutput = stdOut
-    process.standardError = stdErr
-
-    do {
-        try process.run()
-    } catch {
-        log("Archive stream failed: \(error)", level: .error)
-        return nil
-    }
     
-    // Read stdout first to avoid pipe deadlock on large entries.
-    // If the child writes more than pipe capacity, waiting first may block forever.
-    let data = stdOut.fileHandleForReading.readDataToEndOfFile()
-    process.waitUntilExit()
-
-    guard process.terminationStatus == 0 else {
-        if let err = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8), !err.isEmpty {
-            log("Archive stream failed: \(err)", level: .warn)
+    // Try decoded path first, then bsdtar-escaped fallback for legacy zip name encoding output.
+    var candidatePaths: [String] = []
+    let decoded = decodeBsdtarEscapedPath(entryPath)
+    candidatePaths.append(decoded)
+    if decoded != entryPath {
+        candidatePaths.append(entryPath)
+    } else {
+        let escaped = encodeBsdtarEscapedPath(entryPath)
+        if escaped != entryPath {
+            candidatePaths.append(escaped)
         }
-        return nil
     }
     
-    archiveEntryDataCache.setObject(data as NSData, forKey: cacheKey)
-    return data
+    for candidate in candidatePaths {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/bsdtar")
+        process.arguments = ["-xOf", archiveURL.path, candidate]
+        let stdOut = Pipe()
+        let stdErr = Pipe()
+        process.standardOutput = stdOut
+        process.standardError = stdErr
+        
+        do {
+            try process.run()
+        } catch {
+            log("Archive stream failed: \(error)", level: .error)
+            continue
+        }
+        
+        // Read stdout first to avoid pipe deadlock on large entries.
+        let data = stdOut.fileHandleForReading.readDataToEndOfFile()
+        process.waitUntilExit()
+        
+        if process.terminationStatus == 0 {
+            archiveEntryDataCache.setObject(data as NSData, forKey: cacheKey)
+            return data
+        }
+        
+        if let err = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8), !err.isEmpty {
+            log("Archive stream failed(candidate=\(candidate)): \(err)", level: .warn)
+        }
+    }
+    
+    return nil
 }
 
 func getArchiveEntryDataIfNeeded(url: URL) -> Data? {
