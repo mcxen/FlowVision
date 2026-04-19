@@ -5048,15 +5048,6 @@
         }
       }
     },
-    "Compress" : {
-      "comment" : "压缩"
-    },
-    "Compress (.zip)" : {
-      "comment" : "压缩为 zip"
-    },
-    "Compress and Delete Source" : {
-      "comment" : "压缩并删除源文件"
-    },
     "Compression failed." : {
       "comment" : "压缩失败。"
     },
@@ -7921,12 +7912,6 @@
           }
         }
       }
-    },
-    "Encrypt and Compress..." : {
-      "comment" : "加密压缩..."
-    },
-    "Encrypt with Default Password" : {
-      "comment" : "使用默认密码加密压缩"
     },
     "Encrypt ZIP" : {
       "comment" : "加密压缩 ZIP"
@@ -22323,9 +22308,6 @@
           }
         }
       }
-    },
-    "Quick Compress" : {
-      "comment" : "快速压缩"
     },
     "Quick Rename" : {
       "comment" : "快速重命名"
@@ -36983,6 +36965,27 @@
           }
         }
       }
+    },
+    "使用默认密码加密压缩" : {
+      "comment" : "使用默认密码加密压缩"
+    },
+    "加密压缩..." : {
+      "comment" : "加密压缩..."
+    },
+    "压缩为 ZIP" : {
+      "comment" : "压缩为 ZIP"
+    },
+    "压缩并删除源文件" : {
+      "comment" : "压缩并删除源文件"
+    },
+    "快速压缩" : {
+      "comment" : "快速压缩"
+    },
+    "显示压缩文件" : {
+      "comment" : "显示压缩文件"
+    },
+    "返回上一级目录" : {
+      "comment" : "返回上一级目录"
     }
   },
   "version" : "1.0"

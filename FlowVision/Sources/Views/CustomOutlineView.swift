@@ -158,18 +158,13 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
                 let actionItemDelete = menu.addItem(withTitle: NSLocalizedString("Move to Trash", comment: "移动到废纸篓"), action: #selector(actDelete), keyEquivalent: "\u{8}")
                 actionItemDelete.keyEquivalentModifierMask = []
                 
-                let compressMenu = NSMenu()
-                let compressMenuItem = NSMenuItem(title: NSLocalizedString("Compress", comment: "压缩"), action: nil, keyEquivalent: "")
-                compressMenuItem.submenu = compressMenu
-                compressMenu.addItem(withTitle: NSLocalizedString("Quick Compress", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
-                compressMenu.addItem(withTitle: NSLocalizedString("Compress (.zip)", comment: "压缩为 zip"), action: #selector(actCompressZip), keyEquivalent: "")
-                compressMenu.addItem(withTitle: NSLocalizedString("Compress and Delete Source", comment: "压缩并删除源文件"), action: #selector(actCompressZipAndDelete), keyEquivalent: "")
-                compressMenu.addItem(NSMenuItem.separator())
-                compressMenu.addItem(withTitle: NSLocalizedString("Encrypt and Compress...", comment: "加密压缩..."), action: #selector(actEncryptAndCompress), keyEquivalent: "")
+                menu.addItem(withTitle: NSLocalizedString("快速压缩", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
+                menu.addItem(withTitle: NSLocalizedString("压缩为 ZIP", comment: "压缩为 ZIP"), action: #selector(actCompressZip), keyEquivalent: "")
+                menu.addItem(withTitle: NSLocalizedString("压缩并删除源文件", comment: "压缩并删除源文件"), action: #selector(actCompressZipAndDelete), keyEquivalent: "")
+                menu.addItem(withTitle: NSLocalizedString("加密压缩...", comment: "加密压缩..."), action: #selector(actEncryptAndCompress), keyEquivalent: "")
                 if !globalVar.compressionDefaultPassword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    compressMenu.addItem(withTitle: NSLocalizedString("Encrypt with Default Password", comment: "使用默认密码加密压缩"), action: #selector(actEncryptCompressWithDefaultPassword), keyEquivalent: "")
+                    menu.addItem(withTitle: NSLocalizedString("使用默认密码加密压缩", comment: "使用默认密码加密压缩"), action: #selector(actEncryptCompressWithDefaultPassword), keyEquivalent: "")
                 }
-                menu.addItem(compressMenuItem)
 
                 menu.addItem(NSMenuItem.separator())
                 

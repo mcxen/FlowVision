@@ -419,12 +419,21 @@ extension ViewController {
                 }
             }
             
-            // 检查按键是否是 Command+⬆️ 键
-            // Check if key is Command+⬆️
-            if (specialKey == .upArrow && isOnlyCommandPressed) || (specialKey == .home && noModifierKey) {
-                if publicVar.isInLargeView{
+            // 检查按键是否是 Command+⬆️ 键（返回上一级目录）
+            // Check if key is Command+⬆️ (go to parent folder)
+            if specialKey == .upArrow && isOnlyCommandPressed {
+                if !publicVar.isInLargeView {
+                    switchDirByDirection(direction: .up, stackDeep: 0)
+                }
+                return nil
+            }
+            
+            // 检查按键是否是 Home 键（滚动到顶部）
+            // Check if key is Home key (scroll to top)
+            if specialKey == .home && noModifierKey {
+                if publicVar.isInLargeView {
                     locateLargeImage(direction: -2)
-                }else{
+                } else {
                     if let scrollView = collectionView.enclosingScrollView {
                         scrollView.contentView.scroll(to: NSPoint(x: 0, y: 0))
                         scrollView.reflectScrolledClipView(scrollView.contentView)
@@ -436,12 +445,28 @@ extension ViewController {
                 return nil
             }
             
-            // 检查按键是否是 Command+⬇️ 键
-            // Check if key is Command+⬇️
-            if (specialKey == .downArrow && isOnlyCommandPressed) || (specialKey == .end && noModifierKey) {
-                if publicVar.isInLargeView{
+            // 检查按键是否是 Command+⬇️ 键（进入选中文件夹）
+            // Check if key is Command+⬇️ (enter selected folder)
+            if specialKey == .downArrow && isOnlyCommandPressed {
+                if publicVar.isInLargeView {
                     locateLargeImage(direction: 2)
-                }else{
+                } else {
+                    if let selectedURL = publicVar.selectedUrls().first {
+                        var targetFolderURL: URL? = nil
+                        if selectedURL.hasDirectoryPath {
+                            targetFolderURL = selectedURL
+                        } else if let values = try? selectedURL.resourceValues(forKeys: [.isAliasFileKey, .isSymbolicLinkKey]),
+                                  values.isAliasFile == true,
+                                  let resolved = try? URL(resolvingAliasFileAt: selectedURL),
+                                  resolved.hasDirectoryPath {
+                            targetFolderURL = resolved
+                        }
+                        if let folderURL = targetFolderURL {
+                            switchDirByDirection(direction: .zero, dest: folderURL.absoluteString, stackDeep: 0)
+                            return nil
+                        }
+                    }
+                    // Fallback: keep original behavior when selection is not a folder.
                     if let scrollView = collectionView.enclosingScrollView {
                         let newOrigin = NSPoint(x: 0, y: collectionView.bounds.height - scrollView.contentSize.height)
                         scrollView.contentView.scroll(to: newOrigin)
@@ -449,6 +474,22 @@ extension ViewController {
                         DispatchQueue.main.async { [weak self] in
                             self?.setLoadThumbPriority(ifNeedVisable: true)
                         }
+                    }
+                }
+                return nil
+            }
+            
+            // 检查按键是否是 End 键
+            // Check if key is End key
+            if specialKey == .end && noModifierKey {
+                if publicVar.isInLargeView {
+                    locateLargeImage(direction: 2)
+                } else if let scrollView = collectionView.enclosingScrollView {
+                    let newOrigin = NSPoint(x: 0, y: collectionView.bounds.height - scrollView.contentSize.height)
+                    scrollView.contentView.scroll(to: newOrigin)
+                    scrollView.reflectScrolledClipView(scrollView.contentView)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.setLoadThumbPriority(ifNeedVisable: true)
                     }
                 }
                 return nil

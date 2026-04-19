@@ -1362,13 +1362,23 @@ extension WindowController: NSToolbarDelegate {
             
             let showVideoFile = menu.addItem(withTitle: NSLocalizedString("Show Video Files", comment: "显示视频文件"), action: #selector(showVideoFileAction), keyEquivalent: "")
             showVideoFile.state = (viewController.publicVar.isShowVideoFile) ? .on : .off
+            
+            let showArchiveFile = menu.addItem(withTitle: NSLocalizedString("显示压缩文件", comment: "显示压缩文件"), action: #selector(showArchiveFileAction), keyEquivalent: "")
+            showArchiveFile.state = globalVar.showArchiveFileType ? .on : .off
 
             if viewController.publicVar.isShowAllTypeFile {
                 showImageFile.isEnabled=false
                 showRawFile.isEnabled=false
                 showVideoFile.isEnabled=false
+                showArchiveFile.isEnabled=false
             }
 
+        }
+        
+        if !viewController.publicVar.isInLargeView {
+            menu.addItem(NSMenuItem.separator())
+            let goParentFolder = menu.addItem(withTitle: NSLocalizedString("返回上一级目录", comment: "返回上一级目录"), action: #selector(goParentFolderAction), keyEquivalent: String(Character(UnicodeScalar(NSUpArrowFunctionKey)!)))
+            goParentFolder.keyEquivalentModifierMask = [.command]
         }
 
         if viewController.publicVar.isInLargeView {
@@ -1766,6 +1776,16 @@ extension WindowController: NSToolbarDelegate {
     @objc func showVideoFileAction(_ sender: NSMenuItem) {
         guard let viewController = contentViewController as? ViewController else {return}
         viewController.toggleIsShowVideoFile()
+    }
+    
+    @objc func showArchiveFileAction(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.toggleShowArchiveFileType()
+    }
+    
+    @objc func goParentFolderAction(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.switchDirByDirection(direction: .up, stackDeep: 0)
     }
     
     @objc func togglePortableMode(_ sender: NSMenuItem){
