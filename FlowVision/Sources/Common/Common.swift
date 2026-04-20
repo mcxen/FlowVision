@@ -542,7 +542,8 @@ func showInformationLong(title: String, attributedMessage: NSAttributedString, w
     let alert = NSAlert()
     alert.messageText = title
     alert.alertStyle = .informational
-    alert.addButton(withTitle: NSLocalizedString("OK", comment: "确定"))
+    let okButton = alert.addButton(withTitle: NSLocalizedString("OK", comment: "确定"))
+    okButton.keyEquivalent = "\u{1b}"
     alert.icon = NSImage(named: NSImage.infoName)
     
     // 创建滚动视图

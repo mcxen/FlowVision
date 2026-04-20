@@ -8,10 +8,10 @@ import Cocoa
 
 extension ViewController {
     
-    private func isPhotoFolder1CopyShortcutTriggered(characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
+    private func isConfiguredFolderCopyShortcutTriggered(_ configuredShortcut: String, characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
         guard noModifierKey else { return false }
         
-        let shortcut = globalVar.photoFolder1CopyShortcut.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        let shortcut = configuredShortcut.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if shortcut.isEmpty { return false }
         
         switch shortcut {
@@ -30,6 +30,14 @@ extension ViewController {
         default:
             return characters.uppercased() == shortcut
         }
+    }
+
+    private func isPhotoFolder1CopyShortcutTriggered(characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
+        isConfiguredFolderCopyShortcutTriggered(globalVar.photoFolder1CopyShortcut, characters: characters, specialKey: specialKey, noModifierKey: noModifierKey)
+    }
+
+    private func isPhotoFolder2CopyShortcutTriggered(characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
+        isConfiguredFolderCopyShortcutTriggered(globalVar.photoFolder2CopyShortcut, characters: characters, specialKey: specialKey, noModifierKey: noModifierKey)
     }
     
     @discardableResult
@@ -238,6 +246,20 @@ extension ViewController {
                isPhotoFolder1CopyShortcutTriggered(characters: characters, specialKey: specialKey, noModifierKey: noModifierKey) {
                 handleCopyToPhotoFolder1()
                 return nil
+            }
+
+            // 自定义快捷键：复制视频到文件夹2
+            // Custom shortcut: copy video to Folder 2
+            if isPhotoFolder2CopyShortcutTriggered(characters: characters, specialKey: specialKey, noModifierKey: noModifierKey) {
+                if publicVar.isInLargeView,
+                   largeImageView.file.type == .video {
+                    handleCopyCurrentVideoToPhotoFolder2()
+                    return nil
+                }
+                if publicVar.isCollectionViewFirstResponder {
+                    handleCopySelectedVideosToPhotoFolder2()
+                    return nil
+                }
             }
             
             // 检查按键是否是 "A" 键

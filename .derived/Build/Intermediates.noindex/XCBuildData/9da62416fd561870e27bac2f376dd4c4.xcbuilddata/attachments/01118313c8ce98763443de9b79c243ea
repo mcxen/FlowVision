@@ -1,4 +1,0 @@
-module libwebp {
-umbrella "/Users/mcx/Documents/OpenSpring/FlowVision/.derived/SourcePackages/checkouts/libwebp-Xcode/include"
-export *
-}

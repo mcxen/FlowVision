@@ -221,6 +221,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
            !photoFolder1CopyShortcut.isEmpty {
             globalVar.photoFolder1CopyShortcut = photoFolder1CopyShortcut.uppercased()
         }
+        if let photoFolder2Path = UserDefaults.standard.value(forKey: "photoFolder2Path") as? String {
+            globalVar.photoFolder2Path = photoFolder2Path
+        }
+        if let photoFolder2CopyShortcut = UserDefaults.standard.value(forKey: "photoFolder2CopyShortcut") as? String,
+           !photoFolder2CopyShortcut.isEmpty {
+            globalVar.photoFolder2CopyShortcut = photoFolder2CopyShortcut.uppercased()
+        }
         if let quickRenameRule = UserDefaults.standard.value(forKey: "quickRenameRule") as? String,
            !quickRenameRule.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             globalVar.quickRenameRule = quickRenameRule

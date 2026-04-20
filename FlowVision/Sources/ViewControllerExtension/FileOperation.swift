@@ -348,25 +348,82 @@ extension ViewController {
     func handleCopyToPhotoFolder1() {
         let selectedURLs = publicVar.selectedUrls()
         if selectedURLs.isEmpty { return }
-        
-        let targetPath = globalVar.photoFolder1Path.trimmingCharacters(in: .whitespacesAndNewlines)
-        if targetPath.isEmpty {
-            showAlert(message: NSLocalizedString("Please set Photo Folder 1 in Settings first.", comment: "请先在设置中配置图片文件夹1。"))
-            return
-        }
-        
-        var isDirectory: ObjCBool = false
-        if !FileManager.default.fileExists(atPath: targetPath, isDirectory: &isDirectory) || !isDirectory.boolValue {
-            showAlert(message: NSLocalizedString("Photo Folder 1 does not exist or is not a folder.", comment: "图片文件夹1不存在或不是文件夹。"))
+        handleCopyToConfiguredFolder(
+            selectedURLs: selectedURLs,
+            targetPath: globalVar.photoFolder1Path,
+            emptyPathMessage: NSLocalizedString("Please set Photo Folder 1 in Settings first.", comment: "请先在设置中配置图片文件夹1。"),
+            invalidPathMessage: NSLocalizedString("Photo Folder 1 does not exist or is not a folder.", comment: "图片文件夹1不存在或不是文件夹。")
+        )
+    }
+
+    func handleCopySelectedVideosToPhotoFolder2() {
+        let selectedURLs = publicVar.selectedUrls()
+        if selectedURLs.isEmpty { return }
+
+        let videoURLs = selectedURLs.filter { isVideoURLForFolder2Copy($0) }
+        guard !videoURLs.isEmpty else {
+            showAlert(message: NSLocalizedString("Please select at least one video first.", comment: "请先选择至少一个视频。"))
             return
         }
 
-        let targetFolderURL = URL(fileURLWithPath: targetPath, isDirectory: true)
+        handleCopyToConfiguredFolder(
+            selectedURLs: videoURLs,
+            targetPath: globalVar.photoFolder2Path,
+            emptyPathMessage: NSLocalizedString("Please set Video Folder 2 in Settings first.", comment: "请先在设置中配置视频文件夹2。"),
+            invalidPathMessage: NSLocalizedString("Video Folder 2 does not exist or is not a folder.", comment: "视频文件夹2不存在或不是文件夹。")
+        )
+    }
+
+    func handleCopyCurrentVideoToPhotoFolder2() {
+        guard publicVar.isInLargeView,
+              largeImageView.file.type == .video,
+              let currentURL = URL(string: largeImageView.file.path) else {
+            return
+        }
+
+        handleCopyToConfiguredFolder(
+            selectedURLs: [currentURL],
+            targetPath: globalVar.photoFolder2Path,
+            emptyPathMessage: NSLocalizedString("Please set Video Folder 2 in Settings first.", comment: "请先在设置中配置视频文件夹2。"),
+            invalidPathMessage: NSLocalizedString("Video Folder 2 does not exist or is not a folder.", comment: "视频文件夹2不存在或不是文件夹。")
+        )
+    }
+    
+    private func showPhotoFolderCopyToast(selectedURLs: [URL], targetFolderURL: URL) {
+        guard !selectedURLs.isEmpty else { return }
+        let firstName = selectedURLs[0].lastPathComponent.removingPercentEncoding ?? selectedURLs[0].lastPathComponent
+        let targetName = targetFolderURL.lastPathComponent.isEmpty ? targetFolderURL.path : targetFolderURL.lastPathComponent
+        let message: String
+        if selectedURLs.count == 1 {
+            message = "\(firstName) -> \(targetName)"
+        } else {
+            message = "\(firstName) +\(selectedURLs.count - 1) -> \(targetName)"
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.coreAreaView.showOperationToast(message, autoHide: 2.0)
+        }
+    }
+
+    private func handleCopyToConfiguredFolder(selectedURLs: [URL], targetPath: String, emptyPathMessage: String, invalidPathMessage: String) {
+        guard !selectedURLs.isEmpty else { return }
+
+        let normalizedTargetPath = targetPath.trimmingCharacters(in: .whitespacesAndNewlines)
+        if normalizedTargetPath.isEmpty {
+            showAlert(message: emptyPathMessage)
+            return
+        }
+
+        var isDirectory: ObjCBool = false
+        if !FileManager.default.fileExists(atPath: normalizedTargetPath, isDirectory: &isDirectory) || !isDirectory.boolValue {
+            showAlert(message: invalidPathMessage)
+            return
+        }
+
+        let targetFolderURL = URL(fileURLWithPath: normalizedTargetPath, isDirectory: true)
         if selectedURLs.contains(where: { isVirtualArchiveEntryPath($0.absoluteString) }) {
             var failedItems: [String] = []
             var successCount = 0
             for srcURL in selectedURLs {
-                // Virtual entry inside archive: stream entry bytes and write directly to destination.
                 if isVirtualArchiveEntryPath(srcURL.absoluteString) {
                     guard let parsed = parseVirtualArchivePath(srcURL.absoluteString),
                           let entryPath = parsed.entryPath,
@@ -406,33 +463,26 @@ extension ViewController {
             }
             return
         }
-        
-        // 备份剪贴板内容
-        // Backup pasteboard content
+
         let backupItems = backupPasteboard()
-        
-        handleCopy()
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects(selectedURLs as [NSPasteboardWriting])
+        globalVar.isCutMode = false
+        clearCutItemsDimEffect()
         handlePaste(targetURL: targetFolderURL)
         showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
-        
-        // 还原剪贴板内容
-        // Restore pasteboard content
         restorePasteboard(items: backupItems)
     }
-    
-    private func showPhotoFolderCopyToast(selectedURLs: [URL], targetFolderURL: URL) {
-        guard !selectedURLs.isEmpty else { return }
-        let firstName = selectedURLs[0].lastPathComponent.removingPercentEncoding ?? selectedURLs[0].lastPathComponent
-        let targetName = targetFolderURL.lastPathComponent.isEmpty ? targetFolderURL.path : targetFolderURL.lastPathComponent
-        let message: String
-        if selectedURLs.count == 1 {
-            message = "\(firstName) -> \(targetName)"
-        } else {
-            message = "\(firstName) +\(selectedURLs.count - 1) -> \(targetName)"
+
+    private func isVideoURLForFolder2Copy(_ url: URL) -> Bool {
+        if isVirtualArchiveEntryPath(url.absoluteString),
+           let parsed = parseVirtualArchivePath(url.absoluteString),
+           let entryPath = parsed.entryPath {
+            let ext = URL(fileURLWithPath: entryPath).pathExtension.lowercased()
+            return globalVar.HandledVideoExtensions.contains(ext)
         }
-        DispatchQueue.main.async { [weak self] in
-            self?.coreAreaView.showOperationToast(message, autoHide: 2.0)
-        }
+        return globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased())
     }
 
     func promptCompressionPassword(initialValue: String = "") -> String? {
@@ -659,6 +709,108 @@ extension ViewController {
             return handleCompress(urls: urls, mode: .encryptedZip(password: password), deleteOriginal: deleteOriginal)
         }
         return handleCompress(urls: urls, mode: .plainZip, deleteOriginal: deleteOriginal)
+    }
+
+    private func archiveBaseName(for url: URL) -> String {
+        let lowerName = url.lastPathComponent.lowercased()
+        let multiExtensions = [".tar.gz", ".tar.bz2", ".tar.xz"]
+        if let matched = multiExtensions.first(where: { lowerName.hasSuffix($0) }) {
+            return String(url.lastPathComponent.dropLast(matched.count))
+        }
+        return url.deletingPathExtension().lastPathComponent
+    }
+
+    private func makeExtractDestinationURL(for archiveURL: URL) -> URL {
+        let parent = archiveURL.deletingLastPathComponent()
+        let base = archiveBaseName(for: archiveURL)
+        return getUniqueDestinationURL(for: parent.appendingPathComponent(base), isInPlace: false)
+    }
+
+    @discardableResult
+    func handleExtractArchives(urls inputUrls: [URL] = [], deleteOriginal: Bool) -> Bool {
+        var urls = inputUrls
+        if urls.isEmpty {
+            urls = publicVar.selectedUrls()
+        }
+        if urls.isEmpty { return false }
+
+        let archiveURLs = urls.filter {
+            !$0.absoluteString.isEmpty &&
+            !isReadOnlyVirtualFolderPath($0.absoluteString) &&
+            !isVirtualArchiveEntryPath($0.absoluteString) &&
+            isSupportedArchiveURL($0)
+        }.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
+
+        guard !archiveURLs.isEmpty else {
+            showAlert(message: NSLocalizedString("Please select archive files first.", comment: "请先选择压缩包文件。"))
+            return false
+        }
+
+        var extractedDestinations: [URL] = []
+        var failedArchives: [String] = []
+        let fm = FileManager.default
+
+        for archiveURL in archiveURLs {
+            let destinationURL = makeExtractDestinationURL(for: archiveURL)
+            do {
+                try fm.createDirectory(at: destinationURL, withIntermediateDirectories: true)
+            } catch {
+                log("create extract dir failed: \(error)", level: .error)
+                failedArchives.append(archiveURL.lastPathComponent)
+                continue
+            }
+
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/bsdtar")
+            process.arguments = ["-xf", archiveURL.path, "-C", destinationURL.path]
+            let stdErr = Pipe()
+            process.standardError = stdErr
+
+            do {
+                try process.run()
+                process.waitUntilExit()
+            } catch {
+                log("extract execute failed: \(error)", level: .error)
+                failedArchives.append(archiveURL.lastPathComponent)
+                try? fm.removeItem(at: destinationURL)
+                continue
+            }
+
+            guard process.terminationStatus == 0 else {
+                let errMsg = String(data: stdErr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+                if !errMsg.isEmpty {
+                    log("extract failed: \(errMsg)", level: .error)
+                }
+                failedArchives.append(archiveURL.lastPathComponent)
+                try? fm.removeItem(at: destinationURL)
+                continue
+            }
+
+            extractedDestinations.append(destinationURL)
+            if deleteOriginal {
+                _ = try? fm.trashItem(at: archiveURL, resultingItemURL: nil)
+            }
+        }
+
+        guard !extractedDestinations.isEmpty else {
+            showAlert(message: NSLocalizedString("Extraction failed.", comment: "解压失败。"))
+            return false
+        }
+
+        publicVar.fileChangedCount += extractedDestinations.count + (deleteOriginal ? archiveURLs.count : 0)
+        publicVar.filesForLocateAfterChange = extractedDestinations.map { $0.absoluteString }
+        var logText = "[Extract] \(archiveURLs.count) archive(s)"
+        if deleteOriginal {
+            logText += " + delete source"
+        }
+        globalVar.operationLogs.append(logText)
+        scheduledRefresh()
+
+        if !failedArchives.isEmpty {
+            let preview = failedArchives.prefix(3).joined(separator: ", ")
+            showAlert(message: String(format: NSLocalizedString("Failed to extract some archives: %@", comment: "部分压缩包解压失败：%@"), preview))
+        }
+        return true
     }
 
     func handleCaptureCurrentVideoFrameToCurrentFolder() {

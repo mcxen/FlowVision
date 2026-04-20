@@ -1152,6 +1152,12 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 let actionItemDelete = menu.addItem(withTitle: NSLocalizedString("Move to Trash", comment: "移动到废纸篓"), action: #selector(actDelete), keyEquivalent: "\u{8}")
                 actionItemDelete.keyEquivalentModifierMask = []
                 // actionItemDelete.isEnabled = (items.count>0)
+
+                let allSelectedAreArchives = !selectedURLs.isEmpty && selectedURLs.allSatisfy { getViewController(collectionView!)?.isSupportedArchiveURL($0) == true }
+                if allSelectedAreArchives {
+                    menu.addItem(withTitle: NSLocalizedString("解压到当前目录", comment: "解压到当前目录"), action: #selector(actExtractArchives), keyEquivalent: "")
+                    menu.addItem(withTitle: NSLocalizedString("解压并删除压缩包", comment: "解压并删除压缩包"), action: #selector(actExtractArchivesAndDelete), keyEquivalent: "")
+                }
                 
                 menu.addItem(withTitle: NSLocalizedString("快速压缩", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
                 menu.addItem(withTitle: NSLocalizedString("压缩为 ZIP", comment: "压缩为 ZIP"), action: #selector(actCompressZip), keyEquivalent: "")
@@ -1382,6 +1388,14 @@ class CustomCollectionViewItem: NSCollectionViewItem {
 
     @objc func actQuickCompress() {
         _ = getViewController(collectionView!)?.handleCompressByDefaultSetting()
+    }
+
+    @objc func actExtractArchives() {
+        _ = getViewController(collectionView!)?.handleExtractArchives(deleteOriginal: false)
+    }
+
+    @objc func actExtractArchivesAndDelete() {
+        _ = getViewController(collectionView!)?.handleExtractArchives(deleteOriginal: true)
     }
 
     @objc func actCompressZip() {

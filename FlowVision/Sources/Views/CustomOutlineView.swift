@@ -157,6 +157,12 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
                 
                 let actionItemDelete = menu.addItem(withTitle: NSLocalizedString("Move to Trash", comment: "移动到废纸篓"), action: #selector(actDelete), keyEquivalent: "\u{8}")
                 actionItemDelete.keyEquivalentModifierMask = []
+
+                if let archiveURL = URL(string: curRightClickedPath),
+                   getViewController(self)?.isSupportedArchiveURL(archiveURL) == true {
+                    menu.addItem(withTitle: NSLocalizedString("解压到当前目录", comment: "解压到当前目录"), action: #selector(actExtractArchive), keyEquivalent: "")
+                    menu.addItem(withTitle: NSLocalizedString("解压并删除压缩包", comment: "解压并删除压缩包"), action: #selector(actExtractArchiveAndDelete), keyEquivalent: "")
+                }
                 
                 menu.addItem(withTitle: NSLocalizedString("快速压缩", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
                 menu.addItem(withTitle: NSLocalizedString("压缩为 ZIP", comment: "压缩为 ZIP"), action: #selector(actCompressZip), keyEquivalent: "")
@@ -410,6 +416,16 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
     @objc func actQuickCompress() {
         guard let vc = getViewController(self), let url = URL(string: curRightClickedPath) else { return }
         _ = vc.handleCompressByDefaultSetting(urls: [url], deleteOriginal: false)
+    }
+
+    @objc func actExtractArchive() {
+        guard let vc = getViewController(self), let url = URL(string: curRightClickedPath) else { return }
+        _ = vc.handleExtractArchives(urls: [url], deleteOriginal: false)
+    }
+
+    @objc func actExtractArchiveAndDelete() {
+        guard let vc = getViewController(self), let url = URL(string: curRightClickedPath) else { return }
+        _ = vc.handleExtractArchives(urls: [url], deleteOriginal: true)
     }
 
     @objc func actCompressZip() {

@@ -106,6 +106,8 @@ class GlobalVar{
     var enhancedIndexEnabled = true
     var photoFolder1Path: String = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first?.path ?? homeDirectory
     var photoFolder1CopyShortcut: String = "N"
+    var photoFolder2Path: String = FileManager.default.urls(for: .moviesDirectory, in: .userDomainMask).first?.path ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first?.path ?? homeDirectory
+    var photoFolder2CopyShortcut: String = "F4"
     var quickRenameRule: String = "{folder}_{index}"
     var videoShiftArrowSwitchFile = true
     var showArchiveFileType = true
