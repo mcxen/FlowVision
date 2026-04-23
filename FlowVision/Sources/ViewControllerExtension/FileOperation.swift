@@ -979,6 +979,9 @@ extension ViewController {
 
             try pngData.write(to: outputURL, options: .atomic)
             publicVar.fileChangedCount += 1
+            // Preserve the current video after refresh so the newly saved frame
+            // doesn't take over the current large-view position and pause playback.
+            publicVar.openFromFinderPath = videoURL.absoluteString
             scheduledRefresh()
             largeImageView.showInfo(NSLocalizedString("Frame Saved", comment: "视频帧已保存"))
         } catch {
