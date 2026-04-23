@@ -666,12 +666,6 @@
         }
       }
     },
-    "Action Guide" : {
-      "comment" : "操作指南"
-    },
-    "Action Guide:" : {
-      "comment" : "操作指南："
-    },
     "Actions" : {
       "comment" : "操作（设置里的面板）",
       "localizations" : {
@@ -1627,9 +1621,6 @@
           }
         }
       }
-    },
-    "Apply" : {
-      "comment" : "应用"
     },
     "Apply Filter" : {
       "comment" : "执行过滤",
@@ -5365,9 +5356,6 @@
         }
       }
     },
-    "Copy Shortcut:" : {
-      "comment" : "复制快捷键："
-    },
     "copy-lowercase" : {
       "comment" : "copy(首字母小写)",
       "localizations" : {
@@ -6419,9 +6407,6 @@
         }
       }
     },
-    "Default to encrypted zip using password above" : {
-      "comment" : "默认使用上面的密码进行加密压缩"
-    },
     "Delete" : {
       "comment" : "删除",
       "localizations" : {
@@ -7181,9 +7166,6 @@
           }
         }
       }
-    },
-    "Double-click to open/close the image.\nHold down the right/left mouse button and scroll the wheel to zoom.\nHold down the middle mouse button and drag to move the window.\nLong press the left mouse button to switch to 100% zoom.\nLong press the right mouse button to fit the image to the view." : {
-      "comment" : "图像浏览说明"
     },
     "Edit Mode" : {
       "comment" : "编辑模式",
@@ -14628,9 +14610,6 @@
         }
       }
     },
-    "Image Viewing:" : {
-      "comment" : "图像浏览："
-    },
     "image-dimensions" : {
       "comment" : "图像尺寸",
       "localizations" : {
@@ -14820,9 +14799,6 @@
           }
         }
       }
-    },
-    "In thumbnail view: W/S/A/D/E correspond to right-click gestures up/down/left/right/up-right.\nIn image view: W/S zoom in/zoom out, Z zoom to 100%, X zoom to fit, A/D previous/next image." : {
-      "comment" : "键盘按键说明"
     },
     "Include Folders" : {
       "comment" : "包含文件夹",
@@ -15583,9 +15559,6 @@
           }
         }
       }
-    },
-    "Keyboard Shortcuts:" : {
-      "comment" : "键盘按键："
     },
     "Learn More..." : {
       "comment" : "了解更多...",
@@ -19681,9 +19654,6 @@
         }
       }
     },
-    "Open the action guide or shortcut map in a popup window." : {
-      "comment" : "点击按钮后以弹窗方式显示操作说明或快捷键对照。"
-    },
     "Open With" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -20253,9 +20223,6 @@
           }
         }
       }
-    },
-    "Optional" : {
-      "comment" : "可选"
     },
     "Original Path" : {
       "comment" : "原始路径",
@@ -21118,9 +21085,6 @@
     "Photo Folder 1 does not exist or is not a folder." : {
       "comment" : "图片文件夹1不存在或不是文件夹。"
     },
-    "Photo Folder 1:" : {
-      "comment" : "图片文件夹1："
-    },
     "Pin Window" : {
       "comment" : "置顶",
       "localizations" : {
@@ -21902,9 +21866,6 @@
         }
       }
     },
-    "Press Q in thumbnail view to activate Quick Search, allowing you to enter search keywords within a short time to locate files. In this mode, number keys, letter keys, and the backspace key are used for input. For a more comprehensive search function, please use Cmd + F." : {
-      "comment" : "快速搜索说明"
-    },
     "previous-folder" : {
       "comment" : "上一个目录",
       "localizations" : {
@@ -22386,9 +22347,6 @@
     "Quick Rename" : {
       "comment" : "快速重命名"
     },
-    "Quick Rename Rule:" : {
-      "comment" : "快速重命名规则："
-    },
     "Quick Search" : {
       "comment" : "快速搜索",
       "localizations" : {
@@ -22483,9 +22441,6 @@
           }
         }
       }
-    },
-    "Quick Search:" : {
-      "comment" : "快速搜索："
     },
     "Rating" : {
       "comment" : "评级",
@@ -25150,12 +25105,6 @@
         }
       }
     },
-    "Right-click Gesture:" : {
-      "comment" : "右键手势："
-    },
-    "Right/Left: Switch to the next/previous folder with images/videos (logically equivalent to the next folder when sorting all folders on the disk).\nUp: Switch to the parent directory.\nDown: Return to the previous directory.\nUp-Right: Switch to the next folder with images at the same level as the current folder.\nDown-Right: Close the tab/window." : {
-      "comment" : "右键手势说明"
-    },
     "Rotate %d°" : {
       "comment" : "（视频）旋转%d°",
       "localizations" : {
@@ -26486,9 +26435,6 @@
         }
       }
     },
-    "Select Folder" : {
-      "comment" : "选择文件夹"
-    },
     "Sequential Playback" : {
       "comment" : "（视频）顺序播放",
       "localizations" : {
@@ -27154,9 +27100,6 @@
         }
       }
     },
-    "Shortcut Map" : {
-      "comment" : "快捷键对照"
-    },
     "Show All" : {
       "comment" : "显示全部",
       "localizations" : {
@@ -27346,9 +27289,6 @@
           }
         }
       }
-    },
-    "Show Archive Files" : {
-      "comment" : "显示压缩文件"
     },
     "Show Camera RAW Files" : {
       "comment" : "显示相机RAW文件",
@@ -34475,20 +34415,11 @@
         }
       }
     },
-    "Video Copy Shortcut:" : {
-      "comment" : "视频复制快捷键："
-    },
     "Video Folder 2 does not exist or is not a folder." : {
       "comment" : "视频文件夹2不存在或不是文件夹。"
     },
-    "Video Folder 2:" : {
-      "comment" : "视频文件夹2："
-    },
     "Video player is not ready." : {
       "comment" : "视频播放器尚未就绪。"
-    },
-    "Video Shift+←/→ Next/Prev" : {
-      "comment" : "视频 Shift+左右 上/下文件"
     },
     "video-dimensions" : {
       "comment" : "视频尺寸",
@@ -36776,9 +36707,6 @@
         }
       }
     },
-    "ZIP Password:" : {
-      "comment" : "ZIP 默认密码："
-    },
     "Zoom" : {
       "comment" : "缩放",
       "localizations" : {
@@ -37079,8 +37007,17 @@
     "快速压缩" : {
       "comment" : "快速压缩"
     },
+    "快速重命名" : {
+      "comment" : "quick rename undo"
+    },
+    "批量重命名" : {
+      "comment" : "batch rename undo"
+    },
     "提取子文件夹文件并归集" : {
       "comment" : "提取子文件夹文件并归集"
+    },
+    "无法完成重命名，目标已存在：%@" : {
+      "comment" : "rename undo conflict"
     },
     "显示压缩文件" : {
       "comment" : "显示压缩文件"
@@ -37093,6 +37030,12 @@
     },
     "返回上一级目录" : {
       "comment" : "返回上一级目录"
+    },
+    "重命名" : {
+      "comment" : "rename undo"
+    },
+    "重命名失败：%@" : {
+      "comment" : "rename failed"
     }
   },
   "version" : "1.0"

@@ -199,6 +199,19 @@ extension ViewController {
                 }
             }
         }
+
+        // 主界面撤销 / 重做
+        // Undo / redo in normal browsing state
+        if publicVar.isKeyEventEnabled && isCommandPressed && !isAltPressed && !isCtrlPressed {
+            if characters == "z" && !isShiftPressed {
+                NSApp.sendAction(Selector(("undo:")), to: nil, from: nil)
+                return nil
+            }
+            if characters == "z" && isShiftPressed {
+                NSApp.sendAction(Selector(("redo:")), to: nil, from: nil)
+                return nil
+            }
+        }
         
         // 防止过快触发事件
         // Prevent events from triggering too quickly

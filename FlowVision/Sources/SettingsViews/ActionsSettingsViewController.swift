@@ -118,7 +118,7 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         } ?? max(0, grid.numberOfRows - 1)
 
         if let leftLabel = grid.cell(atColumnIndex: 0, rowIndex: targetRow).contentView as? NSTextField {
-            leftLabel.stringValue = NSLocalizedString("File Actions:", comment: "文件操作：")
+            leftLabel.stringValue = "文件操作："
         }
 
         let panel = NSStackView()
@@ -339,7 +339,9 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
 
         if let oldTextView = grid.cell(atColumnIndex: 1, rowIndex: guideRowIndex).contentView as? NSTextField {
             oldTextView.stringValue = ""
-            oldTextView.isHidden = true
+            oldTextView.textColor = .clear
+            oldTextView.isBordered = false
+            oldTextView.drawsBackground = false
         }
 
         let guideButton = NSButton(title: "操作说明", target: self, action: #selector(showActionGuide))

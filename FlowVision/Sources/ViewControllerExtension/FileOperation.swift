@@ -13,6 +13,130 @@ extension ViewController {
         case plainZip
         case encryptedZip(password: String)
     }
+
+    private struct FileRenameMapping {
+        let from: URL
+        let to: URL
+    }
+
+    private struct PendingTempRename {
+        let tempURL: URL
+        let targetURL: URL
+    }
+
+    private func fileOperationUndoManager() -> UndoManager? {
+        view.window?.undoManager ?? NSApp.keyWindow?.undoManager ?? undoManager
+    }
+
+    @discardableResult
+    private func executeFileRenameMappings(
+        _ mappings: [FileRenameMapping],
+        actionName: String,
+        registerUndo: Bool = true,
+        locateTargets: [URL]? = nil
+    ) -> Bool {
+        guard !mappings.isEmpty else { return true }
+
+        let fileManager = FileManager.default
+        let sourcePathSet = Set(mappings.map { $0.from.path.lowercased() })
+
+        for mapping in mappings {
+            guard fileManager.fileExists(atPath: mapping.from.path) else {
+                log("Rename source missing: \(mapping.from.path)", level: .error)
+                return false
+            }
+
+            let targetPath = mapping.to.path.lowercased()
+            if mapping.from.path.lowercased() == targetPath {
+                continue
+            }
+
+            if fileManager.fileExists(atPath: mapping.to.path) && !sourcePathSet.contains(targetPath) {
+                showAlert(message: String(format: NSLocalizedString("无法完成重命名，目标已存在：%@", comment: "rename undo conflict"), mapping.to.lastPathComponent))
+                return false
+            }
+        }
+
+        publicVar.isInFileOperation = true
+        defer { publicVar.isInFileOperation = false }
+
+        var pendingMoves: [PendingTempRename] = []
+
+        for mapping in mappings {
+            if mapping.from.path.lowercased() == mapping.to.path.lowercased() {
+                continue
+            }
+
+            let tempURL = mapping.from.deletingLastPathComponent().appendingPathComponent("temp_rename_\(UUID().uuidString)")
+            do {
+                try fileManager.moveItem(at: mapping.from, to: tempURL)
+                pendingMoves.append(PendingTempRename(tempURL: tempURL, targetURL: mapping.to))
+            } catch {
+                for pending in pendingMoves.reversed() {
+                    try? fileManager.moveItem(at: pending.tempURL, to: mappings.first(where: { $0.to == pending.targetURL })?.from ?? pending.targetURL)
+                }
+                log("Failed to create temp rename path: \(error)", level: .error)
+                showAlert(message: String(format: NSLocalizedString("重命名失败：%@", comment: "rename failed"), error.localizedDescription))
+                return false
+            }
+        }
+
+        var appliedMoves: [FileRenameMapping] = []
+        for pending in pendingMoves {
+            do {
+                try fileManager.moveItem(at: pending.tempURL, to: pending.targetURL)
+                publicVar.fileChangedCount += 1
+                if let source = mappings.first(where: { $0.to == pending.targetURL })?.from {
+                    appliedMoves.append(FileRenameMapping(from: source, to: pending.targetURL))
+                }
+            } catch {
+                for applied in appliedMoves.reversed() {
+                    try? fileManager.moveItem(at: applied.to, to: applied.from)
+                }
+                for remaining in pendingMoves where fileManager.fileExists(atPath: remaining.tempURL.path) {
+                    if let original = mappings.first(where: { $0.to == remaining.targetURL })?.from {
+                        try? fileManager.moveItem(at: remaining.tempURL, to: original)
+                    }
+                }
+                log("Failed to complete rename: \(error)", level: .error)
+                showAlert(message: String(format: NSLocalizedString("重命名失败：%@", comment: "rename failed"), error.localizedDescription))
+                return false
+            }
+        }
+
+        guard !appliedMoves.isEmpty else { return true }
+
+        EnhancedIndex.handleFilesMoved(appliedMoves.map { (oldPath: $0.from.path, newPath: $0.to.path) })
+        publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+
+        if registerUndo, let undoManager = fileOperationUndoManager() {
+            let inverseMappings = appliedMoves.map { FileRenameMapping(from: $0.to, to: $0.from) }
+            undoManager.registerUndo(withTarget: self) { target in
+                _ = target.executeFileRenameMappings(
+                    inverseMappings,
+                    actionName: actionName,
+                    registerUndo: true,
+                    locateTargets: appliedMoves.map(\.from)
+                )
+            }
+            undoManager.setActionName(actionName)
+        }
+
+        var ifRefresh = true
+        fileDB.lock()
+        let curFolder = fileDB.curFolder
+        fileDB.unlock()
+        if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
+            fileDB.lock()
+            ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
+            fileDB.unlock()
+        }
+        if ifRefresh {
+            scheduledRefresh()
+        }
+
+        return true
+    }
     
     @discardableResult
     func handleFilePromiseDrop(targetURL: URL, pasteboard: NSPasteboard) -> Bool {
@@ -1708,13 +1832,6 @@ extension ViewController {
         let response = alert.runModal()
         publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
 
-        // 在文件操作期间抑制文件系统监控触发的刷新，操作完成后主动刷新
-        // Suppress FS watcher refreshes during file operations, refresh explicitly after completion
-        publicVar.isInFileOperation = true
-        defer {
-            publicVar.isInFileOperation = false
-        }
-        
         // 根据用户的选择处理结果
         // Process result based on user's choice
         // OK按钮
@@ -1740,11 +1857,9 @@ extension ViewController {
                 let operationLog = "[Rename] \(sourceFilesStr) -> \(newBaseName)"
                 globalVar.operationLogs.append(operationLog)
 
-                var allSuccess = true
-                
                 // 第一步：生成最终目标名字列表
                 // Step 1: Generate final target name list
-                var finalNames: [(originalUrl: URL, finalUrl: URL)] = []
+                var finalNames: [FileRenameMapping] = []
                 var nameIndex = 1
                 
                 for originalUrl in urls {
@@ -1793,76 +1908,22 @@ extension ViewController {
                         let newUrl = originalUrl.deletingLastPathComponent().appendingPathComponent(newName)
                         if FileManager.default.fileExists(atPath: newUrl.path) {
                             showAlert(message: NSLocalizedString("renaming-conflict", comment: "该名称的文件已存在，请选择其他名称。"))
-                            allSuccess = false
                             return false
                         }
                     }
                     
                     let finalUrl = originalUrl.deletingLastPathComponent().appendingPathComponent(newName)
-                    finalNames.append((originalUrl: originalUrl, finalUrl: finalUrl))
-                }
-                
-                // 第二步：将所有文件改成临时文件名
-                // Step 2: Rename all files to temporary names
-                var tempNames: [(tempUrl: URL, finalUrl: URL)] = []
-                for (index, item) in finalNames.enumerated() {
-                    let tempName = "temp_rename_\(UUID().uuidString)"
-                    let tempUrl = item.originalUrl.deletingLastPathComponent().appendingPathComponent(tempName)
-                    
-                    do {
-                        try FileManager.default.moveItem(at: item.originalUrl, to: tempUrl)
-                        tempNames.append((tempUrl: tempUrl, finalUrl: item.finalUrl))
-                    } catch {
-                        // 如果临时重命名失败，回滚之前的临时重命名
-                        // If temporary rename fails, rollback previous temporary renames
-                        for prevTemp in tempNames {
-                            try? FileManager.default.moveItem(at: prevTemp.tempUrl, to: finalNames[tempNames.count].originalUrl)
-                        }
-                        log("Failed to create temp name: \(error)", level: .error)
-                        allSuccess = false
-                        break
-                    }
-                }
-                
-                // 第三步：将临时文件名改成最终文件名
-                // Step 3: Rename temporary files to final names
-                if allSuccess {
-                    for item in tempNames {
-                        do {
-                            // 文件更改计数
-                            // File change count
-                            publicVar.fileChangedCount += 1
-                            
-                            try FileManager.default.moveItem(at: item.tempUrl, to: item.finalUrl)
-                            log("File renamed to \(item.finalUrl.lastPathComponent)")
-                        } catch {
-                            log("Failed to rename file: \(error)", level: .error)
-                            allSuccess = false
-                            // 这里不需要回滚，因为用户可以通过临时文件找回
-                            // No need to rollback here, as user can recover through temporary files
-                            break
-                        }
-                    }
-                }
-                
-                if allSuccess && !finalNames.isEmpty {
-                    EnhancedIndex.handleFilesMoved(finalNames.map { (oldPath: $0.originalUrl.path, newPath: $0.finalUrl.path) })
+                    finalNames.append(FileRenameMapping(from: originalUrl, to: finalUrl))
                 }
 
-                // 手动刷新
-                // Manually refresh
-                var ifRefresh = true
-                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
-                    fileDB.lock()
-                    ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
-                    fileDB.unlock()
-                    
+                let actionName = urls.count > 1 ? NSLocalizedString("批量重命名", comment: "batch rename undo") : NSLocalizedString("重命名", comment: "rename undo")
+                let renameResult = executeFileRenameMappings(finalNames, actionName: actionName)
+                if renameResult {
+                    for item in finalNames {
+                        log("File renamed to \(item.to.lastPathComponent)")
+                    }
                 }
-                if ifRefresh {
-                    scheduledRefresh()
-                }
-                
-                return allSuccess
+                return renameResult
             }
         }
         return false
@@ -1943,55 +2004,12 @@ extension ViewController {
         
         let operationLog = "[QuickRename] \(folderName) -> \(rule)"
         globalVar.operationLogs.append(operationLog)
-        
-        publicVar.isInFileOperation = true
-        defer { publicVar.isInFileOperation = false }
-        
-        var allSuccess = true
-        var tempNames: [(tempUrl: URL, finalUrl: URL)] = []
-        
-        for item in finalNames {
-            let tempName = "temp_rename_\(UUID().uuidString)"
-            let tempUrl = item.originalUrl.deletingLastPathComponent().appendingPathComponent(tempName)
-            do {
-                try FileManager.default.moveItem(at: item.originalUrl, to: tempUrl)
-                tempNames.append((tempUrl: tempUrl, finalUrl: item.finalUrl))
-            } catch {
-                log("Quick rename temp move failed: \(error)", level: .error)
-                allSuccess = false
-                break
-            }
-        }
-        
-        if allSuccess {
-            for item in tempNames {
-                do {
-                    try FileManager.default.moveItem(at: item.tempUrl, to: item.finalUrl)
-                    publicVar.fileChangedCount += 1
-                } catch {
-                    log("Quick rename final move failed: \(error)", level: .error)
-                    allSuccess = false
-                    break
-                }
-            }
-        }
-        
-        if allSuccess && !finalNames.isEmpty {
-            EnhancedIndex.handleFilesMoved(finalNames.map { (oldPath: $0.originalUrl.path, newPath: $0.finalUrl.path) })
-            publicVar.filesForLocateAfterChange = finalNames.map { $0.finalUrl.absoluteString }
-        }
-        
-        var ifRefresh = true
-        if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
-            fileDB.lock()
-            ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
-            fileDB.unlock()
-        }
-        if ifRefresh {
-            scheduledRefresh()
-        }
-        
-        return allSuccess
+
+        let mappings = finalNames.map { FileRenameMapping(from: $0.originalUrl, to: $0.finalUrl) }
+        return executeFileRenameMappings(
+            mappings,
+            actionName: NSLocalizedString("快速重命名", comment: "quick rename undo")
+        )
     }
     
     func applyCutItemsDimEffect() {
