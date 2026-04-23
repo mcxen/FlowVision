@@ -7,6 +7,8 @@
 
 ## Screenshots
 
+![alt text](docs/PixPin_2026-04-23_12-39-32.png)
+
 ### Light Mode
 ![preview](https://netdcy.github.io/FlowVision/docs/preview_2.png)
 

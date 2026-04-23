@@ -11656,9 +11656,6 @@
         }
       }
     },
-    "File Actions:" : {
-      "comment" : "文件操作："
-    },
     "File Already Exists" : {
       "comment" : "文件已存在",
       "localizations" : {
