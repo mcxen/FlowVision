@@ -45,7 +45,7 @@ extension ViewController {
         defer {
             publicVar.isInFindingClosestState = false
         }
-        
+
         guard let dataSource = collectionView.dataSource else { return nil }
         var currentItem = collectionView.item(at: currentIndexPath)
         if currentItem == nil {
@@ -53,15 +53,22 @@ extension ViewController {
             currentItem = collectionView.item(at: currentIndexPath)
         }
         guard let currentItem = currentItem else {return nil}
-        
+
+        // RTL: swap left/right arrow semantics for item navigation
+        let isRTL = collectionView.userInterfaceLayoutDirection == .rightToLeft
+        let effectiveDirection: NSEvent.SpecialKey
+        if isRTL && direction == .leftArrow { effectiveDirection = .rightArrow }
+        else if isRTL && direction == .rightArrow { effectiveDirection = .leftArrow }
+        else { effectiveDirection = direction }
+
         var noLimit = false
-        
+
         // let indexPaths = nearbyIndexPaths(around: collectionView.indexPathsForVisibleItems(), range: (-20,20))
         var indexPaths: Set<IndexPath> = []
         if publicVar.profile.layoutType == .grid {
-            if direction == .leftArrow || direction == .rightArrow {
+            if effectiveDirection == .leftArrow || effectiveDirection == .rightArrow {
                 noLimit = true
-                if direction == .leftArrow {
+                if effectiveDirection == .leftArrow {
                     indexPaths.insert(IndexPath(item: currentIndexPath.item - 1, section: currentIndexPath.section))
                 } else {
                     indexPaths.insert(IndexPath(item: currentIndexPath.item + 1, section: currentIndexPath.section))
@@ -79,9 +86,9 @@ extension ViewController {
             let range = 4 * publicVar.waterfallLayout.numberOfColumns
             indexPaths = nearbyIndexPaths(around: [currentIndexPath], range: (-range,range))
         } else if publicVar.profile.layoutType == .justified {
-            if direction == .leftArrow || direction == .rightArrow {
+            if effectiveDirection == .leftArrow || effectiveDirection == .rightArrow {
                 noLimit = true
-                if direction == .leftArrow {
+                if effectiveDirection == .leftArrow {
                     indexPaths.insert(IndexPath(item: currentIndexPath.item - 1, section: currentIndexPath.section))
                 } else {
                     indexPaths.insert(IndexPath(item: currentIndexPath.item + 1, section: currentIndexPath.section))

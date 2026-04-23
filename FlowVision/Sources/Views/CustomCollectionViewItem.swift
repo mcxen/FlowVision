@@ -565,7 +565,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     }
     
     func setTooltip(){
-        if !getViewController(collectionView!)!.publicVar.isInLargeView {
+        if globalVar.collectionViewItemShowTooltip && !getViewController(collectionView!)!.publicVar.isInLargeView {
             if file.isDir {
                 self.view.toolTip = generateTooltip(filePath: file.path.removingPercentEncoding!, type: file.type, fileSize: nil, imageSize: nil, creationDate: file.createDate, modificationDate: file.modDate, addDate: file.addDate)
             }else{
@@ -1188,104 +1188,26 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 menu.addItem(NSMenuItem.separator())
 
                 let tagsPerURL = selectedURLs.map { FinderTagHelper.readTags(from: $0) }
-                let allTags = FinderTag.all
                 let activeTagNames: Set<String> = {
                     guard !selectedURLs.isEmpty else { return [] }
-                    return Set(allTags.filter { tag in
+                    return Set(FinderTag.all.filter { tag in
                         tagsPerURL.allSatisfy { $0.contains(tag.name) }
                     }.map { $0.name })
                 }()
 
-                let finderTagMenu = NSMenu()
-                let finderTagTitle = NSLocalizedString("Finder Tags", comment: "Finder标签")
-                let finderTagMenuItem = NSMenuItem(title: finderTagTitle, action: nil, keyEquivalent: "")
-                finderTagMenuItem.submenu = finderTagMenu
-
-                for (i, tag) in allTags.enumerated() {
-                    let item = finderTagMenu.addItem(withTitle: NSLocalizedString(tag.name, comment: ""), action: #selector(actToggleFinderTag(_:)), keyEquivalent: (i + 1 <= 9) ? "\(i + 1)" : "")
-                    item.keyEquivalentModifierMask = [.command]
-                    item.representedObject = tag.name
-                    if activeTagNames.contains(tag.name) {
-                        item.state = .on
-                    }
-                    item.image = tag.dotImage
+                let allSelectedAreImages = collectionView!.selectionIndexPaths.allSatisfy { indexPath in
+                    (collectionView!.item(at: indexPath) as? CustomCollectionViewItem)?.file.type == .image
                 }
 
-                finderTagMenu.addItem(NSMenuItem.separator())
-                finderTagMenu.addItem(withTitle: NSLocalizedString("Remove All Tags", comment: "移除所有标签"), action: #selector(actRemoveAllFinderTags), keyEquivalent: "")
-
-                if file.isDir {
-                    finderTagMenu.addItem(NSMenuItem.separator())
-                    finderTagMenu.addItem(withTitle: NSLocalizedString("Scan & Update Enhanced Index", comment: "扫描并更新增强索引"), action: #selector(actScanEnhancedIndex), keyEquivalent: "")
+                menu.addTaggingMenuItems(
+                    activeTagNames: activeTagNames,
+                    target: self,
+                    showScanEnhancedIndex: file.isDir,
+                    isRatingEnabled: allSelectedAreImages
+                ) { [weak self] tagName in
+                    guard let self = self else { return }
+                    getViewController(self.collectionView!)?.handleToggleFinderTag(tagName)
                 }
-
-                finderTagMenu.addItem(NSMenuItem.separator())
-                finderTagMenu.addItem(withTitle: NSLocalizedString("Learn More...", comment: "了解更多..."), action: #selector(actTagLearnMore), keyEquivalent: "")
-
-                let colorTags = allTags//.filter { $0.colorIndex != nil && $0.colorIndex != 0 }
-                if !colorTags.isEmpty {
-                    let dotsItem = NSMenuItem()
-                    let dotsView = FinderTagDotsView(tags: colorTags, activeTags: activeTagNames) { [weak self, weak menu] tagName in
-                        guard let self = self, let menu = menu else { return }
-                        getViewController(self.collectionView!)?.handleToggleFinderTag(tagName)
-                        menu.cancelTracking()
-                    }
-                    dotsView.onHoverChanged = { [weak finderTagMenuItem] index in
-                        guard let finderTagMenuItem = finderTagMenuItem else { return }
-                        if index >= 0 && index < colorTags.count {
-                            let tag = colorTags[index]
-                            if activeTagNames.contains(tag.name) {
-                                finderTagMenuItem.title = NSLocalizedString("Remove", comment: "移除") + "\"\(tag.name)\""
-                            } else {
-                                finderTagMenuItem.title = NSLocalizedString("Add", comment: "添加") + "\"\(tag.name)\""
-                            }
-                            let attrTitle = NSAttributedString(
-                                string: finderTagMenuItem.title,
-                                attributes: [.foregroundColor: NSColor.secondaryLabelColor]
-                            )
-                            finderTagMenuItem.attributedTitle = attrTitle
-                        } else {
-                            finderTagMenuItem.attributedTitle = nil
-                            finderTagMenuItem.title = finderTagTitle
-                        }
-                    }
-                    dotsItem.view = dotsView
-                    menu.addItem(dotsItem)
-                }
-
-                menu.addItem(finderTagMenuItem)
-                
-                let rateSubMenu = NSMenu(title: NSLocalizedString("Rating", comment: "评级"))
-                let rateMenuItem = NSMenuItem(title: NSLocalizedString("Rating", comment: "评级"), action: nil, keyEquivalent: "")
-                rateMenuItem.submenu = rateSubMenu
-                rateMenuItem.isEnabled = file.type == .image
-
-                // 5~1 星，带星形预览
-                for rating in (1...5).reversed() {
-                    let stars = String(repeating: "★", count: rating) + String(repeating: "☆", count: 5 - rating)
-                    let title = "\(stars)  (\(rating))"
-                    let item = NSMenuItem(title: title, action: #selector(actRate(_:)), keyEquivalent: "\(rating)")
-                    item.keyEquivalentModifierMask = [.control]
-                    item.tag = rating
-                    item.target = self
-                    rateSubMenu.addItem(item)
-                }
-
-                // 无评级
-                let clearTitle = NSLocalizedString("No Rating", comment: "无评级")
-                let clearItem = NSMenuItem(title: clearTitle, action: #selector(actRate(_:)), keyEquivalent: "0")
-                clearItem.keyEquivalentModifierMask = [.control]
-                clearItem.tag = 0
-                clearItem.target = self
-                rateSubMenu.addItem(clearItem)
-
-                rateSubMenu.addItem(NSMenuItem.separator())
-                
-                let rateReadmeItem = NSMenuItem(title: NSLocalizedString("Readme...", comment: "说明..."), action: #selector(actRateReadmeAction), keyEquivalent: "")
-                rateReadmeItem.target = self
-                rateSubMenu.addItem(rateReadmeItem)
-                
-                menu.addItem(rateMenuItem)
                 
                 menu.addItem(NSMenuItem.separator())
                                 
@@ -1342,10 +1264,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     }
 
     @objc func actRemoveAllFinderTags() {
-        let urls = getViewController(collectionView!)?.publicVar.selectedUrls() ?? []
-        guard !urls.isEmpty else { return }
-        FinderTagHelper.removeAllTags(from: urls)
-        getViewController(collectionView!)?.refreshFinderTagsForVisibleItems(urls: urls)
+        getViewController(collectionView!)?.handleRemoveAllFinderTags()
     }
 
     @objc func actScanEnhancedIndex() {
@@ -1354,7 +1273,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     }
 
     @objc func actScanEnhancedIndexReadmeAction() {
-        showInformationLong(title: NSLocalizedString("Info", comment: "说明"), message: NSLocalizedString("scan-enhanced-index-info", comment: "扫描并更新增强索引说明..."))
+        getViewController(collectionView!)?.handleScanEnhancedIndexReadme()
     }
 
     @objc func actTagLearnMore() {
@@ -1367,7 +1286,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     }
     
     @objc func actRateReadmeAction() {
-        showInformationLong(title: NSLocalizedString("Info", comment: "说明"), message: NSLocalizedString("rating-info", comment: "对于评级的说明..."))
+        getViewController(collectionView!)?.handleRatingReadme()
     }
 
     @objc func actAddToFavorites() {

@@ -19,7 +19,7 @@ enum LayoutType: Int, Codable {
 }
 
 enum SortType: Int, Codable {
-    case pathA,pathZ,extA,extZ,sizeA,sizeZ,createDateA,createDateZ,modDateA,modDateZ,addDateA,addDateZ,random,exifDateA,exifDateZ,exifPixelA,exifPixelZ
+    case pathA,pathZ,extA,extZ,sizeA,sizeZ,createDateA,createDateZ,modDateA,modDateZ,addDateA,addDateZ,random,exifDateA,exifDateZ,exifPixelA,exifPixelZ,ratingA,ratingZ,tagA,tagZ
 }
 
 extension Settings.PaneIdentifier {

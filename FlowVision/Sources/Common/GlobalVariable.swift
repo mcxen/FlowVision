@@ -113,6 +113,7 @@ class GlobalVar{
     var showArchiveFileType = true
     var compressionDefaultPassword: String = ""
     var compressionUseDefaultPassword = false
+    var collectionViewItemShowTooltip = true
     
     // 可记忆设置变量
     // Rememberable settings variables
@@ -126,6 +127,7 @@ class GlobalVar{
     var portableListWidthRatioHH = 0.82
     var portableListHeightRatioHH = 0.84
     var videoVolume: Float = 1.0
+    var videoPlaybackRate: Float = 1.0
     
     var HandledImageExtensions: [String] = []
     var HandledRawExtensions: [String] = []

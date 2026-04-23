@@ -59,6 +59,12 @@
             "value" : "Zoeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +87,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hitta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bul"
           }
         },
         "zh-Hans" : {
@@ -155,6 +167,12 @@
             "value" : "Verlagen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niższy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -177,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägre"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük Harf"
           }
         },
         "zh-Hans" : {
@@ -251,6 +275,12 @@
             "value" : "Werkbalk aanpassen…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostosuj pasek narzędzi…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -273,6 +303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anpassa verktygsfält…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Araç Çubuğunu Özelleştir…"
           }
         },
         "zh-Hans" : {
@@ -347,6 +383,12 @@
             "value" : "FlowVision"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -366,6 +408,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "FlowVision"
@@ -443,6 +491,12 @@
             "value" : "Verhogen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podnieś"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -465,6 +519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Höj"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yükselt"
           }
         },
         "zh-Hans" : {
@@ -539,6 +599,12 @@
             "value" : "Transformaties"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transformacje"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transformationer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönüşümler"
           }
         },
         "zh-Hans" : {
@@ -635,6 +707,12 @@
             "value" : "Spelling"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pisownia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -657,6 +735,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stavning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazım Denetimi"
           }
         },
         "zh-Hans" : {
@@ -731,6 +815,12 @@
             "value" : "Standaard gebruiken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj domyślnego"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılanı Kullan"
           }
         },
         "zh-Hans" : {
@@ -827,6 +923,12 @@
             "value" : "Spraak"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mowa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -849,6 +951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma"
           }
         },
         "zh-Hans" : {
@@ -923,6 +1031,12 @@
             "value" : "Afbeeldingsbestanden weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pliki graficzne"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -945,6 +1059,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa bildfiler"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntü Dosyalarını Göster"
           }
         },
         "zh-Hans" : {
@@ -1019,6 +1139,12 @@
             "value" : "Zoeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1041,6 +1167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sök"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bul"
           }
         },
         "zh-Hans" : {
@@ -1115,6 +1247,12 @@
             "value" : "Volledig scherm inschakelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wejdź w tryb pełnoekranowy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1137,6 +1275,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gå in i helskärmsläge"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam Ekrana Geç"
           }
         },
         "zh-Hans" : {
@@ -1211,6 +1355,12 @@
             "value" : "Afsluiten FlowVision"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zakończ FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1233,6 +1383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avsluta FlowVision"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision'u Kapat"
           }
         },
         "zh-Hans" : {
@@ -1307,6 +1463,12 @@
             "value" : "Over FlowVision"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1329,6 +1491,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Om FlowVision"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision Hakkında"
           }
         },
         "zh-Hans" : {
@@ -1403,6 +1571,12 @@
             "value" : "Bewerken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1425,6 +1599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redigera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzenle"
           }
         },
         "zh-Hans" : {
@@ -1499,6 +1679,12 @@
             "value" : "Stijl kopiëren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj styl"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1521,6 +1707,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopiera stil"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stili Kopyala"
           }
         },
         "zh-Hans" : {
@@ -1595,6 +1787,12 @@
             "value" : "Watervalweergave"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok kaskadowy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1617,6 +1815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vattenfallsvy"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şelale Görünümü"
           }
         },
         "zh-Hans" : {
@@ -1691,6 +1895,12 @@
             "value" : "Opnieuw uitvoeren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponów"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1713,6 +1923,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gör om"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yinele"
           }
         },
         "zh-Hans" : {
@@ -1787,6 +2003,12 @@
             "value" : "Venster aanpassen aan werkelijke afbeeldingsgrootte"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostosuj okno do rzeczywistego rozmiaru obrazu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1809,6 +2031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Justera fönster till faktisk bildstorlek"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencereyi Gerçek Görüntü Boyutuna Ayarla"
           }
         },
         "zh-Hans" : {
@@ -1883,6 +2111,12 @@
             "value" : "Venster centreren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyśrodkuj okno"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1905,6 +2139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Centrera fönstret"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencereyi Ortala"
           }
         },
         "zh-Hans" : {
@@ -1979,6 +2219,12 @@
             "value" : "Schrijfrichting"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kierunek pisania"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2001,6 +2247,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skrivriktning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazı Yönü"
           }
         },
         "zh-Hans" : {
@@ -2075,6 +2327,12 @@
             "value" : "Vervangingen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamienniki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2097,6 +2355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ersättningar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Değiştirmeler"
           }
         },
         "zh-Hans" : {
@@ -2171,6 +2435,12 @@
             "value" : "Slim Kopiëren/Plakken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inteligentne kopiowanie/wklejanie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2193,6 +2463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smart kopiera/klistra in"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akıllı Kopyala/Yapıştır"
           }
         },
         "zh-Hans" : {
@@ -2267,6 +2543,12 @@
             "value" : "Venster aanpassen aan huidige afbeeldingsgrootte"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostosuj okno do bieżącego rozmiaru obrazu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2289,6 +2571,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Justera fönstret till aktuell bildstorlek"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencereyi Geçerli Görüntü Boyutuna Ayarla"
           }
         },
         "zh-Hans" : {
@@ -2363,6 +2651,12 @@
             "value" : "Aanspannen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zacieśnij"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2385,6 +2679,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dra åt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sıkıştır"
           }
         },
         "zh-Hans" : {
@@ -2459,6 +2759,12 @@
             "value" : "Spelling automatisch corrigeren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatycznie poprawiaj pisownię"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2481,6 +2787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Korrigera stavning automatiskt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazımı Otomatik Düzelt"
           }
         },
         "zh-Hans" : {
@@ -2555,6 +2867,12 @@
             "value" : "Huidig venster bovenaan houden"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trzymaj bieżące okno na wierzchu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2577,6 +2895,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Håll aktuellt fönster överst"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçerli Pencereyi Üstte Tut"
           }
         },
         "zh-Hans" : {
@@ -2651,6 +2975,12 @@
             "value" : "Standaard gebruiken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj domyślnych"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2673,6 +3003,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılanı Kullan"
           }
         },
         "zh-Hans" : {
@@ -2747,6 +3083,12 @@
             "value" : "Detailweergave"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok szczegółowy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2769,6 +3111,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detaljvy"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detay Görünümü"
           }
         },
         "zh-Hans" : {
@@ -2843,6 +3191,12 @@
             "value" : "Afdrukken…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drukuj…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2865,6 +3219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skriv ut…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazdır…"
           }
         },
         "zh-Hans" : {
@@ -2939,6 +3299,12 @@
             "value" : "Venster"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okno"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2961,6 +3327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencere"
           }
         },
         "zh-Hans" : {
@@ -3035,6 +3407,12 @@
             "value" : "Lettertype"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czcionka"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3057,6 +3435,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Typsnitt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazı Tipi"
           }
         },
         "zh-Hans" : {
@@ -3131,6 +3515,12 @@
             "value" : "Hoofdmenu"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu główne"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3153,6 +3543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Huvudmeny"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ana Menü"
           }
         },
         "zh-Hans" : {
@@ -3227,6 +3623,12 @@
             "value" : "Geschiedenis"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3249,6 +3651,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Historik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmiş"
           }
         },
         "zh-Hans" : {
@@ -3323,6 +3731,12 @@
             "value" : "Links naar rechts"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od lewej do prawej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3345,6 +3759,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vänster till höger"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tSoldan Sağa"
           }
         },
         "zh-Hans" : {
@@ -3419,6 +3839,12 @@
             "value" : "Kleuren tonen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż kolory"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3441,6 +3867,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa färger"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renkleri Göster"
           }
         },
         "zh-Hans" : {
@@ -3515,6 +3947,12 @@
             "value" : "Bestand"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3537,6 +3975,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arkiv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya"
           }
         },
         "zh-Hans" : {
@@ -3611,6 +4055,12 @@
             "value" : "Donkere modus"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryb ciemny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3633,6 +4083,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mörkt läge"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karanlık Mod"
           }
         },
         "zh-Hans" : {
@@ -3707,6 +4163,12 @@
             "value" : "Voorkeuren..."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferencje…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3729,6 +4191,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inställningar…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tercihler…"
           }
         },
         "zh-Hans" : {
@@ -3803,6 +4271,12 @@
             "value" : "Selectie gebruiken bij zoeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj zaznaczenia do wyszukiwania"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3825,6 +4299,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd markering för att söka"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçimi Bul için Kullan"
           }
         },
         "zh-Hans" : {
@@ -3899,6 +4379,12 @@
             "value" : "Opslaan als…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapisz jako…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3921,6 +4407,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spara som…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Farklı Kaydet…"
           }
         },
         "zh-Hans" : {
@@ -3995,6 +4487,12 @@
             "value" : "Transformaties"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przekształcenia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4017,6 +4515,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transformationer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönüşümler"
           }
         },
         "zh-Hans" : {
@@ -4091,6 +4595,12 @@
             "value" : "Geen gebruiken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj brak"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4113,6 +4623,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd Ingen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiçbirini Kullanma"
           }
         },
         "zh-Hans" : {
@@ -4187,6 +4703,12 @@
             "value" : "Selectie"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybór"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4209,6 +4731,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Urval"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçim"
           }
         },
         "zh-Hans" : {
@@ -4283,6 +4811,12 @@
             "value" : "Slimme links"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inteligentne łącza"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4305,6 +4839,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smarta länkar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akıllı Bağlantılar"
           }
         },
         "zh-Hans" : {
@@ -4379,6 +4919,12 @@
             "value" : "Tekst"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4401,6 +4947,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metin"
           }
         },
         "zh-Hans" : {
@@ -4475,6 +5027,12 @@
             "value" : "Afbeelding standaard passend in venster"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślne dopasowanie obrazu do okna"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4497,6 +5055,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bild Standard Anpassa till Fönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntüyü Varsayılan Olarak Pencereye Sığdır"
           }
         },
         "zh-Hans" : {
@@ -4571,6 +5135,12 @@
             "value" : "Kleine letters maken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamień na małe litery"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4593,6 +5163,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gör gemener"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük Harfe Çevir"
           }
         },
         "zh-Hans" : {
@@ -4667,6 +5243,12 @@
             "value" : "Info"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informacje"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4689,6 +5271,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilgi"
           }
         },
         "zh-Hans" : {
@@ -4763,6 +5351,12 @@
             "value" : "Bestand"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4785,6 +5379,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arkiv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya"
           }
         },
         "zh-Hans" : {
@@ -4859,6 +5459,12 @@
             "value" : "Ongedaan maken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofnij"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4881,6 +5487,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ångra"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geri Al"
           }
         },
         "zh-Hans" : {
@@ -4955,6 +5567,12 @@
             "value" : "Spelling en Grammatica"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pisownia i gramatyka"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4977,6 +5595,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stavning och grammatik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazım ve Dilbilgisi"
           }
         },
         "zh-Hans" : {
@@ -5051,6 +5675,12 @@
             "value" : "Sluiten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknij"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5073,6 +5703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stäng"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapat"
           }
         },
         "zh-Hans" : {
@@ -5147,6 +5783,12 @@
             "value" : "Favorieten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulubione"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5169,6 +5811,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Favoriter"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoriler"
           }
         },
         "zh-Hans" : {
@@ -5243,6 +5891,12 @@
             "value" : "Aangepaste indelingsstijl..."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niestandardowy styl układu..."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5265,6 +5919,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anpassad layoutstil..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel Düzen Stili..."
           }
         },
         "zh-Hans" : {
@@ -5339,6 +5999,12 @@
             "value" : "Nieuwe map"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowy folder"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5361,6 +6027,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ny mapp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni Klasör"
           }
         },
         "zh-Hans" : {
@@ -5435,6 +6107,12 @@
             "value" : "Help"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomoc"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5457,6 +6135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hjälp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yardım"
           }
         },
         "zh-Hans" : {
@@ -5531,6 +6215,12 @@
             "value" : "Tekst"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekst"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5553,6 +6243,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Text"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metin"
           }
         },
         "zh-Hans" : {
@@ -5627,6 +6323,12 @@
             "value" : "Favorieten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulubione"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5649,6 +6351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Favoriter"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoriler"
           }
         },
         "zh-Hans" : {
@@ -5723,6 +6431,12 @@
             "value" : "Vervangingen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamienniki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5745,6 +6459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Substitutioner"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Değiştirmeler"
           }
         },
         "zh-Hans" : {
@@ -5819,6 +6539,12 @@
             "value" : "FlowVision Help"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomoc FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5841,6 +6567,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "FlowVision Hjälp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision Yardım"
           }
         },
         "zh-Hans" : {
@@ -5915,6 +6647,12 @@
             "value" : "Vet"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pogrubienie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5937,6 +6675,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalın"
           }
         },
         "zh-Hans" : {
@@ -6011,6 +6755,12 @@
             "value" : "RAW gebruikt Exif-ingesloten miniatuurafbeelding"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RAW używa osadzonej miniatury Exif"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6033,6 +6783,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "RAW använder Exif-inbäddad miniatyrbild"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RAW Exif Gömülü Küçük Resmi Kullanır"
           }
         },
         "zh-Hans" : {
@@ -6107,6 +6863,12 @@
             "value" : "Opmaak"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatowanie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6129,6 +6891,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Format"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biçim"
           }
         },
         "zh-Hans" : {
@@ -6203,6 +6971,12 @@
             "value" : "Camera RAW-bestanden weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pliki RAW z aparatu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6225,6 +6999,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa Camera RAW-filer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera RAW Dosyalarını Göster"
           }
         },
         "zh-Hans" : {
@@ -6299,6 +7079,12 @@
             "value" : "Lettertype"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czcionka"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6321,6 +7107,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Teckensnitt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazı Tipi"
           }
         },
         "zh-Hans" : {
@@ -6395,6 +7187,12 @@
             "value" : "Gebruik standaard"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj domyślnych"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6417,6 +7215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılanı Kullan"
           }
         },
         "zh-Hans" : {
@@ -6491,6 +7295,12 @@
             "value" : "Plakken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wklej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6513,6 +7323,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klistra in"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapıştır"
           }
         },
         "zh-Hans" : {
@@ -6587,6 +7403,12 @@
             "value" : "Schrijfrichting"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kierunek pisania"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6609,6 +7431,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skrivriktning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazı Yönü"
           }
         },
         "zh-Hans" : {
@@ -6683,6 +7511,12 @@
             "value" : "Weergave"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6705,6 +7539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görünüm"
           }
         },
         "zh-Hans" : {
@@ -6779,6 +7619,12 @@
             "value" : "Toon spelling en grammatica"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pisownię i gramatykę"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6801,6 +7647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa stavning och grammatik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazım ve Dilbilgisini Göster"
           }
         },
         "zh-Hans" : {
@@ -6875,6 +7727,12 @@
             "value" : "Tekstvervanging"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamiana tekstu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6897,6 +7755,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Textersättning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metin Değiştirme"
           }
         },
         "zh-Hans" : {
@@ -6971,6 +7835,12 @@
             "value" : "Venster maximaliseren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maksymalizuj okno"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6993,6 +7863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maximera fönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencereyi Büyüt"
           }
         },
         "zh-Hans" : {
@@ -7067,6 +7943,12 @@
             "value" : "Slimme aanhalingstekens"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cudzysłowy inteligentne"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7089,6 +7971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smart citattecken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akıllı Tırnaklar"
           }
         },
         "zh-Hans" : {
@@ -7163,6 +8051,12 @@
             "value" : "Beeld"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7185,6 +8079,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görünüm"
           }
         },
         "zh-Hans" : {
@@ -7259,6 +8159,12 @@
             "value" : "Document nu controleren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdź dokument teraz"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7281,6 +8187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kontrollera dokumentet nu"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belgeyi Şimdi Kontrol Et"
           }
         },
         "zh-Hans" : {
@@ -7355,6 +8267,12 @@
             "value" : "Diensten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usługi"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7377,6 +8295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tjänster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hizmetler"
           }
         },
         "zh-Hans" : {
@@ -7451,6 +8375,12 @@
             "value" : "Subscript"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indeks dolny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7473,6 +8403,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nedsänkt tecken"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alt Simge"
           }
         },
         "zh-Hans" : {
@@ -7547,6 +8483,12 @@
             "value" : "Kleiner"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mniejszy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7569,6 +8511,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mindre"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha küçük"
           }
         },
         "zh-Hans" : {
@@ -7643,6 +8591,12 @@
             "value" : "Systeem Overeenkomend"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dopasuj system"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7665,6 +8619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anpassa systemet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistemle Eşleştir"
           }
         },
         "zh-Hans" : {
@@ -7739,6 +8699,12 @@
             "value" : "Open…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7761,6 +8727,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öppna…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aç…"
           }
         },
         "zh-Hans" : {
@@ -7835,6 +8807,12 @@
             "value" : "Basislijn"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linia bazowa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7857,6 +8835,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Baslinje"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taban çizgisi"
           }
         },
         "zh-Hans" : {
@@ -7931,6 +8915,12 @@
             "value" : "Lichte modus"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryb jasny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7953,6 +8943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ljust läge"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aydınlık Modu"
           }
         },
         "zh-Hans" : {
@@ -8027,6 +9023,12 @@
             "value" : "Hoofdvenster"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Główne Okno"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8049,6 +9051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Huvudfönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ana Pencere"
           }
         },
         "zh-Hans" : {
@@ -8123,6 +9131,12 @@
             "value" : "Uitlijnen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyjustuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8145,6 +9159,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Justera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yasla"
           }
         },
         "zh-Hans" : {
@@ -8219,6 +9239,12 @@
             "value" : "Geen gebruiken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie używaj żadnego"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8241,6 +9267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd ingen"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiçbirini Kullanma"
           }
         },
         "zh-Hans" : {
@@ -8315,6 +9347,12 @@
             "value" : "Kern"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kern"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8334,6 +9372,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kern"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kern"
@@ -8411,6 +9455,12 @@
             "value" : "Logvenster weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż okno dziennika"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8433,6 +9483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa loggfönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Günlük Penceresini Göster"
           }
         },
         "zh-Hans" : {
@@ -8507,6 +9563,12 @@
             "value" : "Rechts naar links"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od prawej do lewej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8529,6 +9591,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Höger till vänster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sağdan Sola"
           }
         },
         "zh-Hans" : {
@@ -8603,6 +9671,12 @@
             "value" : "Opmaak"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Formatuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8625,6 +9699,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Formatera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biçim"
           }
         },
         "zh-Hans" : {
@@ -8699,6 +9779,12 @@
             "value" : "Spiegel vergrendelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zablokuj Lustro"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8721,6 +9807,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lås spegel"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aynayı Kilitle"
           }
         },
         "zh-Hans" : {
@@ -8795,6 +9887,12 @@
             "value" : "Terugzetten naar opgeslagen versie"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przywróć zapisane"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8817,6 +9915,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Återgå till sparat"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaydedilene Geri Dön"
           }
         },
         "zh-Hans" : {
@@ -8891,6 +9995,12 @@
             "value" : "Alles weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż wszystko"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8913,6 +10023,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa alla"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Göster"
           }
         },
         "zh-Hans" : {
@@ -8987,6 +10103,12 @@
             "value" : "Zijkantbalk Weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pasek boczny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9009,6 +10131,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa sidofältet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kenar Çubuğunu Göster"
           }
         },
         "zh-Hans" : {
@@ -9083,6 +10211,12 @@
             "value" : "Debuggen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debugowanie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9105,6 +10239,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Felsökning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hata Ayıkla"
           }
         },
         "zh-Hans" : {
@@ -9179,6 +10319,12 @@
             "value" : "Schakel Pan-Scrolling in Na Zoomen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktywuj przewijanie panoramiczne po powiększeniu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9201,6 +10347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktivera panorering efter zoom"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakınlaştırmadan Sonra Kaydırmayı Etkinleştir"
           }
         },
         "zh-Hans" : {
@@ -9275,6 +10427,12 @@
             "value" : "Logboek"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dziennik"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9297,6 +10455,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Günlük"
           }
         },
         "zh-Hans" : {
@@ -9371,6 +10535,12 @@
             "value" : "Links naar rechts"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lewo do Prawo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9393,6 +10563,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vänster till höger"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\tSoldan Sağa"
           }
         },
         "zh-Hans" : {
@@ -9467,6 +10643,12 @@
             "value" : "Alles naar Voorgrond"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś wszystko na wierzch"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9489,6 +10671,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "För allt till fronten"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hepsini Öne Getir"
           }
         },
         "zh-Hans" : {
@@ -9563,6 +10751,12 @@
             "value" : "Liniaal plakken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wklej Linijkę"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9585,6 +10779,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klistra in linjal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cetvel Yapıştır"
           }
         },
         "zh-Hans" : {
@@ -9659,6 +10859,12 @@
             "value" : "Deselecteren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odznacz"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9681,6 +10887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avmarkera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçimi Kaldır"
           }
         },
         "zh-Hans" : {
@@ -9755,6 +10967,12 @@
             "value" : "Grammatica en spelling controleren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdź gramatykę i pisownię"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9777,6 +10995,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kontrollera grammatik med stavning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazım ile Dilbilgisini Kontrol Et"
           }
         },
         "zh-Hans" : {
@@ -9851,6 +11075,12 @@
             "value" : "Liniaal kopiëren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj linijkę"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9873,6 +11103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopiera linjal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cetvel Kopyala"
           }
         },
         "zh-Hans" : {
@@ -9947,6 +11183,12 @@
             "value" : "Bewerkingslogboeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dzienniki operacji"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9969,6 +11211,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Driftloggar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşlem Günlükleri"
           }
         },
         "zh-Hans" : {
@@ -10043,6 +11291,12 @@
             "value" : "Waarschuwen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostrzeż"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10065,6 +11319,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Varning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyar"
           }
         },
         "zh-Hans" : {
@@ -10139,6 +11399,12 @@
             "value" : "Officiële website"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oficjalna strona internetowa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10161,6 +11427,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Officiell webbplats"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resmi Web Sitesi"
           }
         },
         "zh-Hans" : {
@@ -10235,6 +11507,12 @@
             "value" : "Diensten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usługi"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10257,6 +11535,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tjänster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hizmetler"
           }
         },
         "zh-Hans" : {
@@ -10331,6 +11615,12 @@
             "value" : "Standaard"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślne"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10353,6 +11643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan"
           }
         },
         "zh-Hans" : {
@@ -10427,6 +11723,12 @@
             "value" : "Leesmij..."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeczytaj mnie..."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10449,6 +11751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Readme..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oku..."
           }
         },
         "zh-Hans" : {
@@ -10523,6 +11831,12 @@
             "value" : "Ligaturen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligatury"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10545,6 +11859,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ligaturer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligatürler"
           }
         },
         "zh-Hans" : {
@@ -10619,6 +11939,12 @@
             "value" : "Basislijn"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linia bazowa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10641,6 +11967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Baslinje"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temel Düzey"
           }
         },
         "zh-Hans" : {
@@ -10715,6 +12047,12 @@
             "value" : "Recent openen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz ostatnie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10737,6 +12075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öppna senaste"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Açılanlar Aç"
           }
         },
         "zh-Hans" : {
@@ -10811,6 +12155,12 @@
             "value" : "Losmaken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poluzuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10833,6 +12183,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lossa"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gevşet"
           }
         },
         "zh-Hans" : {
@@ -10907,6 +12263,12 @@
             "value" : "Verberg FlowVision"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryj FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10929,6 +12291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dölj FlowVision"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision'u Gizle"
           }
         },
         "zh-Hans" : {
@@ -11003,6 +12371,12 @@
             "value" : "Vorige zoeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź poprzedni"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11025,6 +12399,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hitta föregående"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öncekini Bul"
           }
         },
         "zh-Hans" : {
@@ -11099,6 +12479,12 @@
             "value" : "Minimaliseren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zminimalizuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11121,6 +12507,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Minimera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçült"
           }
         },
         "zh-Hans" : {
@@ -11195,6 +12587,12 @@
             "value" : "Stoppen met spreken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj mówienie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11217,6 +12615,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sluta prata"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşmayı Durdur"
           }
         },
         "zh-Hans" : {
@@ -11291,6 +12695,12 @@
             "value" : "Verwijder"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11313,6 +12723,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Radera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sil"
           }
         },
         "zh-Hans" : {
@@ -11387,6 +12803,12 @@
             "value" : "Toon Finder-tags en beoordelingen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż tagi i oceny Findera"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11409,6 +12831,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa Finder-taggar och betyg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finder Etiketlerini ve Derecelendirmeleri Göster"
           }
         },
         "zh-Hans" : {
@@ -11483,6 +12911,12 @@
             "value" : "Groter"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Większy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11505,6 +12939,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Större"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha Büyük"
           }
         },
         "zh-Hans" : {
@@ -11579,6 +13019,12 @@
             "value" : "Opslaan…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapisz…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11601,6 +13047,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spara…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaydet…"
           }
         },
         "zh-Hans" : {
@@ -11675,6 +13127,12 @@
             "value" : "Standaardafbeelding Werkelijke Grootte"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślny rzeczywisty rozmiar obrazu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11697,6 +13155,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bildens faktiska storlek"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntü Varsayılan Gerçek Boyut"
           }
         },
         "zh-Hans" : {
@@ -11771,6 +13235,12 @@
             "value" : "Toon lettertypen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż czcionki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11793,6 +13263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa typsnitt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazı Tiplerini Göster"
           }
         },
         "zh-Hans" : {
@@ -11867,6 +13343,12 @@
             "value" : "Volgende zoeken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź następny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11889,6 +13371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hitta nästa"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonrakini Bul"
           }
         },
         "zh-Hans" : {
@@ -11963,6 +13451,12 @@
             "value" : "Zoom"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powiększ"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11985,6 +13479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zooma"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakınlaştır"
           }
         },
         "zh-Hans" : {
@@ -12059,6 +13559,12 @@
             "value" : "Rechts naar links"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od prawej do lewej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12081,6 +13587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Höger till vänster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sağdan Sola"
           }
         },
         "zh-Hans" : {
@@ -12155,6 +13667,12 @@
             "value" : "Spelling controleren tijdens typen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdzaj pisownię podczas pisania"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12177,6 +13695,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kontrollera stavning medan du skriver"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yazarken Yazım Denetimi Yap"
           }
         },
         "zh-Hans" : {
@@ -12251,6 +13775,12 @@
             "value" : "Slimme streepjes"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inteligentne myślniki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12273,6 +13803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Smarta tankstreck"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akıllı Tireler"
           }
         },
         "zh-Hans" : {
@@ -12347,6 +13883,12 @@
             "value" : "Uitgelijnde Weergave"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok wyjustowany"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12369,6 +13911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Justerad vy"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaslanmış Görünüm"
           }
         },
         "zh-Hans" : {
@@ -12443,6 +13991,12 @@
             "value" : "Nieuw tabblad"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowa karta"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12465,6 +14019,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ny flik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni Sekme"
           }
         },
         "zh-Hans" : {
@@ -12539,6 +14099,12 @@
             "value" : "Superscript"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indeks górny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12561,6 +14127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upphöjd text"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üst Simge"
           }
         },
         "zh-Hans" : {
@@ -12635,6 +14207,12 @@
             "value" : "Zoom vergrendelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zablokuj powiększenie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12657,6 +14235,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lås zoom"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakınlaştırmayı Kilitle"
           }
         },
         "zh-Hans" : {
@@ -12731,6 +14315,12 @@
             "value" : "Alles selecteren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaznacz wszystko"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12753,6 +14343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Markera allt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Seç"
           }
         },
         "zh-Hans" : {
@@ -12827,6 +14423,12 @@
             "value" : "Ga naar selectie"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejdź do zaznaczenia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12849,6 +14451,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hoppa till markering"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçime Git"
           }
         },
         "zh-Hans" : {
@@ -12923,6 +14531,12 @@
             "value" : "Alle soorten bestanden weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż wszystkie typy plików"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12945,6 +14559,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa alla filtyper"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm Dosya Türlerini Göster"
           }
         },
         "zh-Hans" : {
@@ -13019,6 +14639,12 @@
             "value" : "Hierheen verplaatsen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś tutaj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13041,6 +14667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flytta hit"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buraya Taşı"
           }
         },
         "zh-Hans" : {
@@ -13115,6 +14747,12 @@
             "value" : "Rasterweergave"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widok siatki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13137,6 +14775,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rutnätsvy"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izgara Görünümü"
           }
         },
         "zh-Hans" : {
@@ -13211,6 +14855,12 @@
             "value" : "Werkbalk weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pasek narzędzi"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13233,6 +14883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa verktygsfält"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Araç Çubuğunu Göster"
           }
         },
         "zh-Hans" : {
@@ -13307,6 +14963,12 @@
             "value" : "Verborgen bestanden weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż ukryte pliki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13329,6 +14991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa dolda filer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizli Dosyaları Göster"
           }
         },
         "zh-Hans" : {
@@ -13403,6 +15071,12 @@
             "value" : "Venster"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Okno"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13425,6 +15099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fönster"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pencere"
           }
         },
         "zh-Hans" : {
@@ -13499,6 +15179,12 @@
             "value" : "Kern"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kern"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13521,6 +15207,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kerna"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kerning"
           }
         },
         "zh-Hans" : {
@@ -13595,6 +15287,12 @@
             "value" : "Optimale Venstergrootte"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optymalny rozmiar okna"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13617,6 +15315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Optimal fönsterstorlek"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optimal Pencere Boyutu"
           }
         },
         "zh-Hans" : {
@@ -13691,6 +15395,12 @@
             "value" : "Gegevensdetectoren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detektory danych"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13713,6 +15423,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datadetektorer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veri Dedektörleri"
           }
         },
         "zh-Hans" : {
@@ -13787,6 +15503,12 @@
             "value" : "Recent openen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz ostatnie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13809,6 +15531,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öppna senaste"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son Açılanlar"
           }
         },
         "zh-Hans" : {
@@ -13883,6 +15611,12 @@
             "value" : "Fout"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Błąd"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13905,6 +15639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fel"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hata"
           }
         },
         "zh-Hans" : {
@@ -13979,6 +15719,12 @@
             "value" : "Hoofdlettergebruik"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapitalizuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14001,6 +15747,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versalisera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Büyük Harf Yap"
           }
         },
         "zh-Hans" : {
@@ -14075,6 +15827,12 @@
             "value" : "FlowVision"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14094,6 +15852,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FlowVision"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "FlowVision"
@@ -14171,6 +15935,12 @@
             "value" : "Knippen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wytnij"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14193,6 +15963,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klipp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kes"
           }
         },
         "zh-Hans" : {
@@ -14267,6 +16043,12 @@
             "value" : "Videobestanden weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż pliki wideo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14289,6 +16071,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa videofiler"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video Dosyalarını Göster"
           }
         },
         "zh-Hans" : {
@@ -14363,6 +16151,12 @@
             "value" : "Draaiing vergrendelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zablokuj obrót"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14385,6 +16179,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lås rotation"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dönmeyi Kilitle"
           }
         },
         "zh-Hans" : {
@@ -14459,6 +16259,12 @@
             "value" : "Anderen verbergen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryj inne"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14481,6 +16287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dölj andra"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğerlerini Gizle"
           }
         },
         "zh-Hans" : {
@@ -14555,6 +16367,12 @@
             "value" : "Centreren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyśrodkuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14577,6 +16395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Centrera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ortala"
           }
         },
         "zh-Hans" : {
@@ -14651,6 +16475,12 @@
             "value" : "Cursief"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kursywa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14673,6 +16503,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kursiv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İtalik"
           }
         },
         "zh-Hans" : {
@@ -14747,6 +16583,12 @@
             "value" : "Stijl plakken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wklej styl"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14769,6 +16611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klistra in format"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stili Yapıştır"
           }
         },
         "zh-Hans" : {
@@ -14843,6 +16691,12 @@
             "value" : "Liniaal weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż linijkę"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14865,6 +16719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa linjal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cetveli Göster"
           }
         },
         "zh-Hans" : {
@@ -14939,6 +16799,12 @@
             "value" : "Hoofdletters Maken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamień na wielkie litery"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14961,6 +16827,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gör versaler"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Büyük Harf Yap"
           }
         },
         "zh-Hans" : {
@@ -15035,6 +16907,12 @@
             "value" : "Menu wissen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyczyść menu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15057,6 +16935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rensa meny"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menüyü Temizle"
           }
         },
         "zh-Hans" : {
@@ -15131,6 +17015,12 @@
             "value" : "Ligaturen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligatury"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15153,6 +17043,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ligaturer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ligatürler"
           }
         },
         "zh-Hans" : {
@@ -15227,6 +17123,12 @@
             "value" : "Bewerken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15249,6 +17151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redigera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzenle"
           }
         },
         "zh-Hans" : {
@@ -15323,6 +17231,12 @@
             "value" : "Nieuw"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15345,6 +17259,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ny"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeni"
           }
         },
         "zh-Hans" : {
@@ -15419,6 +17339,12 @@
             "value" : "Rechts uitlijnen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyrównaj do prawej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15441,6 +17367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Högerjustera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sağa Hizala"
           }
         },
         "zh-Hans" : {
@@ -15515,6 +17447,12 @@
             "value" : "Plakken en stijl aanpassen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wklej i dopasuj styl"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15537,6 +17475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klistra in och matcha format"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapıştır ve Stili Eşleştir"
           }
         },
         "zh-Hans" : {
@@ -15611,6 +17555,12 @@
             "value" : "Geschiedenis"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15633,6 +17583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Historik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmiş"
           }
         },
         "zh-Hans" : {
@@ -15707,6 +17663,12 @@
             "value" : "Help"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomoc"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15729,6 +17691,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hjälp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yardım"
           }
         },
         "zh-Hans" : {
@@ -15803,6 +17771,12 @@
             "value" : "Onderstrepen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podkreślenie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15825,6 +17799,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Understrykning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altını Çiz"
           }
         },
         "zh-Hans" : {
@@ -15899,6 +17879,12 @@
             "value" : "Kopiëren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15921,6 +17907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopiera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopyala"
           }
         },
         "zh-Hans" : {
@@ -15995,6 +17987,12 @@
             "value" : "Alles gebruiken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj wszystkich"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16017,6 +18015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd alla"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümünü Kullan"
           }
         },
         "zh-Hans" : {
@@ -16091,6 +18095,12 @@
             "value" : "Spraak"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mowa"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16113,6 +18123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşma"
           }
         },
         "zh-Hans" : {
@@ -16187,6 +18203,12 @@
             "value" : "Zoeken…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16209,6 +18231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hitta…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bul…"
           }
         },
         "zh-Hans" : {
@@ -16283,6 +18311,12 @@
             "value" : "Zoeken…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16305,6 +18339,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hitta…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bul…"
           }
         },
         "zh-Hans" : {
@@ -16379,6 +18419,12 @@
             "value" : "Zoeken en vervangen…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Znajdź i zamień…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16401,6 +18447,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sök och ersätt…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bul ve Değiştir…"
           }
         },
         "zh-Hans" : {
@@ -16475,6 +18527,12 @@
             "value" : "Standaard"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślnie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16497,6 +18555,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan"
           }
         },
         "zh-Hans" : {
@@ -16571,6 +18635,12 @@
             "value" : "Begin met Spreken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij Mówienie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16593,6 +18663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Börja tala"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konuşmayı Başlat"
           }
         },
         "zh-Hans" : {
@@ -16667,6 +18743,12 @@
             "value" : "Zijbalk"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasek boczny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16689,6 +18771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sidofält"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kenar Çubuğu"
           }
         },
         "zh-Hans" : {
@@ -16763,6 +18851,12 @@
             "value" : "Substituties weergeven"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż zamienniki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16785,6 +18879,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visa ersättningar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Değişiklikleri Göster"
           }
         },
         "zh-Hans" : {
@@ -16859,6 +18959,12 @@
             "value" : "Lees mij..."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeczytaj mnie..."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16881,6 +18987,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Läs mig..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Readme..."
           }
         },
         "zh-Hans" : {
@@ -16955,6 +19067,12 @@
             "value" : "Ga Naar Map..."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idź do folderu..."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16977,6 +19095,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gå till mapp..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasöre Git..."
           }
         },
         "zh-Hans" : {
@@ -17051,6 +19175,12 @@
             "value" : "Gesloten tabbladen heropenen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz ponownie zamknięte karty"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17073,6 +19203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Återöppna stängda flikar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapalı Sekmeleri Yeniden Aç"
           }
         },
         "zh-Hans" : {
@@ -17147,6 +19283,12 @@
             "value" : "Links uitlijnen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyrównaj do lewej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17169,6 +19311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vänsterjustera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sola Hizala"
           }
         },
         "zh-Hans" : {
@@ -17243,6 +19391,12 @@
             "value" : "Paragraaf"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akapit"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17265,6 +19419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stycke"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paragraf"
           }
         },
         "zh-Hans" : {

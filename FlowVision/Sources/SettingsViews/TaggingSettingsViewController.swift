@@ -8,7 +8,7 @@ import Cocoa
 
 final class TaggingSettingsViewController: NSViewController, SettingsPane {
     let paneIdentifier = Settings.PaneIdentifier.tagging
-    let paneTitle = NSLocalizedString("Tagging", comment: "标签（设置里的面板）")
+    let paneTitle = NSLocalizedString("Tagging", comment: "标签")
     let toolbarItemIcon = NSImage(systemSymbolName: "tag", accessibilityDescription: "")!
 
     override var nibName: NSNib.Name? { "TaggingSettingsViewController" }

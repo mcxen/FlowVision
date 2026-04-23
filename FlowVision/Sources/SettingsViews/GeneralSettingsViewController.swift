@@ -18,6 +18,7 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
     @IBOutlet weak var terminateAfterLastWindowClosedCheckbox: NSButton!
     @IBOutlet weak var autoHideToolbarCheckbox: NSButton!
     @IBOutlet weak var autoHideCursorWhenFullscreenCheckbox: NSButton!
+    @IBOutlet weak var collectionViewItemShowTooltipCheckbox: NSButton!
     @IBOutlet weak var languagePopUpButton: NSPopUpButton!
 
     @IBOutlet weak var radioHomeFolder: NSButton!
@@ -38,12 +39,13 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
         terminateAfterLastWindowClosedCheckbox.state = globalVar.terminateAfterLastWindowClosed ? .on : .off
         autoHideToolbarCheckbox.state = globalVar.autoHideToolbar ? .on : .off
         autoHideCursorWhenFullscreenCheckbox.state = globalVar.autoHideCursorWhenFullscreen ? .on : .off
+        collectionViewItemShowTooltipCheckbox.state = globalVar.collectionViewItemShowTooltip ? .on : .off
         
         // 初始化 NSPopUpButton 的选项
         // Initialize NSPopUpButton options
         let autoTitle = NSLocalizedString("Auto", comment: "自动")
         languagePopUpButton.removeAllItems()
-        languagePopUpButton.addItems(withTitles: [autoTitle, "Arabic(العربية)", "Chinese Simplified(简体中文)", "Chinese Traditional(繁體中文)", "Dutch(Nederlands)", "English(English)", "French(Français)", "German(Deutsch)", "Italian(Italiano)", "Japanese(日本語)", "Korean(한국어)", "Portuguese Brazil(Português)", "Portuguese Portugal(Português)", "Russian(Русский)", "Spanish(Español)", "Swedish(Svenska)"])
+        languagePopUpButton.addItems(withTitles: [autoTitle, "Arabic(العربية)", "Chinese Simplified(简体中文)", "Chinese Traditional(繁體中文)", "Dutch(Nederlands)", "English(English)", "French(Français)", "German(Deutsch)", "Italian(Italiano)", "Japanese(日本語)", "Korean(한국어)", "Polish(Polski)", "Portuguese Brazil(Português)", "Portuguese Portugal(Português)", "Russian(Русский)", "Spanish(Español)", "Swedish(Svenska)", "Turkish(Türkçe)"])
         // 设置初始选择
         // Set initial selection
         if let languageCodes = UserDefaults.standard.array(forKey: "AppleLanguages") as? [String], let firstLanguage = languageCodes.first {
@@ -62,6 +64,8 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
                 languagePopUpButton.selectItem(withTitle: "German(Deutsch)")
             case let lang where lang.hasPrefix("ja"):
                 languagePopUpButton.selectItem(withTitle: "Japanese(日本語)")
+            case let lang where lang.hasPrefix("pl"):
+                languagePopUpButton.selectItem(withTitle: "Polish(Polski)")
             case let lang where lang.hasPrefix("pt-BR"):
                 languagePopUpButton.selectItem(withTitle: "Portuguese Brazil(Português)")
             case let lang where lang.hasPrefix("pt-PT"):
@@ -78,6 +82,8 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
                 languagePopUpButton.selectItem(withTitle: "Dutch(Nederlands)")
             case let lang where lang.hasPrefix("sv"):
                 languagePopUpButton.selectItem(withTitle: "Swedish(Svenska)")
+            case let lang where lang.hasPrefix("tr"):
+                languagePopUpButton.selectItem(withTitle: "Turkish(Türkçe)")
             default:
                 languagePopUpButton.selectItem(withTitle: autoTitle)
             }
@@ -90,6 +96,14 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
         labelHomeFolder.stringValue = globalVar.homeFolder.removingPercentEncoding!.replacingOccurrences(of: "file://", with: "")
         labelHomeFolder.textColor = globalVar.openLastFolder ? .disabledControlTextColor : .controlTextColor
         buttonSelectHomeFolder.isEnabled = !globalVar.openLastFolder
+
+        // MARK: RTL support
+        if let container = radioHomeFolder.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
+        if let container = scrollSensitivitySlider.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
     }
     
     @IBAction func languageSelectionChanged(_ sender: NSPopUpButton) {
@@ -111,6 +125,8 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
             UserDefaults.standard.set(["de"], forKey: "AppleLanguages")
         case "Japanese(日本語)":
             UserDefaults.standard.set(["ja"], forKey: "AppleLanguages")
+        case "Polish(Polski)":
+            UserDefaults.standard.set(["pl"], forKey: "AppleLanguages")
         case "Portuguese Brazil(Português)":
             UserDefaults.standard.set(["pt-BR"], forKey: "AppleLanguages")
         case "Portuguese Portugal(Português)":
@@ -127,6 +143,8 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
             UserDefaults.standard.set(["nl"], forKey: "AppleLanguages")
         case "Swedish(Svenska)":
             UserDefaults.standard.set(["sv"], forKey: "AppleLanguages")
+        case "Turkish(Türkçe)":
+            UserDefaults.standard.set(["tr"], forKey: "AppleLanguages")
         case autoTitle:
             UserDefaults.standard.removeObject(forKey: "AppleLanguages")
         default:
@@ -146,6 +164,22 @@ final class GeneralSettingsViewController: NSViewController, SettingsPane {
     @IBAction func autoHideCursorWhenFullscreenToggled(_ sender: NSButton) {
         globalVar.autoHideCursorWhenFullscreen = (sender.state == .on)
         UserDefaults.standard.set(globalVar.autoHideCursorWhenFullscreen, forKey: "autoHideCursorWhenFullscreen")
+    }
+    
+    @IBAction func collectionViewItemShowTooltipToggled(_ sender: NSButton) {
+        globalVar.collectionViewItemShowTooltip = (sender.state == .on)
+        UserDefaults.standard.set(globalVar.collectionViewItemShowTooltip, forKey: "collectionViewItemShowTooltip")
+        if let appDelegate=NSApplication.shared.delegate as? AppDelegate {
+            for windowController in appDelegate.windowControllers {
+                if let viewController = windowController.contentViewController as? ViewController {
+                    if let visibleItems = viewController.collectionView.visibleItems() as? [CustomCollectionViewItem] {
+                        for item in visibleItems {
+                            item.setTooltip()
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func openSystemPreferences(_ sender: Any) {

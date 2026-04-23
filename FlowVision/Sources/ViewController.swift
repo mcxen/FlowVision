@@ -174,7 +174,9 @@ class PublicVar{
     }
     var folderStepForwardStack = [String]()
     var folderStepForLocate = [(String,RightMouseGestureDirection)]()
+    var folderStepForLocateTime: DispatchTime = .now()
     var filesForLocateAfterChange = [String]()
+    var filesForLocateAfterChangeTime: DispatchTime = .now()
     var isInFileOperation = false
     var isLeftMouseDown: Bool = false
     var isRightMouseDown: Bool = false
@@ -1038,23 +1040,39 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
         if let searchOverlay = searchOverlay,
            let containerView = searchOverlay.containerView {
             searchOverlay.frame = view.bounds
-            containerView.frame.origin.x = searchOverlay.bounds.width - containerView.frame.width - 30
+            if view.userInterfaceLayoutDirection == .rightToLeft {
+                containerView.frame.origin.x = 30
+            } else {
+                containerView.frame.origin.x = searchOverlay.bounds.width - containerView.frame.width - 30
+            }
             containerView.frame.origin.y = searchOverlay.bounds.height - containerView.frame.height - 20
         }
     }
     
     func splitView(_ splitView: NSSplitView, resizeSubviewsWithOldSize oldSize: NSSize) {
-        let leftView = splitView.arrangedSubviews[0]
-        let rightView = splitView.arrangedSubviews[1]
+        // 通过outlet识别sidebar，不依赖索引，以兼容RTL下子视图顺序交换
+        // Identify sidebar by outlet, not index, to handle RTL subview order swap
+        let sidebarView: NSView
+        let contentView: NSView
+        if let sidebarParent = outlineScrollView.superview, splitView.arrangedSubviews.contains(sidebarParent) {
+            sidebarView = sidebarParent
+            contentView = splitView.arrangedSubviews.first { $0 !== sidebarParent }!
+        } else {
+            sidebarView = splitView.arrangedSubviews[0]
+            contentView = splitView.arrangedSubviews[1]
+        }
 
         let dividerThickness = splitView.dividerThickness
-        let newWidth = splitView.bounds.width - leftView.frame.width - dividerThickness
-        rightView.frame.size.width = newWidth
+        let contentWidth = splitView.bounds.width - sidebarView.frame.width - dividerThickness
+        let isRTL = splitView.userInterfaceLayoutDirection == .rightToLeft
 
-        // 更新右侧视图的大小，左侧视图保持不变
-        // Update right view size, keep left view unchanged
-        rightView.frame = CGRect(x: leftView.frame.width + dividerThickness, y: 0, width: newWidth, height: splitView.bounds.height)
-        leftView.frame = CGRect(x: 0, y: 0, width: leftView.frame.width, height: splitView.bounds.height)
+        if isRTL {
+            contentView.frame = CGRect(x: 0, y: 0, width: contentWidth, height: splitView.bounds.height)
+            sidebarView.frame = CGRect(x: contentWidth + dividerThickness, y: 0, width: sidebarView.frame.width, height: splitView.bounds.height)
+        } else {
+            sidebarView.frame = CGRect(x: 0, y: 0, width: sidebarView.frame.width, height: splitView.bounds.height)
+            contentView.frame = CGRect(x: sidebarView.frame.width + dividerThickness, y: 0, width: contentWidth, height: splitView.bounds.height)
+        }
     }
     func splitViewDidResizeSubviews(_ notification: Notification) {
         // 取消之前的定时器
@@ -1340,7 +1358,9 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                                 
                                 if(dir == curFolder && keepScrollPos && i == count-1){
                                     // publicVar.timer.intervalSafe(name: "recalcLayoutReloadData", second: 0.02+Double(i)*0.0001)
+                                    let savedSelection = collectionView.selectionIndexPaths
                                     collectionView.reloadData()
+                                    collectionView.selectionIndexPaths = savedSelection
                                     collectionView.numberOfItems(inSection:0)
                                     setProgress(1.0)
                                 }
@@ -1381,11 +1401,15 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                                                 let newIndexPaths = indexPaths.dropFirst(curItemCount + indexPaths.count - nowLayoutCalcPos)
                                                 collectionView.insertItems(at: Set(newIndexPaths))
                                                 setProgress(Double(curItemCount+newIndexPaths.count)/Double(count))
+                                                selectItemsNewChanged(isFinal: false, checkRange: indexPaths)
                                             }
+                                            
                                             if nowLayoutCalcPos == count {
                                                 fileDB.lock()
                                                 dirModel.keepScrollPos=true
                                                 fileDB.unlock()
+                                                
+                                                selectItemsNewChanged(isFinal: true)
                                             }
                                         }
                                         // collectionView.reloadData()
@@ -1549,10 +1573,6 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                                         let timeInterval = Double(nanoTime) / 1_000_000_000
                                         log("Time taken to reach hidden snapshot reason 1: \(timeInterval) seconds")
                                         log("-----------------------------------------------------------")
-                                        
-                                        // 选中产生变化的文件（粘贴或移动后）
-                                        // Select files that have changed (after paste or move)
-                                        selectItemsNewChanged()
                                     }
                                     
                                     while snapshotQueue.count > 0{

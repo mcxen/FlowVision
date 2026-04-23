@@ -67,7 +67,15 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
             guard let self = self else { return }
             let refFrameInWindow = refViewForExcludeListView.convert(refViewForExcludeListView.bounds, to: nil)
             let newY = refFrameInWindow.origin.y - excludeContainerView.frame.height + refViewForExcludeListView.frame.height
-            excludeContainerView.frame = NSRect(x: refFrameInWindow.origin.x + 1, y: newY, width: 300, height: 125)
+            let containerWidth: CGFloat = 300
+            if excludeContainerView.userInterfaceLayoutDirection == .rightToLeft {
+                // RTL: 从参考视图右边缘向左偏移
+                // RTL: offset left from the right edge of reference view
+                let newX = refFrameInWindow.origin.x + refViewForExcludeListView.frame.width - containerWidth - 1
+                excludeContainerView.frame = NSRect(x: newX, y: newY, width: containerWidth, height: 125)
+            } else {
+                excludeContainerView.frame = NSRect(x: refFrameInWindow.origin.x + 1, y: newY, width: containerWidth, height: 125)
+            }
         }
         
         // 设置增减图标
@@ -82,6 +90,15 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
         // 已在AppDelegate中加载数据
         // Data already loaded in AppDelegate
         excludeListView.reloadData()
+
+        // MARK: RTL support
+        if let container = radioGlass.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
+        if let container = radioGlassForVideo.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
+        convertToLeadingLayoutForRTL(excludeContainerView)
     }
     
     @IBAction func randomFolderThumbToggled(_ sender: NSButton) {

@@ -469,14 +469,12 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
     @objc func actToggleFinderTag(_ sender: NSMenuItem) {
         guard let tagName = sender.representedObject as? String,
               let url = URL(string: curRightClickedPath) else { return }
-        FinderTagHelper.toggleTag(tagName, on: [url])
-        getViewController(self)?.refreshFinderTagsForVisibleItems(urls: [url])
+        getViewController(self)?.handleToggleFinderTag(tagName, urls: [url])
     }
 
     @objc func actRemoveAllFinderTags() {
         guard let url = URL(string: curRightClickedPath) else { return }
-        FinderTagHelper.removeAllTags(from: [url])
-        getViewController(self)?.refreshFinderTagsForVisibleItems(urls: [url])
+        getViewController(self)?.handleRemoveAllFinderTags(urls: [url])
     }
 
     @objc func actScanEnhancedIndex() {
@@ -485,7 +483,7 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
     }
 
     @objc func actScanEnhancedIndexReadmeAction() {
-        showInformationLong(title: NSLocalizedString("Info", comment: "说明"), message: NSLocalizedString("scan-enhanced-index-info", comment: "扫描并更新增强索引说明..."))
+        getViewController(self)?.handleScanEnhancedIndexReadme()
     }
 
     @objc func actTagLearnMore() {

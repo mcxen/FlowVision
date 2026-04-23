@@ -15,9 +15,20 @@ extension ViewController {
     }
 
     func analyzeGesture(doAction: Bool) {
-        if directionHistory.count > 0 {
+        // RTL: swap left/right for action semantics, keep original for icon display
+        let displayHistory = directionHistory
+        var actionHistory = directionHistory
+        if view.userInterfaceLayoutDirection == .rightToLeft {
+            actionHistory = actionHistory.map { direction in
+                if direction == .left { return .right }
+                if direction == .right { return .left }
+                return direction
+            }
+        }
+
+        if actionHistory.count > 0 {
 //            drawingView?.containerView.isHidden=false
-            
+
             if drawingView?.containerView.isHidden == true {
                 drawingView?.containerView.isHidden = false
                 NSAnimationContext.runAnimationGroup({ context in
@@ -27,21 +38,21 @@ extension ViewController {
                 })
             }
         }
-        
-        if directionHistory.count == 1 {
-            handleSingleDirectionGesture(directionHistory.first!, doAction: doAction)
-        } else if directionHistory.count == 2 {
+
+        if actionHistory.count == 1 {
+            handleSingleDirectionGesture(actionHistory.first!, doAction: doAction)
+        } else if actionHistory.count == 2 {
             // 可以在这里扩展更复杂的手势分析
             // Can extend more complex gesture analysis here
-            handleMultiDirectionGesture(directionHistory, doAction: doAction)
+            handleMultiDirectionGesture(actionHistory, doAction: doAction)
         } else {
             drawingView?.statusLabel.stringValue=""
         }
-        
-        
+
+
         if !doAction {
             var status=[String]()
-            for direction in directionHistory{
+            for direction in displayHistory{
                 switch direction {
                 case .right:
                     status.append("arrow.right.square.fill")

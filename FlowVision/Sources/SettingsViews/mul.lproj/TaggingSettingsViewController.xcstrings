@@ -59,6 +59,12 @@
             "value" : "Meer informatie…"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dowiedz się więcej…"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +87,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Läs mer…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha fazla bilgi edinin…"
           }
         },
         "zh-Hans" : {
@@ -155,6 +167,12 @@
             "value" : "Omdat macOS Spotlight geen externe schijven, netwerkschijven of de inhoud van mappen die zijn uitgesloten in de \"Zoekprivacy\"-instellingen kan indexeren, introduceert deze app een verbeterde indexeringsfunctie: wanneer je een map binnen de app doorbladert, registreert het de tags die aan de bestanden in die map zijn gekoppeld.\n\nLater, wanneer je de overeenkomstige tag in de directoryboom selecteert, zal de app de zoekresultaten van het systeem aanvullen door de relevante bestanden weer te geven."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponieważ macOS Spotlight nie może indeksować dysków zewnętrznych, dysków sieciowych ani zawartości katalogów wykluczonych w ustawieniach „Prywatność wyszukiwania”, ta aplikacja wprowadza ulepszoną funkcję indeksowania: gdy przeglądasz folder w aplikacji, rejestruje ona tagi powiązane z plikami w tym folderze.\n\nPóźniej, gdy wybierzesz odpowiedni tag w drzewie katalogów, aplikacja uzupełni wyniki wyszukiwania systemu, wyświetlając odpowiednie pliki."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -177,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eftersom macOS Spotlight inte kan indexera externa diskar, nätverksenheter eller innehållet i kataloger som är undantagna i inställningarna för \"Sök integritet\", introducerar den här appen en förbättrad indexeringsfunktion: när du bläddrar i en mapp inom appen, registrerar den taggarna som är associerade med filerna i den mappen.\n\nSenare, när du väljer motsvarande tagg i katalogträdet, kommer appen att komplettera systemets sökresultat genom att visa de relevanta filerna."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS Spotlight harici diskleri, ağ sürücülerini veya \"Arama Gizliliği\" ayarlarında hariç tutulan dizinlerin içeriğini dizine ekleyemediğinden, bu uygulama gelişmiş bir indeksleme özelliği sunar: uygulama içinde bir klasöre göz attığınızda, o klasördeki dosyalarla ilişkili etiketleri kaydeder.\n\nDaha sonra, dizin ağacında ilgili etiketi seçtiğinizde, uygulama sistemin arama sonuçlarını ilgili dosyaları göstererek tamamlar."
           }
         },
         "zh-Hans" : {
@@ -251,6 +275,12 @@
             "value" : "Verbeterde index inschakelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz ulepszony indeks"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -273,6 +303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktivera förbättrat index"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş Dizini Etkinleştir"
           }
         },
         "zh-Hans" : {
@@ -347,6 +383,12 @@
             "value" : "Aangepaste tags:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niestandardowe tagi:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -369,6 +411,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anpassade taggar:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel Etiketler:"
           }
         },
         "zh-Hans" : {
@@ -443,6 +491,12 @@
             "value" : "Verbeterde index:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulepszony indeks:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -465,6 +519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Förbättrat index:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geliştirilmiş Dizin:"
           }
         },
         "zh-Hans" : {
@@ -539,6 +599,12 @@
             "value" : "De applicatie gebruikt het standaard tagmechanisme van macOS. Zorg ervoor dat de tagnamen en kleuren in deze app exact overeenkomen met die in Finder; anders kunt u inconsistenties in tagkleuren tegenkomen bij het weergeven of schrijven van tags."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja korzysta ze standardowego mechanizmu tagowania macOS. Upewnij się, że nazwy i kolory tagów w tej aplikacji dokładnie odpowiadają tym w Finderze; w przeciwnym razie możesz napotkać niespójności w kolorach tagów podczas wyświetlania lub zapisywania tagów."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Applikationen använder macOS standardtaggningsmekanism. Se till att taggnamnen och färgerna i denna app exakt matchar de i Finder; annars kan du stöta på inkonsekvenser i taggfärger när du visar eller skriver taggar."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama, macOS'un standart etiketleme mekanizmasını kullanır. Lütfen bu uygulamadaki etiket adlarının ve renklerinin Finder'dakilerle tam olarak eşleştiğinden emin olun; aksi takdirde, etiketleri görüntülerken veya yazarken etiket renklerinde tutarsızlıklarla karşılaşabilirsiniz."
           }
         },
         "zh-Hans" : {

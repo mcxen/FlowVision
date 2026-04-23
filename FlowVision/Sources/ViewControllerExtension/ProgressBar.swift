@@ -48,9 +48,11 @@ extension ViewController {
             NSColor.controlAccentColor.withAlphaComponent(0.7).cgColor,
             NSColor.controlAccentColor.cgColor,
         ]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        let isRTL = fill.userInterfaceLayoutDirection == .rightToLeft
+        gradient.startPoint = CGPoint(x: isRTL ? 1 : 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: isRTL ? 0 : 1, y: 0.5)
         gradient.cornerRadius = progressBarHeight / 2
+        gradient.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         fill.layer?.insertSublayer(gradient, at: 0)
         fill.layer?.cornerRadius = progressBarHeight / 2
         
@@ -107,7 +109,7 @@ extension ViewController {
     private func showProgressBar(progress: Double, animated: Bool, autoHide: Bool, sessionId: Int) {
         let trackWidth = mainScrollView.frame.width
         let targetWidth = trackWidth * progress
-        
+
         if animated {
             NSAnimationContext.runAnimationGroup({ ctx in
                 ctx.duration = 0.3
@@ -116,9 +118,6 @@ extension ViewController {
                 self.progressBarTrack.animator().alphaValue = progress > 0 ? 1 : 0
             }) { [weak self] in
                 guard let self = self else { return }
-                if let gradient = self.progressBarFill.layer?.sublayers?.first as? CAGradientLayer {
-                    gradient.frame = self.progressBarFill.bounds
-                }
                 if autoHide {
                     self.scheduleAutoHide(sessionId: sessionId)
                 }
@@ -128,9 +127,6 @@ extension ViewController {
             CATransaction.setDisableActions(true)
             progressFillWidthConstraint?.constant = targetWidth
             progressBarTrack.alphaValue = progress > 0 ? 1 : 0
-            if let gradient = progressBarFill.layer?.sublayers?.first as? CAGradientLayer {
-                gradient.frame = CGRect(x: 0, y: 0, width: targetWidth, height: progressBarHeight)
-            }
             progressBarFill.superview?.layoutSubtreeIfNeeded()
             CATransaction.commit()
             if autoHide {
@@ -155,12 +151,6 @@ extension ViewController {
     private func resetProgressBar() {
         progressFillWidthConstraint?.constant = 0
         progressFillLeadingConstraint?.constant = 0
-        if let gradient = progressBarFill.layer?.sublayers?.first as? CAGradientLayer {
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
-            gradient.frame = .zero
-            CATransaction.commit()
-        }
     }
     
     /// 显示不确定进度动画（不受延迟机制影响，立即显示）
@@ -178,11 +168,7 @@ extension ViewController {
         let trackWidth = mainScrollView.frame.width
         let segmentWidth = trackWidth * 0.3
         progressFillWidthConstraint?.constant = segmentWidth
-        
-        if let gradient = progressBarFill.layer?.sublayers?.first as? CAGradientLayer {
-            gradient.frame = CGRect(x: 0, y: 0, width: segmentWidth, height: progressBarHeight)
-        }
-        
+
         animateIndeterminate(forward: true)
     }
     

@@ -38,6 +38,7 @@ class WindowController: NSWindowController, NSWindowDelegate {
             toolbar.displayMode = .iconOnly
             // toolbar.showsBaselineSeparator = true
             window.toolbar = toolbar
+            window.toolbarStyle = .unifiedCompact
 
             window.acceptsMouseMovedEvents = true
             if globalVar.autoHideToolbar {
@@ -306,6 +307,7 @@ extension NSToolbarItem.Identifier {
     static let sort = NSToolbarItem.Identifier("com.example.sort")
     static let more = NSToolbarItem.Identifier("com.example.more")
     static let favorites = NSToolbarItem.Identifier("com.example.favorites")
+    static let tagging = NSToolbarItem.Identifier("com.example.tagging")
     static let thumbSize = NSToolbarItem.Identifier("com.example.thumbSize")
     static let quickRename = NSToolbarItem.Identifier("com.example.quickRename")
     static let isRecursiveMode = NSToolbarItem.Identifier("com.example.isRecursiveMode")
@@ -364,18 +366,19 @@ extension WindowController: NSToolbarDelegate {
                 if viewController.publicVar.autoPlayVisibleVideo {
                     identifiers.append(.isAutoPlayVisibleVideo)
                 }
-                if !viewController.publicVar.finderTagFilters.isEmpty {
-                    identifiers.append(.isTagFilterOn)
-                }
-                if !viewController.publicVar.ratingFilters.isEmpty {
-                    identifiers.append(.isRatingFilterOn)
-                }
+                // if !viewController.publicVar.finderTagFilters.isEmpty {
+                //     identifiers.append(.isTagFilterOn)
+                // }
+                // if !viewController.publicVar.ratingFilters.isEmpty {
+                //     identifiers.append(.isRatingFilterOn)
+                // }
                 if viewController.publicVar.isCurrentFolderFiltered {
                     identifiers.append(.isSearchFilterOn)
                 }
                 if viewController.publicVar.isRecursiveMode {
                     identifiers.append(.isRecursiveMode)
                 }
+                identifiers.append(.tagging)
                 identifiers.append(.viewToggle)
                 identifiers.append(.thumbSize)
                 identifiers.append(.quickRename)
@@ -413,6 +416,73 @@ extension WindowController: NSToolbarDelegate {
         for (index, identifier) in itemIdentifiers.enumerated() {
             toolbar.insertItem(withItemIdentifier: identifier, at: index)
         }
+        
+        adjustPathControlWidth()
+    }
+    
+    func adjustPathControlWidth() {
+        guard let toolbar = window?.toolbar,
+              let window = window else { return }
+        
+        guard let pathControlItem = toolbar.items.first(where: { $0.itemIdentifier == .pathControl }),
+              let pathControl = pathControlItem.view as? CustomPathControl else { return }
+        
+        let font = NSFont.systemFont(ofSize: 13, weight: .regular)
+        
+        var otherItemsWidth: CGFloat = 0
+        for item in toolbar.items {
+            if item.itemIdentifier == .pathControl || item.itemIdentifier == .flexibleSpace { continue }
+            if let view = item.view {
+                otherItemsWidth += view.fittingSize.width
+            }
+        }
+        
+        let itemCount = toolbar.items.filter { $0.itemIdentifier != .flexibleSpace }.count
+        let spacingValue: CGFloat
+        if #available(macOS 26.0, *) {
+            spacingValue = 12
+        } else {
+            spacingValue = 6
+        }
+        let interItemSpacing = CGFloat(itemCount) * spacingValue
+        let maxWidth = window.frame.width - otherItemsWidth - interItemSpacing - 20
+        
+        var pathItems = pathControl.fullPathItems
+        guard !pathItems.isEmpty else { return }
+        
+        var totalWidth: CGFloat = 0
+        var startIndex = pathItems.count - 1
+        
+        for i in (0..<pathItems.count).reversed() {
+            let itemWidth = pathItems[i].title.size(withAttributes: [.font: font]).width + 15
+            totalWidth += itemWidth
+            if totalWidth > maxWidth {
+                startIndex = i + 1
+                break
+            }
+        }
+        
+        if startIndex == pathItems.count {
+            startIndex = pathItems.count - 1
+        }
+        
+        if totalWidth > maxWidth && startIndex != 0 {
+            let ellipsisItem = CustomPathControlItem()
+            ellipsisItem.title = "..."
+            ellipsisItem.myUrl = pathItems[startIndex].myUrl?.deletingLastPathComponent()
+            pathItems = [ellipsisItem] + pathItems[startIndex...]
+        }
+        
+        pathControl.pathItems = pathItems
+        
+        let titleFontColor = NSColor.labelColor
+        for item in pathControl.pathItems {
+            let range = NSMakeRange(0, item.attributedTitle.length)
+            let attributedTitle = NSMutableAttributedString(attributedString: item.attributedTitle)
+            attributedTitle.addAttribute(.foregroundColor, value: titleFontColor, range: range)
+            attributedTitle.addAttribute(.font, value: font, range: range)
+            item.attributedTitle = attributedTitle
+        }
     }
     
     func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
@@ -440,10 +510,17 @@ extension WindowController: NSToolbarDelegate {
                 attributes: [.foregroundColor: titleFontColor, .font: font, .paragraphStyle: paragraphStyle]
             )
             if showExtra && !statisticInfo.isEmpty {
-                attributedString.append(NSAttributedString(
-                    string: " " + statisticInfo,
+                let isRTL = NSApp.userInterfaceLayoutDirection == .rightToLeft
+                let statAttr = NSAttributedString(
+                    string: isRTL ? statisticInfo + " " : " " + statisticInfo,
                     attributes: [.foregroundColor: NSColor.placeholderTextColor, .font: font, .paragraphStyle: paragraphStyle]
-                ))
+                )
+                // RTL: put statistics before title
+                if isRTL {
+                    attributedString.insert(statAttr, at: 0)
+                } else {
+                    attributedString.append(statAttr)
+                }
             }
             
             let titleLabel = createWindowTitleLabel(string: "")
@@ -462,7 +539,7 @@ extension WindowController: NSToolbarDelegate {
             let titleLabel = createWindowTitleLabel(string: text ?? "")
             titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
             titleLabel.textColor = NSColor.placeholderTextColor
-            titleLabel.alignment = .left
+            titleLabel.alignment = .natural
             toolbarItem.view = titleLabel
 //            toolbarItem.minSize = NSSize(width: 200, height: titleLabel.fittingSize.height)
 //            toolbarItem.maxSize = NSSize(width: 10000, height: titleLabel.fittingSize.height)
@@ -535,61 +612,8 @@ extension WindowController: NSToolbarDelegate {
                     pathItems.insert(rootItem, at: 0)
                 }
                 
-                // 指定总宽度
-                // Specify total width
-                var maxWidth = (window?.frame.width ?? 1000) - 600
-                if viewController.publicVar.autoPlayVisibleVideo {
-                    maxWidth -= 45
-                }
-                if viewController.publicVar.isCurrentFolderFiltered {
-                    maxWidth -= 45
-                }
-                if viewController.publicVar.isRecursiveMode {
-                    maxWidth -= 45
-                }
-                if !viewController.publicVar.finderTagFilters.isEmpty {
-                    maxWidth -= 45
-                }
-                if !viewController.publicVar.ratingFilters.isEmpty {
-                    maxWidth -= 45
-                }
-                if viewController.publicVar.profile.getValue(forKey: "isWindowTitleShowStatistics") == "true" {
-                    maxWidth -= viewController.publicVar.titleStatisticInfo.size(withAttributes: [.font: font]).width + 20
-                }
-                var totalWidth: CGFloat = 0
-                var startIndex = pathItems.count - 1
-                
-                // 从后往前计算每个路径项的实际宽度
-                // Calculate actual width of each path item from back to front
-                for i in (0..<pathItems.count).reversed() {
-                    // 15为分隔符宽度
-                    // 15 is separator width
-                    let itemWidth = pathItems[i].title.size(withAttributes: [.font: font]).width + 15
-                    totalWidth += itemWidth
-                    if totalWidth > maxWidth {
-                        startIndex = i + 1
-                        break
-                    }
-                }
-
-                // 最后一个时已经超过
-                // When the last one already exceeds
-                if startIndex == pathItems.count {
-                    startIndex = pathItems.count - 1
-                }
-                
-                // 如果超过最大字符数,替换前面的为...
-                // If exceeds maximum characters, replace preceding ones with ...
-                if totalWidth > maxWidth && startIndex != 0 {
-                    let item = CustomPathControlItem()
-                    item.title = "..."
-                    item.myUrl = pathItems[startIndex].myUrl?.deletingLastPathComponent()
-                    pathItems = [item] + pathItems[startIndex...]
-                }
-                
                 pathItems.last?.myUrl = nil
-
-                pathControl.pathItems = pathItems
+                pathControl.fullPathItems = pathItems
             }
             
             for item in pathControl.pathItems {
@@ -655,6 +679,17 @@ extension WindowController: NSToolbarDelegate {
             toolbarItem.view = button
             toolbarItem.label = NSLocalizedString("up-folder", comment: "上层文件夹")
             toolbarItem.paletteLabel = NSLocalizedString("up-folder", comment: "上层文件夹")
+            toolbarItem.visibilityPriority = .low
+
+        case .tagging:
+            let hasFilter = !viewController.publicVar.finderTagFilters.isEmpty || !viewController.publicVar.ratingFilters.isEmpty
+            let symbolName = hasFilter ? "tag.fill" : "tag"
+            let button = NSButton(title: "", image: NSImage(systemSymbolName: symbolName, accessibilityDescription: "")!, target: self, action: #selector(taggingAction(_:)))
+            setButtonStyle(button)
+            button.toolTip = NSLocalizedString("Tagging", comment: "标签")
+            toolbarItem.view = button
+            toolbarItem.label = NSLocalizedString("Tagging", comment: "标签")
+            toolbarItem.paletteLabel = NSLocalizedString("Tagging", comment: "标签")
             toolbarItem.visibilityPriority = .low
             
         case .viewToggle:
@@ -776,13 +811,17 @@ extension WindowController: NSToolbarDelegate {
                     title = NSLocalizedString("sort-label-exifDate", comment: "Exif日期")
                 case .exifPixelA,.exifPixelZ:
                     title = NSLocalizedString("sort-label-exifPixel", comment: "Exif像素")
+                case .ratingA,.ratingZ:
+                    title = NSLocalizedString("sort-label-rating", comment: "XMP评级")
+                case .tagA,.tagZ:
+                    title = NSLocalizedString("sort-label-tag", comment: "Finder标签")
                 }
                 switch viewController.publicVar.profile.sortType {
-                case .pathA,.extA,.sizeA,.createDateA,.modDateA,.addDateA,.exifDateA,.exifPixelA:
+                case .pathA,.extA,.sizeA,.createDateA,.modDateA,.addDateA,.exifDateA,.exifPixelA,.ratingA,.tagA:
                     // image = NSImage(systemSymbolName: "arrow.up", accessibilityDescription: "")!
                     // image = NSImage(systemSymbolName: "arrowtriangle.up", accessibilityDescription: "")!
                     image = NSImage(systemSymbolName: "chevron.up.circle", accessibilityDescription: "")!
-                case .pathZ,.extZ,.sizeZ,.createDateZ,.modDateZ,.addDateZ,.exifDateZ,.exifPixelZ:
+                case .pathZ,.extZ,.sizeZ,.createDateZ,.modDateZ,.addDateZ,.exifDateZ,.exifPixelZ,.ratingZ,.tagZ:
                     image = NSImage(systemSymbolName: "chevron.down.circle", accessibilityDescription: "")!
                 case .random:
                     // image = NSImage(systemSymbolName: "arrow.up.arrow.down.circle", accessibilityDescription: "")!
@@ -845,7 +884,7 @@ extension WindowController: NSToolbarDelegate {
             toolbarItem.visibilityPriority = .low
 
         case .isTagFilterOn:
-            let button = NSButton(title: "", image: NSImage(systemSymbolName: "tag.circle.fill", accessibilityDescription: "")!, target: self, action: #selector(toggleTagFilter(_:)))
+            let button = NSButton(title: "", image: NSImage(systemSymbolName: "tag.circle.fill", accessibilityDescription: "")!, target: self, action: #selector(toggleClearTagFilter(_:)))
             setButtonStyle(button)
             // button.showsBorderOnlyWhileMouseInside = false
             button.toolTip = NSLocalizedString("Cancel Filter", comment: "取消过滤")
@@ -855,7 +894,7 @@ extension WindowController: NSToolbarDelegate {
             toolbarItem.visibilityPriority = .low
             
         case .isRatingFilterOn:
-            let button = NSButton(title: "", image: NSImage(systemSymbolName: "star.circle.fill", accessibilityDescription: "")!, target: self, action: #selector(toggleRatingFilter(_:)))
+            let button = NSButton(title: "", image: NSImage(systemSymbolName: "star.circle.fill", accessibilityDescription: "")!, target: self, action: #selector(toggleClearRatingFilter(_:)))
             setButtonStyle(button)
             button.toolTip = NSLocalizedString("Cancel Filter", comment: "取消过滤")
             toolbarItem.view = button
@@ -1059,7 +1098,11 @@ extension WindowController: NSToolbarDelegate {
             .exifDateA: NSImage(systemSymbolName: "clock", accessibilityDescription: ""),
             .exifDateZ: NSImage(systemSymbolName: "clock", accessibilityDescription: ""),
             .exifPixelA: NSImage(systemSymbolName: "camera.aperture", accessibilityDescription: ""),
-            .exifPixelZ: NSImage(systemSymbolName: "camera.aperture", accessibilityDescription: "")
+            .exifPixelZ: NSImage(systemSymbolName: "camera.aperture", accessibilityDescription: ""),
+            .ratingA: NSImage(systemSymbolName: "star", accessibilityDescription: ""),
+            .ratingZ: NSImage(systemSymbolName: "star", accessibilityDescription: ""),
+            .tagA: NSImage(systemSymbolName: "tag", accessibilityDescription: ""),
+            .tagZ: NSImage(systemSymbolName: "tag", accessibilityDescription: "")
         ]
         let sortTypes: [(SortType, String)] = [
             (.pathA, NSLocalizedString("sort-pathA", comment: "文件名")),
@@ -1074,6 +1117,8 @@ extension WindowController: NSToolbarDelegate {
             (.modDateZ, NSLocalizedString("sort-modDateZ", comment: "修改日期(倒序)")),
             (.addDateA, NSLocalizedString("sort-addDateA", comment: "添加日期")),
             (.addDateZ, NSLocalizedString("sort-addDateZ", comment: "添加日期(倒序)")),
+            (.tagA, NSLocalizedString("sort-tagA", comment: "Finder标签")),
+            (.tagZ, NSLocalizedString("sort-tagZ", comment: "Finder标签(倒序)")),
             (.random, NSLocalizedString("sort-random", comment: "随机"))
         ]
         
@@ -1081,7 +1126,9 @@ extension WindowController: NSToolbarDelegate {
             (.exifDateA, NSLocalizedString("sort-exifDateA", comment: "Exif日期")),
             (.exifDateZ, NSLocalizedString("sort-exifDateZ", comment: "Exif日期(倒序)")),
             (.exifPixelA, NSLocalizedString("sort-exifPixelA", comment: "Exif像素数")),
-            (.exifPixelZ, NSLocalizedString("sort-exifPixelZ", comment: "Exif像素数(倒序)"))
+            (.exifPixelZ, NSLocalizedString("sort-exifPixelZ", comment: "Exif像素数(倒序)")),
+            (.ratingA, NSLocalizedString("sort-ratingA", comment: "XMP评级")),
+            (.ratingZ, NSLocalizedString("sort-ratingZ", comment: "XMP评级(倒序)"))
         ]
         
         let menu = NSMenu()
@@ -1190,18 +1237,150 @@ extension WindowController: NSToolbarDelegate {
         
         let popover = NSPopover()
         popover.contentViewController = favVC
-        popover.behavior = .transient
+        // Anchor to window contentView so auto-hiding toolbar won't immediately dismiss it.
+        popover.behavior = .semitransient
         popover.animates = false
         popover.contentSize = NSSize(width: 400, height: 600)
         favVC.popover = popover
         
         self.favoritesPopover = popover
         
+        guard let window = self.window, let contentView = window.contentView else { return }
+        
+        // Toolbar items sit above contentView; converting the button rect into contentView coords
+        // often lands outside bounds, and NSPopover then won't appear. Clamp to the visible top edge.
+        let b = contentView.bounds
+        let targetRectInContentView: NSRect
+        if let button = sender as? NSButton, button.window === window {
+            let rectInWindow = button.convert(button.bounds, to: nil)
+            var r = contentView.convert(rectInWindow, from: nil)
+            if !b.intersects(r) {
+                let midX = min(max(r.midX, b.minX + 20), b.maxX - 20)
+                r = contentView.isFlipped
+                    ? NSRect(x: midX - 0.5, y: b.minY + 1, width: 1, height: 1)
+                    : NSRect(x: midX - 0.5, y: b.maxY - 1, width: 1, height: 1)
+            }
+            targetRectInContentView = r
+            let preferredEdge: NSRectEdge = contentView.isFlipped ? .maxY : .minY
+            popover.show(relativeTo: targetRectInContentView, of: contentView, preferredEdge: preferredEdge)
+        }
+    }
+
+    @objc func taggingAction(_ sender: Any?) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        let collectionView = viewController.collectionView!
+        
+        let menu = NSMenu()
+        menu.autoenablesItems = false
+        
+        // let isInLargeView = viewController.publicVar.isInLargeView
+        // let hasSelection = !collectionView.selectionIndexPaths.isEmpty
+        // let taggingEnabled = isInLargeView || hasSelection
+        
+        // let activeTagNames: Set<String>
+        // let isRatingEnabled: Bool
+        // if isInLargeView {
+        //     let currentTags = viewController.largeImageView.file.finderTags
+        //     activeTagNames = Set(FinderTag.all.filter { currentTags.contains($0.name) }.map { $0.name })
+        //     isRatingEnabled = viewController.largeImageView.file.type == .image
+        // } else if hasSelection {
+        //     let selectedURLs = viewController.publicVar.selectedUrls()
+        //     let tagsPerURL = selectedURLs.map { FinderTagHelper.readTags(from: $0) }
+        //     activeTagNames = Set(FinderTag.all.filter { tag in
+        //         tagsPerURL.allSatisfy { $0.contains(tag.name) }
+        //     }.map { $0.name })
+        //     isRatingEnabled = collectionView.selectionIndexPaths.allSatisfy { indexPath in
+        //         (collectionView.item(at: indexPath) as? CustomCollectionViewItem)?.file.type == .image
+        //     }
+        // } else {
+        //     activeTagNames = []
+        //     isRatingEnabled = false
+        // }
+        
+        // menu.addTaggingMenuItems(
+        //     activeTagNames: activeTagNames,
+        //     target: self,
+        //     isRatingEnabled: isRatingEnabled,
+        //     isEnabled: taggingEnabled
+        // ) { tagName in
+        //     viewController.handleToggleFinderTag(tagName)
+        // }
+
+        // menu.addItem(NSMenuItem.separator())
+
+        // 当前过滤状态 + 清除所有过滤条件
+        var filterParts: [String] = []
+        if !viewController.publicVar.finderTagFilters.isEmpty {
+            let names = viewController.publicVar.finderTagFilters.sorted().joined(separator: ", ")
+            var tagDesc = NSLocalizedString("Tag", comment: "标签") + ": " + names
+            if viewController.publicVar.isFinderTagFilterModeAnd {
+                tagDesc += " (AND)"
+            }
+            if viewController.publicVar.isFinderTagFilterReversed {
+                tagDesc += " (" + NSLocalizedString("Reversed", comment: "过滤条件反转") + ")"
+            }
+            filterParts.append(tagDesc)
+        }
+        if !viewController.publicVar.ratingFilters.isEmpty {
+            let stars = viewController.publicVar.ratingFilters.sorted().map {
+                $0 == 0 ? NSLocalizedString("No Rating", comment: "无评级") : String(repeating: "★", count: $0)
+            }.joined(separator: ", ")
+            var ratingDesc = NSLocalizedString("Rating", comment: "评级") + ": " + stars
+            if viewController.publicVar.isRatingFilterReversed {
+                ratingDesc += " (" + NSLocalizedString("Reversed", comment: "过滤条件反转") + ")"
+            }
+            filterParts.append(ratingDesc)
+        }
+
+        let hasActiveFilter = !filterParts.isEmpty
+        let statusTitle = hasActiveFilter
+            ? NSLocalizedString("Current Filter", comment: "当前过滤") + ": " + filterParts.joined(separator: " & ")
+            : NSLocalizedString("Current Filter", comment: "当前过滤") + ": " + NSLocalizedString("None", comment: "无")
+        let statusItem = menu.addItem(withTitle: statusTitle, action: nil, keyEquivalent: "")
+        statusItem.isEnabled = false
+
+        let clearItem = menu.addItem(withTitle: NSLocalizedString("Clear All Filters", comment: "清除所有过滤条件"), action: #selector(actClearAllTagsAndRatingFilters), keyEquivalent: "")
+        clearItem.isEnabled = hasActiveFilter
+
+        menu.addItem(NSMenuItem.separator())
+        
+        collectionView.buildFilterMenuItems(in: menu)
+        
         if let button = sender as? NSButton {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            let menuLocation = NSPoint(x: 0, y: button.bounds.height + 4)
+            menu.popUp(positioning: nil, at: menuLocation, in: button)
+        } else {
+            let menuLocation = NSEvent.mouseLocation
+            menu.popUp(positioning: nil, at: menuLocation, in: nil)
         }
     }
     
+    @objc func actToggleFinderTag(_ sender: NSMenuItem) {
+        guard let tagName = sender.representedObject as? String else { return }
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleToggleFinderTag(tagName)
+    }
+
+    @objc func actRemoveAllFinderTags() {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleRemoveAllFinderTags()
+    }
+
+    @objc func actTagLearnMore() {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleTagLearnMore()
+    }
+
+    @objc func actRate(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleRating(rating: sender.tag)
+    }
+
+    @objc func actRateReadmeAction() {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleRatingReadme()
+    }
+
     @objc func showThumbSizeMenu(_ sender: Any?) {
         guard let viewController = contentViewController as? ViewController else {return}
 
@@ -1440,6 +1619,9 @@ extension WindowController: NSToolbarDelegate {
             let actionItemSequentialPlay = menu.addItem(withTitle: NSLocalizedString("Sequential Playback", comment: "（视频）顺序播放"), action: #selector(actSequentialPlay), keyEquivalent: "l")
             actionItemSequentialPlay.keyEquivalentModifierMask = []
             actionItemSequentialPlay.state = globalVar.videoPlaySequentialPlay ? .on : .off
+
+            let playbackRateItem = menu.addItem(withTitle: NSLocalizedString("Playback Speed", comment: "播放速度"), action: nil, keyEquivalent: "")
+            playbackRateItem.submenu = viewController.largeImageView.buildPlaybackRateSubmenu()
 
         }
 
@@ -1802,14 +1984,19 @@ extension WindowController: NSToolbarDelegate {
         viewController.applyFilter(isReset: true)
     }
 
-    @objc func toggleTagFilter(_ sender: NSMenuItem){
+    @objc func toggleClearTagFilter(_ sender: NSMenuItem){
         guard let viewController = contentViewController as? ViewController else {return}
-        viewController.toggleFinderTagFilter(nil)
+        viewController.handleClearFinderTagFilter()
     }
 
-    @objc func toggleRatingFilter(_ sender: NSMenuItem){
+    @objc func toggleClearRatingFilter(_ sender: NSMenuItem){
         guard let viewController = contentViewController as? ViewController else {return}
-        viewController.toggleRatingFilter(nil)
+        viewController.handleClearRatingFilter()
+    }
+
+    @objc func actClearAllTagsAndRatingFilters(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleClearTagsAndRatingFilter()
     }
     
     @objc func toggleRecursiveMode(_ sender: NSMenuItem){

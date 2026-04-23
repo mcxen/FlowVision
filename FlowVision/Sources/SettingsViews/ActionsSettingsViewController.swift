@@ -82,6 +82,11 @@ final class ActionsSettingsViewController: NSViewController, SettingsPane {
         
         collapseGuideSection()
         setupInlineFileActionSettingsPanel()
+
+        // MARK: RTL support
+        if let container = radioEnterKeyRename.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
     }
 
     override func viewDidAppear() {

@@ -69,6 +69,16 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
         // 初始化 Radio Buttons
         // Initialize Radio Buttons
         updateFFmpegRadioButtons()
+
+        // MARK: RTL support
+        for stepper in [thumbThreadNumStepper, folderSearchDepthStepper, thumbThreadNumStepper_External, folderSearchDepthStepper_External] {
+            if let container = stepper?.superview {
+                convertToLeadingLayoutForRTL(container)
+            }
+        }
+        if let container = memUseLimitSlider.superview {
+            convertToLeadingLayoutForRTL(container)
+        }
 	}
 
     @IBAction func memUseLimitSliderChanged(_ sender: NSSlider) {

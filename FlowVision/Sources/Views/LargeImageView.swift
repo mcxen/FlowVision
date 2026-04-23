@@ -36,6 +36,9 @@ class LargeImageView: NSView {
     private var volumeObservation: NSKeyValueObservation?
     private var blackOverlayView: NSView?
     
+    var videoControlsView: VideoPlayerControlsView!
+    private var periodicTimeObserver: Any?
+    
     var exifTextView: ExifTextView!
     var ratioView: InfoView!
     var infoView: InfoView!
@@ -68,6 +71,8 @@ class LargeImageView: NSView {
     
     private var lastClickTime: TimeInterval = 0
     private var lastClickLocation: NSPoint = NSPoint.zero
+    private var lastMouseUpTime: TimeInterval = 0
+    private let minDoubleClickInterval: TimeInterval = 0.01
     // 双击位置阈值，可以根据需要调整
     // Double-click position threshold, can be adjusted as needed
     private let positionThreshold: CGFloat = 4.0
@@ -118,10 +123,23 @@ class LargeImageView: NSView {
                   let oldVal = change.oldValue,
                   newVal != oldVal else { return }
             self.saveVolumeChange()
+            self.videoControlsView.updateVolumeUI()
         }
 //        if #available(macOS 13.0, *) {
 //            videoView.allowsVideoFrameAnalysis = false
 //        }
+        
+        videoControlsView = VideoPlayerControlsView(frame: .zero)
+        videoControlsView.largeImageView = self
+        videoControlsView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(videoControlsView)
+        
+        NSLayoutConstraint.activate([
+            videoControlsView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 6),
+            videoControlsView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6),
+            videoControlsView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6),
+            videoControlsView.heightAnchor.constraint(equalToConstant: 32),
+        ])
         
         exifTextView = ExifTextView(frame: .zero)
         exifTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -376,9 +394,9 @@ class LargeImageView: NSView {
     private func createEdgeArrowViews() {
         // 定义箭头视图的样式
         // Define arrow view style
-        let arrowBackgroundColor = NSColor.black.withAlphaComponent(0.2)
-        let arrowBorderColor = NSColor.black.withAlphaComponent(0.3)
-        let arrowTintColor = NSColor.black.withAlphaComponent(0.5)
+        let arrowBackgroundColor = hexToNSColor(hex: "#DDDDDD", alpha: 0.3)
+        let arrowBorderColor = hexToNSColor(hex: "#666666", alpha: 0.3)
+        let arrowTintColor = hexToNSColor(hex: "#000000", alpha: 0.6)
         
         // 创建左侧箭头视图（尺寸由 updateArrowViewPositions 动态计算）
         // Create left arrow view (size calculated dynamically by updateArrowViewPositions)
@@ -570,8 +588,9 @@ class LargeImageView: NSView {
             if queuePlayer.timeControlStatus == .playing {
                 queuePlayer.pause()
             } else {
-                queuePlayer.play()
+                queuePlayer.rate = globalVar.videoPlaybackRate
             }
+            videoControlsView.updatePlayPauseIcon()
         }
     }
     
@@ -586,7 +605,7 @@ class LargeImageView: NSView {
     func resumeVideo() {
         if let queuePlayer = queuePlayer {
             if queuePlayer.timeControlStatus == .paused {
-                queuePlayer.play()
+                queuePlayer.rate = globalVar.videoPlaybackRate
             }
         }
     }
@@ -594,6 +613,7 @@ class LargeImageView: NSView {
     func specifyABPlayPositionA(){
         if let queuePlayer = queuePlayer {
             abPlayPositionA = queuePlayer.currentTime()
+            videoControlsView.updateABMarkers()
             if abPlayPositionA != nil && abPlayPositionB != nil {
                 if CMTimeGetSeconds(abPlayPositionA!) > CMTimeGetSeconds(abPlayPositionB!) {
                     showInfo(NSLocalizedString("A-B Loop: A Greater than B", comment: "（视频）A-B循环：A点大于B点"))
@@ -610,6 +630,7 @@ class LargeImageView: NSView {
     func specifyABPlayPositionB(){
         if let queuePlayer = queuePlayer {
             abPlayPositionB = queuePlayer.currentTime()
+            videoControlsView.updateABMarkers()
             if abPlayPositionA != nil && abPlayPositionB != nil {
                 if CMTimeGetSeconds(abPlayPositionA!) > CMTimeGetSeconds(abPlayPositionB!) {
                     showInfo(NSLocalizedString("A-B Loop: A Greater than B", comment: "（视频）A-B循环：A点大于B点"))
@@ -656,6 +677,8 @@ class LargeImageView: NSView {
         }
         videoOrderId += 1
         videoView.isHidden = true
+        videoControlsView.hideControlsImmediately()
+        stopPeriodicTimeObserver()
         hideUnsupportedVideoOverlay()
         if let observer = videoEndObserver {
             NotificationCenter.default.removeObserver(observer)
@@ -802,6 +825,7 @@ class LargeImageView: NSView {
                     if globalVar.videoPlaySequentialPlay && abPlayPositionA == nil && abPlayPositionB == nil {
                         // 列表播放模式：播放完当前视频后自动切换到下一个
                         // List play mode: automatically switch to next video after current one finishes
+                        queuePlayer.actionAtItemEnd = .pause
                         videoEndObserver = NotificationCenter.default.addObserver(
                             forName: .AVPlayerItemDidPlayToEndTime,
                             object: playerItem,
@@ -811,14 +835,15 @@ class LargeImageView: NSView {
                             getViewController(self)?.nextLargeImage(isShowReachEndPrompt: true, firstShowThumb: true)
                         }
                     } else {
+                        queuePlayer.actionAtItemEnd = .advance
                         playerLooper = AVPlayerLooper(player: queuePlayer, templateItem: playerItem, timeRange: finalTimeRange)
                     }
                     
-                    queuePlayer.play()
+                    queuePlayer.rate = globalVar.videoPlaybackRate
                     currentPlayingURL = url
                     
-                    // 开始计时器检查 playerItem.status
-                    // Start timer to check playerItem.status
+                    startPeriodicTimeObserver()
+                    
                     checkPlayerItemStatus(id: videoOrderId)
                 }
             }else{
@@ -892,15 +917,15 @@ class LargeImageView: NSView {
                 
                 // 显示控制
                 // Show controls
-                playcontrolTimer?.cancel()
-                playcontrolTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-                playcontrolTimer?.schedule(deadline: .now() + 0.5)
-                playcontrolTimer?.setEventHandler { [weak self] in
-                    guard let self = self else { return }
-                    if id != videoOrderId { return }
-                    videoView.controlsStyle = .inline
-                }
-                playcontrolTimer?.resume()
+                // playcontrolTimer?.cancel()
+                // playcontrolTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+                // playcontrolTimer?.schedule(deadline: .now() + 0.5)
+                // playcontrolTimer?.setEventHandler { [weak self] in
+                //     guard let self = self else { return }
+                //     if id != videoOrderId { return }
+                //     videoView.controlsStyle = .inline
+                // }
+                // playcontrolTimer?.resume()
             } else {
                 // 如果还没有准备好，继续检查
                 // If not ready yet, continue checking
@@ -1004,13 +1029,17 @@ class LargeImageView: NSView {
         // Pause video
         pauseVideo()
         
-        // 获取当前时间并计算目标时间
-        // Get current time and calculate target time
         let currentTime = player.currentTime()
-        let targetTime = CMTimeAdd(currentTime, CMTimeMakeWithSeconds(seekDuration, preferredTimescale: 600))
+        var targetSeconds = CMTimeGetSeconds(currentTime) + seekDuration
         
-        // 执行跳转
-        // Perform seek
+        if let posA = abPlayPositionA, let posB = abPlayPositionB,
+           CMTimeGetSeconds(posA) < CMTimeGetSeconds(posB) {
+            targetSeconds = max(CMTimeGetSeconds(posA), min(CMTimeGetSeconds(posB), targetSeconds))
+        } else if let duration = player.currentItem?.duration {
+            targetSeconds = max(0, min(CMTimeGetSeconds(duration), targetSeconds))
+        }
+        
+        let targetTime = CMTimeMakeWithSeconds(targetSeconds, preferredTimescale: 600)
         player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero)
         
         // 显示帧信息
@@ -1029,8 +1058,14 @@ class LargeImageView: NSView {
         let currentTime = player.currentTime()
         let currentSeconds = CMTimeGetSeconds(currentTime)
         
-        // 计算目标时间,确保在有效范围内
-        // Calculate target time, ensure within valid range
+        var minBound = 0.0
+        var maxBound = totalSeconds
+        if let posA = abPlayPositionA, let posB = abPlayPositionB,
+           CMTimeGetSeconds(posA) < CMTimeGetSeconds(posB) {
+            minBound = CMTimeGetSeconds(posA)
+            maxBound = CMTimeGetSeconds(posB)
+        }
+        
         let seekSeconds = totalSeconds < 30 ? 5.0 : 10.0
         var seconds = 0.0
         if direction == -1 {
@@ -1039,9 +1074,8 @@ class LargeImageView: NSView {
             seconds = seekSeconds
         }
         var targetSeconds = currentSeconds + seconds
-        targetSeconds = max(0, min(totalSeconds, targetSeconds))
+        targetSeconds = max(minBound, min(maxBound, targetSeconds))
         
-        // 转换为CMTime并执行跳转
         let targetTime = CMTimeMakeWithSeconds(Float64(targetSeconds), preferredTimescale: 600)
         player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero)
     }
@@ -1056,13 +1090,17 @@ class LargeImageView: NSView {
         let currentTime = player.currentTime()
         let currentSeconds = CMTimeGetSeconds(currentTime)
         
-        // 计算目标时间,确保在有效范围内
-        // Calculate target time, ensure within valid range
-        var targetSeconds = currentSeconds + seconds
-        targetSeconds = max(0, min(totalSeconds, targetSeconds))
+        var minBound = 0.0
+        var maxBound = totalSeconds
+        if let posA = abPlayPositionA, let posB = abPlayPositionB,
+           CMTimeGetSeconds(posA) < CMTimeGetSeconds(posB) {
+            minBound = CMTimeGetSeconds(posA)
+            maxBound = CMTimeGetSeconds(posB)
+        }
         
-        // 转换为CMTime并执行跳转
-        // Convert to CMTime and perform seek
+        var targetSeconds = currentSeconds + seconds
+        targetSeconds = max(minBound, min(maxBound, targetSeconds))
+        
         let targetTime = CMTimeMakeWithSeconds(Float64(targetSeconds), preferredTimescale: 600)
         player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero)
     }
@@ -1100,6 +1138,71 @@ class LargeImageView: NSView {
         guard let player = queuePlayer else { return }
         globalVar.videoVolume = player.volume
         UserDefaults.standard.set(globalVar.videoVolume, forKey: "videoVolume")
+    }
+    
+    // MARK: - Playback Rate
+    
+    @objc func setPlaybackRate(_ sender: NSMenuItem) {
+        let rate = Float(sender.tag) / 100.0
+        globalVar.videoPlaybackRate = rate
+        UserDefaults.standard.set(rate, forKey: "videoPlaybackRate")
+        if let player = queuePlayer, player.rate > 0 {
+            player.rate = rate
+        }
+    }
+    
+    func buildPlaybackRateSubmenu() -> NSMenu {
+        let submenu = NSMenu()
+        let rates: [(String, Int)] = [
+            ("2x", 200),
+            ("1.5x", 150),
+            ("1.25x", 125),
+            ("1x", 100),
+            ("0.5x", 50),
+        ]
+        for (title, tag) in rates {
+            let item = submenu.addItem(withTitle: title, action: #selector(setPlaybackRate(_:)), keyEquivalent: "")
+            item.tag = tag
+            item.target = self
+            if Int(globalVar.videoPlaybackRate * 100) == tag {
+                item.state = .on
+            }
+        }
+        return submenu
+    }
+    
+    // MARK: - Video Controls
+    
+    func startPeriodicTimeObserver() {
+        stopPeriodicTimeObserver()
+        
+        let interval = CMTime(seconds: 1.0 / 120.0, preferredTimescale: 120)
+        periodicTimeObserver = queuePlayer?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            guard let self = self,
+                  let player = self.queuePlayer,
+                  let currentItem = player.currentItem else { return }
+            
+            let duration = currentItem.duration
+            guard CMTimeGetSeconds(duration).isFinite else { return }
+            
+            self.videoControlsView.updateProgress(currentTime: time, duration: duration)
+        }
+    }
+    
+    func stopPeriodicTimeObserver() {
+        if let observer = periodicTimeObserver {
+            queuePlayer?.removeTimeObserver(observer)
+            periodicTimeObserver = nil
+        }
+    }
+    
+    func showVideoControls() {
+        guard file.type == .video, !videoView.isHidden, queuePlayer?.currentItem != nil else { return }
+        videoControlsView.showControls()
+    }
+    
+    func hideVideoControls() {
+        videoControlsView.hideControls()
     }
     
     func enableBlackBg() {
@@ -1375,14 +1478,20 @@ class LargeImageView: NSView {
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         
-        // 鼠标离开视图，隐藏箭头
-        // Mouse left view, hide arrows
         hideArrowView(leftArrowImageView)
         hideArrowView(rightArrowImageView)
+        
+        if file.type == .video {
+            videoControlsView.scheduleHide(delay: 0.0)
+        }
     }
     
     override func mouseMoved(with event: NSEvent) {
         super.mouseMoved(with: event)
+        
+        if file.type == .video && !videoView.isHidden {
+            showVideoControls()
+        }
         
         // 只在启用边缘切换功能且在大图模式下才处理
         // Only process when edge switching is enabled and in large image mode
@@ -1408,7 +1517,15 @@ class LargeImageView: NSView {
         self.addTrackingArea(trackingArea)
     }
     
+    private func isEventInVideoControls(_ event: NSEvent) -> Bool {
+        guard !videoControlsView.isHidden, videoControlsView.alphaValue > 0 else { return false }
+        let location = videoControlsView.convert(event.locationInWindow, from: nil)
+        return videoControlsView.bounds.contains(location)
+    }
+    
     override func mouseDown(with event: NSEvent) {
+        if isEventInVideoControls(event) { return }
+
         // 临时按住左键也能缩放
         // Temporarily hold left button to enable zoom
         getViewController(self)!.publicVar.isLeftMouseDown = true
@@ -1420,6 +1537,9 @@ class LargeImageView: NSView {
         if !(getViewController(self)!.publicVar.isRightMouseDown) {
             let currentTime = event.timestamp
             let currentLocation = event.locationInWindow
+            if currentTime - lastClickTime < minDoubleClickInterval {
+                return
+            }
             if currentTime - lastClickTime < NSEvent.doubleClickInterval,
                distanceBetweenPoints(lastClickLocation, currentLocation) < positionThreshold {
                 getViewController(self)?.closeLargeImage(0)
@@ -1476,6 +1596,15 @@ class LargeImageView: NSView {
     }
     
     override func mouseUp(with event: NSEvent) {
+        if isEventInVideoControls(event) { return }
+
+        if !(getViewController(self)!.publicVar.isRightMouseDown) {
+            if event.timestamp - lastMouseUpTime < minDoubleClickInterval {
+                return
+            }
+            lastMouseUpTime = event.timestamp
+        }
+        
         // 临时按住左键也能缩放
         // Temporarily hold left button to enable zoom
         getViewController(self)!.publicVar.isLeftMouseDown = false
@@ -1484,11 +1613,6 @@ class LargeImageView: NSView {
         longPressZoomTimer = nil
         wheelZoomRegenTimer?.invalidate()
         wheelZoomRegenTimer = nil
-
-        if videoPreventDoubleClickOpenPauseFlag {
-            videoPreventDoubleClickOpenPauseFlag = false
-            return
-        }
         
         if hasZoomedByWheel {
             getViewController(self)?.changeLargeImage(firstShowThumb: false, resetSize: false, triggeredByLongPress: false)
@@ -1498,14 +1622,6 @@ class LargeImageView: NSView {
         if pausedBySeek {
             resumeVideo()
             pausedBySeek = false
-        }
-
-        // 暂停/恢复视频
-        // Pause/resume video
-        if !(getViewController(self)!.publicVar.isRightMouseDown) && isKeyWindowWhenMouseDown {
-            if file.type == .video {
-                pauseOrResumeVideo()
-            }
         }
 
         // 检测点击左侧、右侧区域来切换图像
@@ -1525,6 +1641,7 @@ class LargeImageView: NSView {
                 // 点击左侧，切换到上一张图像
                 // Click left side, switch to previous image
                 if leftArrowImageView?.isHidden == false {
+                    lastClickTime = 0
                     getViewController(self)?.previousLargeImage()
                     return
                 }
@@ -1532,9 +1649,22 @@ class LargeImageView: NSView {
                 // 点击右侧，切换到下一张图像
                 // Click right side, switch to next image
                 if rightArrowImageView?.isHidden == false {
+                    lastClickTime = 0
                     getViewController(self)?.nextLargeImage()
                     return
                 }
+            }
+        }
+
+        // 暂停/恢复视频
+        // Pause/resume video
+        if !(getViewController(self)!.publicVar.isRightMouseDown) && isKeyWindowWhenMouseDown {
+            if file.type == .video && getViewController(self)!.publicVar.isInLargeViewAfterAnimate {
+                if videoPreventDoubleClickOpenPauseFlag {
+                    videoPreventDoubleClickOpenPauseFlag = false
+                    return
+                }
+                pauseOrResumeVideo()
             }
         }
 
@@ -1542,6 +1672,7 @@ class LargeImageView: NSView {
     }
     
     override func mouseDragged(with event: NSEvent) {
+        if isEventInVideoControls(event) { return }
         guard let lastLocation = lastDragLocation else { return }
         if isInOcrState && !getViewController(self)!.publicVar.isRightMouseDown {return}
         
@@ -1585,7 +1716,9 @@ class LargeImageView: NSView {
                 syncEditingCanvasFrame()
             } else if file.type == .video {
                 if getViewController(self)!.publicVar.isRightMouseDown {
-                    seekVideoByDrag(deltaX: dx)
+                    let effectiveDx = userInterfaceLayoutDirection == .rightToLeft ? -dx : dx
+                    seekVideoByDrag(deltaX: effectiveDx)
+                    videoControlsView.showControls()
                 }
             }
         }
@@ -1685,92 +1818,16 @@ class LargeImageView: NSView {
             menu.addItem(NSMenuItem.separator())
 
             let currentTags = file.finderTags
-            let allTags = FinderTag.all
-            let activeTagNames = Set(allTags.filter { currentTags.contains($0.name) }.map { $0.name })
+            let activeTagNames = Set(FinderTag.all.filter { currentTags.contains($0.name) }.map { $0.name })
 
-            let finderTagMenu = NSMenu()
-            let finderTagTitle = NSLocalizedString("Finder Tags", comment: "Finder标签")
-            let finderTagMenuItem = NSMenuItem(title: finderTagTitle, action: nil, keyEquivalent: "")
-            finderTagMenuItem.submenu = finderTagMenu
-
-            for (i, tag) in allTags.enumerated() {
-                let item = finderTagMenu.addItem(withTitle: NSLocalizedString(tag.name, comment: ""), action: #selector(actToggleFinderTag(_:)), keyEquivalent: (i + 1 <= 9) ? "\(i + 1)" : "")
-                item.keyEquivalentModifierMask = [.command]
-                item.representedObject = tag.name
-                if activeTagNames.contains(tag.name) {
-                    item.state = .on
-                }
-                item.image = tag.dotImage
+            menu.addTaggingMenuItems(
+                activeTagNames: activeTagNames,
+                target: self,
+                isRatingEnabled: file.type == .image
+            ) { [weak self] tagName in
+                guard let self = self else { return }
+                getViewController(self)?.handleToggleFinderTag(tagName)
             }
-
-            finderTagMenu.addItem(NSMenuItem.separator())
-            finderTagMenu.addItem(withTitle: NSLocalizedString("Remove All Tags", comment: "移除所有标签"), action: #selector(actRemoveAllFinderTags), keyEquivalent: "")
-
-            finderTagMenu.addItem(NSMenuItem.separator())
-            finderTagMenu.addItem(withTitle: NSLocalizedString("Learn More...", comment: "了解更多..."), action: #selector(actTagLearnMore), keyEquivalent: "")
-
-            let colorTags = allTags//.filter { $0.colorIndex != nil && $0.colorIndex != 0 }
-            if !colorTags.isEmpty {
-                let dotsItem = NSMenuItem()
-                let dotsView = FinderTagDotsView(tags: colorTags, activeTags: activeTagNames) { [weak self, weak menu] tagName in
-                    guard let self = self, let menu = menu else { return }
-                    getViewController(self)?.handleToggleFinderTag(tagName)
-                    menu.cancelTracking()
-                }
-                dotsView.onHoverChanged = { [weak finderTagMenuItem] index in
-                    guard let finderTagMenuItem = finderTagMenuItem else { return }
-                    if index >= 0 && index < colorTags.count {
-                        let tag = colorTags[index]
-                        if activeTagNames.contains(tag.name) {
-                            finderTagMenuItem.title = NSLocalizedString("Remove", comment: "移除") + "\"\(tag.name)\""
-                        } else {
-                            finderTagMenuItem.title = NSLocalizedString("Add", comment: "添加") + "\"\(tag.name)\""
-                        }
-                        let attrTitle = NSAttributedString(
-                            string: finderTagMenuItem.title,
-                            attributes: [.foregroundColor: NSColor.secondaryLabelColor]
-                        )
-                        finderTagMenuItem.attributedTitle = attrTitle
-                    } else {
-                        finderTagMenuItem.attributedTitle = nil
-                        finderTagMenuItem.title = finderTagTitle
-                    }
-                }
-                dotsItem.view = dotsView
-                menu.addItem(dotsItem)
-            }
-
-            menu.addItem(finderTagMenuItem)
-
-            let rateSubMenu = NSMenu(title: NSLocalizedString("Rating", comment: "评级"))
-            let rateMenuItem = NSMenuItem(title: NSLocalizedString("Rating", comment: "评级"), action: nil, keyEquivalent: "")
-            rateMenuItem.submenu = rateSubMenu
-            rateMenuItem.isEnabled = file.type == .image
-
-            for rating in (1...5).reversed() {
-                let stars = String(repeating: "★", count: rating) + String(repeating: "☆", count: 5 - rating)
-                let title = "\(stars)  (\(rating))"
-                let item = NSMenuItem(title: title, action: #selector(actRate(_:)), keyEquivalent: "\(rating)")
-                item.keyEquivalentModifierMask = [.control]
-                item.tag = rating
-                item.target = self
-                rateSubMenu.addItem(item)
-            }
-
-            let clearTitle = NSLocalizedString("No Rating", comment: "无评级")
-            let clearItem = NSMenuItem(title: clearTitle, action: #selector(actRate(_:)), keyEquivalent: "0")
-            clearItem.keyEquivalentModifierMask = [.control]
-            clearItem.tag = 0
-            clearItem.target = self
-            rateSubMenu.addItem(clearItem)
-
-            rateSubMenu.addItem(NSMenuItem.separator())
-
-            let rateReadmeItem = NSMenuItem(title: NSLocalizedString("Readme...", comment: "说明..."), action: #selector(actRateReadmeAction), keyEquivalent: "")
-            rateReadmeItem.target = self
-            rateSubMenu.addItem(rateReadmeItem)
-
-            menu.addItem(rateMenuItem)
 
             menu.addItem(NSMenuItem.separator())
                         
@@ -1814,6 +1871,9 @@ class LargeImageView: NSView {
                 let actionItemSequentialPlay = menu.addItem(withTitle: NSLocalizedString("Sequential Playback", comment: "（视频）顺序播放"), action: #selector(actSequentialPlay), keyEquivalent: "l")
                 actionItemSequentialPlay.keyEquivalentModifierMask = []
                 actionItemSequentialPlay.state = globalVar.videoPlaySequentialPlay ? .on : .off
+
+                let playbackRateItem = menu.addItem(withTitle: NSLocalizedString("Playback Speed", comment: "播放速度"), action: nil, keyEquivalent: "")
+                playbackRateItem.submenu = buildPlaybackRateSubmenu()
             }
 
             menu.addItem(NSMenuItem.separator())
@@ -2023,9 +2083,7 @@ class LargeImageView: NSView {
     }
 
     @objc func actRemoveAllFinderTags() {
-        guard let url = URL(string: file.path) else { return }
-        FinderTagHelper.removeAllTags(from: [url])
-        getViewController(self)?.refreshFinderTagsForVisibleItems(urls: [url])
+        getViewController(self)?.handleRemoveAllFinderTags()
     }
 
     @objc func actTagLearnMore() {
@@ -2033,13 +2091,11 @@ class LargeImageView: NSView {
     }
 
     @objc func actRate(_ sender: NSMenuItem) {
-        let rating = sender.tag
-        getViewController(self)?.handleRating(rating: rating)
-        refreshRatingStars()
+        getViewController(self)?.handleRating(rating: sender.tag)
     }
 
     @objc func actRateReadmeAction() {
-        showInformationLong(title: NSLocalizedString("Info", comment: "说明"), message: NSLocalizedString("rating-info", comment: "对于评级的说明..."))
+        getViewController(self)?.handleRatingReadme()
     }
 
     @objc func actRefresh() {
@@ -2083,6 +2139,7 @@ class LargeImageView: NSView {
         } else {
             showInfo(NSLocalizedString("Sequential Playback: Disabled", comment: "（视频）顺序播放禁用"))
         }
+        videoControlsView.updateLoopModeIcon()
         // 重新加载当前视频以应用新的播放模式
         // Reload current video to apply new playback mode
         playVideo(reload: true)
@@ -2372,7 +2429,7 @@ class ExifTextView: NSView {
         path.fill()
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .left
+        paragraphStyle.alignment = .natural
 
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: NSColor.white,
@@ -2389,6 +2446,8 @@ class ExifTextView: NSView {
         var yOffset: CGFloat = rect.origin.y + rect.height - padding
 
         let keyMaxWidth = textItems.map { $0.0.size(withAttributes: keyAttributes).width }.max() ?? 0
+        let isRTL = userInterfaceLayoutDirection == .rightToLeft
+
         // 根据keyMaxWidth设置mapButton的左边距
         // Set mapButton left margin based on keyMaxWidth
         if let mapButton = mapButton {
@@ -2396,10 +2455,17 @@ class ExifTextView: NSView {
                 mapButton.removeFromSuperview()
                 superview.addSubview(mapButton)
                 mapButton.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    mapButton.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: rect.origin.x + padding + keyMaxWidth + 10),
-                    mapButton.centerYAnchor.constraint(equalTo: superview.topAnchor, constant: rect.origin.y + rect.height - padding - 8)
-                ])
+                if isRTL {
+                    NSLayoutConstraint.activate([
+                        mapButton.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -(rect.origin.x + padding)),
+                        mapButton.centerYAnchor.constraint(equalTo: superview.topAnchor, constant: rect.origin.y + rect.height - padding - 8)
+                    ])
+                } else {
+                    NSLayoutConstraint.activate([
+                        mapButton.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: rect.origin.x + padding + keyMaxWidth + 10),
+                        mapButton.centerYAnchor.constraint(equalTo: superview.topAnchor, constant: rect.origin.y + rect.height - padding - 8)
+                    ])
+                }
             }
         }
 
@@ -2418,12 +2484,19 @@ class ExifTextView: NSView {
 
             let keyString = NSString(string: key)
             let valueString = NSString(string: String(describing: value))
-            
+
             let keySize = keyString.size(withAttributes: keyAttributes)
             let valueSize = valueString.size(withAttributes: attributes)
 
-            let keyX = rect.origin.x + padding
-            let valueX = keyX + keyMaxWidth + 10
+            let keyX: CGFloat
+            let valueX: CGFloat
+            if isRTL {
+                keyX = rect.maxX - padding - keySize.width
+                valueX = rect.maxX - padding - keyMaxWidth - 10 - valueSize.width
+            } else {
+                keyX = rect.origin.x + padding
+                valueX = keyX + keyMaxWidth + 10
+            }
 
             keyString.draw(at: CGPoint(x: keyX, y: yOffset - keySize.height), withAttributes: keyAttributes)
             valueString.draw(at: CGPoint(x: valueX, y: yOffset - valueSize.height), withAttributes: attributes)
@@ -2436,13 +2509,20 @@ class ExifTextView: NSView {
         if gpsCoordinates != nil {
             let openKey = NSLocalizedString("Location", comment: "位置")
             let openValue = ""
-            
+
             let openKeySize = openKey.size(withAttributes: keyAttributes)
             let openValueSize = openValue.size(withAttributes: attributes)
-            
-            let openKeyX = rect.origin.x + padding
-            let openValueX = openKeyX + keyMaxWidth + 10
-            
+
+            let openKeyX: CGFloat
+            let openValueX: CGFloat
+            if isRTL {
+                openKeyX = rect.maxX - padding - openKeySize.width
+                openValueX = rect.maxX - padding - keyMaxWidth - 10 - openValueSize.width
+            } else {
+                openKeyX = rect.origin.x + padding
+                openValueX = openKeyX + keyMaxWidth + 10
+            }
+
             openKey.draw(at: CGPoint(x: openKeyX, y: yOffset - openKeySize.height), withAttributes: keyAttributes)
             openValue.draw(at: CGPoint(x: openValueX, y: yOffset - openValueSize.height), withAttributes: attributes)
             

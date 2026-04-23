@@ -135,7 +135,11 @@ extension ViewController {
             
             // 设置容器视图位置
             // Set container view position
-            containerView.frame.origin.x = view.bounds.width - containerView.frame.width - 30
+            if view.userInterfaceLayoutDirection == .rightToLeft {
+                containerView.frame.origin.x = 30
+            } else {
+                containerView.frame.origin.x = view.bounds.width - containerView.frame.width - 30
+            }
             containerView.frame.origin.y = view.bounds.height - containerView.frame.height - 20
             // 另外注意在viewDidLayout()中实时调整位置
             // Also note: adjust position in real-time in viewDidLayout()
@@ -220,7 +224,7 @@ extension ViewController {
         
         // 获取当前选中的索引
         // Get currently selected index
-        let currentSelectedIndex = collectionView.selectionIndexPaths.first?.item ?? -1
+        let currentSelectedIndex = collectionView.selectionIndexPaths.min()?.item ?? -1
         
         fileDB.lock()
         let files = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files ?? [:]
@@ -228,7 +232,7 @@ extension ViewController {
         // 检查当前选中项是否符合搜索条件
         // Check if currently selected item matches search condition
         if !firstMatch,
-           let currentIndex = collectionView.selectionIndexPaths.first?.item,
+           let currentIndex = collectionView.selectionIndexPaths.min()?.item,
            let currentFileName = getFileNameForSearch(path: files.element(atOffset: currentIndex).1.path),
            isSearchMatch(fileName: currentFileName, searchText: searchText, forceUseRegex: forceUseRegex) {
             if isEnterKey {

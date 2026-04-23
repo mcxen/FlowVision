@@ -1965,10 +1965,11 @@ func formatExifData(_ imageProperties: [String: Any], isVideo: Bool, needWarp: B
         (kCGImagePropertyExifApertureValue, NSLocalizedString("Exif-ApertureValue", comment: "光圈值 (Aperture)")),
         (kCGImagePropertyExifFlash, NSLocalizedString("Exif-Flash", comment: "闪光灯")),
         (kCGImagePropertyExifFocalLength, NSLocalizedString("Exif-FocalLength", comment: "焦距")),
+        (kCGImagePropertyExifFocalLenIn35mmFilm, NSLocalizedString("Exif-FocalLenIn35mmFilm", comment: "焦距 (35mm)")),
         
         (kCGImagePropertyExifLensModel, NSLocalizedString("Exif-LensModel", comment: "镜头型号")),
         (kCGImagePropertyTIFFModel, NSLocalizedString("Exif-CameraModel", comment: "相机型号")),
-        (kCGImagePropertyTIFFMake, NSLocalizedString("Exif-CameraMaker", comment: "制造商")),
+        (kCGImagePropertyTIFFMake, NSLocalizedString("Exif-CameraMaker", comment: "相机制造商")),
         
         (kCGImagePropertyTIFFSoftware, NSLocalizedString("Exif-Software", comment: "软件")),
         (kCGImagePropertyTIFFArtist, NSLocalizedString("Exif-Artist", comment: "作者")),
@@ -2063,6 +2064,10 @@ func formatExifData(_ imageProperties: [String: Any], isVideo: Bool, needWarp: B
             case kCGImagePropertyExifFocalLength:
                 if let focalLength = value as? Double {
                     formattedData.append((translationKey, String(format: "%.6g", focalLength) + " mm"))
+                }
+            case kCGImagePropertyExifFocalLenIn35mmFilm:
+                if let focalLength35 = value as? Double {
+                    formattedData.append((translationKey, String(format: "%.6g", focalLength35) + " mm"))
                 }
             default:
                 formattedData.append((translationKey, value))

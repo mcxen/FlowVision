@@ -71,6 +71,7 @@
 		F7A075562BA1D716009C47A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A075552BA1D716009C47A6 /* ViewController.swift */; };
 		F7A075582BA1D717009C47A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A075572BA1D717009C47A6 /* Assets.xcassets */; };
 		F7A0755B2BA1D717009C47A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7A075592BA1D717009C47A6 /* Main.storyboard */; };
+		F7AA00012F9E000000AA0001 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AA00002F9E000000AA0001 /* VideoPlayerControlsView.swift */; };
 		F7AAA8BD2D9BD1F2007CE330 /* VideoProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AAA8BC2D9BD1ED007CE330 /* VideoProcess.swift */; };
 		F7AC30052D37E26B00F48AEF /* CustomPathControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7AC30042D37E25800F48AEF /* CustomPathControl.swift */; };
 		F7C2DEB82C4E6AE9003DF765 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = F7C2DEB72C4E6AE9003DF765 /* Settings */; };
@@ -79,6 +80,7 @@
 		F7E0B31C2DBF0F55007CBD17 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = F7E0B31B2DBF0F55007CBD17 /* SDWebImageWebPCoder */; };
 		F7F600482E1E095500ED8536 /* FinderTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F600472E1E094A00ED8536 /* FinderTag.swift */; };
 		F7FAE0012F6BA00000FAE001 /* FavoritesPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FAE0002F6BA00000FAE000 /* FavoritesPopoverViewController.swift */; };
+		F7FED5F32F7D0B1100E35164 /* Tagging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FED5F22F7D0B0E00E35164 /* Tagging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -186,6 +188,7 @@
 		F7A075572BA1D717009C47A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7A0755A2BA1D717009C47A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F7A0755C2BA1D717009C47A6 /* FlowVision.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlowVision.entitlements; sourceTree = "<group>"; };
+		F7AA00002F9E000000AA0001 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		F7AAA8BC2D9BD1ED007CE330 /* VideoProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProcess.swift; sourceTree = "<group>"; };
 		F7AC30042D37E25800F48AEF /* CustomPathControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPathControl.swift; sourceTree = "<group>"; };
 		F7C2DEBA2C4E6BEC003DF765 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +196,7 @@
 		F7E65E342C09C7F100ACC4C0 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F7F600472E1E094A00ED8536 /* FinderTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTag.swift; sourceTree = "<group>"; };
 		F7FAE0002F6BA00000FAE000 /* FavoritesPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPopoverViewController.swift; sourceTree = "<group>"; };
+		F7FED5F22F7D0B0E00E35164 /* Tagging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagging.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +251,7 @@
 				F7FAE0002F6BA00000FAE000 /* FavoritesPopoverViewController.swift */,
 				F78960F12BDCC26B00C2571B /* LargeImageView.swift */,
 				F73865D42C37B9B800837FE4 /* Layout.swift */,
+				F7AA00002F9E000000AA0001 /* VideoPlayerControlsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 				F76F6A642F5B15B200D798DC /* ProgressBar.swift */,
 				F74D55552F0E487800C9AB85 /* RightMouseGesture.swift */,
 				F74D55512F0E46D100C9AB85 /* Search.swift */,
+				F7FED5F22F7D0B0E00E35164 /* Tagging.swift */,
 				F74D554D2F0E459600C9AB85 /* WindowManagement.swift */,
 			);
 			path = ViewControllerExtension;
@@ -411,6 +417,21 @@
 				en,
 				Base,
 				"zh-Hans",
+				"zh-Hant",
+				ar,
+				nl,
+				fr,
+				de,
+				ja,
+				it,
+				ru,
+				ko,
+				es,
+				sv,
+				pl,
+				tr,
+				"pt-BR",
+				"pt-PT",
 			);
 			mainGroup = F7A075472BA1D716009C47A6;
 			packageReferences = (
@@ -463,8 +484,10 @@
 				F77098912F0E3C6B00E7D164 /* KeyShortcut.swift in Sources */,
 				F7790ED72BA5FB6A00406D35 /* CustomCollectionViewItem.swift in Sources */,
 				F7663C162F222AAC0028DF35 /* ImageEditingView.swift in Sources */,
+				F7AA00012F9E000000AA0001 /* VideoPlayerControlsView.swift in Sources */,
 				F74D555C2F0E501200C9AB85 /* EventHandler.swift in Sources */,
 				F74D55522F0E46D200C9AB85 /* Search.swift in Sources */,
+				F7FED5F32F7D0B1100E35164 /* Tagging.swift in Sources */,
 				F74D55542F0E47D700C9AB85 /* MemoryManagement.swift in Sources */,
 				F76F6A652F5B15B700D798DC /* ProgressBar.swift in Sources */,
 				F7AAA8BD2D9BD1F2007CE330 /* VideoProcess.swift in Sources */,
@@ -706,7 +729,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260325;
+				CURRENT_PROJECT_VERSION = 20260422;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -722,7 +745,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.7.1;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVisionDbg;
 				PRODUCT_NAME = "$(TARGET_NAME)Dbg";
@@ -740,7 +763,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260325;
+				CURRENT_PROJECT_VERSION = 20260422;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -756,7 +779,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.7.1;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVision;
 				PRODUCT_NAME = "$(TARGET_NAME)";

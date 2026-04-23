@@ -278,6 +278,33 @@ extension CustomOutlineViewManager: NSOutlineViewDelegate {
 
 class CustomTableCellView: NSTableCellView {
     
+    private var didSetupConstraints = false
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        guard !didSetupConstraints, let imageView = imageView, let textField = textField else { return }
+        didSetupConstraints = true
+
+        // 仅在RTL布局时使用Auto Layout约束替换storyboard的固定frame，以支持阿拉伯语等RTL语言的布局镜像
+        // Only apply Auto Layout constraints under RTL to mirror the layout for Arabic etc.
+        guard userInterfaceLayoutDirection == .rightToLeft else { return }
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 16),
+            imageView.heightAnchor.constraint(equalToConstant: 16),
+
+            textField.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 3),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textField.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+    }
+    
 //    override var backgroundStyle: NSView.BackgroundStyle {
 //        didSet {
 //            imageView?.contentTintColor = backgroundStyle == .emphasized ? NSColor.black : NSColor.green

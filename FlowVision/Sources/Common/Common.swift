@@ -1060,6 +1060,41 @@ func resolveRelativePath(basePath: String, relativePath: String) -> String? {
     return resolvedPath + (shouldAddSlash ? "/" : "")
 }
 
+/// RTL时将容器内fixedFrame子视图转为Auto Layout（leading排列），自然支持RTL镜像
+/// 非RTL时不执行任何操作
+/// Convert fixedFrame subviews to Auto Layout with leading anchors for proper RTL support.
+/// No-op when not RTL.
+func convertToLeadingLayoutForRTL(_ container: NSView) {
+    guard container.userInterfaceLayoutDirection == .rightToLeft else { return }
+    guard !container.subviews.isEmpty else { return }
+
+    // 按原始x坐标排序，保持LTR下的逻辑顺序
+    // Sort by original x to preserve logical order from LTR
+    let sorted = container.subviews.sorted { $0.frame.origin.x < $1.frame.origin.x }
+
+    // 先记录原始frame信息，再切换到Auto Layout
+    // Record original frames before switching to Auto Layout
+    let frames = sorted.map { $0.frame }
+    for subview in sorted {
+        subview.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    for (i, subview) in sorted.enumerated() {
+        let frame = frames[i]
+        subview.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
+        subview.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+        subview.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+
+        if i == 0 {
+            let leadingGap = frame.origin.x
+            subview.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: leadingGap).isActive = true
+        } else {
+            let gap = frame.origin.x - frames[i - 1].maxX
+            subview.leadingAnchor.constraint(equalTo: sorted[i - 1].trailingAnchor, constant: gap).isActive = true
+        }
+    }
+}
+
 // 将汉字转换为全拼
 // Convert Chinese characters to full pinyin
 func chineseToFullPinyin(_ chinese: String) -> String {

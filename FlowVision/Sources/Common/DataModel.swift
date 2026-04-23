@@ -46,6 +46,9 @@ class SortKey: Comparable {
     var seed: Int
     var exifDate: Date = Date(timeIntervalSince1970: 0)
     var exifPixel: Int = 0
+    var rating: Int = -1
+    var tag: String = ""
+    var isTagLoaded: Bool = false
     
     static var keyTransformedDict = Dictionary<String,[String]>()
     static let keyTransformedDictLock = NSLock()
@@ -154,7 +157,7 @@ class SortKey: Comparable {
         if !sortKey.isDir{
             let ext = ext(sortKey)
             if globalVar.HandledImageAndRawExtensions.contains(ext) {
-                let imageInfo = getImageInfo(url: URL(string: sortKey.path)!, needMetadata: false)
+                let imageInfo = getImageInfo(url: URL(string: sortKey.path)!, needMetadata: true)
                 let exifData = imageInfo?.properties?[kCGImagePropertyExifDictionary as String] as? [String: Any]
                 let tiffData = imageInfo?.properties?[kCGImagePropertyTIFFDictionary as String] as? [String: Any]
                 // 拍摄时间
@@ -182,6 +185,11 @@ class SortKey: Comparable {
                 if let size = imageInfo?.size {
                     sortKey.exifPixel = Int(size.width * size.height)
                 }
+                // 评级
+                // Rating
+                if let rating = imageInfo?.rating {
+                    sortKey.rating = rating
+                }
             }
             if globalVar.HandledVideoExtensions.contains(ext) {
                 if let (width,height,date) = getVideoResolutionAndDateFFmpeg(for: URL(string: sortKey.path)!) {
@@ -198,6 +206,19 @@ class SortKey: Comparable {
         }
         if sortKey.exifPixel == 0 {
             sortKey.exifPixel = 1
+        }
+        if sortKey.rating == -1 {
+            sortKey.rating = 0
+        }
+    }
+    
+    static func writeTagInfo(_ sortKey: SortKey) {
+        if !sortKey.isTagLoaded {
+            if let url = URL(string: sortKey.path) {
+                let tags = (try? url.resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
+                sortKey.tag = tags.sorted().joined(separator: ",")
+            }
+            sortKey.isTagLoaded = true
         }
     }
     
@@ -288,6 +309,47 @@ class SortKey: Comparable {
             }else if lhs.sortType == .exifPixelZ {
                 if lhs.exifPixel == rhs.exifPixel {return isSmallerPath(lhs: lhs, rhs: rhs)}
                 return lhs.exifPixel > rhs.exifPixel
+            }
+        }
+        
+        // 评级排序
+        // Rating sort
+        if lhs.sortType == .ratingA || lhs.sortType == .ratingZ {
+            if lhs.rating == -1 {
+                writeExifInfo(lhs)
+            }
+            if rhs.rating == -1 {
+                writeExifInfo(rhs)
+            }
+            if lhs.sortType == .ratingA {
+                if lhs.rating == rhs.rating {return isSmallerPath(lhs: lhs, rhs: rhs)}
+                return lhs.rating > rhs.rating
+            }else if lhs.sortType == .ratingZ {
+                if lhs.rating == rhs.rating {return isSmallerPath(lhs: lhs, rhs: rhs)}
+                return lhs.rating < rhs.rating
+            }
+        }
+        
+        // 标签排序
+        // Tag sort
+        if lhs.sortType == .tagA || lhs.sortType == .tagZ {
+            writeTagInfo(lhs)
+            writeTagInfo(rhs)
+            let lEmpty = lhs.tag.isEmpty
+            let rEmpty = rhs.tag.isEmpty
+            if lEmpty != rEmpty {
+                if lhs.sortType == .tagA {
+                    return rEmpty
+                }else{
+                    return lEmpty
+                }
+            }
+            if lhs.sortType == .tagA {
+                if lhs.tag == rhs.tag {return isSmallerPath(lhs: lhs, rhs: rhs)}
+                return lhs.tag.localizedStandardCompare(rhs.tag) == .orderedAscending
+            }else if lhs.sortType == .tagZ {
+                if lhs.tag == rhs.tag {return isSmallerPath(lhs: lhs, rhs: rhs)}
+                return lhs.tag.localizedStandardCompare(rhs.tag) == .orderedDescending
             }
         }
         

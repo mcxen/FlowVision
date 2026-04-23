@@ -59,6 +59,12 @@
             "value" : "Hernoemen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień nazwę"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +87,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Byt namn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Adlandır"
           }
         },
         "zh-Hans" : {
@@ -155,6 +167,12 @@
             "value" : "Snel zoeken:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szybkie wyszukiwanie:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -177,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Snabbsökning:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hızlı Arama:"
           }
         },
         "zh-Hans" : {
@@ -251,6 +275,12 @@
             "value" : "Toetsenbord sneltoetsen:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skróty klawiaturowe:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -273,6 +303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tangentbordsgenvägar:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klavye Kısayolları:"
           }
         },
         "zh-Hans" : {
@@ -347,6 +383,12 @@
             "value" : "Enter-toets:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wprowadź klucz:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -369,6 +411,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter-tangenten:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anahtar Girin:"
           }
         },
         "zh-Hans" : {
@@ -443,6 +491,12 @@
             "value" : "Dubbelklik om de afbeelding te openen/sluiten.\nHoud de rechter/linker muisknop ingedrukt en scroll met het wiel om in te zoomen.\nHoud de middelste muisknop ingedrukt en sleep om het venster te verplaatsen.\nHoud de linker muisknop lang ingedrukt om naar 100% zoom te schakelen.\nHoud de rechter muisknop lang ingedrukt om de afbeelding aan te passen aan de weergave."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij dwukrotnie, aby otworzyć/zamknąć obraz. \nPrzytrzymaj prawy/lewy przycisk myszy i przewiń kółkiem, aby powiększyć.\nPrzytrzymaj środkowy przycisk myszy i przeciągnij, aby przesunąć okno.\nDługie naciśnięcie lewego przycisku myszy przełącza na 100% powiększenie.\nDługie naciśnięcie prawego przycisku myszy dopasowuje obraz do widoku."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -465,6 +519,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dubbelklicka för att öppna/stänga bilden. \nHåll ned höger/vänster musknapp och rulla hjulet för att zooma.\nHåll ned mittenknappen och dra för att flytta fönstret.\nHåll vänster musknapp nedtryckt för att växla till 100% zoom.\nHåll höger musknapp nedtryckt för att anpassa bilden till vyn."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntüyü açmak/kapatmak için çift tıklayın. \nYakınlaştırmak için sağ/sol fare düğmesini basılı tutun ve tekerleği kaydırın.\nPencereyi taşımak için orta fare düğmesini basılı tutun ve sürükleyin.\n%100 yakınlaştırmaya geçmek için sol fare düğmesine uzun basın.\nGörüntüyü görünüme sığdırmak için sağ fare düğmesine uzun basın."
           }
         },
         "zh-Hans" : {
@@ -539,6 +599,12 @@
             "value" : "Druk op Opt + 1~9 om over te schakelen naar het overeenkomstige profiel.\nDruk op Opt + Cmd + 1~9 om de huidige indeling en stijl op te slaan in het overeenkomstige profiel.\nDe configuraties die bij het schakelen betrokken zijn, zijn onder andere: of de zijbalk wordt weergegeven, weergavetype, sorteermethode, miniatuurgrootte en aangepaste stijlen (zoals of bestandsnamen worden weergegeven en de breedte van de miniatuurrand)."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naciśnij Opt + 1~9, aby przełączyć się na odpowiedni profil\nNaciśnij Opt + Cmd + 1~9, aby zapisać bieżący układ i styl do odpowiedniego profilu\nKonfiguracje związane z przełączaniem obejmują: czy wyświetlać pasek boczny, typ widoku, metodę sortowania, rozmiar miniatury i niestandardowe style (takie jak czy wyświetlać nazwy plików i szerokość obramowania miniatury)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryck på Opt + 1~9 för att byta till motsvarande profil.\nTryck på Opt + Cmd + 1~9 för att spara aktuell layout och stil till motsvarande profil.\nKonfigurationerna som är involverade i bytet inkluderar: om sidopanelen ska visas, vytyp, sorteringsmetod, miniatyrbildsstorlek och anpassade stilar (till exempel om filnamn ska visas och bredden på miniatyrbildens kant)."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opt + 1~9 tuşlarına basarak ilgili profile geçiş yapın\nOpt + Cmd + 1~9 tuşlarına basarak mevcut düzeni ve stili ilgili profile kaydedin\nGeçişte yer alan yapılandırmalar şunları içerir: kenar çubuğunun görüntülenip görüntülenmeyeceği, görünüm türü, sıralama yöntemi, küçük resim boyutu ve özel stiller (örneğin dosya adlarının görüntülenip görüntülenmeyeceği ve küçük resim kenarlığının genişliği)"
           }
         },
         "zh-Hans" : {
@@ -635,6 +707,12 @@
             "value" : "Afbeelding bekijken:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeglądanie obrazów:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -657,6 +735,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bildvisning:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntü Görüntüleme:"
           }
         },
         "zh-Hans" : {
@@ -731,6 +815,12 @@
             "value" : "In miniatuurweergave: W/S/A/D/E komen overeen met rechtsklikgebaren omhoog/omlaag/linksom/rechtsom/omhoog-rechts.\nIn beeldweergave: W/S inzoomen/uitzoomen, Z zoom naar 100%, X zoom passend, A/D vorige/volgende afbeelding."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W widoku miniatur: W/S/A/D/E odpowiadają gestom prawego przycisku myszy góra/dół/lewo/prawo/góra-prawo\nW widoku obrazu: W/S powiększ/pomniejsz, Z powiększ do 100%, X dopasuj do ekranu, A/D poprzedni/następny obraz"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I miniatyrvy: W/S/A/D/E motsvarar högerklicksgester upp/ner/vänster/höger/upp-höger.\nI bildvy: W/S zooma in/zooma ut, Z zooma till 100%, X zooma för att passa, A/D föregående/nästa bild."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük resim görünümünde: W/S/A/D/E sağ tıklama hareketlerine yukarı/aşağı/sol/sağ/sağ-yukarı karşılık gelir.\nGörüntü görünümünde: W/S yakınlaştır/uzaklaştır, Z %100'e yakınlaştır, X sığdırmak için yakınlaştır, A/D önceki/sonraki görüntü."
           }
         },
         "zh-Hans" : {
@@ -827,6 +923,12 @@
             "value" : "Klik met de rechtermuisknop-bewegingen:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesty Prawym Kliknięciem:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -849,6 +951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Högerklicksgester:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sağ Tıklama Hareketleri:"
           }
         },
         "zh-Hans" : {
@@ -923,6 +1031,12 @@
             "value" : "Profielwissel:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przełączanie profilu:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -945,6 +1059,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profilväxling:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil Değiştirme:"
           }
         },
         "zh-Hans" : {
@@ -1019,6 +1139,12 @@
             "value" : "Rechts/Links: Schakel naar de volgende/vorige map met afbeeldingen/video's (logisch equivalent aan de volgende map bij het sorteren van alle mappen op de schijf)\nOmhoog: Ga naar de bovenliggende map\nOmlaag: Ga terug naar de vorige map\nOmhoog-Rechts: Schakel naar de volgende map met afbeeldingen op hetzelfde niveau als de huidige map\nOmlaag-Rechts: Sluit het tabblad/venster"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prawo/Lewo: Przełącz na następny/poprzedni folder z obrazami/filmami (logicznie równoważny z następnym folderem przy sortowaniu wszystkich folderów na dysku).\nGóra: Przełącz na katalog nadrzędny.\nDół: Wróć do poprzedniego katalogu.\nGóra-Prawo: Przełącz na następny folder z obrazami na tym samym poziomie co bieżący folder.\nDół-Prawo: Zamknij kartę/okno."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1041,6 +1167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Höger/Vänster: Byt till nästa/föregående mapp med bilder/videor (logiskt motsvarande nästa mapp när alla mappar på disken sorteras).\nUpp: Byt till överordnad katalog.\nNer: Återgå till föregående katalog.\nUpp-Höger: Byt till nästa mapp med bilder på samma nivå som den aktuella mappen.\nNer-Höger: Stäng fliken/fönstret."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sağ/Sol: Görüntülerin/videoların bulunduğu bir sonraki/önceki klasöre geç (diskteki tüm klasörleri sıralarken mantıksal olarak bir sonraki klasöre eşdeğer).\nYukarı: Üst dizine geç.\nAşağı: Önceki dizine dön.\nYukarı-Sağ: Mevcut klasörle aynı seviyede görüntülerin bulunduğu bir sonraki klasöre geç.\nAşağı-Sağ: Sekmeyi/pencereyi kapat."
           }
         },
         "zh-Hans" : {
@@ -1115,6 +1247,12 @@
             "value" : "Druk op Q in de miniatuurweergave om de snelle zoekfunctie te activeren, waarmee je binnen korte tijd zoekwoorden kunt invoeren om bestanden te vinden. In deze modus worden voor invoer de cijfertoetsen, lettertoetsen en de backspace-toets gebruikt. Voor een meer uitgebreide zoekfunctie, gebruik Cmd + F."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naciśnij Q w widoku miniatur, aby aktywować Szybkie Wyszukiwanie, co pozwala na wprowadzenie słów kluczowych wyszukiwania w krótkim czasie w celu zlokalizowania plików. W tym trybie do wprowadzania używane są klawisze numeryczne, literowe oraz klawisz backspace. Aby uzyskać bardziej kompleksową funkcję wyszukiwania, użyj Cmd + F."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1137,6 +1275,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryck på Q i miniatyrvyn för att aktivera Snabbsökning, vilket gör att du kan ange sökord inom en kort tid för att hitta filer. I det här läget används sifferknappar, bokstavstangenter och backstegstangenten för inmatning. För en mer omfattande sökfunktion, använd Cmd + F."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük resim görünümünde Hızlı Arama'yı etkinleştirmek için Q'ya basın, dosyaları bulmak için kısa sürede arama anahtar kelimeleri girmenizi sağlar. Bu modda, giriş için sayı tuşları, harf tuşları ve geri silme tuşu kullanılır. Daha kapsamlı bir arama işlevi için lütfen Cmd + F kullanın."
           }
         },
         "zh-Hans" : {
@@ -1211,6 +1355,12 @@
             "value" : "Openen / Sluiten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz / Zamknij"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1233,6 +1383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öppna / Stäng"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aç / Kapat"
           }
         },
         "zh-Hans" : {

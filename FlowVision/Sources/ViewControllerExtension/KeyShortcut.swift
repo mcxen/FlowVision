@@ -277,12 +277,14 @@ extension ViewController {
             
             // 检查按键是否是 "A" 键
             // Check if key is "A"
+            // RTL: A/D swap large image and folder direction
+            let isRTL_AD = view.userInterfaceLayoutDirection == .rightToLeft
             if characters == "a" && noModifierKey {
                 if publicVar.isInLargeView{
-                    previousLargeImage()
+                    isRTL_AD ? nextLargeImage() : previousLargeImage()
                 }else{
                     closeLargeImage(0)
-                    switchDirByDirection(direction: .left, stackDeep: 0)
+                    switchDirByDirection(direction: isRTL_AD ? .right : .left, stackDeep: 0)
                 }
                 return nil
             }
@@ -290,10 +292,10 @@ extension ViewController {
             // Check if key is "D"
             if characters == "d" && noModifierKey {
                 if publicVar.isInLargeView{
-                    nextLargeImage()
+                    isRTL_AD ? previousLargeImage() : nextLargeImage()
                 }else{
                     closeLargeImage(0)
-                    switchDirByDirection(direction: .right, stackDeep: 0)
+                    switchDirByDirection(direction: isRTL_AD ? .left : .right, stackDeep: 0)
                 }
                 return nil
             }
@@ -437,6 +439,8 @@ extension ViewController {
             if characters == "[" && isOnlyCommandPressed {
                 if publicVar.isInLargeView{
                     previousLargeImage()
+                } else {
+                    switchDirByDirection(direction: .back, stackDeep: 0)
                 }
                 return nil
             }
@@ -446,6 +450,8 @@ extension ViewController {
             if characters == "]" && isOnlyCommandPressed {
                 if publicVar.isInLargeView{
                     nextLargeImage()
+                } else {
+                    switchDirByDirection(direction: .forward, stackDeep: 0)
                 }
                 return nil
             }
@@ -492,13 +498,15 @@ extension ViewController {
             
             // 检查按键是否是 Command+⬅️➡️ 键
             // Check if key is Command+⬅️➡️
+            // RTL: swap frame seek direction
             if (specialKey == .leftArrow || specialKey == .rightArrow) && isOnlyCommandPressed {
                 if publicVar.isInLargeView,
                    largeImageView.file.type == .video {
+                    let isRTL_Cmd = view.userInterfaceLayoutDirection == .rightToLeft
                     if specialKey == .leftArrow {
-                        largeImageView.seekVideoByFrame(direction: -1)
+                        largeImageView.seekVideoByFrame(direction: isRTL_Cmd ? 1 : -1)
                     }else{
-                        largeImageView.seekVideoByFrame(direction: 1)
+                        largeImageView.seekVideoByFrame(direction: isRTL_Cmd ? -1 : 1)
                     }
                     return nil
                 } else if !publicVar.isInLargeView,
@@ -701,7 +709,7 @@ extension ViewController {
                         closeLargeImage(0)
                         return nil
                     }else{
-                        if let indexPath = collectionView.selectionIndexPaths.first {
+                        if let indexPath = collectionView.selectionIndexPaths.min() {
                             if publicVar.isCollectionViewFirstResponder{
                                 openLargeImage(indexPath)
                                 return nil
@@ -722,7 +730,7 @@ extension ViewController {
                     }
                     return nil
                 }else{
-                    if let indexPath = collectionView.selectionIndexPaths.first {
+                    if let indexPath = collectionView.selectionIndexPaths.min() {
                         if publicVar.isCollectionViewFirstResponder{
                             openLargeImage(indexPath)
                             return nil
@@ -881,11 +889,15 @@ extension ViewController {
             
             // 检查按键是否是 ➡️、⬇️、PageDown 键
             // Check if key is ➡️, ⬇️, PageDown
+            let isRTL = view.userInterfaceLayoutDirection == .rightToLeft
             if (specialKey == .rightArrow || specialKey == .downArrow || specialKey == .pageDown || specialKey == .next) && noModifierKey {
                 if publicVar.isInLargeView{
                     if largeImageView.file.type == .video && specialKey == .rightArrow {
-                        largeImageView.seekVideo(direction: 1)
-                    }else{
+                        // RTL: right arrow = backward
+                        largeImageView.seekVideo(direction: isRTL ? -1 : 1)
+                    } else if specialKey == .rightArrow && isRTL {
+                        previousLargeImage()
+                    } else {
                         nextLargeImage()
                     }
                     return nil
@@ -896,8 +908,11 @@ extension ViewController {
             if (specialKey == .leftArrow || specialKey == .upArrow || specialKey == .pageUp || specialKey == .prev) && noModifierKey {
                 if publicVar.isInLargeView{
                     if largeImageView.file.type == .video && specialKey == .leftArrow {
-                        largeImageView.seekVideo(direction: -1)
-                    }else{
+                        // RTL: left arrow = forward
+                        largeImageView.seekVideo(direction: isRTL ? 1 : -1)
+                    } else if specialKey == .leftArrow && isRTL {
+                        nextLargeImage()
+                    } else {
                         previousLargeImage()
                     }
                     return nil

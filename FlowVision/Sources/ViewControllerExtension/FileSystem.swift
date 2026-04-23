@@ -8,59 +8,172 @@ import Cocoa
 import AVFoundation
 import DiskArbitration
 
+private class ScanCancelHandler: NSObject {
+    var onCancel: (() -> Void)?
+    @objc func cancel(_ sender: Any?) { onCancel?() }
+}
+
 extension ViewController {
     
-    func showScanAlert(fileCount: Int, imageCount: Int, videoCount: Int) -> Bool {
-        let alert = NSAlert()
-        alert.messageText = NSLocalizedString("Scan Prompt", comment: "扫描提示")
-        alert.informativeText = String(format: NSLocalizedString("scanned-files", comment: "当前已扫描 %d 个文件，其中图像 %d 个，视频 %d 个。是否继续？"), fileCount, imageCount, videoCount)
-        alert.addButton(withTitle: NSLocalizedString("Continue", comment: "继续"))
-        alert.addButton(withTitle: NSLocalizedString("Stop", comment: "停止"))
-        
-        let StoreIsKeyEventEnabled = publicVar.isKeyEventEnabled
-        publicVar.isKeyEventEnabled = false
-        let response = alert.runModal()
-        publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
-        
-        return response == .alertFirstButtonReturn
-    }
-    
-    func scanFiles(at folderURL: URL, contents: inout [URL],  properties: [URLResourceKey]) {
-        let options:FileManager.DirectoryEnumerationOptions = publicVar.isShowHiddenFile ? [] : [.skipsHiddenFiles]
+    func scanFiles(at folderURL: URL, contents: inout [URL], properties: [URLResourceKey]) {
+        let options: FileManager.DirectoryEnumerationOptions = publicVar.isShowHiddenFile ? [] : [.skipsHiddenFiles]
         let enumerator = FileManager.default.enumerator(at: folderURL, includingPropertiesForKeys: properties, options: options, errorHandler: { (url, error) -> Bool in
             print("Error enumerating \(url): \(error.localizedDescription)")
             return true
         })
-
+        
+        let isRecursiveContainFolder = publicVar.isRecursiveContainFolder
+        
+        let lock = NSLock()
+        var isCancelled = false
+        var scannedURLs = [URL]()
         var fileCount = 0
         var imageCount = 0
         var videoCount = 0
-        let scanInterval: TimeInterval = 4.0
-        var startDate = Date()
+        var scanDone = false
         
-        while let url = enumerator?.nextObject() as? URL {
-            let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-            if !isDirectory || publicVar.isRecursiveContainFolder {
-                contents.append(url)
-                fileCount += 1
-                if globalVar.HandledImageAndRawExtensions.contains(url.pathExtension.lowercased()) {
-                    imageCount += 1
-                } else if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
-                    videoCount += 1
+        // Progress panel (created lazily, only shown if scan takes > 2s)
+        let panelWidth: CGFloat = 360
+        let panelHeight: CGFloat = 110
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: panelWidth, height: panelHeight),
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: true
+        )
+        panel.title = NSLocalizedString("Scan Prompt", comment: "扫描提示")
+        panel.isFloatingPanel = true
+        panel.center()
+        panel.standardWindowButton(.closeButton)?.isHidden = true
+        panel.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        panel.standardWindowButton(.zoomButton)?.isHidden = true
+        
+        let contentView = NSView(frame: NSRect(x: 0, y: 0, width: panelWidth, height: panelHeight))
+        
+        let progressIndicator = NSProgressIndicator(frame: NSRect(x: 20, y: 72, width: panelWidth - 40, height: 20))
+        progressIndicator.style = .bar
+        progressIndicator.isIndeterminate = true
+        contentView.addSubview(progressIndicator)
+        
+        let statusLabel = NSTextField(labelWithString: "")
+        statusLabel.frame = NSRect(x: 20, y: 44, width: panelWidth - 40, height: 20)
+        statusLabel.font = NSFont.systemFont(ofSize: 12)
+        statusLabel.alignment = .natural
+        statusLabel.lineBreakMode = .byTruncatingTail
+        contentView.addSubview(statusLabel)
+        
+        let cancelButton = NSButton(title: NSLocalizedString("Stop", comment: "停止"), target: nil, action: nil)
+        cancelButton.frame = NSRect(x: (panelWidth - 80) / 2, y: 10, width: 80, height: 24)
+        cancelButton.bezelStyle = .rounded
+        cancelButton.keyEquivalent = "\u{1b}"
+        contentView.addSubview(cancelButton)
+        
+        panel.contentView = contentView
+        
+        var modalStopped = false
+        var didEnterModal = false
+        
+        let cancelHandler = ScanCancelHandler()
+        cancelHandler.onCancel = {
+            lock.lock()
+            isCancelled = true
+            lock.unlock()
+            if !modalStopped {
+                modalStopped = true
+                statusLabel.stringValue = NSLocalizedString("Sorting results...", comment: "正在对结果进行排序...")
+                DispatchQueue.main.async {
+                    NSApp.stopModal()
+                }
+            }
+        }
+        cancelButton.target = cancelHandler
+        cancelButton.action = #selector(ScanCancelHandler.cancel(_:))
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            var lastUpdateTime = Date()
+            
+            while let url = enumerator?.nextObject() as? URL {
+                lock.lock()
+                let cancelled = isCancelled
+                lock.unlock()
+                if cancelled { break }
+                
+                let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+                if !isDirectory || isRecursiveContainFolder {
+                    lock.lock()
+                    scannedURLs.append(url)
+                    fileCount += 1
+                    if globalVar.HandledImageAndRawExtensions.contains(url.pathExtension.lowercased()) {
+                        imageCount += 1
+                    } else if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
+                        videoCount += 1
+                    }
+                    let fc = fileCount
+                    let ic = imageCount
+                    let vc = videoCount
+                    lock.unlock()
+                    
+                    let now = Date()
+                    if now.timeIntervalSince(lastUpdateTime) >= 0.3 {
+                        lastUpdateTime = now
+                        DispatchQueue.main.async {
+                            statusLabel.stringValue = String(format: NSLocalizedString("scanned-files-progress", comment: "当前已扫描 %d 个文件，其中图像 %d 个，视频 %d 个"), fc, ic, vc)
+                        }
+                    }
                 }
             }
             
-            let elapsedTime = Date().timeIntervalSince(startDate)
-            if elapsedTime >= scanInterval {
-                let shouldContinue = showScanAlert(fileCount: fileCount, imageCount: imageCount, videoCount: videoCount)
-                if !shouldContinue {
-                    break
+            lock.lock()
+            scanDone = true
+            lock.unlock()
+            
+            DispatchQueue.main.async {
+                if didEnterModal && !modalStopped {
+                    modalStopped = true
+                    statusLabel.stringValue = NSLocalizedString("Sorting results...", comment: "正在对结果进行排序...")
+                    DispatchQueue.main.async {
+                        NSApp.stopModal()
+                    }
                 }
-                // Reset the timer
-                startDate = Date()
             }
         }
-
+        
+        // Wait up to X seconds for scan to finish before showing the panel
+        let showPanelDelay: TimeInterval = 2.0
+        let waitStart = Date()
+        while Date().timeIntervalSince(waitStart) < showPanelDelay {
+            lock.lock()
+            let done = scanDone
+            lock.unlock()
+            if done { break }
+            Thread.sleep(forTimeInterval: 0.05)
+        }
+        
+        lock.lock()
+        let needsModal = !scanDone
+        lock.unlock()
+        
+        if needsModal {
+            didEnterModal = true
+            lock.lock()
+            let fc = fileCount
+            let ic = imageCount
+            let vc = videoCount
+            lock.unlock()
+            statusLabel.stringValue = String(format: NSLocalizedString("scanned-files-progress", comment: "当前已扫描 %d 个文件，其中图像 %d 个，视频 %d 个"), fc, ic, vc)
+            progressIndicator.startAnimation(nil)
+            
+            let storeIsKeyEventEnabled = publicVar.isKeyEventEnabled
+            publicVar.isKeyEventEnabled = false
+            NSApp.runModal(for: panel)
+            publicVar.isKeyEventEnabled = storeIsKeyEventEnabled
+            panel.close()
+            withExtendedLifetime(cancelHandler) {}
+        }
+        
+        lock.lock()
+        contents.append(contentsOf: scannedURLs)
+        lock.unlock()
     }
     
     func scanVirtualFiles(at folderURL: URL, contents: inout [URL], properties: [URLResourceKey],
@@ -446,7 +559,8 @@ extension ViewController {
         // Exif排序时间警告
         // Exif sort time warning
         if publicVar.profile.sortType == .exifDateA || publicVar.profile.sortType == .exifDateZ
-            || publicVar.profile.sortType == .exifPixelA || publicVar.profile.sortType == .exifPixelZ {
+            || publicVar.profile.sortType == .exifPixelA || publicVar.profile.sortType == .exifPixelZ
+            || publicVar.profile.sortType == .ratingA || publicVar.profile.sortType == .ratingZ {
             
             if isExifSortTimeExceedCancel(folderURL: folderURL, imageCount: imageCount, videoCount: videoCount) {
                 contents.removeAll()
@@ -924,10 +1038,6 @@ extension ViewController {
                             let timeInterval = Double(nanoTime) / 1_000_000_000
                             log("Time taken to reach hidden snapshot reason 2: \(timeInterval) seconds")
                             log("-----------------------------------------------------------")
-                            
-                            // 选中产生变化的文件（粘贴或移动后）
-                            // Select files that have changed (after paste or move)
-                            selectItemsNewChanged()
                         }
                         
                         while snapshotQueue.count > 0{
@@ -964,38 +1074,44 @@ extension ViewController {
         }
     }
     
-    func selectItemsNewChanged() {
+    /// 选中产生变化的文件（粘贴/移动后）或定位文件夹（返回上级时）
+    /// - Parameters:
+    ///   - isFinal: true=全量模式（检查所有items、清空列表、滚动定位）；false=增量模式（仅检查指定范围、不清空、不滚动）
+    ///   - checkRange: 增量模式下要检查的indexPaths范围；全量模式下忽略此参数
+    func selectItemsNewChanged(isFinal: Bool = true, checkRange: [IndexPath]? = nil) {
+
+        let elapsedThreshold = 2.0
+        
+        let curItemCount = collectionView.numberOfItems(inSection: 0)
         
         fileDB.lock()
-        let curFolder=fileDB.curFolder
+        let curFolder = fileDB.curFolder
+        let dirFiles = fileDB.db[SortKeyDir(curFolder)]?.files
         fileDB.unlock()
         
         // 向上或者后退时定位文件夹
         // Locate folder when going up or back
-        if let (lastFolder,direction) = publicVar.folderStepForLocate.first {
-            
-            if let lastURL = URL(string: lastFolder),
-               let curURL = URL(string: curFolder),
-               lastURL.deletingLastPathComponent().absoluteString == curURL.absoluteString {
-                
+        if let (lastFolder, _) = publicVar.folderStepForLocate.first {
+            let elapsed = Double(DispatchTime.now().uptimeNanoseconds - publicVar.folderStepForLocateTime.uptimeNanoseconds) / 1_000_000_000
+            if elapsed > elapsedThreshold {
                 publicVar.folderStepForLocate.removeAll()
-                
-                let targetFolderPath = lastURL.absoluteString
-                let targetKey = SortKeyFile(targetFolderPath, isDir: true, needGetProperties: true, sortType: publicVar.profile.sortType, isSortFolderFirst: publicVar.profile.isSortFolderFirst, isSortUseFullPath: publicVar.profile.isSortUseFullPath, randomSeed: publicVar.randomSeed)
-                
+            } else if let lastURL = URL(string: lastFolder),
+                      let curURL = URL(string: curFolder),
+                      lastURL.deletingLastPathComponent().absoluteString == curURL.absoluteString {
+                let targetKey = SortKeyFile(lastURL.absoluteString, isDir: true, needGetProperties: true, sortType: publicVar.profile.sortType, isSortFolderFirst: publicVar.profile.isSortFolderFirst, isSortUseFullPath: publicVar.profile.isSortUseFullPath, randomSeed: publicVar.randomSeed)
                 fileDB.lock()
-                if let index=fileDB.db[SortKeyDir(curFolder)]?.files.index(forKey: targetKey),
-                   let offset=fileDB.db[SortKeyDir(curFolder)]?.files.offset(of: index) {
+                if let files = dirFiles,
+                   let index = files.index(forKey: targetKey) {
+                    let offset = files.offset(of: index)
                     fileDB.unlock()
-                    let indexPath=IndexPath(item: offset, section: 0)
-                    collectionView.scrollToItems(at: [indexPath], scrollPosition: .nearestHorizontalEdge)
-                    collectionView.reloadData()
-                    collectionView.deselectAll(nil)
-                    collectionView.delegate?.collectionView?(collectionView, shouldSelectItemsAt: [indexPath])
-                    collectionView.selectItems(at: [indexPath], scrollPosition: [])
-                    collectionView.delegate?.collectionView?(collectionView, didSelectItemsAt: [indexPath])
-                    setLoadThumbPriority(ifNeedVisable: true)
-                }else{
+                    let indexPath = IndexPath(item: offset, section: 0)
+                    if indexPath.item < curItemCount {
+                        publicVar.folderStepForLocate.removeAll()
+                        collectionView.scrollToItems(at: [indexPath], scrollPosition: .nearestHorizontalEdge)
+                        collectionView.selectItems(at: [indexPath], scrollPosition: [])
+                        setLoadThumbPriority(ifNeedVisable: true)
+                    }
+                } else {
                     fileDB.unlock()
                 }
             }
@@ -1004,32 +1120,52 @@ extension ViewController {
         // 粘贴或移动后选中变更的文件
         // Select changed files after paste or move
         if !publicVar.filesForLocateAfterChange.isEmpty {
-            let targetPaths = publicVar.filesForLocateAfterChange
-            publicVar.filesForLocateAfterChange.removeAll()
+            let elapsed = Double(DispatchTime.now().uptimeNanoseconds - publicVar.filesForLocateAfterChangeTime.uptimeNanoseconds) / 1_000_000_000
+            if elapsed > elapsedThreshold {
+                publicVar.filesForLocateAfterChange.removeAll()
+                return
+            }
             
-            let targetPathSet = Set(targetPaths.map { $0.hasSuffix("/") ? String($0.dropLast()) : $0 })
-            var indexPaths: [IndexPath] = []
+            let targetPathSet = Set(publicVar.filesForLocateAfterChange.map {
+                $0.hasSuffix("/") ? String($0.dropLast()) : $0
+            })
+            var matchedIndexPaths = [IndexPath]()
+            
             fileDB.lock()
-            if let files = fileDB.db[SortKeyDir(curFolder)]?.files {
-                for (offset, element) in files.enumerated() {
-                    let filePath = element.0.path
-                    let normalizedPath = filePath.hasSuffix("/") ? String(filePath.dropLast()) : filePath
-                    if targetPathSet.contains(normalizedPath) {
-                        indexPaths.append(IndexPath(item: offset, section: 0))
+            if let files = dirFiles {
+                if let checkRange = checkRange, !isFinal {
+                    for indexPath in checkRange {
+                        guard indexPath.item < curItemCount else { continue }
+                        if let element = files.elementSafe(atOffset: indexPath.item) {
+                            let normalizedPath = element.0.path.hasSuffix("/") ? String(element.0.path.dropLast()) : element.0.path
+                            if targetPathSet.contains(normalizedPath) {
+                                matchedIndexPaths.append(indexPath)
+                            }
+                        }
+                    }
+                } else {
+                    for (offset, element) in files.enumerated() {
+                        guard offset < curItemCount else { continue }
+                        let normalizedPath = element.0.path.hasSuffix("/") ? String(element.0.path.dropLast()) : element.0.path
+                        if targetPathSet.contains(normalizedPath) {
+                            matchedIndexPaths.append(IndexPath(item: offset, section: 0))
+                        }
                     }
                 }
             }
             fileDB.unlock()
             
-            if !indexPaths.isEmpty {
-                let indexPathSet = Set(indexPaths)
-                collectionView.scrollToItems(at: [indexPaths[0]], scrollPosition: .nearestHorizontalEdge)
-                collectionView.reloadData()
-                collectionView.deselectAll(nil)
-                collectionView.delegate?.collectionView?(collectionView, shouldSelectItemsAt: indexPathSet)
-                collectionView.selectItems(at: indexPathSet, scrollPosition: [])
-                collectionView.delegate?.collectionView?(collectionView, didSelectItemsAt: indexPathSet)
-                setLoadThumbPriority(ifNeedVisable: true)
+            if !matchedIndexPaths.isEmpty {
+                let isFirstMatch = collectionView.selectionIndexPaths.isEmpty
+                collectionView.selectItems(at: Set(matchedIndexPaths), scrollPosition: [])
+                if isFirstMatch {
+                    collectionView.scrollToItems(at: [matchedIndexPaths[0]], scrollPosition: .nearestHorizontalEdge)
+                    setLoadThumbPriority(ifNeedVisable: true)
+                }
+            }
+            
+            if isFinal {
+                publicVar.filesForLocateAfterChange.removeAll()
             }
         }
     }
@@ -1103,6 +1239,7 @@ extension ViewController {
         if stackDeep == 0,
            direction == .up || direction == .down || direction == .back {
             publicVar.folderStepForLocate.insert((fileDB.curFolder,direction), at: 0)
+            publicVar.folderStepForLocateTime = .now()
             if publicVar.folderStepForLocate.count > 10 {
                 publicVar.folderStepForLocate.removeLast()
             }
@@ -1313,10 +1450,10 @@ extension ViewController {
                     let exifData = convertExifData(file: file)
                     var formatedExifData = formatExifData(exifData ?? [:], isVideo: globalVar.HandledVideoExtensions.contains(ext), needWarp: false)
 
-                    formatedExifData.insert((NSLocalizedString("File Path", comment: "文件路径"),url.deletingLastPathComponent().path+"/"), at: 0)
+                    formatedExifData.insert((NSLocalizedString("File Path", comment: "文件路径"), "\u{2066}" + url.deletingLastPathComponent().path + "/" + "\u{2069}"), at: 0)
 
                     if isAlias {
-                        formatedExifData.insert((NSLocalizedString("Original Path", comment: "原始路径"), resolvedUrl.path), at: 0)
+                        formatedExifData.insert((NSLocalizedString("Original Path", comment: "原始路径"), "\u{2066}" + resolvedUrl.path + "\u{2069}"), at: 0)
                         formatedExifData.insert((NSLocalizedString("Alias Type", comment: "替身类型"), aliasTypeLabel), at: 0)
                     }
                     
@@ -1428,6 +1565,46 @@ extension ViewController {
                     showInformationLong(title: NSLocalizedString("File Info", comment: "文件信息"), message: text, width: 400)
                     
                     return
+                } else {
+                    let targetUrl = url
+                    
+                    var folderInfoData: [(String, Any)] = []
+
+                    if isAlias {
+                        folderInfoData.append((NSLocalizedString("Alias Type", comment: "替身类型"), aliasTypeLabel))
+                        folderInfoData.append((NSLocalizedString("Original Path", comment: "原始路径"), "\u{2066}" + resolvedUrl.path + "\u{2069}"))
+                    }
+                    
+                    folderInfoData.append((NSLocalizedString("Folder Path", comment: "文件夹路径"), "\u{2066}" + targetUrl.path + "\u{2069}"))
+                    folderInfoData.append((NSLocalizedString("Folder Name", comment: "文件夹名称"), targetUrl.lastPathComponent))
+                    
+                    if let creationDate = (try? targetUrl.resourceValues(forKeys: [.creationDateKey]).creationDate) {
+                        folderInfoData.append((NSLocalizedString("Creation Date", comment: "创建日期"), formatDateToCurrentTimeZone(creationDate)))
+                    }
+                    if let modDate = (try? targetUrl.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) {
+                        folderInfoData.append((NSLocalizedString("Modification Date", comment: "修改日期"), formatDateToCurrentTimeZone(modDate)))
+                    }
+                    if let addDate = (try? targetUrl.resourceValues(forKeys: [.addedToDirectoryDateKey]).addedToDirectoryDate) {
+                        folderInfoData.append((NSLocalizedString("Added Date", comment: "添加日期"), formatDateToCurrentTimeZone(addDate)))
+                    }
+                    
+                    let separator = "--------------------"
+                    let font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+                    let maxKeyLength = folderInfoData.map { $0.0.size(withAttributes: [.font: font]).width }.max() ?? 0
+                    let formattedLines = folderInfoData.map { (key, value) -> String in
+                        let keyLength = key.size(withAttributes: [.font: font]).width
+                        let padding = String(repeating: " ", count: Int((maxKeyLength - keyLength) / " ".size(withAttributes: [.font: font]).width))
+                        return "\(key):\(padding) \(value)"
+                    }
+                    var text = formattedLines.joined(separator: "\n")
+                    
+                    let result = FolderStatisticInfo()
+                    getFolderStatistic(resolvedUrl, result: result)
+                    text += "\n" + separator + "\n" + result.description
+                    
+                    showInformationLong(title: NSLocalizedString("Folder Info", comment: "文件夹信息"), message: text, width: 400)
+                    
+                    return
                 }
             }
         }
@@ -1518,15 +1695,14 @@ extension ViewController {
                 result.folderCount += 1
             }
             
-            let elapsedTime = Date().timeIntervalSince(startDate)
-            if elapsedTime >= scanInterval {
-                let shouldContinue = showScanAlert(fileCount: result.fileCount, imageCount: result.imageCount, videoCount: result.videoCount)
-                if !shouldContinue {
-                    break
-                }
-                // Reset the timer
-                startDate = Date()
-            }
+            // let elapsedTime = Date().timeIntervalSince(startDate)
+            // if elapsedTime >= scanInterval {
+            //     let shouldContinue = showScanAlert(fileCount: result.fileCount, imageCount: result.imageCount, videoCount: result.videoCount)
+            //     if !shouldContinue {
+            //         break
+            //     }
+            //     startDate = Date()
+            // }
         }
     }
 }

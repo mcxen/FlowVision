@@ -59,6 +59,12 @@
             "value" : "Gebruik FFmpeg Niet"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie używaj FFmpeg"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81,6 +87,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd inte FFmpeg"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FFmpeg Kullanma"
           }
         },
         "zh-Hans" : {
@@ -155,6 +167,12 @@
             "value" : "Limiet gebruik geheugen:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit użycia pamięci:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -177,6 +195,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Begränsning av minnesanvändning:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bellek Kullanım Sınırı:"
           }
         },
         "zh-Hans" : {
@@ -251,6 +275,12 @@
             "value" : "Voor mechanische harde schijven en netwerkschijven wordt aanbevolen deze op 1 in te stellen. Voor externe SSD's kan deze waarde passend verhoogd worden."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dla dysków twardych mechanicznych i dysków sieciowych zaleca się ustawienie na 1. Dla zewnętrznych dysków SSD wartość tę można odpowiednio zwiększyć."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -273,6 +303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "För mekaniska hårddiskar och nätverksenheter rekommenderas det att ställa in den på 1. För externa SSD-enheter kan detta värde ökas lämpligt."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mekanik sabit diskler ve ağ sürücüleri için 1 olarak ayarlanması önerilir. Harici SSD'ler için bu değer uygun şekilde artırılabilir."
           }
         },
         "zh-Hans" : {
@@ -347,6 +383,12 @@
             "value" : "Dynamische bibliotheek laden:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Załaduj bibliotekę dynamiczną:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -369,6 +411,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ladda dynamiskt bibliotek:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dinamik Kütüphaneyi Yükle:"
           }
         },
         "zh-Hans" : {
@@ -443,6 +491,12 @@
             "value" : "4"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -462,6 +516,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "4"
@@ -539,6 +599,12 @@
             "value" : "Miniatuur threads:\n(Externe volumes)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wątki miniatur:\n(Woluminy zewnętrzne)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -561,6 +627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Miniatyrtrådar:\n(Externa volymer)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük Resim İş Parçacıkları:\n(Harici Birimler)"
           }
         },
         "zh-Hans" : {
@@ -635,6 +707,12 @@
             "value" : "Deze instelling geldt voor interne SSD. Het wordt aanbevolen om deze tussen 4 en 8 in te stellen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To ustawienie dotyczy wewnętrznego SSD. Zaleca się ustawić je między 4 a 8."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -657,6 +735,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Denna inställning gäller den interna SSD:n. Det rekommenderas att ställa in den mellan 4 och 8."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ayar dahili SSD için geçerlidir. 4 ile 8 arasında ayarlanması önerilir."
           }
         },
         "zh-Hans" : {
@@ -731,6 +815,12 @@
             "value" : "Gebruik FFmpeg voor Meer Videobestandsminiaturen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj FFmpeg do większej liczby miniatur formatów wideo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -753,6 +843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Använd FFmpeg för fler videoformatminiatyrer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daha Fazla Video Formatı Küçük Resmi İçin FFmpeg Kullanın"
           }
         },
         "zh-Hans" : {
@@ -827,6 +923,12 @@
             "value" : "Mapzoekdiepte:\n(Externe volumes)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Głębokość wyszukiwania folderów:\n(Woluminy zewnętrzne)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -849,6 +951,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mappsökningsdjup:\n(Externa volymer)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasör Arama Derinliği:\n(Harici Birimler)"
           }
         },
         "zh-Hans" : {
@@ -923,6 +1031,12 @@
             "value" : "Wanneer het geheugenverbruik van de applicatie de limiet overschrijdt, wordt de cache voor het renderen van miniaturen in elke map opeenvolgend gewist op basis van de laatst toegangsdatum."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gdy użycie pamięci aplikacji przekroczy limit, pamięć podręczna renderowania miniatur w każdym katalogu będzie czyszczona kolejno na podstawie czasu ostatniego dostępu."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -945,6 +1059,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "När applikationens minnesanvändning överskrider gränsen kommer miniatyrrenderingscachen i varje katalog att rensas sekventiellt baserat på senaste åtkomsttid."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulamanın bellek kullanımı sınırı aştığında, her dizindeki küçük resim oluşturma önbelleği son erişim zamanına göre sırayla temizlenecektir."
           }
         },
         "zh-Hans" : {
@@ -1019,6 +1139,12 @@
             "value" : "De applicatie heeft een ingebouwde FFmpeg-bibliotheek. Als er een uitzondering optreedt tijdens het genereren van videominiaturen, probeer dan deze optie uit te schakelen of \"Videobestanden weergeven\" uit te vinken."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja ma wbudowaną bibliotekę FFmpeg. Jeśli wystąpi wyjątek podczas generowania miniatur wideo, spróbuj wyłączyć tę opcję lub odznaczyć \"Pokaż pliki wideo\"."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1041,6 +1167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Applikationen har ett inbyggt FFmpeg-bibliotek. Om undantag uppstår när videominiatyrer genereras, prova att inaktivera detta alternativ eller avmarkera \"Visa videofiler\"."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama yerleşik FFmpeg kütüphanesine sahiptir. Video küçük resimleri oluşturulurken bir istisna meydana gelirse, lütfen bu seçeneği devre dışı bırakmayı veya \"Video Dosyalarını Göster\" seçeneğinin işaretini kaldırmayı deneyin."
           }
         },
         "zh-Hans" : {
@@ -1115,6 +1247,12 @@
             "value" : "8"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1134,6 +1272,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "8"
@@ -1211,6 +1355,12 @@
             "value" : "Het aantal submapniveaus om te zoeken bij het genereren van mapminiaturen. Als dit is ingesteld op 0, zullen er geen mapminiaturen worden gegenereerd en zal de boomstructuur niet aangeven of er submappen bestaan door middel van een pijltje aan de linkerkant."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liczba poziomów podfolderów do przeszukania podczas generowania miniatur folderów. Jeśli ustawiona na 0, miniatury folderów nie będą generowane, a drzewo katalogów nie będzie wskazywać, czy istnieją podfoldery za pomocą strzałki po lewej stronie."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1233,6 +1383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antalet undermappnivåer att söka när mapptumnaglar genereras. Om det ställs in på 0 kommer inga mapptumnaglar att genereras, och trädkatalogen kommer inte att indikera om undermappar finns genom en pil på vänster sida."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasör küçük resimleri oluşturulurken aranacak alt klasör seviyelerinin sayısı. 0 olarak ayarlanırsa, klasör küçük resimleri oluşturulmaz ve dizin ağacı, sol taraftaki ok ile alt klasörlerin var olup olmadığını göstermez."
           }
         },
         "zh-Hans" : {
@@ -1307,6 +1463,12 @@
             "value" : "0"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1326,6 +1488,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "0"
@@ -1403,6 +1571,12 @@
             "value" : "Mapzoekdiepte:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Głębokość wyszukiwania folderów:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1425,6 +1599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mappsökningsdjup:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasör Arama Derinliği:"
           }
         },
         "zh-Hans" : {
@@ -1499,6 +1679,12 @@
             "value" : "Miniatuur threads:"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wątki miniatur:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1521,6 +1707,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Miniatyrtrådar:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küçük Resim Konuları:"
           }
         },
         "zh-Hans" : {
@@ -1595,6 +1787,12 @@
             "value" : "Voor netwerkschijven wordt aanbevolen deze op 0 in te stellen (geen mapminiaturen genereren, en in de directorystructuur wordt niet aangegeven of er submappen bestaan met een pijl aan de linkerkant)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dla dysków sieciowych zaleca się ustawienie na 0 (nie generować miniatur folderów, a drzewo katalogów nie będzie wskazywać, czy istnieją podfoldery za pomocą strzałki po lewej stronie)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1617,6 +1815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "För nätverksenheter rekommenderas det att ställa in det till 0 (generera inte mappminiatyrer, och mappträdet kommer inte att indikera om undermappar finns med vänsterpilen)."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ağ sürücüleri için, 0 olarak ayarlanması önerilir (klasör küçük resimleri oluşturulmaz ve dizin ağacı, sol taraftaki ok ile alt klasörlerin var olup olmadığını göstermez)."
           }
         },
         "zh-Hans" : {
@@ -1691,6 +1895,12 @@
             "value" : "bijv. 4G"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "np. 4G"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1713,6 +1923,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "t.ex. 4G"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ör. 4G"
           }
         },
         "zh-Hans" : {
@@ -1787,6 +2003,12 @@
             "value" : "1"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1806,6 +2028,12 @@
           }
         },
         "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "1"
@@ -1883,6 +2111,12 @@
             "value" : "Deze instellingen zijn van toepassing op externe volumes, waaronder externe schijven, netwerkschijven en andere gekoppelde mappen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te ustawienia dotyczą woluminów zewnętrznych, w tym dysków zewnętrznych, dysków sieciowych i innych zamontowanych katalogów."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1905,6 +2139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dessa inställningar gäller externa volymer, inklusive externa enheter, nätverksenheter och andra monterade kataloger."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ayarlar, harici sürücüler, ağ sürücüleri ve diğer bağlanmış dizinler dahil olmak üzere harici birimlere uygulanır."
           }
         },
         "zh-Hans" : {

@@ -7,8 +7,22 @@ import Foundation
 import Cocoa
 
 class CustomSplitView: NSSplitView {
-    
+
     private var middleMouseInitialLocation: NSPoint?
+    private var didFlipForRTL = false
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+
+        // RTL布局时交换子视图顺序，使目录树显示在右侧
+        // Flip subview order under RTL so the sidebar appears on the right
+        if !didFlipForRTL && userInterfaceLayoutDirection == .rightToLeft && subviews.count == 2 {
+            didFlipForRTL = true
+            let first = subviews[0]
+            let second = subviews[1]
+            subviews = [second, first]
+        }
+    }
     
     override var dividerThickness: CGFloat {
         if getViewController(self)!.publicVar.profile.isDirTreeHidden {

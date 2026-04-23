@@ -86,6 +86,16 @@ class CustomFlowLayout: NSCollectionViewLayout {
             rowHeight = max(rowHeight, height)
             xOffset += width + itemSpacing
         }
+
+        // RTL: 镜像翻转所有item的x坐标
+        // RTL: mirror flip x coordinates for all items
+        if collectionView.userInterfaceLayoutDirection == .rightToLeft {
+            let scrollbarWidth = getViewController(collectionView)!.publicVar.profile.ThumbnailScrollbarWidth
+            let mirrorWidth = contentWidth - scrollbarWidth
+            for attributes in cache {
+                attributes.frame.origin.x = mirrorWidth - attributes.frame.origin.x - attributes.frame.width
+            }
+        }
     }
 
     override var collectionViewContentSize: NSSize {
@@ -180,6 +190,15 @@ class CustomGridLayout: NSCollectionViewLayout {
             // Use fixed width to calculate next position
             xOffset += positionWidth + itemSpacing
         }
+
+        // RTL: 镜像翻转所有item的x坐标
+        // RTL: mirror flip x coordinates for all items
+        if collectionView.userInterfaceLayoutDirection == .rightToLeft {
+            let mirrorWidth = contentWidth - scrollbarWidth
+            for attributes in cache {
+                attributes.frame.origin.x = mirrorWidth - attributes.frame.origin.x - attributes.frame.width
+            }
+        }
     }
 
     override var collectionViewContentSize: NSSize {
@@ -255,6 +274,15 @@ class WaterfallLayout: NSCollectionViewLayout {
 
             contentHeight = max(contentHeight, frame.maxY + cellPadding)
             yOffset[column] = yOffset[column] + height + lineSpaceAdjust
+        }
+
+        // RTL: 镜像翻转所有item的x坐标
+        // RTL: mirror flip x coordinates for all items
+        if collectionView.userInterfaceLayoutDirection == .rightToLeft {
+            let mirrorWidth = contentWidth - scrollbarWidth
+            for attributes in cache {
+                attributes.frame.origin.x = mirrorWidth - attributes.frame.origin.x - attributes.frame.width
+            }
         }
     }
 
