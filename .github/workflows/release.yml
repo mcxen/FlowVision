@@ -120,19 +120,17 @@ jobs:
         run: |
           set -euo pipefail
 
-          FLAGS=()
+          FLAGS=""
           if [[ "$DRAFT" == "true" ]]; then
-            FLAGS+=(--draft)
+            FLAGS="$FLAGS --draft"
           fi
           if [[ "$PRERELEASE" == "true" ]]; then
-            FLAGS+=(--prerelease)
+            FLAGS="$FLAGS --prerelease"
           fi
 
           if gh release view "$VERSION" >/dev/null 2>&1; then
             gh release upload "$VERSION" dist/*.dmg dist/*.zip --clobber
           else
-            gh release create "$VERSION" dist/*.dmg dist/*.zip \
-              --title "FlowVision $VERSION" \
-              --generate-notes \
-              "${FLAGS[@]}"
+            # shellcheck disable=SC2086
+            gh release create "$VERSION" dist/*.dmg dist/*.zip --title "FlowVision $VERSION" --generate-notes $FLAGS
           fi
