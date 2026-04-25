@@ -12,6 +12,7 @@ OUTPUT_DIR="${OUTPUT_DIR:-$PROJECT_ROOT/dist}"
 APP_NAME="${APP_NAME:-}"
 VOLUME_NAME="${VOLUME_NAME:-FlowVision}"
 DMG_NAME="${DMG_NAME:-FlowVision-macOS}"
+XCODEBUILD_EXTRA_ARGS="${XCODEBUILD_EXTRA_ARGS:-}"
 
 # Optional signing controls
 APP_SIGN_IDENTITY="${APP_SIGN_IDENTITY:-}"
@@ -19,13 +20,15 @@ DMG_SIGN_IDENTITY="${DMG_SIGN_IDENTITY:-}"
 ENABLE_CODESIGN="${ENABLE_CODESIGN:-1}" # 1=on, 0=off
 
 echo "[1/4] Building app (scheme=$SCHEME, configuration=$CONFIGURATION)..."
+read -r -a EXTRA_ARGS <<< "$XCODEBUILD_EXTRA_ARGS"
 xcodebuild \
   -project "$PROJECT_PATH" \
   -scheme "$SCHEME" \
   -configuration "$CONFIGURATION" \
   -destination "platform=macOS" \
   -derivedDataPath "$DERIVED_DATA" \
-  clean build
+  clean build \
+  "${EXTRA_ARGS[@]}"
 
 BUILD_PRODUCTS_DIR="$DERIVED_DATA/Build/Products/$CONFIGURATION"
 
@@ -74,4 +77,3 @@ else
 fi
 
 echo "DONE: $DMG_PATH"
-

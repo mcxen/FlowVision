@@ -8,6 +8,136 @@ import Cocoa
 import VisionKit
 import AVKit
 
+private final class VideoCropOverlayView: NSView {
+    private let actionButtonSize: CGFloat = 26
+    private let actionButtonGap: CGFloat = 6
+
+    var selectionRect: NSRect = .zero {
+        didSet { needsDisplay = true }
+    }
+
+    override var isFlipped: Bool { false }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        nil
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+
+        NSColor.black.withAlphaComponent(0.45).setFill()
+        if selectionRect.isEmpty {
+            bounds.fill()
+            return
+        }
+
+        NSRect(x: bounds.minX, y: bounds.minY, width: bounds.width, height: max(0, selectionRect.minY - bounds.minY)).fill()
+        NSRect(x: bounds.minX, y: selectionRect.maxY, width: bounds.width, height: max(0, bounds.maxY - selectionRect.maxY)).fill()
+        NSRect(x: bounds.minX, y: selectionRect.minY, width: max(0, selectionRect.minX - bounds.minX), height: selectionRect.height).fill()
+        NSRect(x: selectionRect.maxX, y: selectionRect.minY, width: max(0, bounds.maxX - selectionRect.maxX), height: selectionRect.height).fill()
+
+        NSColor.systemYellow.setStroke()
+        let border = NSBezierPath(rect: selectionRect)
+        border.lineWidth = 2
+        border.stroke()
+
+        NSColor.systemYellow.setFill()
+        for handle in handleRects(for: selectionRect) {
+            let path = NSBezierPath(roundedRect: handle, xRadius: 2, yRadius: 2)
+            path.fill()
+        }
+
+        drawActionButtons()
+    }
+
+    func confirmButtonRect() -> NSRect {
+        guard !selectionRect.isEmpty else { return .zero }
+        let y = max(bounds.minY + actionButtonGap, selectionRect.minY + actionButtonGap)
+        let x = min(bounds.maxX - actionButtonSize - actionButtonGap, selectionRect.maxX - actionButtonSize - actionButtonGap)
+        return NSRect(x: x, y: y, width: actionButtonSize, height: actionButtonSize)
+    }
+
+    func cancelButtonRect() -> NSRect {
+        let confirm = confirmButtonRect()
+        guard !confirm.isEmpty else { return .zero }
+        return confirm.offsetBy(dx: -(actionButtonSize + actionButtonGap), dy: 0)
+    }
+
+    private func drawActionButtons() {
+        let confirm = confirmButtonRect()
+        let cancel = cancelButtonRect()
+        guard !confirm.isEmpty, !cancel.isEmpty else { return }
+
+        drawButtonBackground(cancel, color: NSColor.systemRed.withAlphaComponent(0.92))
+        drawButtonBackground(confirm, color: NSColor.systemGreen.withAlphaComponent(0.92))
+        drawX(in: cancel)
+        drawCheckmark(in: confirm)
+    }
+
+    private func drawButtonBackground(_ rect: NSRect, color: NSColor) {
+        color.setFill()
+        NSBezierPath(roundedRect: rect, xRadius: 5, yRadius: 5).fill()
+    }
+
+    private func drawX(in rect: NSRect) {
+        NSColor.white.setStroke()
+        let path = NSBezierPath()
+        path.lineWidth = 2.4
+        path.lineCapStyle = .round
+        path.move(to: NSPoint(x: rect.minX + 8, y: rect.minY + 8))
+        path.line(to: NSPoint(x: rect.maxX - 8, y: rect.maxY - 8))
+        path.move(to: NSPoint(x: rect.maxX - 8, y: rect.minY + 8))
+        path.line(to: NSPoint(x: rect.minX + 8, y: rect.maxY - 8))
+        path.stroke()
+    }
+
+    private func drawCheckmark(in rect: NSRect) {
+        NSColor.white.setStroke()
+        let path = NSBezierPath()
+        path.lineWidth = 2.6
+        path.lineCapStyle = .round
+        path.lineJoinStyle = .round
+        path.move(to: NSPoint(x: rect.minX + 7, y: rect.midY))
+        path.line(to: NSPoint(x: rect.midX - 1, y: rect.minY + 8))
+        path.line(to: NSPoint(x: rect.maxX - 7, y: rect.maxY - 8))
+        path.stroke()
+    }
+
+    private func handleRects(for rect: NSRect) -> [NSRect] {
+        let size: CGFloat = 8
+        let half = size / 2
+        let points = [
+            NSPoint(x: rect.minX, y: rect.minY),
+            NSPoint(x: rect.midX, y: rect.minY),
+            NSPoint(x: rect.maxX, y: rect.minY),
+            NSPoint(x: rect.minX, y: rect.midY),
+            NSPoint(x: rect.maxX, y: rect.midY),
+            NSPoint(x: rect.minX, y: rect.maxY),
+            NSPoint(x: rect.midX, y: rect.maxY),
+            NSPoint(x: rect.maxX, y: rect.maxY)
+        ]
+        return points.map { NSRect(x: $0.x - half, y: $0.y - half, width: size, height: size) }
+    }
+}
+
+private enum VideoCropDragMode {
+    case new
+    case move
+    case resizeLeft
+    case resizeRight
+    case resizeTop
+    case resizeBottom
+    case resizeTopLeft
+    case resizeTopRight
+    case resizeBottomLeft
+    case resizeBottomRight
+}
+
+private enum VideoCropActionButton {
+    case confirm
+    case cancel
+}
+
 class LargeImageView: NSView {
 
     var imageView: CustomLargeImageView!
@@ -35,6 +165,17 @@ class LargeImageView: NSView {
     
     private var volumeObservation: NSKeyValueObservation?
     private var blackOverlayView: NSView?
+    private var isSelectingVideoCrop = false
+    private var videoCropStartPoint: NSPoint?
+    private var videoCropSelectionRect: NSRect = .zero
+    private var videoCropOverlayView: VideoCropOverlayView?
+    private var wasPlayingBeforeVideoCropSelection = false
+    private var videoCropDragMode: VideoCropDragMode?
+    private var videoCropDragOriginalRect: NSRect = .zero
+    private var pendingVideoCropActionButton: VideoCropActionButton?
+    var isInVideoCropSelectionMode: Bool {
+        isSelectingVideoCrop
+    }
     
     var videoControlsView: VideoPlayerControlsView!
     private var periodicTimeObserver: Any?
@@ -101,6 +242,8 @@ class LargeImageView: NSView {
     }
     
     private func commonInit() {
+        wantsLayer = true
+
         imageView = CustomLargeImageView(frame: self.bounds)
         imageView.imageScaling = .scaleAxesIndependently
         imageView.wantsLayer = true
@@ -1204,6 +1347,211 @@ class LargeImageView: NSView {
     func hideVideoControls() {
         videoControlsView.hideControls()
     }
+
+    func beginVideoCropSelectionMode() {
+        guard file.type == .video, !videoView.isHidden else { return }
+
+        isSelectingVideoCrop = true
+        videoCropStartPoint = nil
+        videoCropSelectionRect = .zero
+        wasPlayingBeforeVideoCropSelection = queuePlayer?.rate ?? 0 > 0
+        queuePlayer?.pause()
+        videoControlsView.hideControls()
+        ensureVideoCropOverlayLayer()
+        updateVideoCropOverlay(selectionRect: .zero)
+        showInfo(NSLocalizedString("Drag to select video crop area", comment: "拖动选择视频裁剪区域"))
+    }
+
+    private func cancelVideoCropSelectionMode() {
+        guard isSelectingVideoCrop else { return }
+        isSelectingVideoCrop = false
+        videoCropStartPoint = nil
+        videoCropDragMode = nil
+        pendingVideoCropActionButton = nil
+        videoCropSelectionRect = .zero
+        videoCropOverlayView?.removeFromSuperview()
+        videoCropOverlayView = nil
+        if wasPlayingBeforeVideoCropSelection {
+            queuePlayer?.play()
+        }
+    }
+
+    func cancelVideoCropSelection() {
+        cancelVideoCropSelectionMode()
+    }
+
+    func confirmVideoCropSelection() {
+        finishVideoCropSelectionMode()
+    }
+
+    private func finishVideoCropSelectionMode() {
+        guard isSelectingVideoCrop else { return }
+        let selectedRect = videoCropSelectionRect
+        isSelectingVideoCrop = false
+        videoCropStartPoint = nil
+        videoCropDragMode = nil
+        pendingVideoCropActionButton = nil
+        videoCropSelectionRect = .zero
+        videoCropOverlayView?.removeFromSuperview()
+        videoCropOverlayView = nil
+
+        guard let cropRect = makeVideoCropRect(fromSelectionRect: selectedRect) else {
+            showInfo(NSLocalizedString("Crop area is too small", comment: "裁剪区域太小"))
+            if wasPlayingBeforeVideoCropSelection {
+                queuePlayer?.play()
+            }
+            return
+        }
+
+        getViewController(self)?.handleCropCurrentVideo(selection: cropRect)
+    }
+
+    private func ensureVideoCropOverlayLayer() {
+        guard videoCropOverlayView == nil else { return }
+        let overlay = VideoCropOverlayView(frame: bounds)
+        overlay.autoresizingMask = [.width, .height]
+        overlay.wantsLayer = true
+        addSubview(overlay, positioned: .above, relativeTo: videoView)
+        videoCropOverlayView = overlay
+    }
+
+    private func updateVideoCropOverlay(selectionRect: NSRect) {
+        ensureVideoCropOverlayLayer()
+        videoCropOverlayView?.frame = bounds
+        videoCropOverlayView?.selectionRect = selectionRect
+    }
+
+    private func videoContentFrameInSelf() -> NSRect? {
+        let originalSize = file.originalSize ?? file.imageInfo?.size
+        guard let originalSize = originalSize,
+              originalSize.width > 0,
+              originalSize.height > 0 else {
+            return nil
+        }
+        return AVMakeRect(aspectRatio: originalSize, insideRect: videoView.frame)
+    }
+
+    private func makeVideoCropRect(fromSelectionRect selectionRect: NSRect) -> ViewController.VideoCropRect? {
+        guard let contentFrame = videoContentFrameInSelf(),
+              let originalSize = file.originalSize ?? file.imageInfo?.size else {
+            return nil
+        }
+
+        let clipped = selectionRect.intersection(contentFrame)
+        guard clipped.width >= 4, clipped.height >= 4 else { return nil }
+
+        var x = Int(((clipped.minX - contentFrame.minX) / contentFrame.width * originalSize.width).rounded(.down))
+        var y = Int(((contentFrame.maxY - clipped.maxY) / contentFrame.height * originalSize.height).rounded(.down))
+        var width = Int((clipped.width / contentFrame.width * originalSize.width).rounded(.down))
+        var height = Int((clipped.height / contentFrame.height * originalSize.height).rounded(.down))
+
+        x = max(0, min(x, Int(originalSize.width) - 2))
+        y = max(0, min(y, Int(originalSize.height) - 2))
+        width = max(2, min(width, Int(originalSize.width) - x))
+        height = max(2, min(height, Int(originalSize.height) - y))
+
+        x -= x % 2
+        y -= y % 2
+        width -= width % 2
+        height -= height % 2
+
+        guard width >= 2, height >= 2 else { return nil }
+        return ViewController.VideoCropRect(x: x, y: y, width: width, height: height)
+    }
+
+    private func videoCropDragMode(at point: NSPoint) -> VideoCropDragMode {
+        let rect = videoCropSelectionRect
+        guard !rect.isEmpty else { return .new }
+
+        let tolerance: CGFloat = 12
+        let nearLeft = abs(point.x - rect.minX) <= tolerance
+        let nearRight = abs(point.x - rect.maxX) <= tolerance
+        let nearBottom = abs(point.y - rect.minY) <= tolerance
+        let nearTop = abs(point.y - rect.maxY) <= tolerance
+        let expanded = rect.insetBy(dx: -tolerance, dy: -tolerance)
+
+        guard expanded.contains(point) else { return .new }
+
+        if nearLeft && nearTop { return .resizeTopLeft }
+        if nearRight && nearTop { return .resizeTopRight }
+        if nearLeft && nearBottom { return .resizeBottomLeft }
+        if nearRight && nearBottom { return .resizeBottomRight }
+        if nearLeft { return .resizeLeft }
+        if nearRight { return .resizeRight }
+        if nearTop { return .resizeTop }
+        if nearBottom { return .resizeBottom }
+        if rect.contains(point) { return .move }
+        return .new
+    }
+
+    private func adjustedVideoCropRect(to point: NSPoint, in contentFrame: NSRect) -> NSRect {
+        guard let startPoint = videoCropStartPoint,
+              let mode = videoCropDragMode else {
+            return .zero
+        }
+
+        let clampedPoint = NSPoint(
+            x: min(max(point.x, contentFrame.minX), contentFrame.maxX),
+            y: min(max(point.y, contentFrame.minY), contentFrame.maxY)
+        )
+        let minSize: CGFloat = 4
+        var rect = videoCropDragOriginalRect
+
+        switch mode {
+        case .new:
+            rect = NSRect(
+                x: min(startPoint.x, clampedPoint.x),
+                y: min(startPoint.y, clampedPoint.y),
+                width: abs(clampedPoint.x - startPoint.x),
+                height: abs(clampedPoint.y - startPoint.y)
+            )
+        case .move:
+            let dx = clampedPoint.x - startPoint.x
+            let dy = clampedPoint.y - startPoint.y
+            rect.origin.x = min(max(videoCropDragOriginalRect.origin.x + dx, contentFrame.minX), contentFrame.maxX - rect.width)
+            rect.origin.y = min(max(videoCropDragOriginalRect.origin.y + dy, contentFrame.minY), contentFrame.maxY - rect.height)
+        case .resizeLeft, .resizeTopLeft, .resizeBottomLeft:
+            rect.origin.x = min(clampedPoint.x, videoCropDragOriginalRect.maxX - minSize)
+            rect.size.width = videoCropDragOriginalRect.maxX - rect.origin.x
+            if mode == .resizeTopLeft {
+                rect.size.height = max(minSize, min(clampedPoint.y, contentFrame.maxY) - videoCropDragOriginalRect.minY)
+            } else if mode == .resizeBottomLeft {
+                rect.origin.y = min(clampedPoint.y, videoCropDragOriginalRect.maxY - minSize)
+                rect.size.height = videoCropDragOriginalRect.maxY - rect.origin.y
+            }
+        case .resizeRight, .resizeTopRight, .resizeBottomRight:
+            rect.size.width = max(minSize, clampedPoint.x - videoCropDragOriginalRect.minX)
+            if mode == .resizeTopRight {
+                rect.size.height = max(minSize, min(clampedPoint.y, contentFrame.maxY) - videoCropDragOriginalRect.minY)
+            } else if mode == .resizeBottomRight {
+                rect.origin.y = min(clampedPoint.y, videoCropDragOriginalRect.maxY - minSize)
+                rect.size.height = videoCropDragOriginalRect.maxY - rect.origin.y
+            }
+        case .resizeTop:
+            rect.size.height = max(minSize, clampedPoint.y - videoCropDragOriginalRect.minY)
+        case .resizeBottom:
+            rect.origin.y = min(clampedPoint.y, videoCropDragOriginalRect.maxY - minSize)
+            rect.size.height = videoCropDragOriginalRect.maxY - rect.origin.y
+        }
+
+        rect.origin.x = max(contentFrame.minX, min(rect.origin.x, contentFrame.maxX - minSize))
+        rect.origin.y = max(contentFrame.minY, min(rect.origin.y, contentFrame.maxY - minSize))
+        rect.size.width = max(minSize, min(rect.width, contentFrame.maxX - rect.origin.x))
+        rect.size.height = max(minSize, min(rect.height, contentFrame.maxY - rect.origin.y))
+        return rect
+    }
+
+    private func videoCropActionButton(at point: NSPoint) -> VideoCropActionButton? {
+        guard let overlay = videoCropOverlayView,
+              !videoCropSelectionRect.isEmpty else { return nil }
+        if overlay.confirmButtonRect().contains(point) {
+            return .confirm
+        }
+        if overlay.cancelButtonRect().contains(point) {
+            return .cancel
+        }
+        return nil
+    }
     
     func enableBlackBg() {
         if let effectView = getViewController(self)?.largeImageBgEffectView,
@@ -1524,6 +1872,27 @@ class LargeImageView: NSView {
     }
     
     override func mouseDown(with event: NSEvent) {
+        if isSelectingVideoCrop {
+            guard !isEventInVideoControls(event) else { return }
+            let location = self.convert(event.locationInWindow, from: nil)
+            if let actionButton = videoCropActionButton(at: location) {
+                pendingVideoCropActionButton = actionButton
+                return
+            }
+            guard let contentFrame = videoContentFrameInSelf(),
+                  contentFrame.contains(location) else { return }
+            pendingVideoCropActionButton = nil
+            videoCropStartPoint = location
+            videoCropDragMode = videoCropDragMode(at: location)
+            videoCropDragOriginalRect = videoCropSelectionRect
+            if videoCropDragMode == .new {
+                videoCropSelectionRect = .zero
+                videoCropDragOriginalRect = .zero
+                updateVideoCropOverlay(selectionRect: .zero)
+            }
+            return
+        }
+
         if isEventInVideoControls(event) { return }
 
         // 临时按住左键也能缩放
@@ -1596,6 +1965,36 @@ class LargeImageView: NSView {
     }
     
     override func mouseUp(with event: NSEvent) {
+        if isSelectingVideoCrop {
+            guard !isEventInVideoControls(event) else { return }
+            let location = self.convert(event.locationInWindow, from: nil)
+            if let pending = pendingVideoCropActionButton {
+                pendingVideoCropActionButton = nil
+                if videoCropActionButton(at: location) == pending {
+                    switch pending {
+                    case .confirm:
+                        finishVideoCropSelectionMode()
+                    case .cancel:
+                        cancelVideoCropSelectionMode()
+                    }
+                }
+                return
+            }
+            if videoCropStartPoint == nil {
+                return
+            }
+            videoCropStartPoint = nil
+            if makeVideoCropRect(fromSelectionRect: videoCropSelectionRect) != nil {
+                showInfo(NSLocalizedString("Use the check button to crop, drag again to adjust", comment: "点击对号裁剪，重新拖动可调整"))
+            } else {
+                videoCropSelectionRect = .zero
+                updateVideoCropOverlay(selectionRect: .zero)
+                showInfo(NSLocalizedString("Crop area is too small", comment: "裁剪区域太小"))
+            }
+            videoCropDragMode = nil
+            return
+        }
+
         if isEventInVideoControls(event) { return }
 
         if !(getViewController(self)!.publicVar.isRightMouseDown) {
@@ -1672,6 +2071,17 @@ class LargeImageView: NSView {
     }
     
     override func mouseDragged(with event: NSEvent) {
+        if isSelectingVideoCrop {
+            pendingVideoCropActionButton = nil
+            guard videoCropStartPoint != nil,
+                  let contentFrame = videoContentFrameInSelf() else { return }
+            let currentPoint = self.convert(event.locationInWindow, from: nil)
+            let rect = adjustedVideoCropRect(to: currentPoint, in: contentFrame)
+            videoCropSelectionRect = rect
+            updateVideoCropOverlay(selectionRect: rect)
+            return
+        }
+
         if isEventInVideoControls(event) { return }
         guard let lastLocation = lastDragLocation else { return }
         if isInOcrState && !getViewController(self)!.publicVar.isRightMouseDown {return}
@@ -1766,12 +2176,17 @@ class LargeImageView: NSView {
     }
     
     override func rightMouseDown(with event: NSEvent) {
+        if isSelectingVideoCrop {
+            cancelVideoCropSelectionMode()
+            return
+        }
         getViewController(self)!.publicVar.isRightMouseDown = true
         mouseDown(with: event)
         // super.rightMouseDown(with: event)  // 继续传递事件
     }
 
     override func rightMouseUp(with event: NSEvent) {
+        if isSelectingVideoCrop { return }
         mouseUp(with: event)
         getViewController(self)!.publicVar.isRightMouseDown = false
         
@@ -1874,6 +2289,8 @@ class LargeImageView: NSView {
 
                 let playbackRateItem = menu.addItem(withTitle: NSLocalizedString("Playback Speed", comment: "播放速度"), action: nil, keyEquivalent: "")
                 playbackRateItem.submenu = buildPlaybackRateSubmenu()
+
+                menu.addItem(withTitle: NSLocalizedString("Crop Video Size...", comment: "裁剪视频尺寸..."), action: #selector(actCropVideoSize), keyEquivalent: "")
             }
 
             menu.addItem(NSMenuItem.separator())
@@ -2237,6 +2654,10 @@ class LargeImageView: NSView {
         } else {
             doRotateL()
         }
+    }
+
+    @objc func actCropVideoSize() {
+        getViewController(self)?.handleBatchCropSelectedVideos()
     }
     
     func doRotateR() {

@@ -1158,6 +1158,13 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                     menu.addItem(withTitle: NSLocalizedString("解压到当前目录", comment: "解压到当前目录"), action: #selector(actExtractArchives), keyEquivalent: "")
                     menu.addItem(withTitle: NSLocalizedString("解压并删除压缩包", comment: "解压并删除压缩包"), action: #selector(actExtractArchivesAndDelete), keyEquivalent: "")
                 }
+
+                let allSelectedAreVideos = !selectedURLs.isEmpty && selectedURLs.allSatisfy {
+                    globalVar.HandledVideoExtensions.contains($0.pathExtension.lowercased())
+                }
+                if allSelectedAreVideos {
+                    menu.addItem(withTitle: NSLocalizedString("Crop Video Size...", comment: "裁剪视频尺寸..."), action: #selector(actCropSelectedVideos), keyEquivalent: "")
+                }
                 
                 menu.addItem(withTitle: NSLocalizedString("快速压缩", comment: "快速压缩"), action: #selector(actQuickCompress), keyEquivalent: "")
                 menu.addItem(withTitle: NSLocalizedString("压缩为 ZIP", comment: "压缩为 ZIP"), action: #selector(actCompressZip), keyEquivalent: "")
@@ -1315,6 +1322,10 @@ class CustomCollectionViewItem: NSCollectionViewItem {
 
     @objc func actExtractArchivesAndDelete() {
         _ = getViewController(collectionView!)?.handleExtractArchives(deleteOriginal: true)
+    }
+
+    @objc func actCropSelectedVideos() {
+        getViewController(collectionView!)?.handleBatchCropSelectedVideos()
     }
 
     @objc func actCompressZip() {

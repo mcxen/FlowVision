@@ -163,7 +163,25 @@ class CoreAreaView: NSView {
         operationHideWorkItem?.cancel()
         label.stringValue = message
         progressBar.isHidden = false
+        if progressBar.isIndeterminate {
+            progressBar.stopAnimation(nil)
+            progressBar.isIndeterminate = false
+        }
         progressBar.doubleValue = min(max(progress, 0), 1) * 100.0
+        showOperationOverlayAnimatedIfNeeded(overlay)
+    }
+
+    func showOperationIndeterminate(_ message: String) {
+        setupOperationOverlayIfNeeded()
+        guard let overlay = operationOverlayView,
+              let label = operationMessageLabel,
+              let progressBar = operationProgressBar else { return }
+
+        operationHideWorkItem?.cancel()
+        label.stringValue = message
+        progressBar.isHidden = false
+        progressBar.isIndeterminate = true
+        progressBar.startAnimation(nil)
         showOperationOverlayAnimatedIfNeeded(overlay)
     }
     
@@ -175,6 +193,8 @@ class CoreAreaView: NSView {
                 context.duration = 0.25
                 overlay.animator().alphaValue = 0
             }) {
+                self.operationProgressBar?.stopAnimation(nil)
+                self.operationProgressBar?.isIndeterminate = false
                 overlay.isHidden = true
             }
         }

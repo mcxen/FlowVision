@@ -60,6 +60,18 @@ extension ViewController {
     }
     
     @discardableResult
+    private func openSelectedItemFromKeyboard() -> Bool {
+        guard !publicVar.isInLargeView,
+              publicVar.isCollectionViewFirstResponder,
+              let indexPath = collectionView.selectionIndexPaths.min() else {
+            return false
+        }
+        
+        openLargeImage(indexPath)
+        return true
+    }
+    
+    @discardableResult
     private func triggerRightClickContextMenuFromKeyboard() -> Bool {
         guard let window = view.window else { return false }
         
@@ -140,6 +152,14 @@ extension ViewController {
         
         let characters = (event.charactersIgnoringModifiers ?? "").lowercased()
         let specialKey = event.specialKey ?? .f30
+
+        if publicVar.isInLargeView && largeImageView.isInVideoCropSelectionMode {
+            if event.keyCode == 53 {
+                largeImageView.cancelVideoCropSelection()
+                return nil
+            }
+            return event
+        }
 
         // 把按键信息打印出来，用于调试不同键盘的键值差异
         // var modifierStrings: [String] = []
@@ -533,10 +553,12 @@ extension ViewController {
                 }
             }
             
-            // 检查按键是否是 Command+⬆️ 键（返回上一级目录）
-            // Check if key is Command+⬆️ (go to parent folder)
+            // 检查按键是否是 Command+⬆️ 键（查看时退出查看，缩略图时返回上一级目录）
+            // Check if key is Command+⬆️ (exit large view, or go to parent folder)
             if specialKey == .upArrow && isOnlyCommandPressed {
-                if !publicVar.isInLargeView {
+                if publicVar.isInLargeView {
+                    closeLargeImage(0)
+                } else {
                     switchDirByDirection(direction: .up, stackDeep: 0)
                 }
                 return nil
@@ -559,13 +581,16 @@ extension ViewController {
                 return nil
             }
             
-            // 检查按键是否是 Command+⬇️ 键（进入选中文件夹）
-            // Check if key is Command+⬇️ (enter selected folder)
+            // 检查按键是否是 Command+⬇️ 键（打开选中文件/进入选中文件夹）
+            // Check if key is Command+⬇️ (open selected item, or enter selected folder)
             if specialKey == .downArrow && isOnlyCommandPressed {
                 if publicVar.isInLargeView {
-                    locateLargeImage(direction: 2)
+                    return nil
                 } else {
                     if enterSelectedFolderFromKeyboard() {
+                        return nil
+                    }
+                    if openSelectedItemFromKeyboard() {
                         return nil
                     }
                     // Fallback: keep original behavior when selection is not a folder.
