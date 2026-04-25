@@ -134,6 +134,17 @@ let VIRTUAL_FAVORITES_PREFIX = "file:///VirtualFavoritesFolder"
 let VIRTUAL_HISTORY_PREFIX = "file:///VirtualHistoryFolder"
 let VIRTUAL_ARCHIVE_PREFIX = "file:///VirtualArchiveFolder"
 
+@discardableResult
+func openVideoWithPreferredExternalPlayer(_ url: URL) -> Bool {
+    if globalVar.preferIINAForExternalVideoPlayer,
+       let iinaURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.colliderli.iina") {
+        NSWorkspace.shared.open([url], withApplicationAt: iinaURL, configuration: NSWorkspace.OpenConfiguration())
+        return true
+    }
+    NSWorkspace.shared.open(url)
+    return true
+}
+
 func isVirtualFolderPath(_ path: String) -> Bool {
     return path.hasPrefix(VIRTUAL_FINDER_TAGS_PREFIX)
     || path.hasPrefix(VIRTUAL_FAVORITES_PREFIX)
@@ -197,7 +208,7 @@ func parseVirtualArchivePath(_ path: String) -> (archiveURL: URL, entryPath: Str
 
 private let archiveEntryDataCache = NSCache<NSString, NSData>()
 
-func decodeBsdtarEscapedPath(_ text: String) -> String {
+private func bsdtarEscapedPathBytes(_ text: String) -> [UInt8] {
     let chars = Array(text.utf8)
     var out: [UInt8] = []
     var i = 0
@@ -232,12 +243,24 @@ func decodeBsdtarEscapedPath(_ text: String) -> String {
         out.append(c)
         i += 1
     }
-    return String(bytes: out, encoding: .utf8) ?? text
+    return out
 }
 
-func encodeBsdtarEscapedPath(_ text: String) -> String {
+func decodeBsdtarEscapedPath(_ text: String) -> String {
+    let bytes = bsdtarEscapedPathBytes(text)
+    if let decoded = String(bytes: bytes, encoding: .utf8) {
+        return decoded
+    }
+    if let decoded = String(data: Data(bytes), encoding: .shiftJIS) {
+        return decoded
+    }
+    return text
+}
+
+func encodeBsdtarEscapedPath(_ text: String, encoding: String.Encoding = .utf8) -> String {
+    guard let data = text.data(using: encoding) else { return text }
     var result = ""
-    for byte in text.utf8 {
+    for byte in data {
         if byte >= 0x80 || byte == 0x5C {
             result += String(format: "\\%03o", byte)
         } else {
@@ -263,6 +286,10 @@ func getArchiveEntryData(archiveURL: URL, entryPath: String) -> Data? {
         let escaped = encodeBsdtarEscapedPath(entryPath)
         if escaped != entryPath {
             candidatePaths.append(escaped)
+        }
+        let shiftJISEscaped = encodeBsdtarEscapedPath(entryPath, encoding: .shiftJIS)
+        if shiftJISEscaped != entryPath && !candidatePaths.contains(shiftJISEscaped) {
+            candidatePaths.append(shiftJISEscaped)
         }
     }
     

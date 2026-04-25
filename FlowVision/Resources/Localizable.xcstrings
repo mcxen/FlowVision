@@ -41117,9 +41117,6 @@
     "Video Folder 2 does not exist or is not a folder." : {
       "comment" : "视频文件夹2不存在或不是文件夹。"
     },
-    "Video player is not ready." : {
-      "comment" : "视频播放器尚未就绪。"
-    },
     "video-dimensions" : {
       "comment" : "视频尺寸",
       "localizations" : {

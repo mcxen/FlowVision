@@ -13,6 +13,8 @@ APP_NAME="${APP_NAME:-}"
 VOLUME_NAME="${VOLUME_NAME:-FlowVision}"
 DMG_NAME="${DMG_NAME:-FlowVision-macOS}"
 XCODEBUILD_EXTRA_ARGS="${XCODEBUILD_EXTRA_ARGS:-}"
+MPV_FRAMEWORKS_DIR="${MPV_FRAMEWORKS_DIR:-/Applications/IINA.app/Contents/Frameworks}"
+INCLUDE_MPV_RUNTIME="${INCLUDE_MPV_RUNTIME:-auto}" # auto, 1, 0
 
 # Optional signing controls
 APP_SIGN_IDENTITY="${APP_SIGN_IDENTITY:-}"
@@ -45,6 +47,21 @@ if [[ -z "${APP_PATH:-}" || ! -d "$APP_PATH" ]]; then
 fi
 
 APP_BASENAME="$(basename "$APP_PATH")"
+
+if [[ "$INCLUDE_MPV_RUNTIME" == "1" || ( "$INCLUDE_MPV_RUNTIME" == "auto" && -f "$MPV_FRAMEWORKS_DIR/libmpv.2.dylib" ) ]]; then
+  echo "[2/4] Copying mpv runtime from: $MPV_FRAMEWORKS_DIR"
+  mkdir -p "$APP_PATH/Contents/Frameworks"
+  rsync -a --delete \
+    --include='*.dylib' \
+    --exclude='*' \
+    "$MPV_FRAMEWORKS_DIR/" \
+    "$APP_PATH/Contents/Frameworks/"
+elif [[ "$INCLUDE_MPV_RUNTIME" == "1" ]]; then
+  echo "ERROR: mpv runtime not found at $MPV_FRAMEWORKS_DIR"
+  exit 1
+else
+  echo "[2/4] Skipping mpv runtime copy."
+fi
 
 if [[ "$ENABLE_CODESIGN" == "1" && -n "$APP_SIGN_IDENTITY" ]]; then
   echo "[2/4] Re-signing app with identity: $APP_SIGN_IDENTITY"

@@ -1460,12 +1460,7 @@ extension ViewController {
             return
         }
 
-        guard let player = largeImageView.queuePlayer else {
-            showAlert(message: NSLocalizedString("Video player is not ready.", comment: "视频播放器尚未就绪。"))
-            return
-        }
-
-        var captureTime = player.currentTime()
+        var captureTime = CMTime(seconds: largeImageView.videoCurrentTimeSeconds, preferredTimescale: 600)
         if !captureTime.isValid || captureTime == .indefinite {
             captureTime = CMTime(seconds: 0, preferredTimescale: 600)
         }

@@ -193,6 +193,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         if let useInternalPlayer = UserDefaults.standard.value(forKey: "useInternalPlayer") as? Bool {
             globalVar.useInternalPlayer = useInternalPlayer
         }
+        if let preferIINAForExternalVideoPlayer = UserDefaults.standard.value(forKey: "preferIINAForExternalVideoPlayer") as? Bool {
+            globalVar.preferIINAForExternalVideoPlayer = preferIINAForExternalVideoPlayer
+        }
         if let isEnterKeyToOpen = UserDefaults.standard.value(forKey: "isEnterKeyToOpen") as? Bool {
             globalVar.isEnterKeyToOpen = isEnterKeyToOpen
         }

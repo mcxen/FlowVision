@@ -231,6 +231,8 @@ extension ViewController {
                             appDelegate.openImageInTargetWindow(resolvedAbsPath, windowController: windowController)
                         }
                     }
+                } else if globalVar.HandledVideoExtensions.contains(resolved.pathExtension.lowercased()) {
+                    openVideoWithPreferredExternalPlayer(resolved)
                 } else {
                     NSWorkspace.shared.open(resolved)
                 }
@@ -244,7 +246,11 @@ extension ViewController {
             }
             else if !globalVar.HandledImageAndRawExtensions.contains(url.pathExtension.lowercased()) &&
                 !(globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(item.file.ext)) {
-                NSWorkspace.shared.open(url)
+                if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
+                    openVideoWithPreferredExternalPlayer(url)
+                } else {
+                    NSWorkspace.shared.open(url)
+                }
             }else{
                 if largeImageView.isHidden {
                     
