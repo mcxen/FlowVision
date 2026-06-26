@@ -4397,6 +4397,9 @@
         }
       }
     },
+    "Cache external folder thumbnails locally" : {
+      "comment" : "本地缓存外接卷文件夹缩略图"
+    },
     "Cancel" : {
       "comment" : "取消",
       "localizations" : {
@@ -5361,7 +5364,7 @@
       }
     },
     "Clear" : {
-      "comment" : "清除",
+      "comment" : "清理\n清除",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -15738,6 +15741,9 @@
         }
       }
     },
+    "Folder Thumbnail Cache:" : {
+      "comment" : "文件夹缩略图缓存"
+    },
     "Folders" : {
       "comment" : "目录",
       "localizations" : {
@@ -18742,6 +18748,9 @@
           }
         }
       }
+    },
+    "Local cache: %@" : {
+      "comment" : "本地缓存大小"
     },
     "Location" : {
       "comment" : "位置",

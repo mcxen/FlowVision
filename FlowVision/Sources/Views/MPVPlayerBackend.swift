@@ -368,11 +368,14 @@ private final class MPVRenderLayer: CAOpenGLLayer {
 }
 
 final class MPVPlayerBackend {
+    private static let subtitleExtensions = ["srt", "ass", "ssa", "vtt", "sub", "idx", "smi", "sami"]
+
     private let lib: LibMPV
     private var handle: OpaquePointer?
     private var renderContext: OpaquePointer?
     private weak var renderView: FlowMPVVideoView?
     private weak var renderLayer: MPVRenderLayer?
+    private let renderContextLock = NSRecursiveLock()
     private var progressTimer: Timer?
     private var endHandler: (() -> Void)?
     private var abRange: ClosedRange<Double>?
@@ -427,6 +430,7 @@ final class MPVPlayerBackend {
         setOption("opengl-swapinterval", "1")
         setOption("force-window", "no")
         setOption("keep-open", "yes")
+        setOption("sub-auto", "no")
         setOption("volume", "\(Int(max(0, min(1, volume)) * 100))")
         setOption("speed", "\(rate)")
         if rotation != 0 {
@@ -456,6 +460,7 @@ final class MPVPlayerBackend {
             stop(destroyHandle: true)
             return false
         }
+        loadExternalSubtitles(for: url)
         setPaused(false)
         startProgressTimer(loop: loop)
         return true
@@ -467,6 +472,9 @@ final class MPVPlayerBackend {
         CGLLockContext(layer.cglContext)
         CGLSetCurrentContext(layer.cglContext)
         defer { CGLUnlockContext(layer.cglContext) }
+
+        renderContextLock.lock()
+        defer { renderContextLock.unlock() }
 
         var initParams = MPVOpenGLInitParams(getProcAddress: flowMPVGetOpenGLProcAddress, getProcAddressCtx: nil)
         var advanced: CInt = 1
@@ -498,13 +506,19 @@ final class MPVPlayerBackend {
         abRange = nil
         endHandler = nil
         isStopping = true
-
-        if let renderContext {
-            lib.renderContextSetUpdateCallback(renderContext, nil, nil)
-            lib.renderContextFree(renderContext)
-            self.renderContext = nil
-        }
         renderView?.detach()
+
+        do {
+            renderContextLock.lock()
+            defer { renderContextLock.unlock() }
+
+            if let renderContext {
+                lib.renderContextSetUpdateCallback(renderContext, nil, nil)
+                lib.renderContextFree(renderContext)
+                self.renderContext = nil
+            }
+            renderLayer = nil
+        }
 
         guard let handle else {
             isStopping = false
@@ -532,23 +546,33 @@ final class MPVPlayerBackend {
     }
 
     func reportSwap() {
+        renderContextLock.lock()
+        defer { renderContextLock.unlock() }
+
         guard let renderContext else { return }
         lib.renderContextReportSwap(renderContext)
     }
 
     func shouldRenderUpdateFrame() -> Bool {
+        renderContextLock.lock()
+        defer { renderContextLock.unlock() }
+
         guard let renderContext else { return false }
         return (lib.renderContextUpdate(renderContext) & mpvRenderUpdateFrame) != 0
     }
 
     fileprivate func render(params: inout [MPVRenderParam]) {
+        renderContextLock.lock()
+        defer { renderContextLock.unlock() }
+
         guard let renderContext, let layer = renderLayer else { return }
         CGLLockContext(layer.cglContext)
+        defer { CGLUnlockContext(layer.cglContext) }
+
         CGLSetCurrentContext(layer.cglContext)
         _ = params.withUnsafeMutableBufferPointer { buffer in
             lib.renderContextRender(renderContext, UnsafeMutableRawPointer(buffer.baseAddress))
         }
-        CGLUnlockContext(layer.cglContext)
     }
 
     private func startProgressTimer(loop: Bool) {
@@ -585,6 +609,53 @@ final class MPVPlayerBackend {
             target = total.isFinite && total > 0 ? max(0, min(total, target)) : max(0, target)
         }
         return target
+    }
+
+    private func loadExternalSubtitles(for videoURL: URL) {
+        let subtitles = Self.matchingSubtitleURLs(for: videoURL)
+        for (index, subtitle) in subtitles.enumerated() {
+            _ = command(["sub-add", subtitle.path, index == 0 ? "select" : "auto"])
+        }
+    }
+
+    private static func matchingSubtitleURLs(for videoURL: URL) -> [URL] {
+        let directory = videoURL.deletingLastPathComponent()
+        let videoBaseName = videoURL.deletingPathExtension().lastPathComponent.lowercased()
+        guard !videoBaseName.isEmpty,
+              let contents = try? FileManager.default.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+              )
+        else {
+            return []
+        }
+
+        let subtitleExtensionRank = Dictionary(uniqueKeysWithValues: subtitleExtensions.enumerated().map { ($0.element, $0.offset) })
+        let candidates = contents.compactMap { fileURL -> (url: URL, matchRank: Int, extensionRank: Int)? in
+            let ext = fileURL.pathExtension.lowercased()
+            guard let extensionRank = subtitleExtensionRank[ext] else { return nil }
+
+            let baseName = fileURL.deletingPathExtension().lastPathComponent.lowercased()
+            let matchRank: Int
+            if baseName == videoBaseName {
+                matchRank = 0
+            } else if baseName.hasPrefix(videoBaseName + ".") || baseName.hasPrefix(videoBaseName + " ") {
+                matchRank = 1
+            } else {
+                return nil
+            }
+
+            return (fileURL, matchRank, extensionRank)
+        }
+
+        return candidates
+            .sorted {
+                if $0.matchRank != $1.matchRank { return $0.matchRank < $1.matchRank }
+                if $0.extensionRank != $1.extensionRank { return $0.extensionRank < $1.extensionRank }
+                return $0.url.lastPathComponent.localizedStandardCompare($1.url.lastPathComponent) == .orderedAscending
+            }
+            .map(\.url)
     }
 
     private func setOption(_ name: String, _ value: String) {

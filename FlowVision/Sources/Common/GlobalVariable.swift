@@ -84,6 +84,8 @@ class GlobalVar{
     var blackBgAlways = false
     var blackBgAlwaysForVideo = true
     var thumbnailOfFolderUseStacking = true
+    var showFolderMediaCountBadge = true
+    var cacheExternalFolderThumbnails = true
     var thumbnailExcludeList: [String] = []
     var usePinyinSearch = false
     var usePinyinInitialSearch = false

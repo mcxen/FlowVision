@@ -525,6 +525,8 @@ class FileModel {
     var imageInfo: ImageInfo?
     var getThumbFailed = false
     var finderTags: [String] = []
+    var childImageCount: Int?
+    var childVideoCount: Int?
 }
 
 class DirModel {

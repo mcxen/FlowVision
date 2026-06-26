@@ -33,6 +33,8 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
     
     @IBOutlet weak var searchDepthWarningText: NSTextField!
     @IBOutlet weak var searchDepthWarningText_External: NSTextField!
+    
+    private var externalFolderThumbnailCacheSizeLabel: NSTextField?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -79,7 +81,14 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
         if let container = memUseLimitSlider.superview {
             convertToLeadingLayoutForRTL(container)
         }
+        
+        setupExternalFolderThumbnailCacheControls()
 	}
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        updateExternalFolderThumbnailCacheSizeLabel()
+    }
 
     @IBAction func memUseLimitSliderChanged(_ sender: NSSlider) {
         let newValue = sender.integerValue
@@ -178,6 +187,64 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
         // Set Radio Buttons state based on global variable
         useFFmpegRadioButton.state = globalVar.doNotUseFFmpeg ? .off : .on
         doNotUseFFmpegRadioButton.state = globalVar.doNotUseFFmpeg ? .on : .off
+    }
+    
+    private func setupExternalFolderThumbnailCacheControls() {
+        guard let gridView = view.subviews.compactMap({ $0 as? NSGridView }).first,
+              gridView.numberOfRows > 14 else {
+            return
+        }
+        
+        let label = NSTextField(labelWithString: NSLocalizedString("Folder Thumbnail Cache:", comment: "文件夹缩略图缓存"))
+        label.alignment = .right
+        
+        let checkbox = NSButton(checkboxWithTitle: NSLocalizedString("Cache external folder thumbnails locally", comment: "本地缓存外接卷文件夹缩略图"), target: self, action: #selector(externalFolderThumbnailCacheToggled(_:)))
+        checkbox.state = globalVar.cacheExternalFolderThumbnails ? .on : .off
+        
+        let sizeLabel = NSTextField(labelWithString: "")
+        sizeLabel.textColor = .secondaryLabelColor
+        sizeLabel.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        sizeLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        externalFolderThumbnailCacheSizeLabel = sizeLabel
+        
+        let clearButton = NSButton(title: NSLocalizedString("Clear", comment: "清理"), target: self, action: #selector(clearExternalFolderThumbnailCache(_:)))
+        clearButton.bezelStyle = .rounded
+        clearButton.controlSize = .small
+        clearButton.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        
+        let sizeRow = NSStackView(views: [sizeLabel, clearButton])
+        sizeRow.orientation = .horizontal
+        sizeRow.alignment = .centerY
+        sizeRow.spacing = 8
+        
+        let container = NSStackView(views: [checkbox, sizeRow])
+        container.orientation = .vertical
+        container.alignment = .leading
+        container.spacing = 4
+        
+        let row = gridView.insertRow(at: 14, with: [label, container])
+        row.topPadding = 4
+        row.bottomPadding = 4
+        view.setFrameSize(NSSize(width: view.frame.width, height: view.frame.height + 52))
+        updateExternalFolderThumbnailCacheSizeLabel()
+    }
+    
+    @objc private func externalFolderThumbnailCacheToggled(_ sender: NSButton) {
+        globalVar.cacheExternalFolderThumbnails = (sender.state == .on)
+        UserDefaults.standard.set(globalVar.cacheExternalFolderThumbnails, forKey: "cacheExternalFolderThumbnails")
+    }
+    
+    @objc private func clearExternalFolderThumbnailCache(_ sender: NSButton) {
+        FolderThumbnailDiskCache.clear()
+        updateExternalFolderThumbnailCacheSizeLabel()
+    }
+    
+    private func updateExternalFolderThumbnailCacheSizeLabel() {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useKB, .useMB, .useGB]
+        formatter.countStyle = .file
+        let sizeText = formatter.string(fromByteCount: FolderThumbnailDiskCache.sizeInBytes())
+        externalFolderThumbnailCacheSizeLabel?.stringValue = String(format: NSLocalizedString("Local cache: %@", comment: "本地缓存大小"), sizeText)
     }
     
 }

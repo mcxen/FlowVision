@@ -30,6 +30,99 @@ private func loadNSImageSmart(url: URL) -> NSImage? {
     return NSImage(contentsOf: url)
 }
 
+enum FolderThumbnailDiskCache {
+    private static let cacheVersion = "v1"
+    private static let cacheFolderName = "ExternalFolderThumbnailCache"
+    private static let compressionFactor: CGFloat = 0.72
+
+    static var cacheDirectory: URL {
+        let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
+        return baseURL
+            .appendingPathComponent("FlowVision", isDirectory: true)
+            .appendingPathComponent(cacheFolderName, isDirectory: true)
+    }
+
+    static func cachedImage(for folderURL: URL) -> NSImage? {
+        guard globalVar.cacheExternalFolderThumbnails else { return nil }
+        let url = cacheFileURL(for: folderURL)
+        return NSImage(contentsOf: url)
+    }
+
+    static func store(_ image: NSImage, for folderURL: URL) {
+        guard globalVar.cacheExternalFolderThumbnails,
+              let data = jpegData(from: image) else { return }
+        do {
+            try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
+            try data.write(to: cacheFileURL(for: folderURL), options: .atomic)
+        } catch {
+            log("Failed to write folder thumbnail cache: \(error)", level: .warn)
+        }
+    }
+
+    static func sizeInBytes() -> Int64 {
+        guard let enumerator = FileManager.default.enumerator(
+            at: cacheDirectory,
+            includingPropertiesForKeys: [.isRegularFileKey, .fileSizeKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return 0
+        }
+
+        var total: Int64 = 0
+        for case let fileURL as URL in enumerator {
+            guard let values = try? fileURL.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
+                  values.isRegularFile == true else { continue }
+            total += Int64(values.fileSize ?? 0)
+        }
+        return total
+    }
+
+    static func clear() {
+        do {
+            if FileManager.default.fileExists(atPath: cacheDirectory.path) {
+                try FileManager.default.removeItem(at: cacheDirectory)
+            }
+            try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
+        } catch {
+            log("Failed to clear folder thumbnail cache: \(error)", level: .warn)
+        }
+    }
+
+    private static func cacheFileURL(for folderURL: URL) -> URL {
+        cacheDirectory.appendingPathComponent("\(stableHash(cacheKey(for: folderURL))).jpg")
+    }
+
+    private static func cacheKey(for folderURL: URL) -> String {
+        let values = try? folderURL.resourceValues(forKeys: [.contentModificationDateKey])
+        let modificationTime = values?.contentModificationDate?.timeIntervalSince1970 ?? 0
+        return [
+            cacheVersion,
+            folderURL.standardizedFileURL.path,
+            String(modificationTime),
+            String(globalVar.folderSearchDepth_External),
+            String(globalVar.thumbnailOfFolderUseStacking)
+        ].joined(separator: "|")
+    }
+
+    private static func stableHash(_ string: String) -> String {
+        var hash: UInt64 = 0xcbf29ce484222325
+        for byte in string.utf8 {
+            hash ^= UInt64(byte)
+            hash &*= 0x100000001b3
+        }
+        return String(format: "%016llx", hash)
+    }
+
+    private static func jpegData(from image: NSImage) -> Data? {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return nil
+        }
+        let representation = NSBitmapImageRep(cgImage: cgImage)
+        return representation.representation(using: .jpeg, properties: [.compressionFactor: compressionFactor])
+    }
+}
+
 extension NSImage {
     func rotated(by degrees: CGFloat) -> NSImage {
         if degrees == 0 { return self }
@@ -832,7 +925,11 @@ func getImageThumb(url: URL, size oriSize: NSSize? = nil, refSize: NSSize? = nil
     if(url.hasDirectoryPath){
         
         var urls = [URL]()
-        let folderSearchDepth = VolumeManager.shared.isExternalVolume(url) ? globalVar.folderSearchDepth_External : globalVar.folderSearchDepth
+        let isExternalVolume = VolumeManager.shared.isExternalVolume(url)
+        if isExternalVolume, let cachedImage = FolderThumbnailDiskCache.cachedImage(for: url) {
+            return cachedImage
+        }
+        let folderSearchDepth = isExternalVolume ? globalVar.folderSearchDepth_External : globalVar.folderSearchDepth
         if folderSearchDepth > 0 {
             let maxImages = globalVar.thumbnailOfFolderUseStacking ? 3 : 4
             urls = findImageURLs(in: url, maxDepth: folderSearchDepth, maxImages: maxImages, preferDifferentDirs: !globalVar.thumbnailOfFolderUseStacking)
@@ -853,6 +950,9 @@ func getImageThumb(url: URL, size oriSize: NSSize? = nil, refSize: NSSize? = nil
             }
             if imgs.count>0 {
                 let finalImg=createCompositeImage(background: NSImage(named: NSImage.folderName)!, images: imgs, isVideos: isVideos)
+                if let finalImg, isExternalVolume {
+                    FolderThumbnailDiskCache.store(finalImg, for: url)
+                }
                 return finalImg
             }
         }

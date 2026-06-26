@@ -14,7 +14,36 @@ private class ScanCancelHandler: NSObject {
 }
 
 extension ViewController {
-    
+    private func directMediaCounts(in folderURL: URL) -> (images: Int, videos: Int)? {
+        let options: FileManager.DirectoryEnumerationOptions = publicVar.isShowHiddenFile ? [] : [.skipsHiddenFiles]
+        guard let contents = try? FileManager.default.contentsOfDirectory(
+            at: folderURL,
+            includingPropertiesForKeys: [.isDirectoryKey, .isAliasFileKey],
+            options: options
+        ) else {
+            return nil
+        }
+
+        var imageCount = 0
+        var videoCount = 0
+        for fileURL in contents {
+            if ((try? fileURL.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false) {
+                continue
+            }
+            if ((try? fileURL.resourceValues(forKeys: [.isAliasFileKey]).isAliasFile) ?? false) {
+                continue
+            }
+
+            let ext = fileURL.pathExtension.lowercased()
+            if globalVar.HandledImageAndRawExtensions.contains(ext) {
+                imageCount += 1
+            } else if globalVar.HandledVideoExtensions.contains(ext) {
+                videoCount += 1
+            }
+        }
+        return (imageCount, videoCount)
+    }
+
     func scanFiles(at folderURL: URL, contents: inout [URL], properties: [URLResourceKey]) {
         let options: FileManager.DirectoryEnumerationOptions = publicVar.isShowHiddenFile ? [] : [.skipsHiddenFiles]
         let enumerator = FileManager.default.enumerator(at: folderURL, includingPropertiesForKeys: properties, options: options, errorHandler: { (url, error) -> Bool in
@@ -268,6 +297,7 @@ extension ViewController {
             let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
             if line.isEmpty { continue }
             let decodedLine = decodeBsdtarEscapedPath(line)
+            registerArchiveEntryPathAlias(archiveURL: archiveURL, displayPath: decodedLine, rawPath: line)
             if decodedLine.hasSuffix("/") { continue }
             let ext = URL(fileURLWithPath: decodedLine).pathExtension.lowercased()
             if globalVar.HandledImageAndRawExtensions.contains(ext) {
@@ -676,6 +706,8 @@ extension ViewController {
                 var addDate: Date?
                 var doNotActualRead = false
                 var finderTags: [String] = []
+                var childImageCount: Int?
+                var childVideoCount: Int?
                 do{
                     // 文件在前i个，目录在后面
                     // Files in first i items, directories after
@@ -747,6 +779,10 @@ extension ViewController {
                         }
                         let tags = (try? subFolders[i-fileCount].resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
                         finderTags = tags
+                        if let counts = directMediaCounts(in: subFolders[i-fileCount]) {
+                            childImageCount = counts.images
+                            childVideoCount = counts.videos
+                        }
                         // finderTags = resourceValues.tagNames ?? []
                     }
                 }catch{
@@ -755,6 +791,8 @@ extension ViewController {
                 // log("i:",i,"path:",fileSortKey.path.removingPercentEncoding)
                 let newFileModel=FileModel(path: fileSortKey.path, ver: fileDB.db[SortKeyDir(folderpath)]!.ver, isDir: isDir, isAlias: isAlias, fileSize: fileSize, createDate: createDate, modDate: modDate, addDate: addDate, doNotActualRead: doNotActualRead)
                 newFileModel.finderTags = finderTags
+                newFileModel.childImageCount = childImageCount
+                newFileModel.childVideoCount = childVideoCount
                 // log(fileSortKey.path)
                 if let file = fileDB.db[SortKeyDir(folderpath)]!.files[fileSortKey] {
                     if file.path == fileSortKey.path {
@@ -763,6 +801,8 @@ extension ViewController {
                         file.isAlias=isAlias
                         file.doNotActualRead=doNotActualRead
                         file.finderTags=finderTags
+                        file.childImageCount=childImageCount
+                        file.childVideoCount=childVideoCount
                         // 检查文件或文件夹是否有变化(文件夹fileSize为nil)
                         // Check if file or folder has changed (folder fileSize is nil)
                         if fileSize != file.fileSize || modDate != file.modDate {
@@ -1096,23 +1136,26 @@ extension ViewController {
             if elapsed > elapsedThreshold {
                 publicVar.folderStepForLocate.removeAll()
             } else if let lastURL = URL(string: lastFolder),
-                      let curURL = URL(string: curFolder),
-                      lastURL.deletingLastPathComponent().absoluteString == curURL.absoluteString {
-                let targetKey = SortKeyFile(lastURL.absoluteString, isDir: true, needGetProperties: true, sortType: publicVar.profile.sortType, isSortFolderFirst: publicVar.profile.isSortFolderFirst, isSortUseFullPath: publicVar.profile.isSortUseFullPath, randomSeed: publicVar.randomSeed)
-                fileDB.lock()
-                if let files = dirFiles,
-                   let index = files.index(forKey: targetKey) {
-                    let offset = files.offset(of: index)
-                    fileDB.unlock()
-                    let indexPath = IndexPath(item: offset, section: 0)
-                    if indexPath.item < curItemCount {
-                        publicVar.folderStepForLocate.removeAll()
-                        collectionView.scrollToItems(at: [indexPath], scrollPosition: .nearestHorizontalEdge)
-                        collectionView.selectItems(at: [indexPath], scrollPosition: [])
-                        setLoadThumbPriority(ifNeedVisable: true)
+                      let curURL = URL(string: curFolder) {
+                let targetURL = parseVirtualArchivePath(lastFolder)?.archiveURL ?? lastURL
+                let isTargetDirectory = targetURL.hasDirectoryPath
+                if targetURL.deletingLastPathComponent().absoluteString == curURL.absoluteString {
+                    let targetKey = SortKeyFile(targetURL.absoluteString, isDir: isTargetDirectory, needGetProperties: true, sortType: publicVar.profile.sortType, isSortFolderFirst: publicVar.profile.isSortFolderFirst, isSortUseFullPath: publicVar.profile.isSortUseFullPath, randomSeed: publicVar.randomSeed)
+                    fileDB.lock()
+                    if let files = dirFiles,
+                       let index = files.index(forKey: targetKey) {
+                        let offset = files.offset(of: index)
+                        fileDB.unlock()
+                        let indexPath = IndexPath(item: offset, section: 0)
+                        if indexPath.item < curItemCount {
+                            publicVar.folderStepForLocate.removeAll()
+                            collectionView.scrollToItems(at: [indexPath], scrollPosition: .nearestHorizontalEdge)
+                            collectionView.selectItems(at: [indexPath], scrollPosition: [])
+                            setLoadThumbPriority(ifNeedVisable: true)
+                        }
+                    } else {
+                        fileDB.unlock()
                     }
-                } else {
-                    fileDB.unlock()
                 }
             }
         }

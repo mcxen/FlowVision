@@ -132,6 +132,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         if let thumbnailOfFolderUseStacking = UserDefaults.standard.value(forKey: "thumbnailOfFolderUseStacking") as? Bool {
             globalVar.thumbnailOfFolderUseStacking = thumbnailOfFolderUseStacking
         }
+        if let showFolderMediaCountBadge = UserDefaults.standard.value(forKey: "showFolderMediaCountBadge") as? Bool {
+            globalVar.showFolderMediaCountBadge = showFolderMediaCountBadge
+        }
+        if let cacheExternalFolderThumbnails = UserDefaults.standard.value(forKey: "cacheExternalFolderThumbnails") as? Bool {
+            globalVar.cacheExternalFolderThumbnails = cacheExternalFolderThumbnails
+        }
         if let loopBrowsing = UserDefaults.standard.value(forKey: "loopBrowsing") as? Bool {
             globalVar.loopBrowsing = loopBrowsing
         }

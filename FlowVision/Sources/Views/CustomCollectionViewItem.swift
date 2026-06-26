@@ -28,6 +28,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     var finderTagDotsView: NSView?
     var ratingStarsView: NSView?
     var aliasBadgeView: NSImageView?
+    var folderMediaCountBadgeView: NSTextField?
     private var mouseDownLocation: NSPoint? = nil
     
     private var lastClickTime: TimeInterval = 0
@@ -300,6 +301,65 @@ class CustomCollectionViewItem: NSCollectionViewItem {
         ratingStarsView = nil
         aliasBadgeView?.removeFromSuperview()
         aliasBadgeView = nil
+        folderMediaCountBadgeView?.removeFromSuperview()
+        folderMediaCountBadgeView = nil
+    }
+
+    func refreshFolderMediaCountBadge() {
+        folderMediaCountBadgeView?.removeFromSuperview()
+        folderMediaCountBadgeView = nil
+
+        guard globalVar.showFolderMediaCountBadge,
+              file.isDir,
+              let imageCount = file.childImageCount,
+              let videoCount = file.childVideoCount,
+              imageCount + videoCount > 0
+        else {
+            return
+        }
+
+        var parts = [String]()
+        if imageCount > 0 {
+            parts.append("\(imageCount)\(NSLocalizedString("Image", comment: "图像"))")
+        }
+        if videoCount > 0 {
+            parts.append("\(videoCount)\(NSLocalizedString("Video", comment: "视频"))")
+        }
+
+        let scale = tagScaleFactor()
+        let fontSize: CGFloat = round(11 * scale)
+        let horizontalPadding: CGFloat = round(8 * scale)
+        let verticalPadding: CGFloat = round(4 * scale)
+        let inset: CGFloat = round(5 * scale)
+        let font = NSFont.systemFont(ofSize: fontSize, weight: .semibold)
+        let text = parts.joined(separator: " ")
+        let textWidth = ceil((text as NSString).size(withAttributes: [.font: font]).width)
+        let badgeHeight = ceil(fontSize + verticalPadding * 2)
+        let badgeWidth = ceil(textWidth + horizontalPadding * 2)
+
+        let badge = NSTextField(labelWithString: text)
+        badge.font = font
+        badge.textColor = .labelColor
+        badge.alignment = .center
+        badge.lineBreakMode = .byClipping
+        badge.wantsLayer = true
+        badge.layer?.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(0.88).cgColor
+        badge.layer?.cornerRadius = round(5 * scale)
+        badge.layer?.shadowColor = NSColor.black.cgColor
+        badge.layer?.shadowOpacity = 0.22
+        badge.layer?.shadowOffset = CGSize(width: 0, height: -1)
+        badge.layer?.shadowRadius = round(2 * scale)
+        badge.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(badge)
+
+        NSLayoutConstraint.activate([
+            badge.trailingAnchor.constraint(equalTo: imageViewObj.trailingAnchor, constant: -inset),
+            badge.bottomAnchor.constraint(equalTo: imageViewObj.bottomAnchor, constant: -inset),
+            badge.widthAnchor.constraint(equalToConstant: badgeWidth),
+            badge.heightAnchor.constraint(equalToConstant: badgeHeight),
+        ])
+
+        folderMediaCountBadgeView = badge
     }
 
     func refreshFinderTagDots() {
@@ -451,6 +511,10 @@ class CustomCollectionViewItem: NSCollectionViewItem {
         // 左下角Finder标签
         // Bottom-left finder tag dots
         refreshFinderTagDots()
+
+        // 右下角文件夹媒体数量
+        // Bottom-right folder media counts
+        refreshFolderMediaCountBadge()
 
         // 右上角HDR/RAW标签
         // Top-right corner HDR/RAWlabel

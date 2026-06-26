@@ -1,2 +1,5 @@
 xcuserdata/
 LocalDev.xcconfig
+.DS_Store
+.mindfs/
+dist/

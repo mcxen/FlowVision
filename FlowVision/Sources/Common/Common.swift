@@ -246,13 +246,52 @@ private func bsdtarEscapedPathBytes(_ text: String) -> [UInt8] {
     return out
 }
 
+private let archiveEntryPathAliasLock = NSLock()
+private var archiveEntryPathAliasMap: [String: String] = [:]
+
+private func archiveEntryPathAliasKey(archiveURL: URL, entryPath: String) -> String {
+    "\(archiveURL.absoluteString)|\(entryPath)"
+}
+
+func registerArchiveEntryPathAlias(archiveURL: URL, displayPath: String, rawPath: String) {
+    guard displayPath != rawPath else { return }
+    archiveEntryPathAliasLock.lock()
+    archiveEntryPathAliasMap[archiveEntryPathAliasKey(archiveURL: archiveURL, entryPath: displayPath)] = rawPath
+    archiveEntryPathAliasLock.unlock()
+}
+
+private func rawArchiveEntryPathAlias(archiveURL: URL, entryPath: String) -> String? {
+    archiveEntryPathAliasLock.lock()
+    let rawPath = archiveEntryPathAliasMap[archiveEntryPathAliasKey(archiveURL: archiveURL, entryPath: entryPath)]
+    archiveEntryPathAliasLock.unlock()
+    return rawPath
+}
+
+private func stringEncoding(ianaName: String) -> String.Encoding? {
+    let cfEncoding = CFStringConvertIANACharSetNameToEncoding(ianaName as CFString)
+    guard cfEncoding != kCFStringEncodingInvalidId else { return nil }
+    let nsEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding)
+    guard nsEncoding != UInt(kCFStringEncodingInvalidId) else { return nil }
+    return String.Encoding(rawValue: nsEncoding)
+}
+
+private let archiveFilenameEncodings: [String.Encoding] = {
+    var encodings: [String.Encoding] = [.utf8, .shiftJIS]
+    for name in ["windows-31j", "cp932", "x-mac-japanese", "euc-jp", "iso-2022-jp"] {
+        if let encoding = stringEncoding(ianaName: name), !encodings.contains(encoding) {
+            encodings.append(encoding)
+        }
+    }
+    return encodings
+}()
+
 func decodeBsdtarEscapedPath(_ text: String) -> String {
     let bytes = bsdtarEscapedPathBytes(text)
-    if let decoded = String(bytes: bytes, encoding: .utf8) {
-        return decoded
-    }
-    if let decoded = String(data: Data(bytes), encoding: .shiftJIS) {
-        return decoded
+    let data = Data(bytes)
+    for encoding in archiveFilenameEncodings {
+        if let decoded = String(data: data, encoding: encoding) {
+            return decoded
+        }
     }
     return text
 }
@@ -278,18 +317,27 @@ func getArchiveEntryData(archiveURL: URL, entryPath: String) -> Data? {
     
     // Try decoded path first, then bsdtar-escaped fallback for legacy zip name encoding output.
     var candidatePaths: [String] = []
+    if let rawAlias = rawArchiveEntryPathAlias(archiveURL: archiveURL, entryPath: entryPath) {
+        candidatePaths.append(rawAlias)
+    }
     let decoded = decodeBsdtarEscapedPath(entryPath)
-    candidatePaths.append(decoded)
+    if !candidatePaths.contains(decoded) {
+        candidatePaths.append(decoded)
+    }
     if decoded != entryPath {
-        candidatePaths.append(entryPath)
+        if !candidatePaths.contains(entryPath) {
+            candidatePaths.append(entryPath)
+        }
     } else {
         let escaped = encodeBsdtarEscapedPath(entryPath)
         if escaped != entryPath {
             candidatePaths.append(escaped)
         }
-        let shiftJISEscaped = encodeBsdtarEscapedPath(entryPath, encoding: .shiftJIS)
-        if shiftJISEscaped != entryPath && !candidatePaths.contains(shiftJISEscaped) {
-            candidatePaths.append(shiftJISEscaped)
+        for encoding in archiveFilenameEncodings {
+            let encoded = encodeBsdtarEscapedPath(entryPath, encoding: encoding)
+            if encoded != entryPath && !candidatePaths.contains(encoded) {
+                candidatePaths.append(encoded)
+            }
         }
     }
     

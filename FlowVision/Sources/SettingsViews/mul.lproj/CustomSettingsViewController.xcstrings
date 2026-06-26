@@ -2593,6 +2593,18 @@
         }
       }
     },
+    "YtK-ML-mGi.title" : {
+      "comment" : "Class = \"NSButtonCell\"; title = \"Show Folder Media Count Badge\"; ObjectID = \"YtK-ML-mGi\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Show Folder Media Count Badge"
+          }
+        }
+      }
+    },
     "Z13-dJ-JBv.title" : {
       "comment" : "Class = \"NSTextFieldCell\"; title = \"For directories in the exclusion list, images within them will not be used when generating thumbnails for themselves or their parent folders.\"; ObjectID = \"Z13-dJ-JBv\";",
       "extractionState" : "extracted_with_value",

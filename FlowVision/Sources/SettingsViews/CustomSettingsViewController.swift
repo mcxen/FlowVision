@@ -15,6 +15,7 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
 
     @IBOutlet weak var randomFolderThumbCheckbox: NSButton!
     @IBOutlet weak var thumbnailOfFolderUseStackingCheckbox: NSButton!
+    @IBOutlet weak var showFolderMediaCountBadgeCheckbox: NSButton!
     @IBOutlet weak var loopBrowsingCheckbox: NSButton!
     @IBOutlet weak var clickEdgeToSwitchImageCheckbox: NSButton!
     @IBOutlet weak var scrollMouseWheelToZoomCheckbox: NSButton!
@@ -39,6 +40,7 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
         
         randomFolderThumbCheckbox.state = globalVar.randomFolderThumb ? .on : .off
         thumbnailOfFolderUseStackingCheckbox.state = globalVar.thumbnailOfFolderUseStacking ? .on : .off
+        showFolderMediaCountBadgeCheckbox.state = globalVar.showFolderMediaCountBadge ? .on : .off
         loopBrowsingCheckbox.state = globalVar.loopBrowsing ? .on : .off
         clickEdgeToSwitchImageCheckbox.state = globalVar.clickEdgeToSwitchImage ? .on : .off
         scrollMouseWheelToZoomCheckbox.state = globalVar.scrollMouseWheelToZoom ? .on : .off
@@ -109,6 +111,12 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
     @IBAction func thumbnailOfFolderUseStackingToggled(_ sender: NSButton) {
         globalVar.thumbnailOfFolderUseStacking = (sender.state == .on)
         UserDefaults.standard.set(globalVar.thumbnailOfFolderUseStacking, forKey: "thumbnailOfFolderUseStacking")
+    }
+
+    @IBAction func showFolderMediaCountBadgeToggled(_ sender: NSButton) {
+        globalVar.showFolderMediaCountBadge = (sender.state == .on)
+        UserDefaults.standard.set(globalVar.showFolderMediaCountBadge, forKey: "showFolderMediaCountBadge")
+        refreshVisibleFolderMediaCountBadges()
     }
     
     @IBAction func loopBrowsingToggled(_ sender: NSButton) {
@@ -223,6 +231,16 @@ final class CustomSettingsViewController: NSViewController, SettingsPane {
             }
         default:
             break
+        }
+    }
+
+    private func refreshVisibleFolderMediaCountBadges() {
+        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else { return }
+        for windowController in appDelegate.windowControllers {
+            guard let viewController = windowController.contentViewController as? ViewController else { continue }
+            for item in viewController.collectionView.visibleItems() {
+                (item as? CustomCollectionViewItem)?.refreshFolderMediaCountBadge()
+            }
         }
     }
 }

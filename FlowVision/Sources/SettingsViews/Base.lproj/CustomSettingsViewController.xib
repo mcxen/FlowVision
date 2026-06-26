@@ -23,6 +23,7 @@
                 <outlet property="randomFolderThumbCheckbox" destination="oZE-97-h1J" id="BN1-Ep-r4A"/>
                 <outlet property="refViewForExcludeListView" destination="3aB-BV-3KF" id="hSt-Sk-KJI"/>
                 <outlet property="scrollMouseWheelToZoomCheckbox" destination="alP-Gg-eDb" id="zuK-CY-j3h"/>
+                <outlet property="showFolderMediaCountBadgeCheckbox" destination="Rmc-Gs-BDG" id="dCG-sP-Ug6"/>
                 <outlet property="thumbnailOfFolderUseStackingCheckbox" destination="0SG-Uv-iQq" id="ZqI-fb-nPd"/>
                 <outlet property="useInternalPlayerCheckbox" destination="d7b-FI-cKc" id="zGg-yO-Q1H"/>
                 <outlet property="usePinyinInitialSearchCheckbox" destination="lqa-M3-fXH" id="LEw-T4-60h"/>
@@ -136,6 +137,7 @@
                         <gridRow height="20" id="Hiw-Si-6Fi"/>
                         <gridRow id="3ji-xx-40N"/>
                         <gridRow id="C9g-Ns-DtL"/>
+                        <gridRow id="Ze2-SH-cNA"/>
                         <gridRow id="vzh-lB-BGH"/>
                         <gridRow id="DaE-iY-5h0"/>
                         <gridRow id="Vkn-wS-gZk"/>
@@ -445,6 +447,19 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="thumbnailOfFolderUseStackingToggled:" target="-2" id="dog-mo-51N"/>
+                                </connections>
+                            </button>
+                        </gridCell>
+                        <gridCell row="Ze2-SH-cNA" column="GGj-JC-w4E" id="Y4Q-iL-vzH"/>
+                        <gridCell row="Ze2-SH-cNA" column="cs9-fm-l2F" id="AiY-hl-aOn">
+                            <button key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="Rmc-Gs-BDG">
+                                <rect key="frame" x="99" y="153" width="300" height="18"/>
+                                <buttonCell key="cell" type="check" title="Show Folder Media Count Badge" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="YtK-ML-mGi">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showFolderMediaCountBadgeToggled:" target="-2" id="e9m-Nk-dCY"/>
                                 </connections>
                             </button>
                         </gridCell>
