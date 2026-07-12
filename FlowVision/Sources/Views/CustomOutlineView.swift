@@ -173,6 +173,18 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
                 }
 
                 menu.addItem(NSMenuItem.separator())
+
+                let selectedURLs = selectedRowIndexes.compactMap { row -> URL? in
+                    guard let selectedItem = self.item(atRow: row) as? TreeNode else { return nil }
+                    return URL(string: selectedItem.fullPath)
+                }
+                if selectedURLs.count > 1 {
+                    menu.addItem(
+                        withTitle: "批量重命名所选项目…",
+                        action: #selector(actBatchRenameSelectedItems),
+                        keyEquivalent: ""
+                    )
+                }
                 
                 let actionItemRename = menu.addItem(withTitle: NSLocalizedString("Rename", comment: "重命名"), action: #selector(actRename), keyEquivalent: "r")
                 actionItemRename.keyEquivalentModifierMask = []
@@ -325,6 +337,16 @@ class CustomOutlineView: NSOutlineView, NSMenuDelegate {
         if curRightClickedIndex != self.selectedRowIndexes.first {
             refreshTreeView()
         }
+    }
+
+    @objc func actBatchRenameSelectedItems() {
+        let urls = selectedRowIndexes.compactMap { row -> URL? in
+            guard let item = self.item(atRow: row) as? TreeNode else { return nil }
+            return URL(string: item.fullPath)
+        }
+        guard let viewController = getViewController(self), urls.count > 1 else { return }
+        _ = viewController.handleBatchRenameSelectedItems(urls: urls)
+        refreshTreeView()
     }
     
     @objc func actNewFolder() {

@@ -1239,6 +1239,15 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 }
 
                 menu.addItem(NSMenuItem.separator())
+
+                if selectedCount > 1 {
+                    let batchRenameItem = menu.addItem(
+                        withTitle: "批量重命名所选项目…",
+                        action: #selector(actBatchRenameSelectedItems),
+                        keyEquivalent: ""
+                    )
+                    batchRenameItem.isEnabled = !isReadOnlyVirtualFolder
+                }
                 
                 let actionItemRename = menu.addItem(withTitle: NSLocalizedString("Rename", comment: "重命名"), action: #selector(actRename), keyEquivalent: "r")
                 actionItemRename.keyEquivalentModifierMask = []
@@ -1470,6 +1479,16 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     @objc func actRename() {
         guard let urls = getViewController(collectionView!)?.publicVar.selectedUrls() else { return }
         getViewController(collectionView!)?.handleRename(urls: urls);
+    }
+
+    @objc func actBatchRenameFolders() {
+        guard let viewController = getViewController(collectionView!) else { return }
+        _ = viewController.handleBatchRenameFolders(urls: viewController.publicVar.selectedUrls())
+    }
+
+    @objc func actBatchRenameSelectedItems() {
+        guard let viewController = getViewController(collectionView!) else { return }
+        _ = viewController.handleBatchRenameSelectedItems(urls: viewController.publicVar.selectedUrls())
     }
     
     @objc func actNewFolder() {

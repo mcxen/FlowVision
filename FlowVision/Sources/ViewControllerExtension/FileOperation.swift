@@ -42,6 +42,45 @@ enum BatchMediaRotation: Int {
     }
 }
 
+private final class BatchRenamePreviewDataSource: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+    private let rows: [(original: String, renamed: String)]
+
+    init(mappings: [(original: String, renamed: String)]) {
+        self.rows = mappings
+    }
+
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        rows.count
+    }
+
+    func tableView(
+        _ tableView: NSTableView,
+        viewFor tableColumn: NSTableColumn?,
+        row: Int
+    ) -> NSView? {
+        guard let tableColumn = tableColumn else { return nil }
+        let identifier = NSUserInterfaceItemIdentifier("BatchRenamePreviewCell-\(tableColumn.identifier.rawValue)")
+        let cell = (tableView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView) ?? NSTableCellView()
+        cell.identifier = identifier
+
+        if cell.textField == nil {
+            let textField = NSTextField(labelWithString: "")
+            textField.lineBreakMode = .byTruncatingMiddle
+            textField.translatesAutoresizingMaskIntoConstraints = false
+            cell.addSubview(textField)
+            NSLayoutConstraint.activate([
+                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 8),
+                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -8),
+                textField.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
+            ])
+            cell.textField = textField
+        }
+
+        cell.textField?.stringValue = tableColumn.identifier.rawValue == "original" ? rows[row].original : rows[row].renamed
+        return cell
+    }
+}
+
 extension ViewController {
     enum CompressMode {
         case plainZip
@@ -559,7 +598,7 @@ extension ViewController {
             }
 
             let targetPath = mapping.to.path.lowercased()
-            if mapping.from.path.lowercased() == targetPath {
+            if mapping.from.path == mapping.to.path {
                 continue
             }
 
@@ -575,7 +614,7 @@ extension ViewController {
         var pendingMoves: [PendingTempRename] = []
 
         for mapping in mappings {
-            if mapping.from.path.lowercased() == mapping.to.path.lowercased() {
+            if mapping.from.path == mapping.to.path {
                 continue
             }
 
@@ -2860,6 +2899,323 @@ extension ViewController {
             }
         }
         return false
+    }
+
+    func handleBatchRenameFolders(urls: [URL]) -> Bool {
+        let fileManager = FileManager.default
+        let folders = urls.filter { url in
+            var isDirectory: ObjCBool = false
+            return !isReadOnlyVirtualFolderPath(url.absoluteString) &&
+                !isVirtualArchiveEntryPath(url.absoluteString) &&
+                fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory) &&
+                isDirectory.boolValue
+        }
+        guard folders.count > 1, folders.count == urls.count else {
+            showAlert(message: NSLocalizedString("Please select at least two folders.", comment: "请至少选择两个文件夹。"))
+            return false
+        }
+
+        let normalizedPaths = folders.map { $0.standardizedFileURL.path + "/" }
+        for (index, path) in normalizedPaths.enumerated() {
+            if normalizedPaths.enumerated().contains(where: { otherIndex, otherPath in
+                otherIndex != index && otherPath.hasPrefix(path)
+            }) {
+                showAlert(message: NSLocalizedString("A parent folder and its subfolder cannot be renamed together.", comment: "不能同时重命名父文件夹及其子文件夹。"))
+                return false
+            }
+        }
+
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Batch Rename Folders", comment: "批量重命名文件夹")
+        alert.informativeText = NSLocalizedString("Rules are applied in this order: replace, format, prefix, suffix.", comment: "规则应用顺序：替换、格式化、前缀、后缀。")
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: NSLocalizedString("Preview", comment: "预览"))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: "取消"))
+
+        let form = NSView(frame: NSRect(x: 0, y: 0, width: 440, height: 166))
+        let rows: [(String, String, String)] = [
+            (NSLocalizedString("Prefix", comment: "前缀"), "", NSLocalizedString("Optional text before the name", comment: "名称前的可选文本")),
+            (NSLocalizedString("Suffix", comment: "后缀"), "", NSLocalizedString("Optional text after the name", comment: "名称后的可选文本")),
+            (NSLocalizedString("Find", comment: "查找"), "", NSLocalizedString("Text to replace", comment: "要替换的文本")),
+            (NSLocalizedString("Replace With", comment: "替换为"), "", NSLocalizedString("Leave empty to remove matches", comment: "留空可删除匹配文本")),
+            (NSLocalizedString("Format", comment: "格式化"), "{name}", "{name}, {index}, {index:03}")
+        ]
+        var fields: [NSTextField] = []
+        for (index, row) in rows.enumerated() {
+            let y = 136 - CGFloat(index * 33)
+            let label = NSTextField(labelWithString: row.0)
+            label.frame = NSRect(x: 0, y: y + 2, width: 100, height: 22)
+            label.alignment = .right
+            let field = NSTextField(frame: NSRect(x: 108, y: y, width: 332, height: 24))
+            field.stringValue = row.1
+            field.placeholderString = row.2
+            form.addSubview(label)
+            form.addSubview(field)
+            fields.append(field)
+        }
+        alert.accessoryView = form
+
+        let storedKeyState = publicVar.isKeyEventEnabled
+        publicVar.isKeyEventEnabled = false
+        defer { publicVar.isKeyEventEnabled = storedKeyState }
+        guard alert.runModal() == .alertFirstButtonReturn else { return false }
+
+        let prefix = fields[0].stringValue
+        let suffix = fields[1].stringValue
+        let findText = fields[2].stringValue
+        let replacement = fields[3].stringValue
+        let format = fields[4].stringValue.isEmpty ? "{name}" : fields[4].stringValue
+        let sourcePathSet = Set(folders.map { $0.path.lowercased() })
+        var targetPathSet = Set<String>()
+        var mappings: [FileRenameMapping] = []
+
+        for (offset, folder) in folders.enumerated() {
+            var name = folder.lastPathComponent
+            if !findText.isEmpty {
+                name = name.replacingOccurrences(of: findText, with: replacement)
+            }
+            var formatted = format.replacingOccurrences(of: "{name}", with: name)
+            formatted = formatted.replacingOccurrences(of: "{index}", with: "\(offset + 1)")
+            if let regex = try? NSRegularExpression(pattern: #"\{index:0?(\d+)\}"#) {
+                let matches = regex.matches(in: formatted, range: NSRange(formatted.startIndex..., in: formatted))
+                for match in matches.reversed() {
+                    guard let widthRange = Range(match.range(at: 1), in: formatted),
+                          let tokenRange = Range(match.range, in: formatted),
+                          let width = Int(formatted[widthRange]) else { continue }
+                    let value = String(format: "%0*d", width, offset + 1)
+                    formatted.replaceSubrange(tokenRange, with: value)
+                }
+            }
+            let newName = (prefix + formatted + suffix).trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !newName.isEmpty, newName != ".", newName != "..", !newName.contains("/") else {
+                showAlert(message: String(format: NSLocalizedString("Invalid folder name: %@", comment: "无效的文件夹名称：%@"), newName))
+                return false
+            }
+
+            let target = folder.deletingLastPathComponent().appendingPathComponent(newName, isDirectory: true)
+            let targetPath = target.path.lowercased()
+            guard targetPathSet.insert(targetPath).inserted else {
+                showAlert(message: String(format: NSLocalizedString("Duplicate target name: %@", comment: "目标名称重复：%@"), newName))
+                return false
+            }
+            if fileManager.fileExists(atPath: target.path) && !sourcePathSet.contains(targetPath) {
+                showAlert(message: String(format: NSLocalizedString("A file or folder already exists: %@", comment: "文件或文件夹已存在：%@"), newName))
+                return false
+            }
+            mappings.append(FileRenameMapping(from: folder, to: target))
+        }
+
+        let changedMappings = mappings.filter { $0.from.path != $0.to.path }
+        guard !changedMappings.isEmpty else {
+            showAlert(message: NSLocalizedString("The rules do not change any folder names.", comment: "这些规则未改变任何文件夹名称。"))
+            return false
+        }
+
+        let preview = NSAlert()
+        preview.messageText = NSLocalizedString("Confirm Batch Rename", comment: "确认批量重命名")
+        preview.informativeText = String(format: NSLocalizedString("%d folders will be renamed.", comment: "将重命名 %d 个文件夹。"), changedMappings.count)
+        preview.alertStyle = .warning
+        preview.addButton(withTitle: NSLocalizedString("Rename", comment: "重命名"))
+        preview.addButton(withTitle: NSLocalizedString("Cancel", comment: "取消"))
+        let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 480, height: min(260, CGFloat(changedMappings.count * 24 + 12))))
+        scrollView.hasVerticalScroller = true
+        scrollView.borderType = .bezelBorder
+        let textView = NSTextView(frame: scrollView.bounds)
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.font = NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+        textView.string = changedMappings.map { "\($0.from.lastPathComponent)  ->  \($0.to.lastPathComponent)" }.joined(separator: "\n")
+        scrollView.documentView = textView
+        preview.accessoryView = scrollView
+        guard preview.runModal() == .alertFirstButtonReturn else { return false }
+
+        globalVar.operationLogs.append("[BatchRenameFolders] \(changedMappings.count) folders")
+        return executeFileRenameMappings(
+            changedMappings,
+            actionName: NSLocalizedString("Batch Rename Folders", comment: "批量重命名文件夹")
+        )
+    }
+
+    /// Shows a rename toolbox for any multi-selection, preserving file extensions by default.
+    func handleBatchRenameSelectedItems(urls: [URL]) -> Bool {
+        let fileManager = FileManager.default
+        var seenPaths = Set<String>()
+        let items = urls.filter { url in
+            guard !isReadOnlyVirtualFolderPath(url.absoluteString),
+                  !isVirtualArchiveEntryPath(url.absoluteString),
+                  fileManager.fileExists(atPath: url.path) else {
+                return false
+            }
+            return seenPaths.insert(url.standardizedFileURL.path.lowercased()).inserted
+        }
+
+        guard items.count > 1 else {
+            showAlert(message: "请至少选择两个可重命名的文件或文件夹。")
+            return false
+        }
+
+        // A selected parent cannot be renamed together with one of its selected children.
+        let selectedPaths = items.map { $0.standardizedFileURL.path }
+        let directoryPaths = Set(items.compactMap { item -> String? in
+            var isDirectory: ObjCBool = false
+            guard fileManager.fileExists(atPath: item.path, isDirectory: &isDirectory), isDirectory.boolValue else {
+                return nil
+            }
+            return item.standardizedFileURL.path
+        })
+        for folderPath in directoryPaths {
+            let folderPrefix = folderPath + "/"
+            if selectedPaths.contains(where: { $0 != folderPath && $0.hasPrefix(folderPrefix) }) {
+                showAlert(message: "不能同时重命名父文件夹及其已选中的子项目。")
+                return false
+            }
+        }
+
+        let alert = NSAlert()
+        alert.messageText = "批量重命名所选项目"
+        alert.informativeText = "按“替换 → 格式 → 前缀 → 后缀”的顺序处理。默认保留文件扩展名。"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "预览")
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: "取消"))
+
+        let form = NSView(frame: NSRect(x: 0, y: 0, width: 480, height: 202))
+        let rows: [(String, String, String)] = [
+            ("前缀", "", "添加在名称前（扩展名之前）"),
+            ("后缀", "", "添加在名称后（扩展名之前）"),
+            ("查找", "", "在原文件名中查找的文字"),
+            ("替换为", "", "留空可删除匹配内容"),
+            ("格式", "{name}", "变量：{name}、{index}、{index:03}、{folder}、{ext}")
+        ]
+        var fields: [NSTextField] = []
+        for (index, row) in rows.enumerated() {
+            let y = 166 - CGFloat(index * 32)
+            let label = NSTextField(labelWithString: row.0)
+            label.frame = NSRect(x: 0, y: y + 2, width: 100, height: 22)
+            label.alignment = .right
+            let field = NSTextField(frame: NSRect(x: 108, y: y, width: 372, height: 24))
+            field.stringValue = row.1
+            field.placeholderString = row.2
+            form.addSubview(label)
+            form.addSubview(field)
+            fields.append(field)
+        }
+        let hint = NSTextField(wrappingLabelWithString: "{name} 为原名称（不含扩展名）；{index:03} 可补零。格式中包含 {ext} 时由格式决定完整文件名，例如 {name}_{index}.{ext}。")
+        hint.frame = NSRect(x: 108, y: 0, width: 372, height: 36)
+        hint.font = NSFont.systemFont(ofSize: 11)
+        hint.textColor = .secondaryLabelColor
+        form.addSubview(hint)
+        alert.accessoryView = form
+
+        let storedKeyState = publicVar.isKeyEventEnabled
+        publicVar.isKeyEventEnabled = false
+        defer { publicVar.isKeyEventEnabled = storedKeyState }
+        guard alert.runModal() == .alertFirstButtonReturn else { return false }
+
+        let prefix = fields[0].stringValue
+        let suffix = fields[1].stringValue
+        let findText = fields[2].stringValue
+        let replacement = fields[3].stringValue
+        let format = fields[4].stringValue.isEmpty ? "{name}" : fields[4].stringValue
+        let formatControlsExtension = format.contains("{ext}")
+        let sourcePathSet = Set(items.map { $0.path.lowercased() })
+        var targetPathSet = Set<String>()
+        var mappings: [FileRenameMapping] = []
+
+        for (offset, item) in items.enumerated() {
+            let index = offset + 1
+            var baseName = item.deletingPathExtension().lastPathComponent
+            if !findText.isEmpty {
+                baseName = baseName.replacingOccurrences(of: findText, with: replacement)
+            }
+
+            let parentName = item.deletingLastPathComponent().lastPathComponent
+            var formatted = format
+                .replacingOccurrences(of: "{name}", with: baseName)
+                .replacingOccurrences(of: "{folder}", with: parentName)
+                .replacingOccurrences(of: "{ext}", with: item.pathExtension)
+                .replacingOccurrences(of: "{index}", with: "\(index)")
+            if let regex = try? NSRegularExpression(pattern: #"\{index:0?(\d+)\}"#) {
+                let matches = regex.matches(in: formatted, range: NSRange(formatted.startIndex..., in: formatted))
+                for match in matches.reversed() {
+                    guard let widthRange = Range(match.range(at: 1), in: formatted),
+                          let tokenRange = Range(match.range, in: formatted),
+                          let width = Int(formatted[widthRange]) else { continue }
+                    formatted.replaceSubrange(tokenRange, with: String(format: "%0*d", width, index))
+                }
+            }
+
+            var newName = (prefix + formatted + suffix).trimmingCharacters(in: .whitespacesAndNewlines)
+            if !formatControlsExtension, !item.pathExtension.isEmpty {
+                newName += ".\(item.pathExtension)"
+            }
+            guard !newName.isEmpty, newName != ".", newName != "..", !newName.contains("/") else {
+                showAlert(message: "无效的目标名称：\(newName)")
+                return false
+            }
+
+            let target = item.deletingLastPathComponent().appendingPathComponent(
+                newName,
+                isDirectory: directoryPaths.contains(item.standardizedFileURL.path)
+            )
+            let targetPath = target.path.lowercased()
+            guard targetPathSet.insert(targetPath).inserted else {
+                showAlert(message: "目标名称重复：\(newName)")
+                return false
+            }
+            if fileManager.fileExists(atPath: target.path) && !sourcePathSet.contains(targetPath) {
+                showAlert(message: "已有同名文件或文件夹：\(newName)")
+                return false
+            }
+            mappings.append(FileRenameMapping(from: item, to: target))
+        }
+
+        let changedMappings = mappings.filter { $0.from.path != $0.to.path }
+        guard !changedMappings.isEmpty else {
+            showAlert(message: "这些规则未改变任何名称。")
+            return false
+        }
+
+        let preview = NSAlert()
+        preview.messageText = "确认批量重命名"
+        preview.informativeText = "将重命名 \(changedMappings.count) 个所选项目。"
+        preview.alertStyle = .warning
+        preview.addButton(withTitle: NSLocalizedString("Rename", comment: "重命名"))
+        preview.addButton(withTitle: NSLocalizedString("Cancel", comment: "取消"))
+        let previewHeight = min(260, max(92, CGFloat(changedMappings.count * 24 + 26)))
+        let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 500, height: previewHeight))
+        scrollView.hasVerticalScroller = true
+        scrollView.borderType = .bezelBorder
+        let tableView = NSTableView(frame: NSRect(x: 0, y: 0, width: 500, height: previewHeight))
+        tableView.headerView = NSTableHeaderView()
+        tableView.rowHeight = 24
+        tableView.usesAlternatingRowBackgroundColors = true
+        tableView.gridStyleMask = [.solidHorizontalGridLineMask, .solidVerticalGridLineMask]
+
+        let originalColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("original"))
+        originalColumn.title = "原名称"
+        originalColumn.width = 250
+        originalColumn.minWidth = 140
+        let renamedColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("renamed"))
+        renamedColumn.title = "新名称"
+        renamedColumn.width = 250
+        renamedColumn.minWidth = 140
+        tableView.addTableColumn(originalColumn)
+        tableView.addTableColumn(renamedColumn)
+
+        let previewDataSource = BatchRenamePreviewDataSource(
+            mappings: changedMappings.map { ($0.from.lastPathComponent, $0.to.lastPathComponent) }
+        )
+        tableView.dataSource = previewDataSource
+        tableView.delegate = previewDataSource
+        scrollView.documentView = tableView
+        preview.accessoryView = scrollView
+        guard preview.runModal() == .alertFirstButtonReturn else { return false }
+
+        globalVar.operationLogs.append("[BatchRenameSelected] \(changedMappings.count) items")
+        return executeFileRenameMappings(
+            changedMappings,
+            actionName: "批量重命名"
+        )
     }
 
     func handleQuickRenameInCurrentFolder() -> Bool {
