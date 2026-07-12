@@ -1098,59 +1098,97 @@ extension ViewController {
         }
 
         let targetFolderURL = URL(fileURLWithPath: normalizedTargetPath, isDirectory: true)
-        if selectedURLs.contains(where: { isVirtualArchiveEntryPath($0.absoluteString) }) {
+        for sourceURL in selectedURLs where !isVirtualArchiveEntryPath(sourceURL.absoluteString) {
+            if sourceURL == targetFolderURL || targetFolderURL.path.hasPrefix(sourceURL.path + "/") {
+                showAlert(message: NSLocalizedString("cannot-copy-to-self", comment: "不能将文件/文件夹复制到自身或其子目录中。"))
+                return
+            }
+        }
+        publicVar.isInFileOperation = true
+        coreAreaView.showOperationIndeterminate("正在复制到 \(targetFolderURL.lastPathComponent)…")
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+
+            let fileManager = FileManager.default
+            var reservedTargetPaths = Set<String>()
+            var copiedURLs: [URL] = []
             var failedItems: [String] = []
-            var successCount = 0
-            for srcURL in selectedURLs {
-                if isVirtualArchiveEntryPath(srcURL.absoluteString) {
-                    guard let parsed = parseVirtualArchivePath(srcURL.absoluteString),
+
+            func uniqueDestination(for fileName: String) -> URL {
+                let candidate = targetFolderURL.appendingPathComponent(fileName)
+                var destination = candidate
+                var index = 2
+                while fileManager.fileExists(atPath: destination.path) || reservedTargetPaths.contains(destination.path.lowercased()) {
+                    let stem = candidate.deletingPathExtension().lastPathComponent
+                    let ext = candidate.pathExtension
+                    let renamed = ext.isEmpty ? "\(stem)_\(index)" : "\(stem)_\(index).\(ext)"
+                    destination = targetFolderURL.appendingPathComponent(renamed)
+                    index += 1
+                }
+                reservedTargetPaths.insert(destination.path.lowercased())
+                return destination
+            }
+
+            for (offset, sourceURL) in selectedURLs.enumerated() {
+                DispatchQueue.main.async { [weak self] in
+                    self?.coreAreaView.showOperationProgress(
+                        "正在复制 \(offset + 1)/\(selectedURLs.count)：\(sourceURL.lastPathComponent)",
+                        progress: Double(offset) / Double(selectedURLs.count)
+                    )
+                }
+
+                if isVirtualArchiveEntryPath(sourceURL.absoluteString) {
+                    guard let parsed = parseVirtualArchivePath(sourceURL.absoluteString),
                           let entryPath = parsed.entryPath,
                           let data = getArchiveEntryData(archiveURL: parsed.archiveURL, entryPath: entryPath) else {
-                        failedItems.append(srcURL.lastPathComponent.removingPercentEncoding ?? srcURL.lastPathComponent)
+                        failedItems.append(sourceURL.lastPathComponent.removingPercentEncoding ?? sourceURL.lastPathComponent)
                         continue
                     }
                     let fileName = URL(fileURLWithPath: entryPath).lastPathComponent
-                    let targetURL = getUniqueDestinationURL(for: targetFolderURL.appendingPathComponent(fileName), isInPlace: false)
+                    let destinationURL = uniqueDestination(for: fileName)
                     do {
-                        try data.write(to: targetURL, options: .atomic)
-                        successCount += 1
+                        try data.write(to: destinationURL, options: .atomic)
+                        copiedURLs.append(destinationURL)
                     } catch {
                         log("Copy archive entry failed: \(error)", level: .error)
                         failedItems.append(fileName)
                     }
                 } else {
-                    let targetURL = getUniqueDestinationURL(for: targetFolderURL.appendingPathComponent(srcURL.lastPathComponent), isInPlace: false)
+                    let destinationURL = uniqueDestination(for: sourceURL.lastPathComponent)
                     do {
-                        try FileManager.default.copyItem(at: srcURL, to: targetURL)
-                        successCount += 1
+                        try fileManager.copyItem(at: sourceURL, to: destinationURL)
+                        copiedURLs.append(destinationURL)
                     } catch {
                         log("Copy file failed: \(error)", level: .error)
-                        failedItems.append(srcURL.lastPathComponent)
+                        failedItems.append(sourceURL.lastPathComponent)
                     }
                 }
             }
 
-            if successCount > 0 {
-                publicVar.fileChangedCount += successCount
-                scheduledRefresh()
-                showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
-            }
-            if !failedItems.isEmpty {
-                let preview = failedItems.prefix(3).joined(separator: ", ")
-                showAlert(message: String(format: NSLocalizedString("Failed to copy some files: %@", comment: "部分文件复制失败：%@"), preview))
-            }
-            return
-        }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.publicVar.isInFileOperation = false
 
-        let backupItems = backupPasteboard()
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.writeObjects(selectedURLs as [NSPasteboardWriting])
-        globalVar.isCutMode = false
-        clearCutItemsDimEffect()
-        handlePaste(targetURL: targetFolderURL)
-        showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
-        restorePasteboard(items: backupItems)
+                if !copiedURLs.isEmpty {
+                    self.publicVar.fileChangedCount += copiedURLs.count
+                    self.publicVar.filesForLocateAfterChange = copiedURLs.map(\.absoluteString)
+                    self.publicVar.filesForLocateAfterChangeTime = .now()
+                    triggerFinderSound()
+                    self.scheduledRefresh()
+                    self.showPhotoFolderCopyToast(selectedURLs: selectedURLs, targetFolderURL: targetFolderURL)
+                    self.coreAreaView.showOperationProgress("复制完成", progress: 1.0)
+                    self.coreAreaView.hideOperationOverlay(delayed: 0.8)
+                } else {
+                    self.coreAreaView.hideOperationOverlay(delayed: 0.2)
+                }
+
+                if !failedItems.isEmpty {
+                    let preview = failedItems.prefix(3).joined(separator: ", ")
+                    showAlert(message: String(format: NSLocalizedString("Failed to copy some files: %@", comment: "部分文件复制失败：%@"), preview))
+                }
+            }
+        }
     }
 
     private func isVideoURLForFolder2Copy(_ url: URL) -> Bool {
