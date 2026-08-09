@@ -1026,8 +1026,9 @@ class LargeImageView: NSView {
             }
 
             videoView.isHidden = false
-            if let timeRange = getCommonTimeRange(url: url) {
-                playerItem = AVPlayerItem(url: url)
+            let playbackAsset = getViewController(self)?.mediaPreheatManager.preheatedAsset(for: url) ?? AVURLAsset(url: url)
+            if let timeRange = getCommonTimeRange(asset: playbackAsset) {
+                playerItem = AVPlayerItem(asset: playbackAsset)
                 if let playerItem = playerItem,
                    let queuePlayer = queuePlayer {
                     playerItem.preferredForwardBufferDuration = 5

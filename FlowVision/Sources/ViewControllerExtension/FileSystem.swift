@@ -1211,6 +1211,27 @@ extension ViewController {
                 publicVar.filesForLocateAfterChange.removeAll()
             }
         }
+
+        if isFinal, let pendingRestore = publicVar.collectionScrollRestoreAfterRefresh {
+            fileDB.lock()
+            let currentFolder = fileDB.curFolder
+            fileDB.unlock()
+            publicVar.collectionScrollRestoreAfterRefresh = nil
+
+            guard currentFolder == pendingRestore.folderPath else { return }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                      let scrollView = self.collectionView.enclosingScrollView else { return }
+                self.collectionView.layoutSubtreeIfNeeded()
+                let clipView = scrollView.contentView
+                var proposedBounds = clipView.bounds
+                proposedBounds.origin = pendingRestore.origin
+                let constrainedBounds = clipView.constrainBoundsRect(proposedBounds)
+                clipView.scroll(to: constrainedBounds.origin)
+                scrollView.reflectScrolledClipView(clipView)
+                self.setLoadThumbPriority(ifNeedVisable: true)
+            }
+        }
     }
     
     func switchDirByDirection(direction rawdirection: RightMouseGestureDirection, dest: String = "", doCollapse: Bool = true, expandLast: Bool = true, skip: Bool = false, stackDeep: Int, dryRun: Bool = false, needStopAutoScroll: Bool = true){

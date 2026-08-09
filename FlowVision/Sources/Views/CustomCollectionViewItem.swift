@@ -769,9 +769,11 @@ class CustomCollectionViewItem: NSCollectionViewItem {
             queuePlayer?.removeAllItems()
             
             if let url = URL(string: file.path),
-               let timeRange = getCommonTimeRange(url: url) {
+               let viewController = getViewController(collectionView!) {
+                let playbackAsset = viewController.mediaPreheatManager.preheatedAsset(for: url) ?? AVURLAsset(url: url)
+                guard let timeRange = getCommonTimeRange(asset: playbackAsset) else { return }
                 
-                let playerItem = AVPlayerItem(url: url)
+                let playerItem = AVPlayerItem(asset: playbackAsset)
                 queuePlayer?.insert(playerItem, after: nil)
                 playerLooper = AVPlayerLooper(player: queuePlayer!, templateItem: playerItem, timeRange: timeRange)
                 queuePlayer?.play()

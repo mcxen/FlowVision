@@ -8,6 +8,127 @@ import Cocoa
 import AVFoundation
 import AVKit
 
+/// Coordinates bounded, cancellable media preheating for one browser window.
+/// Image work fills FlowVision's decoded-image cache. Video work reads the
+/// first few seconds of compressed samples so SMB data lands in the macOS file
+/// cache, and retains the parsed asset for AVPlayer fallback.
+final class MediaPreheatManager {
+    private let imageQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "FlowVision.MediaPreheat.Images"
+        queue.qualityOfService = .utility
+        queue.maxConcurrentOperationCount = 2
+        return queue
+    }()
+
+    private let videoQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.name = "FlowVision.MediaPreheat.Videos"
+        queue.qualityOfService = .utility
+        // Serial reads avoid turning SMB preheating into competing random I/O.
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+
+    private let stateQueue = DispatchQueue(label: "FlowVision.MediaPreheat.State")
+    private var generation = 0
+    private var assets: [URL: AVURLAsset] = [:]
+
+    deinit {
+        imageQueue.cancelAllOperations()
+        videoQueue.cancelAllOperations()
+    }
+
+    /// Starts a new ±5 media window and invalidates work from the old position.
+    @discardableResult
+    func beginWindow(retaining urls: [URL]) -> Int {
+        imageQueue.cancelAllOperations()
+        videoQueue.cancelAllOperations()
+        let retainedURLs = Set(urls)
+        return stateQueue.sync {
+            generation += 1
+            assets = assets.filter { retainedURLs.contains($0.key) }
+            return generation
+        }
+    }
+
+    func scheduleImage(generation: Int, distance: Int, work: @escaping () -> Void) {
+        let operation = BlockOperation { [weak self] in
+            guard let self, self.isCurrent(generation) else { return }
+            autoreleasepool(invoking: work)
+        }
+        operation.queuePriority = queuePriority(for: distance)
+        imageQueue.addOperation(operation)
+    }
+
+    func scheduleVideo(url: URL, generation: Int, distance: Int, seconds: Double = 5) {
+        guard preheatedAsset(for: url) == nil else { return }
+        let operation = BlockOperation { [weak self] in
+            self?.preheatVideo(url: url, generation: generation, seconds: seconds)
+        }
+        operation.queuePriority = queuePriority(for: distance)
+        videoQueue.addOperation(operation)
+    }
+
+    func preheatedAsset(for url: URL) -> AVURLAsset? {
+        stateQueue.sync { assets[url] }
+    }
+
+    private func isCurrent(_ value: Int) -> Bool {
+        stateQueue.sync { generation == value }
+    }
+
+    private func queuePriority(for distance: Int) -> Operation.QueuePriority {
+        switch abs(distance) {
+        case 0...1: return .veryHigh
+        case 2: return .high
+        case 3: return .normal
+        default: return .low
+        }
+    }
+
+    private func preheatVideo(url: URL, generation: Int, seconds: Double) {
+        guard isCurrent(generation) else { return }
+
+        let asset = AVURLAsset(
+            url: url,
+            options: [AVURLAssetPreferPreciseDurationAndTimingKey: false]
+        )
+        guard let videoTrack = asset.tracks(withMediaType: .video).first,
+              isCurrent(generation)
+        else { return }
+
+        stateQueue.sync {
+            if self.generation == generation {
+                self.assets[url] = asset
+            }
+        }
+
+        do {
+            let reader = try AVAssetReader(asset: asset)
+            reader.timeRange = CMTimeRange(
+                start: .zero,
+                duration: CMTime(seconds: max(1, seconds), preferredTimescale: 600)
+            )
+            let output = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: nil)
+            output.alwaysCopiesSampleData = false
+            guard reader.canAdd(output) else { return }
+            reader.add(output)
+            guard reader.startReading() else { return }
+
+            while isCurrent(generation), output.copyNextSampleBuffer() != nil {
+                // Reading compressed samples intentionally warms the unified
+                // file cache; AVPlayer/mpv will decode them when playback starts.
+            }
+            if !isCurrent(generation) {
+                reader.cancelReading()
+            }
+        } catch {
+            log("Video preheat failed: \(url.lastPathComponent): \(error.localizedDescription)", level: .warn)
+        }
+    }
+}
+
 class NoHitAVPlayerView: AVPlayerView {
     override func hitTest(_ point: NSPoint) -> NSView? {
         return superview?.hitTest(convert(point, to: superview))
@@ -69,7 +190,10 @@ func createLoopingComposition(url: URL) -> AVMutableComposition? {
 }
 
 func getCommonTimeRange(url: URL) -> CMTimeRange? {
-    let asset = AVAsset(url: url)
+    getCommonTimeRange(asset: AVAsset(url: url))
+}
+
+func getCommonTimeRange(asset: AVAsset) -> CMTimeRange? {
     guard let videoTrack = asset.tracks(withMediaType: .video).first else {
         return nil
     }

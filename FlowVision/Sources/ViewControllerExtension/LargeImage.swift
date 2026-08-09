@@ -507,143 +507,72 @@ extension ViewController {
         }
 
         fileDB.lock()
-        let curFolder=fileDB.curFolder
-        let totalCount = fileDB.db[SortKeyDir(curFolder)]!.files.count
-        guard let path = fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: currLargeImagePos)?.1.path,
-              let url = URL(string: path)
-        else{
+        let curFolder = fileDB.curFolder
+        guard let directory = fileDB.db[SortKeyDir(curFolder)] else {
             fileDB.unlock()
             return
         }
-        fileDB.unlock()
-        
-        var threadNum: Int
-        if VolumeManager.shared.isExternalVolume(url) {
-            threadNum=globalVar.thumbThreadNum_External
-        }else{
-            threadNum=globalVar.thumbThreadNum
-        }
-//        let preloadNumNext=Int(ceil(Double(threadNum)*0.75))
-//        let preloadNumPrevious=Int(ceil(Double(threadNum)*0.25))
-        var preloadNumNext:Int
-        var preloadNumPrevious:Int
-        
-        if threadNum == 1 {
-            preloadNumNext = 0
-            preloadNumPrevious = 0
-        }else if threadNum <= 4 {
-            preloadNumNext = 1
-            preloadNumPrevious = 1
-        }else{
-            preloadNumNext = 3
-            preloadNumPrevious = 2
-        }
-        
-        var fileQueue = [(FileModel, Double)]()
+        let totalCount = directory.files.count
+        var mediaQueue = [(file: FileModel, distance: Int)]()
 
-        // 后面的图像
-        // Images after current
-        do{
-            fileDB.lock()
-            var nextLargeImagePos=currLargeImagePos
-            var loadCount=0
-            while nextLargeImagePos < totalCount-1 {
-                nextLargeImagePos += 1
-                if let file=fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: nextLargeImagePos)?.1 {
-                    if file.type == .image || (file.type == .video && globalVar.useInternalPlayer) {
-                        loadCount += 1
-                        // 预载入数量
-                        // Preload count
-                        if loadCount > preloadNumNext { break }
-                    }
-                    if file.type == .image {
-                        fileQueue.append((file, Double(loadCount)-0.5))
-                    }
+        if let current = directory.files.elementSafe(atOffset: currLargeImagePos)?.1,
+           current.type == .image || (current.type == .video && globalVar.useInternalPlayer) {
+            mediaQueue.append((current, 0))
+        }
+
+        for direction in [-1, 1] {
+            var position = currLargeImagePos
+            var mediaDistance = 0
+            while position >= 0 && position < totalCount && mediaDistance < 5 {
+                position += direction
+                guard position >= 0 && position < totalCount else { break }
+                guard let file = directory.files.elementSafe(atOffset: position)?.1 else { continue }
+                if file.type == .image || (file.type == .video && globalVar.useInternalPlayer) {
+                    mediaDistance += 1
+                    mediaQueue.append((file, direction * mediaDistance))
                 }
             }
-            fileDB.unlock()
-        }
-        
-        // 前面的图像
-        // Images before current
-        do{
-            fileDB.lock()
-            var nextLargeImagePos=currLargeImagePos
-            var loadCount=0
-            while nextLargeImagePos >= 0 {
-                nextLargeImagePos -= 1
-                if let file=fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: nextLargeImagePos)?.1 {
-                    if file.type == .image || (file.type == .video && globalVar.useInternalPlayer) {
-                        loadCount += 1
-                        // 预载入数量
-                        // Preload count
-                        if loadCount > preloadNumPrevious { break }
-                    }
-                    if file.type == .image {
-                        fileQueue.append((file, Double(loadCount)))
-                    }
-                }
-            }
-            fileDB.unlock()
-        }
-        
-        // 当前图像
-        // Current image
-        do{
-            fileDB.lock()
-            if let file=fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: currLargeImagePos)?.1,
-               file.type == .image{
-                fileQueue.append((file, 0))
-            }
-            fileDB.unlock()
-        }
-        
-        // 排序后预载入
-        // Preload after sorting
-        fileDB.lock()
-        fileQueue.sort { $0.1 > $1.1 }
-        for (file,priority) in fileQueue {
-            preloadLargeImageForFile(file: file, priority: priority)
         }
         fileDB.unlock()
+
+        let retainedURLs = mediaQueue.compactMap { URL(string: $0.file.path) }
+        let generation = mediaPreheatManager.beginWindow(retaining: retainedURLs)
+
+        for entry in mediaQueue.sorted(by: { abs($0.distance) < abs($1.distance) }) {
+            guard let url = URL(string: entry.file.path) else { continue }
+            if entry.file.type == .image {
+                preloadLargeImageForFile(file: entry.file, distance: entry.distance, generation: generation)
+            } else if entry.distance != 0 {
+                mediaPreheatManager.scheduleVideo(
+                    url: url,
+                    generation: generation,
+                    distance: entry.distance,
+                    seconds: 5
+                )
+            }
+        }
 
     }
     
-    func preloadLargeImageForFile(file: FileModel, priority: Double){
+    func preloadLargeImageForFile(file: FileModel, distance: Int, generation: Int){
         if file.type != .image {return}
 
         let url=URL(string:file.path)!
         let scale = NSScreen.main?.backingScaleFactor ?? 1
         let maxBounds=largeImageView.bounds
-        // print(maxBounds)
-        
-        var largeSize: NSSize
-        var originalSize: NSSize? = file.originalSize
-        
-        // 当文件被修改，列表重新读取但大小还没来得及获取时可能为空，此时需要获取一下
-        // When file is modified, list is re-read but size may not be obtained yet, need to get it
-        // 或者由于外置卷，使用的默认大小 || VolumeManager.shared.isExternalVolume(url)
-        // Or due to external volume, use default size || VolumeManager.shared.isExternalVolume(url)
-        if originalSize == nil {
-            let imageInfo = getImageInfo(url: url, needMetadata: true)
-            originalSize = imageInfo?.size
-            file.imageInfo = imageInfo
-            file.originalSize = originalSize
+        let fitWindow = publicVar.isLargeImageFitWindow
+        let rawUseEmbeddedThumb = publicVar.isRawUseEmbeddedThumb
+        let enableHDR = publicVar.isEnableHDR
 
-            if originalSize == nil {
-                originalSize = DEFAULT_SIZE
-                file.isGetImageSizeFail = true
-            }else{
-                file.isGetImageSizeFail = false
-            }
-        }
-        
-        if let originalSize=originalSize{
-            
+        mediaPreheatManager.scheduleImage(generation: generation, distance: distance) {
+            let loadedImageInfo = file.imageInfo ?? getImageInfo(url: url, needMetadata: true)
+            let originalSize = file.originalSize ?? loadedImageInfo?.size ?? DEFAULT_SIZE
+            var largeSize: NSSize
+
             // 判断HDR
             // Determine HDR
-            var isHDR = (file.imageInfo?.isHDR ?? false) && publicVar.isEnableHDR
-            if globalVar.HandledRawExtensions.contains(url.pathExtension.lowercased()) && publicVar.isRawUseEmbeddedThumb {
+            var isHDR = (loadedImageInfo?.isHDR ?? false) && enableHDR
+            if globalVar.HandledRawExtensions.contains(url.pathExtension.lowercased()) && rawUseEmbeddedThumb {
                 isHDR = false
             }
             
@@ -657,7 +586,7 @@ extension ViewController {
             
             // 当原图实际大小小于视图大小时，按实际大小显示
             // When original image actual size is smaller than view size, display at actual size
-            if !publicVar.isLargeImageFitWindow && originalSize.width<largeSize.width*scale {
+            if !fitWindow && originalSize.width<largeSize.width*scale {
                 largeSize=NSSize(width: originalSize.width/scale, height: originalSize.height/scale)
             }
             
@@ -674,7 +603,7 @@ extension ViewController {
             
             // 如果RAW使用Exif内嵌缩略图，则不使用原图（进行缩放）
             // If RAW uses Exif embedded thumbnail, do not use original image (for scaling)
-            if globalVar.HandledRawExtensions.contains(url.pathExtension.lowercased()) && publicVar.isRawUseEmbeddedThumb {
+            if globalVar.HandledRawExtensions.contains(url.pathExtension.lowercased()) && rawUseEmbeddedThumb {
                 doNotGenResized=false
             }
             
@@ -684,11 +613,7 @@ extension ViewController {
                 doNotGenResized=true
             }
 
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                guard let self = self else { return }
-                _ = LargeImageProcessor.getImageCache(url: url, size: largeSize, rotate: 0, ver: file.ver, useOriginalImage: doNotGenResized, isHDR: isHDR, isRawUseEmbeddedThumb: publicVar.isRawUseEmbeddedThumb, needWaitWhenSame: false)
-            }
-            
+            _ = LargeImageProcessor.getImageCache(url: url, size: largeSize, rotate: 0, ver: file.ver, useOriginalImage: doNotGenResized, isHDR: isHDR, isRawUseEmbeddedThumb: rawUseEmbeddedThumb, needWaitWhenSame: false)
         }
     }
     
@@ -732,7 +657,7 @@ extension ViewController {
             fileDB.unlock()
             
             setLoadThumbPriority(indexPath: IndexPath(item: pos, section: 0), ifNeedVisable: false)
-            if !globalVar.portableMode {
+            if !globalVar.portableMode && !isByZoom {
                 // 预载入附近图像（包括本张），此处对于便携模式计算似乎有一像素小数偏差，待完善
                 // Preload nearby images (including current), calculation for portable mode seems to have one-pixel decimal deviation, to be improved
                 preloadLargeImage()

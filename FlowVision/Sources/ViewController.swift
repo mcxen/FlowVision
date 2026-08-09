@@ -177,6 +177,7 @@ class PublicVar{
     var folderStepForLocateTime: DispatchTime = .now()
     var filesForLocateAfterChange = [String]()
     var filesForLocateAfterChangeTime: DispatchTime = .now()
+    var collectionScrollRestoreAfterRefresh: (folderPath: String, origin: NSPoint)?
     var isInFileOperation = false
     var isLeftMouseDown: Bool = false
     var isRightMouseDown: Bool = false
@@ -353,6 +354,7 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
     
     var largeImageLoadTask: DispatchWorkItem?
     var largeImageLoadQueueLock = NSLock()
+    let mediaPreheatManager = MediaPreheatManager()
     
     var lastDoNotGenResized = false
     var lastResizeFailed = false

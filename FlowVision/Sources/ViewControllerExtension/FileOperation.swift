@@ -8,6 +8,7 @@ import Cocoa
 import AVFoundation
 import DiskArbitration
 import ImageIO
+import BTree
 
 enum BatchMediaRotation: Int {
     case clockwise90 = 90
@@ -579,12 +580,180 @@ extension ViewController {
         view.window?.undoManager ?? NSApp.keyWindow?.undoManager ?? undoManager
     }
 
+    /// Keeps the active browser pointed at the same directory when that directory,
+    /// or one of its ancestors, is renamed.
+    private func updateCurrentFolderPathAfterRename(_ mappings: [FileRenameMapping]) -> Bool {
+        fileDB.lock()
+        let oldFolderPath = fileDB.curFolder
+        fileDB.unlock()
+
+        guard let oldFolderURL = URL(string: oldFolderPath), oldFolderURL.isFileURL else {
+            return false
+        }
+
+        let oldPath = oldFolderURL.standardizedFileURL.path
+        let matchingMapping = mappings
+            .sorted { $0.from.standardizedFileURL.path.count > $1.from.standardizedFileURL.path.count }
+            .first { mapping in
+                let sourcePath = mapping.from.standardizedFileURL.path
+                return oldPath.lowercased() == sourcePath.lowercased() ||
+                    oldPath.lowercased().hasPrefix(sourcePath.lowercased() + "/")
+            }
+        guard let matchingMapping else { return false }
+
+        let sourcePath = matchingMapping.from.standardizedFileURL.path
+        let relativeSuffix = String(oldPath.dropFirst(sourcePath.count))
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let targetFolderURL = URL(
+            fileURLWithPath: matchingMapping.to.standardizedFileURL.path,
+            isDirectory: true
+        )
+        let newFolderURL = relativeSuffix.isEmpty
+            ? targetFolderURL
+            : targetFolderURL.appendingPathComponent(relativeSuffix, isDirectory: true)
+        let newFolderPath = newFolderURL.absoluteString
+
+        fileDB.lock()
+        guard fileDB.curFolder == oldFolderPath else {
+            fileDB.unlock()
+            return false
+        }
+        fileDB.curFolder = newFolderPath
+        fileDB.unlock()
+
+        if let clipView = collectionView.enclosingScrollView?.contentView {
+            publicVar.collectionScrollRestoreAfterRefresh = (newFolderPath, clipView.bounds.origin)
+        }
+        publicVar.filesForLocateAfterChange.removeAll()
+        return true
+    }
+
+    /// Updates rename-only state without rebuilding collection items or media players.
+    /// Returns false when the collection is not fully loaded and a normal refresh is required.
+    private func applyRenameMappingsInPlace(
+        _ mappings: [FileRenameMapping],
+        folderPath: String
+    ) -> Bool {
+        guard !mappings.isEmpty else { return true }
+        let mappingBySourcePath = Dictionary(
+            uniqueKeysWithValues: mappings.map { ($0.from.path.lowercased(), $0) }
+        )
+        let largeViewOldPath = largeImageView.file.path
+
+        fileDB.lock()
+        guard fileDB.curFolder == folderPath,
+              let dirModel = fileDB.db[SortKeyDir(folderPath)] else {
+            fileDB.unlock()
+            return false
+        }
+
+        let oldEntries = getMapKeysFile(dirModel.files)
+        guard collectionView.numberOfItems(inSection: 0) == oldEntries.count else {
+            fileDB.unlock()
+            return false
+        }
+
+        let availablePaths = Set(oldEntries.compactMap { entry in
+            URL(string: entry.1.path)?.path.lowercased()
+        })
+        guard Set(mappingBySourcePath.keys).isSubset(of: availablePaths) else {
+            fileDB.unlock()
+            return false
+        }
+
+        let oldModels = oldEntries.map(\.1)
+        var rebuiltFiles = Map<SortKeyFile, FileModel>()
+        for (oldKey, model) in oldEntries {
+            guard let modelURL = URL(string: model.path),
+                  let mapping = mappingBySourcePath[modelURL.path.lowercased()] else {
+                rebuiltFiles[oldKey] = model
+                continue
+            }
+
+            let newPath = mapping.to.absoluteString
+            model.path = newPath
+            model.ext = mapping.to.pathExtension.lowercased()
+
+            guard let newKey = oldKey.copy() as? SortKeyFile else {
+                fileDB.unlock()
+                return false
+            }
+            newKey.path = newPath
+            newKey.pathCmp = newPath.lowercased()
+            newKey.exifDate = oldKey.exifDate
+            newKey.exifPixel = oldKey.exifPixel
+            newKey.rating = oldKey.rating
+            newKey.tag = oldKey.tag
+            newKey.isTagLoaded = oldKey.isTagLoaded
+            rebuiltFiles[newKey] = model
+        }
+        dirModel.files = rebuiltFiles
+        let newModels = getMapKeysFile(rebuiltFiles).map(\.1)
+        fileDB.unlock()
+
+        let oldIndexByModel = Dictionary(
+            uniqueKeysWithValues: oldModels.enumerated().map { (ObjectIdentifier($0.element), $0.offset) }
+        )
+        let newIndexByModel = Dictionary(
+            uniqueKeysWithValues: newModels.enumerated().map { (ObjectIdentifier($0.element), $0.offset) }
+        )
+        guard Set(oldIndexByModel.keys) == Set(newIndexByModel.keys) else { return false }
+
+        for case let item as CustomCollectionViewItem in collectionView.visibleItems() {
+            guard let oldURL = item.imageViewObj.url,
+                  let mapping = mappingBySourcePath[oldURL.path.lowercased()] else { continue }
+            let newURL = mapping.to
+            item.imageViewObj.url = newURL
+            if item.currentPlayingURL?.path.lowercased() == oldURL.path.lowercased() {
+                item.currentPlayingURL = newURL
+            }
+            item.imageNameField.stringValue = publicVar.profile.isShowThumbnailFilename ? newURL.lastPathComponent : ""
+            item.setTooltip()
+        }
+
+        let moves = oldIndexByModel.compactMap { modelID, oldIndex -> (IndexPath, IndexPath)? in
+            guard let newIndex = newIndexByModel[modelID], newIndex != oldIndex else { return nil }
+            return (IndexPath(item: oldIndex, section: 0), IndexPath(item: newIndex, section: 0))
+        }
+        if !moves.isEmpty {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0
+                collectionView.performBatchUpdates {
+                    for move in moves {
+                        collectionView.moveItem(at: move.0, to: move.1)
+                    }
+                }
+            }
+        }
+
+        if let oldLargeURL = URL(string: largeViewOldPath),
+           let mapping = mappingBySourcePath[oldLargeURL.path.lowercased()] {
+            let newURL = mapping.to
+            largeImageView.file.path = newURL.absoluteString
+            largeImageView.file.ext = newURL.pathExtension.lowercased()
+            if largeImageView.currentPlayingURL?.path.lowercased() == oldLargeURL.path.lowercased() {
+                largeImageView.currentPlayingURL = newURL
+            }
+            if largeImageView.restorePlayURL?.path.lowercased() == oldLargeURL.path.lowercased() {
+                largeImageView.restorePlayURL = newURL
+            }
+            if let openURL = URL(string: publicVar.openFromFinderPath),
+               openURL.path.lowercased() == oldLargeURL.path.lowercased() {
+                publicVar.openFromFinderPath = newURL.absoluteString
+            }
+            setWindowTitleOfLargeImage(file: largeImageView.file)
+        }
+
+        return true
+    }
+
     @discardableResult
     private func executeFileRenameMappings(
         _ mappings: [FileRenameMapping],
         actionName: String,
         registerUndo: Bool = true,
-        locateTargets: [URL]? = nil
+        locateTargets: [URL]? = nil,
+        inPlaceFolderPath: String? = nil
     ) -> Bool {
         guard !mappings.isEmpty else { return true }
 
@@ -658,7 +827,18 @@ extension ViewController {
         guard !appliedMoves.isEmpty else { return true }
 
         EnhancedIndex.handleFilesMoved(appliedMoves.map { (oldPath: $0.from.path, newPath: $0.to.path) })
-        publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+        let didRenameCurrentFolder = updateCurrentFolderPathAfterRename(appliedMoves)
+        let didUpdateInPlace = inPlaceFolderPath.map {
+            applyRenameMappingsInPlace(appliedMoves, folderPath: $0)
+        } ?? false
+        if didUpdateInPlace || didRenameCurrentFolder {
+            publicVar.filesForLocateAfterChange.removeAll()
+            if !didRenameCurrentFolder {
+                publicVar.collectionScrollRestoreAfterRefresh = nil
+            }
+        } else {
+            publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+        }
 
         if registerUndo, let undoManager = fileOperationUndoManager() {
             let inverseMappings = appliedMoves.map { FileRenameMapping(from: $0.to, to: $0.from) }
@@ -667,7 +847,8 @@ extension ViewController {
                     inverseMappings,
                     actionName: actionName,
                     registerUndo: true,
-                    locateTargets: appliedMoves.map(\.from)
+                    locateTargets: appliedMoves.map(\.from),
+                    inPlaceFolderPath: inPlaceFolderPath
                 )
             }
             undoManager.setActionName(actionName)
@@ -682,11 +863,182 @@ extension ViewController {
             ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
             fileDB.unlock()
         }
-        if ifRefresh {
+        if didRenameCurrentFolder || (!didUpdateInPlace && ifRefresh) {
             scheduledRefresh()
         }
 
         return true
+    }
+
+    private func executeFileRenameMappingsAsync(
+        _ mappings: [FileRenameMapping],
+        actionName: String,
+        locateTargets: [URL]? = nil,
+        inPlaceFolderPath: String? = nil
+    ) {
+        guard !mappings.isEmpty else {
+            publicVar.isInFileOperation = false
+            coreAreaView.hideOperationOverlay(delayed: 0.2)
+            return
+        }
+
+        publicVar.isInFileOperation = true
+        coreAreaView.showOperationIndeterminate(NSLocalizedString("Preparing rename…", comment: "正在准备重命名…"))
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+
+            let fileManager = FileManager.default
+            let sourcePathSet = Set(mappings.map { $0.from.path.lowercased() })
+            let sourceByTargetPath = Dictionary(
+                uniqueKeysWithValues: mappings.map { ($0.to.path, $0.from) }
+            )
+            var failureMessage: String?
+
+            for mapping in mappings {
+                guard fileManager.fileExists(atPath: mapping.from.path) else {
+                    failureMessage = "重命名源文件不存在：\(mapping.from.lastPathComponent)"
+                    break
+                }
+                if mapping.from.path == mapping.to.path { continue }
+                let targetPath = mapping.to.path.lowercased()
+                if fileManager.fileExists(atPath: mapping.to.path) && !sourcePathSet.contains(targetPath) {
+                    failureMessage = "无法完成重命名，目标已存在：\(mapping.to.lastPathComponent)"
+                    break
+                }
+            }
+
+            let changedMappings = mappings.filter { $0.from.path != $0.to.path }
+            var pendingMoves: [PendingTempRename] = []
+            var appliedMoves: [FileRenameMapping] = []
+            let total = max(changedMappings.count, 1)
+
+            if failureMessage == nil {
+                for (index, mapping) in changedMappings.enumerated() {
+                    if index == 0 || index == changedMappings.count - 1 || index % max(1, total / 100) == 0 {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.coreAreaView.showOperationProgress(
+                                "正在准备重命名 \(index + 1)/\(changedMappings.count)",
+                                progress: Double(index) / Double(total) * 0.5
+                            )
+                        }
+                    }
+
+                    let tempURL = mapping.from.deletingLastPathComponent().appendingPathComponent("temp_rename_\(UUID().uuidString)")
+                    do {
+                        try fileManager.moveItem(at: mapping.from, to: tempURL)
+                        pendingMoves.append(PendingTempRename(tempURL: tempURL, targetURL: mapping.to))
+                    } catch {
+                        failureMessage = error.localizedDescription
+                        for pending in pendingMoves.reversed() {
+                            if let originalURL = sourceByTargetPath[pending.targetURL.path] {
+                                try? fileManager.moveItem(at: pending.tempURL, to: originalURL)
+                            }
+                        }
+                        pendingMoves.removeAll()
+                        break
+                    }
+                }
+            }
+
+            if failureMessage == nil {
+                for (index, pending) in pendingMoves.enumerated() {
+                    if index == 0 || index == pendingMoves.count - 1 || index % max(1, total / 100) == 0 {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.coreAreaView.showOperationProgress(
+                                "正在重命名 \(index + 1)/\(pendingMoves.count)",
+                                progress: 0.5 + Double(index) / Double(total) * 0.5
+                            )
+                        }
+                    }
+
+                    do {
+                        try fileManager.moveItem(at: pending.tempURL, to: pending.targetURL)
+                        if let sourceURL = sourceByTargetPath[pending.targetURL.path] {
+                            appliedMoves.append(FileRenameMapping(from: sourceURL, to: pending.targetURL))
+                        }
+                    } catch {
+                        failureMessage = error.localizedDescription
+                        for applied in appliedMoves.reversed() {
+                            try? fileManager.moveItem(at: applied.to, to: applied.from)
+                        }
+                        for remaining in pendingMoves where fileManager.fileExists(atPath: remaining.tempURL.path) {
+                            if let originalURL = sourceByTargetPath[remaining.targetURL.path] {
+                                try? fileManager.moveItem(at: remaining.tempURL, to: originalURL)
+                            }
+                        }
+                        appliedMoves.removeAll()
+                        break
+                    }
+                }
+            }
+
+            if failureMessage == nil, !appliedMoves.isEmpty {
+                EnhancedIndex.handleFilesMoved(
+                    appliedMoves.map { (oldPath: $0.from.path, newPath: $0.to.path) }
+                )
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.publicVar.isInFileOperation = false
+
+                if let failureMessage = failureMessage {
+                    self.publicVar.collectionScrollRestoreAfterRefresh = nil
+                    self.coreAreaView.hideOperationOverlay(delayed: 0.2)
+                    showAlert(message: "重命名失败：\(failureMessage)")
+                    return
+                }
+
+                guard !appliedMoves.isEmpty else {
+                    self.publicVar.collectionScrollRestoreAfterRefresh = nil
+                    self.coreAreaView.showOperationToast("文件名无需更改", autoHide: 1.5)
+                    return
+                }
+
+                self.publicVar.fileChangedCount += appliedMoves.count
+                let didRenameCurrentFolder = self.updateCurrentFolderPathAfterRename(appliedMoves)
+                let didUpdateInPlace = inPlaceFolderPath.map {
+                    self.applyRenameMappingsInPlace(appliedMoves, folderPath: $0)
+                } ?? false
+                if didUpdateInPlace || didRenameCurrentFolder {
+                    self.publicVar.filesForLocateAfterChange.removeAll()
+                    if !didRenameCurrentFolder {
+                        self.publicVar.collectionScrollRestoreAfterRefresh = nil
+                    }
+                } else {
+                    self.publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+                }
+
+                if let undoManager = self.fileOperationUndoManager() {
+                    let inverseMappings = appliedMoves.map { FileRenameMapping(from: $0.to, to: $0.from) }
+                    undoManager.registerUndo(withTarget: self) { target in
+                        _ = target.executeFileRenameMappings(
+                            inverseMappings,
+                            actionName: actionName,
+                            registerUndo: true,
+                            locateTargets: appliedMoves.map(\.from),
+                            inPlaceFolderPath: inPlaceFolderPath
+                        )
+                    }
+                    undoManager.setActionName(actionName)
+                }
+
+                var shouldRefresh = true
+                self.fileDB.lock()
+                let currentFolder = self.fileDB.curFolder
+                if self.publicVar.isRecursiveMode || isVirtualFolderPath(currentFolder) {
+                    shouldRefresh = self.fileDB.db[SortKeyDir(currentFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
+                }
+                self.fileDB.unlock()
+                if didRenameCurrentFolder || (!didUpdateInPlace && shouldRefresh) {
+                    self.scheduledRefresh()
+                }
+
+                self.coreAreaView.showOperationProgress("重命名完成", progress: 1.0)
+                self.coreAreaView.hideOperationOverlay(delayed: 0.8)
+            }
+        }
     }
 
     @discardableResult
@@ -3257,6 +3609,8 @@ extension ViewController {
     }
 
     func handleQuickRenameInCurrentFolder() -> Bool {
+        guard !publicVar.isInFileOperation else { return false }
+
         fileDB.lock()
         let curFolder = fileDB.curFolder
         let keys: [(SortKeyFile, FileModel)]
@@ -3288,55 +3642,62 @@ extension ViewController {
             return trimmed.isEmpty ? "{folder}_{index}" : trimmed
         }()
 
-        let originalPathSet = Set(urls.map { $0.path.lowercased() })
-        var plannedPathSet = Set<String>()
-        var finalNames: [(originalUrl: URL, finalUrl: URL)] = []
-
-        for (idx, originalUrl) in urls.enumerated() {
-            let index = idx + 1
-            var baseName = rule
-                .replacingOccurrences(of: "{folder}", with: folderName)
-                .replacingOccurrences(of: "{index}", with: "\(index)")
-
-            baseName = baseName.trimmingCharacters(in: .whitespacesAndNewlines)
-            if baseName.isEmpty {
-                baseName = "\(folderName)_\(index)"
-            }
-
-            let ext = originalUrl.pathExtension
-            var suffix = 1
-            var finalUrl = originalUrl
-
-            while true {
-                let candidateBase = (suffix == 1) ? baseName : "\(baseName)_\(suffix)"
-                let candidateName = ext.isEmpty ? candidateBase : "\(candidateBase).\(ext)"
-                let candidateURL = originalUrl.deletingLastPathComponent().appendingPathComponent(candidateName)
-                let candidatePathLower = candidateURL.path.lowercased()
-
-                let existsAndNotInOriginalSet =
-                    FileManager.default.fileExists(atPath: candidateURL.path) &&
-                    !originalPathSet.contains(candidatePathLower)
-                let isPlannedConflict = plannedPathSet.contains(candidatePathLower)
-
-                if !existsAndNotInOriginalSet && !isPlannedConflict {
-                    finalUrl = candidateURL
-                    plannedPathSet.insert(candidatePathLower)
-                    break
-                }
-                suffix += 1
-            }
-
-            finalNames.append((originalUrl: originalUrl, finalUrl: finalUrl))
-        }
-
         let operationLog = "[QuickRename] \(folderName) -> \(rule)"
         globalVar.operationLogs.append(operationLog)
+        publicVar.collectionScrollRestoreAfterRefresh = nil
+        if let clipView = collectionView.enclosingScrollView?.contentView {
+            publicVar.collectionScrollRestoreAfterRefresh = (curFolder, clipView.bounds.origin)
+        }
+        publicVar.isInFileOperation = true
+        coreAreaView.showOperationIndeterminate("正在生成重命名方案…")
 
-        let mappings = finalNames.map { FileRenameMapping(from: $0.originalUrl, to: $0.finalUrl) }
-        return executeFileRenameMappings(
-            mappings,
-            actionName: NSLocalizedString("快速重命名", comment: "quick rename undo")
-        )
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            let originalPathSet = Set(urls.map { $0.path.lowercased() })
+            var plannedPathSet = Set<String>()
+            var mappings: [FileRenameMapping] = []
+
+            for (idx, originalURL) in urls.enumerated() {
+                let index = idx + 1
+                var baseName = rule
+                    .replacingOccurrences(of: "{folder}", with: folderName)
+                    .replacingOccurrences(of: "{index}", with: "\(index)")
+
+                baseName = baseName.trimmingCharacters(in: .whitespacesAndNewlines)
+                if baseName.isEmpty {
+                    baseName = "\(folderName)_\(index)"
+                }
+
+                let ext = originalURL.pathExtension
+                var suffix = 1
+                var finalURL = originalURL
+                while true {
+                    let candidateBase = suffix == 1 ? baseName : "\(baseName)_\(suffix)"
+                    let candidateName = ext.isEmpty ? candidateBase : "\(candidateBase).\(ext)"
+                    let candidateURL = originalURL.deletingLastPathComponent().appendingPathComponent(candidateName)
+                    let candidatePath = candidateURL.path.lowercased()
+                    let existsOutsideSelection = FileManager.default.fileExists(atPath: candidateURL.path) &&
+                        !originalPathSet.contains(candidatePath)
+
+                    if !existsOutsideSelection && plannedPathSet.insert(candidatePath).inserted {
+                        finalURL = candidateURL
+                        break
+                    }
+                    suffix += 1
+                }
+                mappings.append(FileRenameMapping(from: originalURL, to: finalURL))
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                self?.executeFileRenameMappingsAsync(
+                    mappings,
+                    actionName: NSLocalizedString("快速重命名", comment: "quick rename undo"),
+                    locateTargets: [],
+                    inPlaceFolderPath: curFolder
+                )
+            }
+        }
+        return true
     }
 
     func applyCutItemsDimEffect() {

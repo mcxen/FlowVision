@@ -431,6 +431,14 @@ final class MPVPlayerBackend {
         setOption("force-window", "no")
         setOption("keep-open", "yes")
         setOption("sub-auto", "no")
+        // Mounted SMB paths look like local files to mpv, so force a bounded
+        // read-ahead cache instead of relying on small on-demand reads.
+        setOption("cache", "yes")
+        setOption("cache-on-disk", "yes")
+        setOption("cache-secs", "5")
+        setOption("demuxer-readahead-secs", "20")
+        setOption("demuxer-max-bytes", "134217728")
+        setOption("demuxer-max-back-bytes", "33554432")
         setOption("volume", "\(Int(max(0, min(1, volume)) * 100))")
         setOption("speed", "\(rate)")
         if rotation != 0 {
