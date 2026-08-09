@@ -19,6 +19,7 @@ xcodebuild -quiet \
   -derivedDataPath "$DERIVED_DATA" \
   CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
 
+"$ROOT_DIR/script/build_updater_helper.sh" "$APP_BUNDLE"
 /usr/bin/codesign --force --deep --sign - "$APP_BUNDLE"
 
 open_app() {

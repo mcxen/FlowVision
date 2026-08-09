@@ -72,7 +72,12 @@
 ### Privacy and Security
 
 - Open source
-- No Internet connection required
+- Local browsing and playback do not require an Internet connection
+- FlowVision sends a `HEAD` request to its GitHub Releases page when checking for updates; update downloads start only after confirmation
+
+### Updates
+
+Choose **FlowVision → Check for Updates…** to check GitHub Releases. FlowVision also performs a silent check shortly after launch. When a newer version is available, it can download the fixed `FlowVision-macOS.zip` release asset and install it with the bundled rollback-capable updater. Installations in non-writable or package-manager-owned locations must be upgraded with their original installer.
 
 ### Homebrew Install
 

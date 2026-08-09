@@ -291,9 +291,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
 
         log("Start applicationDidFinishLaunching")
         // Start applicationDidFinishLaunching
+
+        installUpdateMenuItem()
         
         if windowControllers.count == 0 {
             _ = createNewWindow()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            FlowVisionUpdateManager.shared.checkForUpdates(manual: false)
         }
 
 //        DispatchQueue.global(qos: .userInitiated).async {
@@ -303,6 +309,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         
         log("End applicationDidFinishLaunching")
         // End applicationDidFinishLaunching
+    }
+
+    private func installUpdateMenuItem() {
+        guard let applicationMenu = NSApp.mainMenu?.items.first?.submenu,
+              !applicationMenu.items.contains(where: { $0.action == #selector(checkForUpdates(_:)) }) else {
+            return
+        }
+        let title: String
+        let language = Locale.preferredLanguages.first?.lowercased() ?? "en"
+        if language.hasPrefix("zh-hans") || language.hasPrefix("zh-cn") {
+            title = "检查更新…"
+        } else if language.hasPrefix("zh-hant") || language.hasPrefix("zh-tw") || language.hasPrefix("zh-hk") {
+            title = "檢查更新…"
+        } else {
+            title = "Check for Updates…"
+        }
+        let item = NSMenuItem(title: title, action: #selector(checkForUpdates(_:)), keyEquivalent: "")
+        item.target = self
+        applicationMenu.insertItem(item, at: min(1, applicationMenu.items.count))
+    }
+
+    @objc private func checkForUpdates(_ sender: Any?) {
+        FlowVisionUpdateManager.shared.checkForUpdates(manual: true)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

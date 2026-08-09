@@ -48,6 +48,11 @@ fi
 
 APP_BASENAME="$(basename "$APP_PATH")"
 
+if [[ "$APP_BASENAME" == "FlowVision.app" ]]; then
+  echo "[2/4] Building bundled update helper..."
+  "$PROJECT_ROOT/script/build_updater_helper.sh" "$APP_PATH"
+fi
+
 if [[ "$INCLUDE_MPV_RUNTIME" == "1" || ( "$INCLUDE_MPV_RUNTIME" == "auto" && -f "$MPV_FRAMEWORKS_DIR/libmpv.2.dylib" ) ]]; then
   echo "[2/4] Copying mpv runtime from: $MPV_FRAMEWORKS_DIR"
   mkdir -p "$APP_PATH/Contents/Frameworks"

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1B2C3D42F90000100ABCDEF /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */; };
 		F70368E82BF609F300155F36 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F70368E72BF609F300155F36 /* Localizable.xcstrings */; };
 		F70F9FC12BAFE7B300C50CDD /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70F9FC02BAFE7B300C50CDD /* Common.swift */; };
 		F70F9FC32BAFE85D00C50CDD /* CustomCollectionViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70F9FC22BAFE85D00C50CDD /* CustomCollectionViewManager.swift */; };
@@ -115,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
 		E00E13C3056A4910B242187C /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		F70368E72BF609F300155F36 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F70F9FC02BAFE7B300C50CDD /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		F73865DC2C37BD7F00837FE4 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */,
 				F76F6A622F4FE58000D798DC /* TempVariable.swift */,
 				F73865D82C37BBCB00837FE4 /* GlobalVariable.swift */,
 				F70F9FC02BAFE7B300C50CDD /* Common.swift */,
@@ -476,6 +479,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B2C3D42F90000100ABCDEF /* UpdateManager.swift in Sources */,
 				F78960F22BDCC26B00C2571B /* LargeImageView.swift in Sources */,
 				F78FAB0D2C0EE94D00FE66CC /* CustomImageView.swift in Sources */,
 				F76E2EFE2C3B765C0031B0B4 /* Log.swift in Sources */,
@@ -733,7 +737,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260422;
+				CURRENT_PROJECT_VERSION = 20260809;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -749,7 +753,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.6;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVisionDbg;
 				PRODUCT_NAME = "$(TARGET_NAME)Dbg";
@@ -767,7 +771,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260422;
+				CURRENT_PROJECT_VERSION = 20260809;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -783,7 +787,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.1;
+				MARKETING_VERSION = 1.7.6;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVision;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -580,6 +580,62 @@ extension ViewController {
         view.window?.undoManager ?? NSApp.keyWindow?.undoManager ?? undoManager
     }
 
+    private func remappedURLAfterRename(
+        _ url: URL,
+        mappings: [FileRenameMapping]
+    ) -> URL? {
+        let oldPath = url.standardizedFileURL.path
+        guard let mapping = mappings
+            .sorted(by: { $0.from.standardizedFileURL.path.count > $1.from.standardizedFileURL.path.count })
+            .first(where: { mapping in
+                let sourcePath = mapping.from.standardizedFileURL.path
+                return oldPath.lowercased() == sourcePath.lowercased() ||
+                    oldPath.lowercased().hasPrefix(sourcePath.lowercased() + "/")
+            }) else {
+            return nil
+        }
+
+        let sourcePath = mapping.from.standardizedFileURL.path
+        let relativeSuffix = String(oldPath.dropFirst(sourcePath.count))
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard !relativeSuffix.isEmpty else { return mapping.to }
+        return URL(fileURLWithPath: mapping.to.standardizedFileURL.path, isDirectory: true)
+            .appendingPathComponent(relativeSuffix, isDirectory: url.hasDirectoryPath)
+    }
+
+    /// Keeps active video players associated with the renamed file so a fallback
+    /// collection refresh does not reload playback from the beginning.
+    private func updateVideoPlaybackPathsAfterRename(_ mappings: [FileRenameMapping]) {
+        for case let item as CustomCollectionViewItem in collectionView.visibleItems() {
+            guard let playingURL = item.currentPlayingURL,
+                  let newURL = remappedURLAfterRename(playingURL, mappings: mappings) else { continue }
+            item.currentPlayingURL = newURL
+        }
+
+        var didUpdateLargeImagePath = false
+        if let fileURL = URL(string: largeImageView.file.path),
+           let newURL = remappedURLAfterRename(fileURL, mappings: mappings) {
+            largeImageView.file.path = newURL.absoluteString
+            largeImageView.file.ext = newURL.pathExtension.lowercased()
+            didUpdateLargeImagePath = true
+        }
+        if let playingURL = largeImageView.currentPlayingURL,
+           let newURL = remappedURLAfterRename(playingURL, mappings: mappings) {
+            largeImageView.currentPlayingURL = newURL
+        }
+        if let restoreURL = largeImageView.restorePlayURL,
+           let newURL = remappedURLAfterRename(restoreURL, mappings: mappings) {
+            largeImageView.restorePlayURL = newURL
+        }
+        if let finderURL = URL(string: publicVar.openFromFinderPath),
+           let newURL = remappedURLAfterRename(finderURL, mappings: mappings) {
+            publicVar.openFromFinderPath = newURL.absoluteString
+        }
+        if didUpdateLargeImagePath {
+            setWindowTitleOfLargeImage(file: largeImageView.file)
+        }
+    }
+
     /// Keeps the active browser pointed at the same directory when that directory,
     /// or one of its ancestors, is renamed.
     private func updateCurrentFolderPathAfterRename(_ mappings: [FileRenameMapping]) -> Bool {
@@ -831,6 +887,7 @@ extension ViewController {
         let didUpdateInPlace = inPlaceFolderPath.map {
             applyRenameMappingsInPlace(appliedMoves, folderPath: $0)
         } ?? false
+        updateVideoPlaybackPathsAfterRename(appliedMoves)
         if didUpdateInPlace || didRenameCurrentFolder {
             publicVar.filesForLocateAfterChange.removeAll()
             if !didRenameCurrentFolder {
@@ -1001,6 +1058,7 @@ extension ViewController {
                 let didUpdateInPlace = inPlaceFolderPath.map {
                     self.applyRenameMappingsInPlace(appliedMoves, folderPath: $0)
                 } ?? false
+                self.updateVideoPlaybackPathsAfterRename(appliedMoves)
                 if didUpdateInPlace || didRenameCurrentFolder {
                     self.publicVar.filesForLocateAfterChange.removeAll()
                     if !didRenameCurrentFolder {
@@ -3279,7 +3337,11 @@ extension ViewController {
                 }
 
                 let actionName = urls.count > 1 ? NSLocalizedString("批量重命名", comment: "batch rename undo") : NSLocalizedString("重命名", comment: "rename undo")
-                let renameResult = executeFileRenameMappings(finalNames, actionName: actionName)
+                let renameResult = executeFileRenameMappings(
+                    finalNames,
+                    actionName: actionName,
+                    inPlaceFolderPath: curFolder
+                )
                 if renameResult {
                     for item in finalNames {
                         log("File renamed to \(item.to.lastPathComponent)")
@@ -3420,9 +3482,13 @@ extension ViewController {
         guard preview.runModal() == .alertFirstButtonReturn else { return false }
 
         globalVar.operationLogs.append("[BatchRenameFolders] \(changedMappings.count) folders")
+        fileDB.lock()
+        let inPlaceFolderPath = fileDB.curFolder
+        fileDB.unlock()
         return executeFileRenameMappings(
             changedMappings,
-            actionName: NSLocalizedString("Batch Rename Folders", comment: "批量重命名文件夹")
+            actionName: NSLocalizedString("Batch Rename Folders", comment: "批量重命名文件夹"),
+            inPlaceFolderPath: inPlaceFolderPath
         )
     }
 
@@ -3602,9 +3668,13 @@ extension ViewController {
         guard preview.runModal() == .alertFirstButtonReturn else { return false }
 
         globalVar.operationLogs.append("[BatchRenameSelected] \(changedMappings.count) items")
+        fileDB.lock()
+        let inPlaceFolderPath = fileDB.curFolder
+        fileDB.unlock()
         return executeFileRenameMappings(
             changedMappings,
-            actionName: "批量重命名"
+            actionName: "批量重命名",
+            inPlaceFolderPath: inPlaceFolderPath
         )
     }
 

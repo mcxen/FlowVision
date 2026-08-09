@@ -75,7 +75,9 @@ jobs:
           if [[ "$VERSION" != v* ]]; then
             VERSION="v$VERSION"
           fi
+          SHORT_VERSION="${VERSION#v}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "short_version=$SHORT_VERSION" >> "$GITHUB_OUTPUT"
           echo "dmg_name=FlowVision-${VERSION}-macOS" >> "$GITHUB_OUTPUT"
 
       - name: Build DMG
@@ -85,7 +87,7 @@ jobs:
           CONFIGURATION: Release
           APP_NAME: FlowVision
           DMG_NAME: ${{ steps.version.outputs.dmg_name }}
-          XCODEBUILD_EXTRA_ARGS: "CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="
+          XCODEBUILD_EXTRA_ARGS: "MARKETING_VERSION=${{ steps.version.outputs.short_version }} CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="
         run: ./build_dmg.sh
 
       - name: Create ZIP
@@ -100,6 +102,7 @@ jobs:
           fi
           mkdir -p dist
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "dist/${{ steps.version.outputs.dmg_name }}.zip"
+          cp "dist/${{ steps.version.outputs.dmg_name }}.zip" "dist/FlowVision-macOS.zip"
 
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v4
