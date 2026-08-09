@@ -20250,6 +20250,74 @@
         }
       }
     },
+    "Move complete" : {
+      "comment" : "移动完成",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移动完成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移動完成"
+          }
+        }
+      }
+    },
+    "Move failed for %d item(s)" : {
+      "comment" : "有 %d 个项目移动失败",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d 个项目移动失败"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d 個項目移動失敗"
+          }
+        }
+      }
+    },
+    "Moved %d item(s), %d failed" : {
+      "comment" : "已移动 %d 个项目，%d 个失败",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移动 %d 个项目，%d 个失败"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移動 %d 個項目，%d 個失敗"
+          }
+        }
+      }
+    },
+    "Moving %d item(s)…" : {
+      "comment" : "正在移动 %d 个项目…",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在移动 %d 个项目…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在移動 %d 個項目…"
+          }
+        }
+      }
+    },
     "Move Items" : {
       "comment" : "移动项目",
       "localizations" : {

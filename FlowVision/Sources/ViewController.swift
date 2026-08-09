@@ -178,6 +178,7 @@ class PublicVar{
     var filesForLocateAfterChange = [String]()
     var filesForLocateAfterChangeTime: DispatchTime = .now()
     var collectionScrollRestoreAfterRefresh: (folderPath: String, origin: NSPoint)?
+    var collectionViewportAnchorAfterRefresh: (folderPath: String, filePath: String, offset: NSPoint)?
     var isInFileOperation = false
     var isLeftMouseDown: Bool = false
     var isRightMouseDown: Bool = false

@@ -10,6 +10,8 @@ class CustomCollectionViewManager: NSObject, NSCollectionViewDataSource, NSColle
 
     var fileDB: DatabaseModel
     var lastSelectedIndexPath: IndexPath?
+    private var dragURLsByIndexPath: [IndexPath: URL] = [:]
+    private let compactDragPreviewThreshold = 8
 
     init(fileDB: DatabaseModel) {
         self.fileDB = fileDB
@@ -83,15 +85,119 @@ class CustomCollectionViewManager: NSObject, NSCollectionViewDataSource, NSColle
         return DEFAULT_SIZE
     }
 
-    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
+        dragURLsByIndexPath.removeAll(keepingCapacity: true)
         fileDB.lock()
-        defer{fileDB.unlock()}
-        let pasteboardItem = NSPasteboardItem()
-        if let path = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.elementSafe(atOffset: indexPath.item)?.1.path,
-           let url = URL(string: path){
-            pasteboardItem.setString(url.absoluteString, forType: .fileURL)
+        defer { fileDB.unlock() }
+        guard let files = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files else { return false }
+
+        for indexPath in indexPaths {
+            guard let path = files.elementSafe(atOffset: indexPath.item)?.1.path,
+                  let url = URL(string: path) else { continue }
+            dragURLsByIndexPath[indexPath] = url
         }
+        return !dragURLsByIndexPath.isEmpty
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+        let pasteboardItem = NSPasteboardItem()
+        if let url = dragURLsByIndexPath[indexPath] {
+            pasteboardItem.setString(url.absoluteString, forType: .fileURL)
+            return pasteboardItem
+        }
+
+        // Defensive fallback for AppKit versions that request a writer without
+        // first calling canDragItemsAt. Normal multi-selection drags use the cache.
+        fileDB.lock()
+        defer { fileDB.unlock() }
+        guard let path = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.elementSafe(atOffset: indexPath.item)?.1.path,
+              let url = URL(string: path) else { return nil }
+        pasteboardItem.setString(url.absoluteString, forType: .fileURL)
         return pasteboardItem
+    }
+
+    func collectionView(
+        _ collectionView: NSCollectionView,
+        draggingSession session: NSDraggingSession,
+        willBeginAt screenPoint: NSPoint,
+        forItemsAt indexPaths: Set<IndexPath>
+    ) {
+        guard indexPaths.count > compactDragPreviewThreshold else {
+            session.draggingFormation = indexPaths.count > 1 ? .stack : .none
+            return
+        }
+
+        session.draggingFormation = .pile
+        session.draggingLeaderIndex = 0
+        session.animatesToStartingPositionsOnCancelOrFail = false
+        let preview = compactDragPreview(itemCount: indexPaths.count)
+        var keptVisibleItem = false
+        session.enumerateDraggingItems(
+            options: [],
+            for: collectionView,
+            classes: [NSPasteboardItem.self],
+            searchOptions: [:]
+        ) { draggingItem, _, _ in
+            if !keptVisibleItem {
+                keptVisibleItem = true
+                let oldFrame = draggingItem.draggingFrame
+                let size = preview.size
+                draggingItem.setDraggingFrame(
+                    NSRect(
+                        x: oldFrame.midX - size.width / 2,
+                        y: oldFrame.midY - size.height / 2,
+                        width: size.width,
+                        height: size.height
+                    ),
+                    contents: preview
+                )
+            } else {
+                draggingItem.setDraggingFrame(draggingItem.draggingFrame, contents: nil)
+            }
+        }
+    }
+
+    func collectionView(
+        _ collectionView: NSCollectionView,
+        draggingSession session: NSDraggingSession,
+        endedAt screenPoint: NSPoint,
+        dragOperation operation: NSDragOperation
+    ) {
+        dragURLsByIndexPath.removeAll(keepingCapacity: true)
+    }
+
+    private func compactDragPreview(itemCount: Int) -> NSImage {
+        let size = NSSize(width: 76, height: 62)
+        let image = NSImage(size: size)
+        image.lockFocus()
+
+        let backRect = NSRect(x: 8, y: 7, width: 54, height: 44)
+        NSColor.controlBackgroundColor.withAlphaComponent(0.92).setFill()
+        NSBezierPath(roundedRect: backRect, xRadius: 8, yRadius: 8).fill()
+        NSColor.separatorColor.setStroke()
+        NSBezierPath(roundedRect: backRect, xRadius: 8, yRadius: 8).stroke()
+
+        if let icon = NSImage(named: NSImage.multipleDocumentsName) {
+            icon.draw(in: NSRect(x: 19, y: 15, width: 30, height: 30))
+        }
+
+        let badgeText = itemCount > 999 ? "999+" : String(itemCount)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 11, weight: .semibold),
+            .foregroundColor: NSColor.white
+        ]
+        let textSize = (badgeText as NSString).size(withAttributes: attributes)
+        let badgeWidth = max(24, textSize.width + 10)
+        let badgeRect = NSRect(x: size.width - badgeWidth, y: size.height - 25, width: badgeWidth, height: 21)
+        NSColor.controlAccentColor.setFill()
+        NSBezierPath(roundedRect: badgeRect, xRadius: 10.5, yRadius: 10.5).fill()
+        (badgeText as NSString).draw(
+            at: NSPoint(x: badgeRect.midX - textSize.width / 2, y: badgeRect.midY - textSize.height / 2),
+            withAttributes: attributes
+        )
+
+        image.unlockFocus()
+        return image
     }
 
     func collectionView(_ collectionView: NSCollectionView, shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {

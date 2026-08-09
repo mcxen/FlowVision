@@ -38,6 +38,27 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     private let positionThreshold: CGFloat = 4.0
     
     private var middleMouseLastLocation: NSPoint = NSPoint.zero
+
+    override var draggingImageComponents: [NSDraggingImageComponent] {
+        guard let collectionView,
+              collectionView.selectionIndexPaths.count > 8 else {
+            return super.draggingImageComponents
+        }
+
+        // Avoid asking every selected video thumbnail/player view to render a
+        // separate drag image. The session replaces these lightweight placeholders
+        // with one compact count badge before the drag becomes visible.
+        let component = NSDraggingImageComponent(key: .icon)
+        component.contents = NSImage(named: NSImage.multipleDocumentsName)
+        let side = min(max(32, min(view.bounds.width, view.bounds.height)), 48)
+        component.frame = NSRect(
+            x: max(0, (view.bounds.width - side) / 2),
+            y: max(0, (view.bounds.height - side) / 2),
+            width: side,
+            height: side
+        )
+        return [component]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

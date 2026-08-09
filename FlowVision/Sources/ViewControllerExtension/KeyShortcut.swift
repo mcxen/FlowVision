@@ -7,11 +7,26 @@ import Foundation
 import Cocoa
 
 extension ViewController {
+
+    /// Chinese input sources may emit localized punctuation for the same physical
+    /// punctuation key. Keep shortcut matching independent of that input-mode
+    /// difference while preserving normal text input everywhere else.
+    private func normalizedShortcutCharacters(_ value: String) -> String {
+        let punctuationMap: [Character: Character] = [
+            "【": "[", "［": "[",
+            "】": "]", "］": "]",
+            "，": ",", "。": ".",
+            "＝": "=", "－": "-"
+        ]
+        return String(value.map { punctuationMap[$0] ?? $0 })
+    }
     
     private func isConfiguredFolderCopyShortcutTriggered(_ configuredShortcut: String, characters: String, specialKey: NSEvent.SpecialKey, noModifierKey: Bool) -> Bool {
         guard noModifierKey else { return false }
         
-        let shortcut = configuredShortcut.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        let shortcut = normalizedShortcutCharacters(
+            configuredShortcut.trimmingCharacters(in: .whitespacesAndNewlines)
+        ).uppercased()
         if shortcut.isEmpty { return false }
         
         switch shortcut {
@@ -150,7 +165,7 @@ extension ViewController {
         let isOnlyCtrlPressed = !isCommandPressed && !isAltPressed && isCtrlPressed && !isShiftPressed
         let isOnlyShiftPressed = !isCommandPressed && !isAltPressed && !isCtrlPressed && isShiftPressed
         
-        let characters = (event.charactersIgnoringModifiers ?? "").lowercased()
+        let characters = normalizedShortcutCharacters(event.charactersIgnoringModifiers ?? "").lowercased()
         let specialKey = event.specialKey ?? .f30
 
         if publicVar.isInLargeView && largeImageView.isInVideoCropSelectionMode {

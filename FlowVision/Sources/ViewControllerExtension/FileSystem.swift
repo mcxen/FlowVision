@@ -126,7 +126,7 @@ extension ViewController {
                 let cancelled = isCancelled
                 lock.unlock()
                 if cancelled { break }
-                
+
                 let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
                 if !isDirectory || isRecursiveContainFolder {
                     lock.lock()
@@ -423,7 +423,7 @@ extension ViewController {
                     }
                 }
                 dirURLCacheParameters = curDirURLCacheParameters
-                
+
                 isInSameDir = !publicVar.isRecursiveMode && !isVirtualFolderPath(folderURL.absoluteString)
                 if dirURLCache.isEmpty {
                     if folderURL.path.hasPrefix("/VirtualFinderTagsFolder") {
@@ -1120,7 +1120,9 @@ extension ViewController {
     ///   - checkRange: 增量模式下要检查的indexPaths范围；全量模式下忽略此参数
     func selectItemsNewChanged(isFinal: Bool = true, checkRange: [IndexPath]? = nil) {
 
-        let elapsedThreshold = 2.0
+        // Large folders and network volumes can take several seconds to finish
+        // rebuilding. Keep the pending target long enough for the final pass.
+        let elapsedThreshold = 15.0
         
         let curItemCount = collectionView.numberOfItems(inSection: 0)
         
@@ -1166,49 +1168,86 @@ extension ViewController {
             let elapsed = Double(DispatchTime.now().uptimeNanoseconds - publicVar.filesForLocateAfterChangeTime.uptimeNanoseconds) / 1_000_000_000
             if elapsed > elapsedThreshold {
                 publicVar.filesForLocateAfterChange.removeAll()
-                return
-            }
-            
-            let targetPathSet = Set(publicVar.filesForLocateAfterChange.map {
-                $0.hasSuffix("/") ? String($0.dropLast()) : $0
-            })
-            var matchedIndexPaths = [IndexPath]()
-            
-            fileDB.lock()
-            if let files = dirFiles {
-                if let checkRange = checkRange, !isFinal {
-                    for indexPath in checkRange {
-                        guard indexPath.item < curItemCount else { continue }
-                        if let element = files.elementSafe(atOffset: indexPath.item) {
+            } else {
+                let targetPathSet = Set(publicVar.filesForLocateAfterChange.map {
+                    $0.hasSuffix("/") ? String($0.dropLast()) : $0
+                })
+                var matchedIndexPaths = [IndexPath]()
+
+                fileDB.lock()
+                if let files = dirFiles {
+                    if let checkRange = checkRange, !isFinal {
+                        for indexPath in checkRange {
+                            guard indexPath.item < curItemCount else { continue }
+                            if let element = files.elementSafe(atOffset: indexPath.item) {
+                                let normalizedPath = element.0.path.hasSuffix("/") ? String(element.0.path.dropLast()) : element.0.path
+                                if targetPathSet.contains(normalizedPath) {
+                                    matchedIndexPaths.append(indexPath)
+                                }
+                            }
+                        }
+                    } else {
+                        for (offset, element) in files.enumerated() {
+                            guard offset < curItemCount else { continue }
                             let normalizedPath = element.0.path.hasSuffix("/") ? String(element.0.path.dropLast()) : element.0.path
                             if targetPathSet.contains(normalizedPath) {
-                                matchedIndexPaths.append(indexPath)
+                                matchedIndexPaths.append(IndexPath(item: offset, section: 0))
                             }
                         }
                     }
-                } else {
-                    for (offset, element) in files.enumerated() {
-                        guard offset < curItemCount else { continue }
-                        let normalizedPath = element.0.path.hasSuffix("/") ? String(element.0.path.dropLast()) : element.0.path
-                        if targetPathSet.contains(normalizedPath) {
-                            matchedIndexPaths.append(IndexPath(item: offset, section: 0))
-                        }
-                    }
                 }
-            }
-            fileDB.unlock()
-            
-            if !matchedIndexPaths.isEmpty {
-                let isFirstMatch = collectionView.selectionIndexPaths.isEmpty
-                collectionView.selectItems(at: Set(matchedIndexPaths), scrollPosition: [])
-                if isFirstMatch {
-                    collectionView.scrollToItems(at: [matchedIndexPaths[0]], scrollPosition: .nearestHorizontalEdge)
-                    setLoadThumbPriority(ifNeedVisable: true)
+                fileDB.unlock()
+
+                if !matchedIndexPaths.isEmpty {
+                    let isFirstMatch = collectionView.selectionIndexPaths.isEmpty
+                    collectionView.selectItems(at: Set(matchedIndexPaths), scrollPosition: [])
+                    if isFirstMatch {
+                        collectionView.scrollToItems(at: [matchedIndexPaths[0]], scrollPosition: .nearestHorizontalEdge)
+                        setLoadThumbPriority(ifNeedVisable: true)
+                    }
                 }
             }
             
             if isFinal {
                 publicVar.filesForLocateAfterChange.removeAll()
+            }
+        }
+
+        if isFinal, let pendingAnchor = publicVar.collectionViewportAnchorAfterRefresh {
+            publicVar.collectionViewportAnchorAfterRefresh = nil
+            if curFolder == pendingAnchor.folderPath {
+                var anchorIndexPath: IndexPath?
+                fileDB.lock()
+                if let files = dirFiles {
+                    for (offset, element) in files.enumerated() {
+                        if element.1.path == pendingAnchor.filePath {
+                            anchorIndexPath = IndexPath(item: offset, section: 0)
+                            break
+                        }
+                    }
+                }
+                fileDB.unlock()
+
+                if let anchorIndexPath {
+                    publicVar.collectionScrollRestoreAfterRefresh = nil
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self,
+                              let scrollView = self.collectionView.enclosingScrollView else { return }
+                        self.collectionView.layoutSubtreeIfNeeded()
+                        guard let frame = self.collectionView.layoutAttributesForItem(at: anchorIndexPath)?.frame else { return }
+                        let clipView = scrollView.contentView
+                        var proposedBounds = clipView.bounds
+                        proposedBounds.origin = NSPoint(
+                            x: frame.minX - pendingAnchor.offset.x,
+                            y: frame.minY - pendingAnchor.offset.y
+                        )
+                        let constrainedBounds = clipView.constrainBoundsRect(proposedBounds)
+                        clipView.scroll(to: constrainedBounds.origin)
+                        scrollView.reflectScrolledClipView(clipView)
+                        self.setLoadThumbPriority(ifNeedVisable: true)
+                    }
+                    return
+                }
             }
         }
 

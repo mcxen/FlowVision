@@ -306,12 +306,23 @@ handleBatchRenameSelectedItems     handleQuickRenameInCurrentFolder
 |---|---|---|
 | 仅重命名 | `applyRenameMappingsInPlace` | 复用 `FileModel` 和现有 cell，不闪烁、不重启播放器 |
 | 重命名但模型不完整/目录已切换 | `scheduledRefresh`，随后恢复滚动位置 | 确保磁盘和模型最终一致 |
-| 创建、复制、移动到新位置 | 刷新并使用 `filesForLocateAfterChange` 定位新目标 | 新文件尚未存在于当前 Map |
+| 创建、复制、移动到当前视图 | 刷新并使用 `filesForLocateAfterChange` 定位新目标 | 新文件尚未存在于当前 Map |
+| 移动到视图外或移动当前目录的祖先 | 刷新并恢复滚动位置；同步改写当前目录路径 | 避免跳回顶部或显示空目录 |
 | 删除、目录结构变化 | 文件系统刷新 | 需要重新枚举或更新目录树 |
 
 原位重命名会克隆新的 `SortKeyFile` 并重建 `BTree.Map`，但继续复用 `FileModel`。可见 cell 只更新 URL、名称、tooltip 和必要的排序移动，不调用完整配置流程。大图路径、`currentPlayingURL`、`restorePlayURL`、Finder 打开路径和窗口标题同步替换，从而保留视频播放进度。
 
 兜底刷新使用 `collectionScrollRestoreAfterRefresh` 保存当前 clip view 原点，并在 `selectItemsNewChanged(isFinal:)` 完成后恢复。快捷重命名不设置 `filesForLocateAfterChange`，否则会错误滚到第一个改名项目。
+
+重命名引起排序变化时，选中状态按 `FileModel` 身份映射到新索引，不沿用旧索引。移动操作会同步改写当前目录、播放器和大图路径；只有目标位于当前视图时才自动定位目标，移出当前视图则保持原滚动位置。
+
+无目标冲突的移动在后台队列执行，完成后一次性回主线程更新路径、进度和刷新状态；只有需要逐项询问覆盖、合并或自动重命名时才走交互式分支。自身/子目录判断按完整路径组件边界处理，不能用裸字符串前缀比较。
+
+从当前视图移出项目时，刷新前记录鼠标所在拖拽项的布局位置和相邻未移动项目。刷新后以该相邻项目作为视口锚点恢复到原屏幕坐标，避免删除前序项目造成列表跳到顶部；锚点不存在时才退回保存的 clip view 原点。
+
+集合视图开始多选拖拽时一次性缓存所有选中 URL，避免 `pasteboardWriterForItemAt` 对每个视频重复加锁查询。超过 8 个项目时不渲染每个视频缩略图/播放器作为拖拽图，而是使用单个带数量标记的轻量文件堆叠预览；pasteboard 仍保留每个文件 URL。
+
+放下多个项目后的目标重名检查也在后台批量执行。无冲突时直接在同一后台任务完成移动；有冲突时用拖拽 URL 快照回到主线程进入原有覆盖、合并和自动重命名交互，避免对网络盘逐项同步探测。
 
 ### FFmpeg 剪切边界
 

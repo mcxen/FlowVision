@@ -603,6 +603,251 @@ extension ViewController {
             .appendingPathComponent(relativeSuffix, isDirectory: url.hasDirectoryPath)
     }
 
+    private func preserveCollectionScrollPosition(for folderPath: String) {
+        guard let clipView = collectionView.enclosingScrollView?.contentView else { return }
+        publicVar.collectionScrollRestoreAfterRefresh = (folderPath, clipView.bounds.origin)
+    }
+
+    private func preserveViewportAnchorForMove(_ sourceURLs: [URL], folderPath: String) {
+        publicVar.collectionViewportAnchorAfterRefresh = nil
+        guard let scrollView = collectionView.enclosingScrollView else { return }
+
+        let sourcePaths = Set(sourceURLs.map { $0.standardizedFileURL.path.lowercased() })
+        let selectedIndexes = collectionView.selectionIndexPaths.map(\.item).sorted()
+        guard !selectedIndexes.isEmpty else { return }
+        let displayedItemCount = collectionView.numberOfItems(inSection: 0)
+
+        fileDB.lock()
+        guard fileDB.curFolder == folderPath,
+              let files = fileDB.db[SortKeyDir(folderPath)]?.files else {
+            fileDB.unlock()
+            return
+        }
+        let loadedItemCount = min(files.count, displayedItemCount)
+        let removedIndexes = selectedIndexes.compactMap { index -> Int? in
+            guard index < loadedItemCount,
+                  let path = files.elementSafe(atOffset: index)?.1.path,
+                  let url = URL(string: path),
+                  sourcePaths.contains(url.standardizedFileURL.path.lowercased()) else { return nil }
+            return index
+        }.sorted()
+        guard let firstRemoved = removedIndexes.first,
+              let lastRemoved = removedIndexes.last else {
+            fileDB.unlock()
+            return
+        }
+
+        let removedSet = Set(removedIndexes)
+        let successor = ((lastRemoved + 1)..<loadedItemCount).first { !removedSet.contains($0) }
+        let predecessor = stride(from: firstRemoved - 1, through: 0, by: -1).first { !removedSet.contains($0) }
+        guard let anchorIndex = successor ?? predecessor,
+              let anchorPath = files.elementSafe(atOffset: anchorIndex)?.1.path else {
+            fileDB.unlock()
+            return
+        }
+        fileDB.unlock()
+
+        collectionView.layoutSubtreeIfNeeded()
+        let mouseIndex: Int? = view.window.flatMap { window in
+            let windowPoint = window.convertPoint(fromScreen: NSEvent.mouseLocation)
+            let collectionPoint = collectionView.convert(windowPoint, from: nil)
+            return collectionView.indexPathForItem(at: collectionPoint)?.item
+        }
+        let referenceIndex = mouseIndex.map { removedIndexes.contains($0) ? $0 : firstRemoved } ?? firstRemoved
+        guard referenceIndex < loadedItemCount,
+              let referenceFrame = collectionView.layoutAttributesForItem(
+                at: IndexPath(item: referenceIndex, section: 0)
+              )?.frame else { return }
+
+        let clipOrigin = scrollView.contentView.bounds.origin
+        publicVar.collectionViewportAnchorAfterRefresh = (
+            folderPath: folderPath,
+            filePath: anchorPath,
+            offset: NSPoint(x: referenceFrame.minX - clipOrigin.x, y: referenceFrame.minY - clipOrigin.y)
+        )
+    }
+
+    private func isSameOrDescendant(_ candidate: URL, of ancestor: URL) -> Bool {
+        let candidatePath = candidate.standardizedFileURL.path
+        let ancestorPath = ancestor.standardizedFileURL.path
+        return candidatePath == ancestorPath || candidatePath.hasPrefix(ancestorPath + "/")
+    }
+
+    private func finishMoveOperation(
+        successfulDestURLs: [String],
+        movePairs: [(oldPath: String, newPath: String)],
+        failedCount: Int,
+        destinationURL: URL,
+        originalFolderPath: String,
+        pasteboard: NSPasteboard,
+        pasteboardChangeCount: Int
+    ) {
+        guard !successfulDestURLs.isEmpty else {
+            if failedCount > 0 {
+                coreAreaView.showOperationToast(
+                    String(format: NSLocalizedString("Move failed for %d item(s)", comment: "有 %d 个项目移动失败"), failedCount),
+                    autoHide: 2.0
+                )
+            }
+            return
+        }
+
+        triggerFinderSound()
+        let completedMappings = movePairs.compactMap { pair -> FileRenameMapping? in
+            guard !FileManager.default.fileExists(atPath: pair.oldPath) else { return nil }
+            return FileRenameMapping(
+                from: URL(fileURLWithPath: pair.oldPath),
+                to: URL(fileURLWithPath: pair.newPath)
+            )
+        }
+        let didMoveCurrentFolder = updateCurrentFolderPathAfterRename(completedMappings)
+        updateVideoPlaybackPathsAfterRename(completedMappings)
+
+        fileDB.lock()
+        let currentFolderPath = fileDB.curFolder
+        fileDB.unlock()
+        let currentFolderURL = URL(string: currentFolderPath)?.standardizedFileURL
+        let standardizedDestination = destinationURL.standardizedFileURL
+        let movedItemsAreVisible = currentFolderURL.map { currentURL in
+            standardizedDestination.path == currentURL.path ||
+                (publicVar.isRecursiveMode && isSameOrDescendant(standardizedDestination, of: currentURL))
+        } ?? false
+        let destinationFolderIsVisible = currentFolderURL.map { currentURL in
+            standardizedDestination.deletingLastPathComponent().path == currentURL.path
+        } ?? false
+
+        if didMoveCurrentFolder {
+            publicVar.filesForLocateAfterChange.removeAll()
+            publicVar.collectionViewportAnchorAfterRefresh = nil
+        } else if movedItemsAreVisible {
+            publicVar.filesForLocateAfterChange = successfulDestURLs
+            publicVar.filesForLocateAfterChangeTime = .now()
+            publicVar.collectionViewportAnchorAfterRefresh = nil
+        } else if currentFolderPath == originalFolderPath {
+            publicVar.filesForLocateAfterChange.removeAll()
+            preserveCollectionScrollPosition(for: originalFolderPath)
+        } else {
+            // The user navigated elsewhere while the background move was
+            // running. Do not apply the old folder's selection or scroll state.
+            publicVar.filesForLocateAfterChange.removeAll()
+            publicVar.collectionViewportAnchorAfterRefresh = nil
+        }
+
+        // A wrapper such as "Move to Downloads" may already have restored the
+        // user's clipboard while an asynchronous move was running.
+        if pasteboard === NSPasteboard.general,
+           pasteboard.changeCount == pasteboardChangeCount {
+            pasteboard.clearContents()
+        }
+
+        var shouldRefresh = didMoveCurrentFolder ||
+            currentFolderPath == originalFolderPath ||
+            movedItemsAreVisible ||
+            destinationFolderIsVisible
+        if shouldRefresh,
+           !didMoveCurrentFolder,
+           (publicVar.isRecursiveMode || isVirtualFolderPath(currentFolderPath)) {
+            fileDB.lock()
+            shouldRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
+            fileDB.unlock()
+        }
+        if shouldRefresh {
+            scheduledRefresh()
+        }
+
+        if failedCount > 0 {
+            coreAreaView.showOperationToast(
+                String(format: NSLocalizedString("Moved %d item(s), %d failed", comment: "已移动 %d 个项目，%d 个失败"), successfulDestURLs.count, failedCount),
+                autoHide: 2.0
+            )
+        }
+    }
+
+    private func executeUnconflictedMovesAsync(
+        _ plans: [(source: URL, destination: URL)],
+        destinationURL: URL,
+        originalFolderPath: String,
+        pasteboard: NSPasteboard,
+        checkConflictsBeforeMoving: Bool = false
+    ) {
+        let pasteboardChangeCount = pasteboard.changeCount
+        publicVar.isInFileOperation = true
+        coreAreaView.showOperationIndeterminate(
+            String(format: NSLocalizedString("Moving %d item(s)…", comment: "正在移动 %d 个项目…"), plans.count)
+        )
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+            if checkConflictsBeforeMoving {
+                let existingTargetPaths = Set(plans.compactMap { plan -> String? in
+                    FileManager.default.fileExists(atPath: plan.destination.path)
+                        ? plan.destination.standardizedFileURL.path.lowercased()
+                        : nil
+                })
+                if !existingTargetPaths.isEmpty {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.publicVar.isInFileOperation = false
+                        self.coreAreaView.hideOperationOverlay(delayed: 0)
+
+                        let snapshotPasteboard = NSPasteboard(
+                            name: NSPasteboard.Name("FlowVision.Move.\(UUID().uuidString)")
+                        )
+                        snapshotPasteboard.clearContents()
+                        snapshotPasteboard.writeObjects(plans.map(\.source) as [NSPasteboardWriting])
+                        self.handleMove(
+                            targetURL: destinationURL,
+                            pasteboard: snapshotPasteboard,
+                            allowBackgroundPreflight: false,
+                            knownExistingTargetPaths: existingTargetPaths
+                        )
+                    }
+                    return
+                }
+            }
+
+            var successfulURLs: [String] = []
+            var movePairs: [(oldPath: String, newPath: String)] = []
+            var failedCount = 0
+
+            for plan in plans {
+                do {
+                    try FileManager.default.moveItem(at: plan.source, to: plan.destination)
+                    successfulURLs.append(plan.destination.absoluteString)
+                    movePairs.append((oldPath: plan.source.path, newPath: plan.destination.path))
+                } catch {
+                    failedCount += 1
+                    log("Failed to move \(plan.source): \(error)", level: .error)
+                }
+            }
+            if !movePairs.isEmpty {
+                EnhancedIndex.handleFilesMoved(movePairs)
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                defer { self.publicVar.isInFileOperation = false }
+                self.publicVar.fileChangedCount += successfulURLs.count
+                self.finishMoveOperation(
+                    successfulDestURLs: successfulURLs,
+                    movePairs: movePairs,
+                    failedCount: failedCount,
+                    destinationURL: destinationURL,
+                    originalFolderPath: originalFolderPath,
+                    pasteboard: pasteboard,
+                    pasteboardChangeCount: pasteboardChangeCount
+                )
+                if failedCount == 0 {
+                    self.coreAreaView.showOperationProgress(
+                        NSLocalizedString("Move complete", comment: "移动完成"),
+                        progress: 1.0
+                    )
+                }
+                self.coreAreaView.hideOperationOverlay(delayed: 0.8)
+            }
+        }
+    }
+
     /// Keeps active video players associated with the renamed file so a fallback
     /// collection refresh does not reload playback from the beginning.
     private func updateVideoPlaybackPathsAfterRename(_ mappings: [FileRenameMapping]) {
@@ -677,9 +922,7 @@ extension ViewController {
         fileDB.curFolder = newFolderPath
         fileDB.unlock()
 
-        if let clipView = collectionView.enclosingScrollView?.contentView {
-            publicVar.collectionScrollRestoreAfterRefresh = (newFolderPath, clipView.bounds.origin)
-        }
+        preserveCollectionScrollPosition(for: newFolderPath)
         publicVar.filesForLocateAfterChange.removeAll()
         return true
     }
@@ -718,6 +961,10 @@ extension ViewController {
         }
 
         let oldModels = oldEntries.map(\.1)
+        let selectedModelIDs = Set(collectionView.selectionIndexPaths.compactMap { indexPath -> ObjectIdentifier? in
+            guard oldModels.indices.contains(indexPath.item) else { return nil }
+            return ObjectIdentifier(oldModels[indexPath.item])
+        })
         var rebuiltFiles = Map<SortKeyFile, FileModel>()
         for (oldKey, model) in oldEntries {
             guard let modelURL = URL(string: model.path),
@@ -780,6 +1027,13 @@ extension ViewController {
                     }
                 }
             }
+        }
+        if !selectedModelIDs.isEmpty {
+            collectionView.selectionIndexPaths = Set(newModels.enumerated().compactMap { index, model in
+                selectedModelIDs.contains(ObjectIdentifier(model))
+                    ? IndexPath(item: index, section: 0)
+                    : nil
+            })
         }
 
         if let oldLargeURL = URL(string: largeViewOldPath),
@@ -1038,7 +1292,7 @@ extension ViewController {
 
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.publicVar.isInFileOperation = false
+                defer { self.publicVar.isInFileOperation = false }
 
                 if let failureMessage = failureMessage {
                     self.publicVar.collectionScrollRestoreAfterRefresh = nil
@@ -2108,7 +2362,7 @@ extension ViewController {
 
             // 检查是否包含目标目录自身或者它的父目录
             // Check if includes destination directory itself or its parent directory
-            if fileURL == destinationURL || destinationURL.path.hasPrefix(fileURL.path) {
+            if isSameOrDescendant(destinationURL, of: fileURL) {
                 showAlert(message: NSLocalizedString("cannot-copy-to-self", comment: "不能将文件/文件夹复制到自身或其子目录中。"))
                 return
             }
@@ -2376,7 +2630,12 @@ extension ViewController {
         restorePasteboard(items: backupItems)
     }
 
-    func handleMove(targetURL: URL? = nil, pasteboard: NSPasteboard = NSPasteboard.general) {
+    func handleMove(
+        targetURL: URL? = nil,
+        pasteboard: NSPasteboard = NSPasteboard.general,
+        allowBackgroundPreflight: Bool = true,
+        knownExistingTargetPaths: Set<String>? = nil
+    ) {
 
         // 重置剪切模式，防止直接调用handleMove后isCutMode残留为true
         // Reset cut mode to prevent isCutMode remaining true after direct handleMove calls
@@ -2410,7 +2669,7 @@ extension ViewController {
 
             // 检查是否包含目标目录自身或者它的父目录
             // Check if includes destination directory itself or its parent directory
-            if fileURL == destinationURL || destinationURL.path.hasPrefix(fileURL.path) {
+            if isSameOrDescendant(destinationURL, of: fileURL) {
                 showAlert(message: NSLocalizedString("cannot-move-to-self", comment: "不能将文件/文件夹移动到自身或其子目录中。"))
                 return
             }
@@ -2474,6 +2733,32 @@ extension ViewController {
         let operationLog = "[Move] \(sourceFilesStr) -> \(destinationURL.lastPathComponent)"
         globalVar.operationLogs.append(operationLog)
 
+        let sourceURLs = items.compactMap { item -> URL? in
+            guard let value = item.string(forType: .fileURL) else { return nil }
+            return URL(string: value)
+        }
+        preserveViewportAnchorForMove(sourceURLs, folderPath: curFolder)
+        let unconflictedPlans = sourceURLs.compactMap { source -> (source: URL, destination: URL)? in
+            guard source.deletingLastPathComponent().standardizedFileURL != destinationURL.standardizedFileURL else {
+                return nil
+            }
+            let target = destinationURL.appendingPathComponent(source.lastPathComponent)
+            return (source: source, destination: target)
+        }
+        if !sourceURLs.isEmpty,
+           unconflictedPlans.count == sourceURLs.count,
+           !ifAutoRenameWhenDifferentSource,
+           allowBackgroundPreflight {
+            executeUnconflictedMovesAsync(
+                unconflictedPlans,
+                destinationURL: destinationURL,
+                originalFolderPath: curFolder,
+                pasteboard: pasteboard,
+                checkConflictsBeforeMoving: true
+            )
+            return
+        }
+
         // 在文件操作期间抑制文件系统监控触发的刷新，操作完成后主动刷新
         // Suppress FS watcher refreshes during file operations, refresh explicitly after completion
         publicVar.isInFileOperation = true
@@ -2481,30 +2766,28 @@ extension ViewController {
         // Record successfully pasted destination paths for selection after refresh
         var successfulDestURLs: [String] = []
         var indexMovePairs: [(oldPath: String, newPath: String)] = []
+        let pasteboardChangeCount = pasteboard.changeCount
         defer {
-            publicVar.isInFileOperation = false
             if !successfulDestURLs.isEmpty {
-                triggerFinderSound()
-                publicVar.filesForLocateAfterChange = successfulDestURLs
-                publicVar.filesForLocateAfterChangeTime = .now()
-                // 移动完成后清空通用剪贴板，防止再次粘贴时操作已不存在的源文件
-                // Clear general pasteboard after move to prevent pasting non-existent source files
-                if pasteboard === NSPasteboard.general {
-                    pasteboard.clearContents()
-                }
-                var ifRefresh = true
-                if publicVar.isRecursiveMode || isVirtualFolderPath(curFolder) {
-                    fileDB.lock()
-                    ifRefresh = fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.count ?? 0 <= RESET_VIEW_FILE_NUM_THRESHOLD
-                    fileDB.unlock()
-                }
-                if ifRefresh {
-                    scheduledRefresh()
-                }
+                finishMoveOperation(
+                    successfulDestURLs: successfulDestURLs,
+                    movePairs: indexMovePairs,
+                    failedCount: 0,
+                    destinationURL: destinationURL,
+                    originalFolderPath: curFolder,
+                    pasteboard: pasteboard,
+                    pasteboardChangeCount: pasteboardChangeCount
+                )
+            } else {
+                publicVar.collectionViewportAnchorAfterRefresh = nil
             }
             if !indexMovePairs.isEmpty {
-                EnhancedIndex.handleFilesMoved(indexMovePairs)
+                let pairs = indexMovePairs
+                DispatchQueue.global(qos: .utility).async {
+                    EnhancedIndex.handleFilesMoved(pairs)
+                }
             }
+            publicVar.isInFileOperation = false
         }
 
         var shouldReplaceAll = false
@@ -2531,7 +2814,10 @@ extension ViewController {
                 destURL = getUniqueDestinationURL(for: destURL, isInPlace: false)
             }
 
-            if FileManager.default.fileExists(atPath: destURL.path) {
+            let targetExists = knownExistingTargetPaths?.contains(
+                destURL.standardizedFileURL.path.lowercased()
+            ) ?? FileManager.default.fileExists(atPath: destURL.path)
+            if targetExists {
                 // 检测源和目标是否都是文件夹
                 // Check if both source and destination are folders
                 var srcIsDir: ObjCBool = false
