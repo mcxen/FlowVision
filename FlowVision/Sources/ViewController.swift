@@ -1761,7 +1761,13 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                     
                     fileDB.lock()
                     let curFolder=fileDB.curFolder
-                    let curFolderFileCount = fileDB.db[SortKeyDir(curFolder)]!.fileCount
+                    // 重命名或刷新目录树期间，当前目录键可能暂时尚未重新插入 db。
+                    // 回收线程不能因为这个短暂窗口强制解包崩溃。
+                    guard let curFolderDirModel = fileDB.db[SortKeyDir(curFolder)] else {
+                        fileDB.unlock()
+                        continue
+                    }
+                    let curFolderFileCount = curFolderDirModel.fileCount
                     fileDB.unlock()
                     
                     var totalCount = 0
@@ -2360,14 +2366,19 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
         selectedIndexes.sort()
         var urls = [URL]()
         fileDB.lock()
-        for i in selectedIndexes {
-            if i < fileDB.db[SortKeyDir(fileDB.curFolder)]!.files.count {
-                if let file=fileDB.db[SortKeyDir(fileDB.curFolder)]!.files.elementSafe(atOffset: i)?.1{
-                    urls.append(URL(string: file.path)!)
-                }
-            }
+        defer { fileDB.unlock() }
+
+        // A move/rename can update the active path before the refreshed
+        // directory model is inserted. Toolbar updates may query selection in
+        // that short window, and stale collection indexes are also expected.
+        guard let dirModel = fileDB.db[SortKeyDir(fileDB.curFolder)] else {
+            return urls
         }
-        fileDB.unlock()
+        for i in selectedIndexes {
+            guard let file = dirModel.files.elementSafe(atOffset: i)?.1,
+                  let url = URL(string: file.path) else { continue }
+            urls.append(url)
+        }
         return urls
     }
     

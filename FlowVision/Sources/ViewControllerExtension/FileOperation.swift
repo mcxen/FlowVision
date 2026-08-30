@@ -94,6 +94,7 @@ extension ViewController {
     }
 
     private struct PendingTempRename {
+        let sourceURL: URL
         let tempURL: URL
         let targetURL: URL
     }
@@ -668,9 +669,130 @@ extension ViewController {
     }
 
     private func isSameOrDescendant(_ candidate: URL, of ancestor: URL) -> Bool {
-        let candidatePath = candidate.standardizedFileURL.path
-        let ancestorPath = ancestor.standardizedFileURL.path
-        return candidatePath == ancestorPath || candidatePath.hasPrefix(ancestorPath + "/")
+        let candidatePath = candidate.standardizedFileURL.path.lowercased()
+        let ancestorPath = ancestor.standardizedFileURL.path.lowercased()
+        let ancestorPrefix = ancestorPath.hasSuffix("/") ? ancestorPath : ancestorPath + "/"
+        return candidatePath == ancestorPath || candidatePath.hasPrefix(ancestorPrefix)
+    }
+
+    private func normalizedFilePathKey(_ url: URL) -> String {
+        url.standardizedFileURL.path.lowercased()
+    }
+
+    private func hasOverlappingSourcePaths(_ urls: [URL]) -> Bool {
+        let paths = urls.map { $0.standardizedFileURL.path.lowercased() }
+        for (index, path) in paths.enumerated() {
+            for otherPath in paths[(index + 1)...] {
+                let pathPrefix = path.hasSuffix("/") ? path : path + "/"
+                let otherPrefix = otherPath.hasSuffix("/") ? otherPath : otherPath + "/"
+                if path == otherPath ||
+                    path.hasPrefix(otherPrefix) ||
+                    otherPath.hasPrefix(pathPrefix) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private func renameValidationFailure(_ mappings: [FileRenameMapping]) -> String? {
+        let fileManager = FileManager.default
+        var sourcePathKeys = Set<String>()
+        var targetPathKeys = Set<String>()
+
+        for mapping in mappings {
+            let sourceKey = normalizedFilePathKey(mapping.from)
+            let targetKey = normalizedFilePathKey(mapping.to)
+            guard sourcePathKeys.insert(sourceKey).inserted else {
+                return String(format: NSLocalizedString("Duplicate rename source: %@", comment: "重复的重命名来源：%@"), mapping.from.lastPathComponent)
+            }
+            guard targetPathKeys.insert(targetKey).inserted else {
+                return String(format: NSLocalizedString("Duplicate target name: %@", comment: "目标名称重复：%@"), mapping.to.lastPathComponent)
+            }
+        }
+
+        if hasOverlappingSourcePaths(mappings.map(\.from)) {
+            return NSLocalizedString("A folder and one of its descendants cannot be renamed together.", comment: "不能同时重命名文件夹及其子项目。")
+        }
+
+        for mapping in mappings {
+            guard fileManager.fileExists(atPath: mapping.from.path) else {
+                return String(format: NSLocalizedString("Rename source missing: %@", comment: "重命名源文件不存在：%@"), mapping.from.lastPathComponent)
+            }
+            guard mapping.from.path != mapping.to.path else { continue }
+            let targetKey = normalizedFilePathKey(mapping.to)
+            if fileManager.fileExists(atPath: mapping.to.path),
+               !sourcePathKeys.contains(targetKey) {
+                return String(format: NSLocalizedString("A file or folder already exists: %@", comment: "文件或文件夹已存在：%@"), mapping.to.lastPathComponent)
+            }
+        }
+        return nil
+    }
+
+    /// Replaces a move destination without deleting it until the source has
+    /// reached the final path. If the source move fails, the old destination is
+    /// restored from a sibling temporary path.
+    private func moveItemSafelyReplacingDestination(from sourceURL: URL, to destinationURL: URL) throws {
+        let fileManager = FileManager.default
+        let backupURL = destinationURL.deletingLastPathComponent()
+            .appendingPathComponent(".flowvision_replace_backup_\(UUID().uuidString)")
+
+        try fileManager.moveItem(at: destinationURL, to: backupURL)
+        do {
+            try fileManager.moveItem(at: sourceURL, to: destinationURL)
+        } catch {
+            var restoreError: Error?
+            do {
+                if fileManager.fileExists(atPath: destinationURL.path) {
+                    try fileManager.removeItem(at: destinationURL)
+                }
+                try fileManager.moveItem(at: backupURL, to: destinationURL)
+            } catch {
+                restoreError = error
+            }
+            if let restoreError {
+                throw NSError(
+                    domain: "netdcy.FlowVision.SafeMoveReplace",
+                    code: 1,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: "\(error.localizedDescription); failed to restore destination: \(restoreError.localizedDescription)"
+                    ]
+                )
+            }
+            throw error
+        }
+
+        do {
+            try fileManager.removeItem(at: backupURL)
+        } catch {
+            log("Moved item but failed to remove replacement backup at \(backupURL.path): \(error)", level: .error)
+        }
+    }
+
+    @discardableResult
+    private func performTrackedMove(
+        from sourceURL: URL,
+        to destinationURL: URL,
+        replacingDestination: Bool,
+        successfulDestURLs: inout [String],
+        movePairs: inout [(oldPath: String, newPath: String)],
+        failedCount: inout Int
+    ) -> Bool {
+        do {
+            if replacingDestination {
+                try moveItemSafelyReplacingDestination(from: sourceURL, to: destinationURL)
+            } else {
+                try FileManager.default.moveItem(at: sourceURL, to: destinationURL)
+            }
+            successfulDestURLs.append(destinationURL.absoluteString)
+            movePairs.append((oldPath: sourceURL.path, newPath: destinationURL.path))
+            publicVar.fileChangedCount += 1
+            return true
+        } catch {
+            failedCount += 1
+            log("Failed to move \(sourceURL.path) to \(destinationURL.path): \(error)", level: .error)
+            return false
+        }
     }
 
     private func finishMoveOperation(
@@ -683,11 +805,13 @@ extension ViewController {
         pasteboardChangeCount: Int
     ) {
         guard !successfulDestURLs.isEmpty else {
+            publicVar.collectionViewportAnchorAfterRefresh = nil
             if failedCount > 0 {
                 coreAreaView.showOperationToast(
                     String(format: NSLocalizedString("Move failed for %d item(s)", comment: "有 %d 个项目移动失败"), failedCount),
                     autoHide: 2.0
                 )
+                scheduledRefresh()
             }
             return
         }
@@ -934,9 +1058,10 @@ extension ViewController {
         folderPath: String
     ) -> Bool {
         guard !mappings.isEmpty else { return true }
-        let mappingBySourcePath = Dictionary(
-            uniqueKeysWithValues: mappings.map { ($0.from.path.lowercased(), $0) }
-        )
+        var mappingBySourcePath: [String: FileRenameMapping] = [:]
+        for mapping in mappings {
+            mappingBySourcePath[normalizedFilePathKey(mapping.from)] = mapping
+        }
         let largeViewOldPath = largeImageView.file.path
 
         fileDB.lock()
@@ -965,18 +1090,16 @@ extension ViewController {
             guard oldModels.indices.contains(indexPath.item) else { return nil }
             return ObjectIdentifier(oldModels[indexPath.item])
         })
-        var rebuiltFiles = Map<SortKeyFile, FileModel>()
+        var preparedEntries: [(key: SortKeyFile, model: FileModel, newURL: URL?)] = []
+        preparedEntries.reserveCapacity(oldEntries.count)
         for (oldKey, model) in oldEntries {
             guard let modelURL = URL(string: model.path),
-                  let mapping = mappingBySourcePath[modelURL.path.lowercased()] else {
-                rebuiltFiles[oldKey] = model
+                  let mapping = mappingBySourcePath[normalizedFilePathKey(modelURL)] else {
+                preparedEntries.append((oldKey, model, nil))
                 continue
             }
 
             let newPath = mapping.to.absoluteString
-            model.path = newPath
-            model.ext = mapping.to.pathExtension.lowercased()
-
             guard let newKey = oldKey.copy() as? SortKeyFile else {
                 fileDB.unlock()
                 return false
@@ -988,18 +1111,29 @@ extension ViewController {
             newKey.rating = oldKey.rating
             newKey.tag = oldKey.tag
             newKey.isTagLoaded = oldKey.isTagLoaded
-            rebuiltFiles[newKey] = model
+            preparedEntries.append((newKey, model, mapping.to))
+        }
+
+        var rebuiltFiles = Map<SortKeyFile, FileModel>()
+        for entry in preparedEntries {
+            if let newURL = entry.newURL {
+                entry.model.path = newURL.absoluteString
+                entry.model.ext = newURL.pathExtension.lowercased()
+            }
+            rebuiltFiles[entry.key] = entry.model
         }
         dirModel.files = rebuiltFiles
         let newModels = getMapKeysFile(rebuiltFiles).map(\.1)
         fileDB.unlock()
 
-        let oldIndexByModel = Dictionary(
-            uniqueKeysWithValues: oldModels.enumerated().map { (ObjectIdentifier($0.element), $0.offset) }
-        )
-        let newIndexByModel = Dictionary(
-            uniqueKeysWithValues: newModels.enumerated().map { (ObjectIdentifier($0.element), $0.offset) }
-        )
+        var oldIndexByModel: [ObjectIdentifier: Int] = [:]
+        for (index, model) in oldModels.enumerated() {
+            oldIndexByModel[ObjectIdentifier(model)] = index
+        }
+        var newIndexByModel: [ObjectIdentifier: Int] = [:]
+        for (index, model) in newModels.enumerated() {
+            newIndexByModel[ObjectIdentifier(model)] = index
+        }
         guard Set(oldIndexByModel.keys) == Set(newIndexByModel.keys) else { return false }
 
         for case let item as CustomCollectionViewItem in collectionView.visibleItems() {
@@ -1068,23 +1202,10 @@ extension ViewController {
         guard !mappings.isEmpty else { return true }
 
         let fileManager = FileManager.default
-        let sourcePathSet = Set(mappings.map { $0.from.path.lowercased() })
-
-        for mapping in mappings {
-            guard fileManager.fileExists(atPath: mapping.from.path) else {
-                log("Rename source missing: \(mapping.from.path)", level: .error)
-                return false
-            }
-
-            let targetPath = mapping.to.path.lowercased()
-            if mapping.from.path == mapping.to.path {
-                continue
-            }
-
-            if fileManager.fileExists(atPath: mapping.to.path) && !sourcePathSet.contains(targetPath) {
-                showAlert(message: String(format: NSLocalizedString("无法完成重命名，目标已存在：%@", comment: "rename undo conflict"), mapping.to.lastPathComponent))
-                return false
-            }
+        if let failureMessage = renameValidationFailure(mappings) {
+            log("Rename validation failed: \(failureMessage)", level: .error)
+            showAlert(message: failureMessage)
+            return false
         }
 
         publicVar.isInFileOperation = true
@@ -1100,13 +1221,18 @@ extension ViewController {
             let tempURL = mapping.from.deletingLastPathComponent().appendingPathComponent("temp_rename_\(UUID().uuidString)")
             do {
                 try fileManager.moveItem(at: mapping.from, to: tempURL)
-                pendingMoves.append(PendingTempRename(tempURL: tempURL, targetURL: mapping.to))
+                pendingMoves.append(PendingTempRename(sourceURL: mapping.from, tempURL: tempURL, targetURL: mapping.to))
             } catch {
                 for pending in pendingMoves.reversed() {
-                    try? fileManager.moveItem(at: pending.tempURL, to: mappings.first(where: { $0.to == pending.targetURL })?.from ?? pending.targetURL)
+                    do {
+                        try fileManager.moveItem(at: pending.tempURL, to: pending.sourceURL)
+                    } catch {
+                        log("Failed to roll back temp rename \(pending.tempURL.path): \(error)", level: .error)
+                    }
                 }
                 log("Failed to create temp rename path: \(error)", level: .error)
                 showAlert(message: String(format: NSLocalizedString("重命名失败：%@", comment: "rename failed"), error.localizedDescription))
+                scheduledRefresh()
                 return false
             }
         }
@@ -1116,20 +1242,25 @@ extension ViewController {
             do {
                 try fileManager.moveItem(at: pending.tempURL, to: pending.targetURL)
                 publicVar.fileChangedCount += 1
-                if let source = mappings.first(where: { $0.to == pending.targetURL })?.from {
-                    appliedMoves.append(FileRenameMapping(from: source, to: pending.targetURL))
-                }
+                appliedMoves.append(FileRenameMapping(from: pending.sourceURL, to: pending.targetURL))
             } catch {
                 for applied in appliedMoves.reversed() {
-                    try? fileManager.moveItem(at: applied.to, to: applied.from)
+                    do {
+                        try fileManager.moveItem(at: applied.to, to: applied.from)
+                    } catch {
+                        log("Failed to roll back applied rename \(applied.to.path): \(error)", level: .error)
+                    }
                 }
                 for remaining in pendingMoves where fileManager.fileExists(atPath: remaining.tempURL.path) {
-                    if let original = mappings.first(where: { $0.to == remaining.targetURL })?.from {
-                        try? fileManager.moveItem(at: remaining.tempURL, to: original)
+                    do {
+                        try fileManager.moveItem(at: remaining.tempURL, to: remaining.sourceURL)
+                    } catch {
+                        log("Failed to restore pending rename \(remaining.tempURL.path): \(error)", level: .error)
                     }
                 }
                 log("Failed to complete rename: \(error)", level: .error)
                 showAlert(message: String(format: NSLocalizedString("重命名失败：%@", comment: "rename failed"), error.localizedDescription))
+                scheduledRefresh()
                 return false
             }
         }
@@ -1149,6 +1280,7 @@ extension ViewController {
             }
         } else {
             publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+            publicVar.filesForLocateAfterChangeTime = .now()
         }
 
         if registerUndo, let undoManager = fileOperationUndoManager() {
@@ -1200,24 +1332,7 @@ extension ViewController {
             guard let self = self else { return }
 
             let fileManager = FileManager.default
-            let sourcePathSet = Set(mappings.map { $0.from.path.lowercased() })
-            let sourceByTargetPath = Dictionary(
-                uniqueKeysWithValues: mappings.map { ($0.to.path, $0.from) }
-            )
-            var failureMessage: String?
-
-            for mapping in mappings {
-                guard fileManager.fileExists(atPath: mapping.from.path) else {
-                    failureMessage = "重命名源文件不存在：\(mapping.from.lastPathComponent)"
-                    break
-                }
-                if mapping.from.path == mapping.to.path { continue }
-                let targetPath = mapping.to.path.lowercased()
-                if fileManager.fileExists(atPath: mapping.to.path) && !sourcePathSet.contains(targetPath) {
-                    failureMessage = "无法完成重命名，目标已存在：\(mapping.to.lastPathComponent)"
-                    break
-                }
-            }
+            var failureMessage = self.renameValidationFailure(mappings)
 
             let changedMappings = mappings.filter { $0.from.path != $0.to.path }
             var pendingMoves: [PendingTempRename] = []
@@ -1238,12 +1353,14 @@ extension ViewController {
                     let tempURL = mapping.from.deletingLastPathComponent().appendingPathComponent("temp_rename_\(UUID().uuidString)")
                     do {
                         try fileManager.moveItem(at: mapping.from, to: tempURL)
-                        pendingMoves.append(PendingTempRename(tempURL: tempURL, targetURL: mapping.to))
+                        pendingMoves.append(PendingTempRename(sourceURL: mapping.from, tempURL: tempURL, targetURL: mapping.to))
                     } catch {
                         failureMessage = error.localizedDescription
                         for pending in pendingMoves.reversed() {
-                            if let originalURL = sourceByTargetPath[pending.targetURL.path] {
-                                try? fileManager.moveItem(at: pending.tempURL, to: originalURL)
+                            do {
+                                try fileManager.moveItem(at: pending.tempURL, to: pending.sourceURL)
+                            } catch {
+                                log("Failed to roll back temp rename \(pending.tempURL.path): \(error)", level: .error)
                             }
                         }
                         pendingMoves.removeAll()
@@ -1265,17 +1382,21 @@ extension ViewController {
 
                     do {
                         try fileManager.moveItem(at: pending.tempURL, to: pending.targetURL)
-                        if let sourceURL = sourceByTargetPath[pending.targetURL.path] {
-                            appliedMoves.append(FileRenameMapping(from: sourceURL, to: pending.targetURL))
-                        }
+                        appliedMoves.append(FileRenameMapping(from: pending.sourceURL, to: pending.targetURL))
                     } catch {
                         failureMessage = error.localizedDescription
                         for applied in appliedMoves.reversed() {
-                            try? fileManager.moveItem(at: applied.to, to: applied.from)
+                            do {
+                                try fileManager.moveItem(at: applied.to, to: applied.from)
+                            } catch {
+                                log("Failed to roll back applied rename \(applied.to.path): \(error)", level: .error)
+                            }
                         }
                         for remaining in pendingMoves where fileManager.fileExists(atPath: remaining.tempURL.path) {
-                            if let originalURL = sourceByTargetPath[remaining.targetURL.path] {
-                                try? fileManager.moveItem(at: remaining.tempURL, to: originalURL)
+                            do {
+                                try fileManager.moveItem(at: remaining.tempURL, to: remaining.sourceURL)
+                            } catch {
+                                log("Failed to restore pending rename \(remaining.tempURL.path): \(error)", level: .error)
                             }
                         }
                         appliedMoves.removeAll()
@@ -1298,6 +1419,7 @@ extension ViewController {
                     self.publicVar.collectionScrollRestoreAfterRefresh = nil
                     self.coreAreaView.hideOperationOverlay(delayed: 0.2)
                     showAlert(message: "重命名失败：\(failureMessage)")
+                    self.scheduledRefresh()
                     return
                 }
 
@@ -1320,6 +1442,7 @@ extension ViewController {
                     }
                 } else {
                     self.publicVar.filesForLocateAfterChange = (locateTargets ?? appliedMoves.map(\.to)).map(\.absoluteString)
+                    self.publicVar.filesForLocateAfterChangeTime = .now()
                 }
 
                 if let undoManager = self.fileOperationUndoManager() {
@@ -2636,6 +2759,7 @@ extension ViewController {
         allowBackgroundPreflight: Bool = true,
         knownExistingTargetPaths: Set<String>? = nil
     ) {
+        guard !publicVar.isInFileOperation else { return }
 
         // 重置剪切模式，防止直接调用handleMove后isCutMode残留为true
         // Reset cut mode to prevent isCutMode remaining true after direct handleMove calls
@@ -2650,6 +2774,17 @@ extension ViewController {
         }
 
         guard let items = pasteboard.pasteboardItems else { return }
+        var seenSourcePaths = Set<String>()
+        let sourceURLs = items.compactMap { item -> URL? in
+            guard let value = item.string(forType: .fileURL),
+                  let url = URL(string: value) else { return nil }
+            return seenSourcePaths.insert(normalizedFilePathKey(url)).inserted ? url : nil
+        }
+        guard !sourceURLs.isEmpty else { return }
+        if hasOverlappingSourcePaths(sourceURLs) {
+            showAlert(message: NSLocalizedString("A folder and one of its descendants cannot be moved together.", comment: "不能同时移动文件夹及其子项目。"))
+            return
+        }
 
         fileDB.lock()
         let curFolder = fileDB.curFolder
@@ -2664,9 +2799,7 @@ extension ViewController {
 
         // 检查待移动的文件/文件夹列表
         // Check list of files/folders to move
-        for item in items {
-            guard let fileURL = URL(string: item.string(forType: .fileURL) ?? "") else { continue }
-
+        for fileURL in sourceURLs {
             // 检查是否包含目标目录自身或者它的父目录
             // Check if includes destination directory itself or its parent directory
             if isSameOrDescendant(destinationURL, of: fileURL) {
@@ -2680,9 +2813,8 @@ extension ViewController {
         var ifAutoRenameWhenDifferentSource = false
         var fileNames = Set<String>()
         var hasDuplicates = false
-        for item in items {
-            guard let fileURL = URL(string: item.string(forType: .fileURL) ?? "") else { continue }
-            let fileName = fileURL.lastPathComponent
+        for fileURL in sourceURLs {
+            let fileName = fileURL.lastPathComponent.lowercased()
             if fileNames.contains(fileName) {
                 hasDuplicates = true
                 break
@@ -2718,10 +2850,7 @@ extension ViewController {
 
         // 记录操作到日志
         // Record operation to log
-        var sourceFiles = items.compactMap { item -> String? in
-            guard let fileURL = URL(string: item.string(forType: .fileURL) ?? "") else { return nil }
-            return fileURL.lastPathComponent
-        }
+        let sourceFiles = sourceURLs.map(\.lastPathComponent)
 
         let sourceFilesStr: String
         if sourceFiles.count > 3 {
@@ -2733,10 +2862,6 @@ extension ViewController {
         let operationLog = "[Move] \(sourceFilesStr) -> \(destinationURL.lastPathComponent)"
         globalVar.operationLogs.append(operationLog)
 
-        let sourceURLs = items.compactMap { item -> URL? in
-            guard let value = item.string(forType: .fileURL) else { return nil }
-            return URL(string: value)
-        }
         preserveViewportAnchorForMove(sourceURLs, folderPath: curFolder)
         let unconflictedPlans = sourceURLs.compactMap { source -> (source: URL, destination: URL)? in
             guard source.deletingLastPathComponent().standardizedFileURL != destinationURL.standardizedFileURL else {
@@ -2766,13 +2891,14 @@ extension ViewController {
         // Record successfully pasted destination paths for selection after refresh
         var successfulDestURLs: [String] = []
         var indexMovePairs: [(oldPath: String, newPath: String)] = []
+        var failedCount = 0
         let pasteboardChangeCount = pasteboard.changeCount
         defer {
-            if !successfulDestURLs.isEmpty {
+            if !successfulDestURLs.isEmpty || failedCount > 0 {
                 finishMoveOperation(
                     successfulDestURLs: successfulDestURLs,
                     movePairs: indexMovePairs,
-                    failedCount: 0,
+                    failedCount: failedCount,
                     destinationURL: destinationURL,
                     originalFolderPath: curFolder,
                     pasteboard: pasteboard,
@@ -2796,16 +2922,33 @@ extension ViewController {
         var shouldAutoRenameAll = false
         let sharedMergeState = MergeConflictState()
 
+        func performTrackedMerge(from sourceURL: URL, to destURL: URL) {
+            let completedMoveStart = indexMovePairs.count
+            let allSucceeded = mergeFolderByMove(
+                from: sourceURL,
+                to: destURL,
+                state: sharedMergeState,
+                completedMoves: &indexMovePairs
+            )
+            let movedCount = indexMovePairs.count - completedMoveStart
+            if movedCount > 0 {
+                successfulDestURLs.append(destURL.absoluteString)
+                publicVar.fileChangedCount += movedCount
+            }
+            if !allSucceeded && !sharedMergeState.cancelled {
+                failedCount += 1
+            }
+        }
+
         let StoreIsKeyEventEnabled = publicVar.isKeyEventEnabled
         publicVar.isKeyEventEnabled = false
-        for item in items {
-            guard let fileURL = URL(string: item.string(forType: .fileURL) ?? "") else { continue }
-            let prevSuccessCount = successfulDestURLs.count
+        defer { publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled }
+        for fileURL in sourceURLs {
             var destURL = destinationURL.appendingPathComponent(fileURL.lastPathComponent)
 
             // 如果是在同一目录移动，则不作动作
             // If moving in same directory, do nothing
-            var isInSameFolder = fileURL.deletingLastPathComponent() == destinationURL
+            let isInSameFolder = fileURL.deletingLastPathComponent().standardizedFileURL == destinationURL.standardizedFileURL
             if isInSameFolder {
                 continue
             }
@@ -2827,120 +2970,105 @@ extension ViewController {
                 let bothAreFolders = srcIsDir.boolValue && dstIsDir.boolValue
 
                 if shouldReplaceAll {
-                    do {
-                        try FileManager.default.removeItem(at: destURL)
-                        try FileManager.default.moveItem(at: fileURL, to: destURL)
-                        successfulDestURLs.append(destURL.absoluteString)
-                        publicVar.fileChangedCount += 1
-                    } catch {
-                        log("Failed to move \(fileURL): \(error)", level: .error)
-                    }
+                    performTrackedMove(
+                        from: fileURL,
+                        to: destURL,
+                        replacingDestination: true,
+                        successfulDestURLs: &successfulDestURLs,
+                        movePairs: &indexMovePairs,
+                        failedCount: &failedCount
+                    )
                 } else if shouldMergeAll && bothAreFolders {
-                    if mergeFolderByMove(from: fileURL, to: destURL, state: sharedMergeState) {
-                        successfulDestURLs.append(destURL.absoluteString)
-                        publicVar.fileChangedCount += 1
-                    }
+                    performTrackedMerge(from: fileURL, to: destURL)
                     if sharedMergeState.cancelled {
-                        publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
                         return
                     }
                 } else if shouldSkipAll {
                     continue
                 } else if shouldAutoRenameAll {
                     destURL = getUniqueDestinationURL(for: destURL, isInPlace: false)
-                    do {
-                        try FileManager.default.moveItem(at: fileURL, to: destURL)
-                        successfulDestURLs.append(destURL.absoluteString)
-                        publicVar.fileChangedCount += 1
-                    } catch {
-                        log("Failed to move \(fileURL): \(error)", level: .error)
-                    }
+                    performTrackedMove(
+                        from: fileURL,
+                        to: destURL,
+                        replacingDestination: false,
+                        successfulDestURLs: &successfulDestURLs,
+                        movePairs: &indexMovePairs,
+                        failedCount: &failedCount
+                    )
                 } else {
-                    let userChoice = showReplaceDialog(for: destURL, sourceURL: fileURL, isSingle: items.count == 1, isMove: true)
+                    let userChoice = showReplaceDialog(for: destURL, sourceURL: fileURL, isSingle: sourceURLs.count == 1, isMove: true)
                     switch userChoice {
                     case .replace:
-                        do {
-                            try FileManager.default.removeItem(at: destURL)
-                            try FileManager.default.moveItem(at: fileURL, to: destURL)
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        } catch {
-                            log("Failed to move \(fileURL): \(error)", level: .error)
-                        }
+                        performTrackedMove(
+                            from: fileURL,
+                            to: destURL,
+                            replacingDestination: true,
+                            successfulDestURLs: &successfulDestURLs,
+                            movePairs: &indexMovePairs,
+                            failedCount: &failedCount
+                        )
                     case .replaceAll:
                         shouldReplaceAll = true
-                        do {
-                            try FileManager.default.removeItem(at: destURL)
-                            try FileManager.default.moveItem(at: fileURL, to: destURL)
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        } catch {
-                            log("Failed to move \(fileURL): \(error)", level: .error)
-                        }
+                        performTrackedMove(
+                            from: fileURL,
+                            to: destURL,
+                            replacingDestination: true,
+                            successfulDestURLs: &successfulDestURLs,
+                            movePairs: &indexMovePairs,
+                            failedCount: &failedCount
+                        )
                     case .merge:
-                        if mergeFolderByMove(from: fileURL, to: destURL, state: sharedMergeState) {
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        }
+                        performTrackedMerge(from: fileURL, to: destURL)
                         if sharedMergeState.cancelled {
-                            publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
                             return
                         }
                     case .mergeAll:
                         shouldMergeAll = true
-                        if mergeFolderByMove(from: fileURL, to: destURL, state: sharedMergeState) {
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        }
+                        performTrackedMerge(from: fileURL, to: destURL)
                         if sharedMergeState.cancelled {
-                            publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
                             return
                         }
                     case .autoRename:
                         destURL = getUniqueDestinationURL(for: destURL, isInPlace: false)
-                        do {
-                            try FileManager.default.moveItem(at: fileURL, to: destURL)
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        } catch {
-                            log("Failed to move \(fileURL): \(error)", level: .error)
-                        }
+                        performTrackedMove(
+                            from: fileURL,
+                            to: destURL,
+                            replacingDestination: false,
+                            successfulDestURLs: &successfulDestURLs,
+                            movePairs: &indexMovePairs,
+                            failedCount: &failedCount
+                        )
                     case .autoRenameAll:
                         shouldAutoRenameAll = true
                         destURL = getUniqueDestinationURL(for: destURL, isInPlace: false)
-                        do {
-                            try FileManager.default.moveItem(at: fileURL, to: destURL)
-                            successfulDestURLs.append(destURL.absoluteString)
-                            publicVar.fileChangedCount += 1
-                        } catch {
-                            log("Failed to move \(fileURL): \(error)", level: .error)
-                        }
+                        performTrackedMove(
+                            from: fileURL,
+                            to: destURL,
+                            replacingDestination: false,
+                            successfulDestURLs: &successfulDestURLs,
+                            movePairs: &indexMovePairs,
+                            failedCount: &failedCount
+                        )
                     case .skip:
                         continue
                     case .skipAll:
                         shouldSkipAll = true
                         continue
                     case .cancel:
-                        publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
                         return
                     }
                 }
             } else {
-                do {
-                    try FileManager.default.moveItem(at: fileURL, to: destURL)
-                    successfulDestURLs.append(destURL.absoluteString)
-                    publicVar.fileChangedCount += 1
-                } catch {
-                    log("Failed to move \(fileURL): \(error)", level: .error)
-                }
-            }
-            if successfulDestURLs.count > prevSuccessCount,
-               let destStr = successfulDestURLs.last,
-               let destPath = URL(string: destStr)?.path {
-                indexMovePairs.append((oldPath: fileURL.path, newPath: destPath))
+                performTrackedMove(
+                    from: fileURL,
+                    to: destURL,
+                    replacingDestination: false,
+                    successfulDestURLs: &successfulDestURLs,
+                    movePairs: &indexMovePairs,
+                    failedCount: &failedCount
+                )
             }
         }
-        publicVar.isKeyEventEnabled = StoreIsKeyEventEnabled
     }
 
     func handleDelete(fileUrls: [URL] = [], isShowPrompt: Bool = true) -> Bool {
@@ -3330,8 +3458,24 @@ extension ViewController {
 
     @discardableResult
     func mergeFolderByMove(from sourceURL: URL, to destURL: URL, state: MergeConflictState? = nil) -> Bool {
+        var completedMoves: [(oldPath: String, newPath: String)] = []
+        return mergeFolderByMove(
+            from: sourceURL,
+            to: destURL,
+            state: state ?? MergeConflictState(),
+            completedMoves: &completedMoves
+        )
+    }
+
+    @discardableResult
+    private func mergeFolderByMove(
+        from sourceURL: URL,
+        to destURL: URL,
+        state: MergeConflictState,
+        completedMoves: inout [(oldPath: String, newPath: String)]
+    ) -> Bool {
         let fm = FileManager.default
-        let state = state ?? MergeConflictState()
+        let completedMoveStart = completedMoves.count
 
         var isDir: ObjCBool = false
         guard fm.fileExists(atPath: sourceURL.path, isDirectory: &isDir), isDir.boolValue else {
@@ -3341,6 +3485,7 @@ extension ViewController {
         if !fm.fileExists(atPath: destURL.path) {
             do {
                 try fm.moveItem(at: sourceURL, to: destURL)
+                completedMoves.append((oldPath: sourceURL.path, newPath: destURL.path))
                 return true
             } catch {
                 log("Merge move failed (create dest): \(error)", level: .error)
@@ -3364,23 +3509,24 @@ extension ViewController {
             let destExists = fm.fileExists(atPath: destItemURL.path, isDirectory: &dstIsDir)
 
             if srcIsDir.boolValue && destExists && dstIsDir.boolValue {
-                if !mergeFolderByMove(from: itemURL, to: destItemURL, state: state) {
+                if !mergeFolderByMove(from: itemURL, to: destItemURL, state: state, completedMoves: &completedMoves) {
                     allSuccess = false
                 }
             } else if destExists {
                 if itemURL.lastPathComponent == ".DS_Store" {
                     do {
-                        try fm.removeItem(at: destItemURL)
-                        try fm.moveItem(at: itemURL, to: destItemURL)
+                        try moveItemSafelyReplacingDestination(from: itemURL, to: destItemURL)
+                        completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                     } catch {
                         log("Merge move failed (.DS_Store): \(error)", level: .error)
+                        allSuccess = false
                     }
                     continue
                 }
                 if state.shouldReplaceAll {
                     do {
-                        try fm.removeItem(at: destItemURL)
-                        try fm.moveItem(at: itemURL, to: destItemURL)
+                        try moveItemSafelyReplacingDestination(from: itemURL, to: destItemURL)
+                        completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                     } catch {
                         log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                         allSuccess = false
@@ -3391,6 +3537,7 @@ extension ViewController {
                     destItemURL = getUniqueDestinationURL(for: destItemURL, isInPlace: false)
                     do {
                         try fm.moveItem(at: itemURL, to: destItemURL)
+                        completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                     } catch {
                         log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                         allSuccess = false
@@ -3400,8 +3547,8 @@ extension ViewController {
                     switch choice {
                     case .replace:
                         do {
-                            try fm.removeItem(at: destItemURL)
-                            try fm.moveItem(at: itemURL, to: destItemURL)
+                            try moveItemSafelyReplacingDestination(from: itemURL, to: destItemURL)
+                            completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                         } catch {
                             log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                             allSuccess = false
@@ -3409,21 +3556,21 @@ extension ViewController {
                     case .replaceAll:
                         state.shouldReplaceAll = true
                         do {
-                            try fm.removeItem(at: destItemURL)
-                            try fm.moveItem(at: itemURL, to: destItemURL)
+                            try moveItemSafelyReplacingDestination(from: itemURL, to: destItemURL)
+                            completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                         } catch {
                             log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                             allSuccess = false
                         }
                     case .merge, .mergeAll:
                         if srcIsDir.boolValue {
-                            if !mergeFolderByMove(from: itemURL, to: destItemURL, state: state) {
+                            if !mergeFolderByMove(from: itemURL, to: destItemURL, state: state, completedMoves: &completedMoves) {
                                 allSuccess = false
                             }
                         } else {
                             do {
-                                try fm.removeItem(at: destItemURL)
-                                try fm.moveItem(at: itemURL, to: destItemURL)
+                                try moveItemSafelyReplacingDestination(from: itemURL, to: destItemURL)
+                                completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                             } catch {
                                 log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                                 allSuccess = false
@@ -3433,6 +3580,7 @@ extension ViewController {
                         destItemURL = getUniqueDestinationURL(for: destItemURL, isInPlace: false)
                         do {
                             try fm.moveItem(at: itemURL, to: destItemURL)
+                            completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                         } catch {
                             log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                             allSuccess = false
@@ -3442,6 +3590,7 @@ extension ViewController {
                         destItemURL = getUniqueDestinationURL(for: destItemURL, isInPlace: false)
                         do {
                             try fm.moveItem(at: itemURL, to: destItemURL)
+                            completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                         } catch {
                             log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                             allSuccess = false
@@ -3459,6 +3608,7 @@ extension ViewController {
             } else {
                 do {
                     try fm.moveItem(at: itemURL, to: destItemURL)
+                    completedMoves.append((oldPath: itemURL.path, newPath: destItemURL.path))
                 } catch {
                     log("Merge move failed (\(itemURL.lastPathComponent)): \(error)", level: .error)
                     allSuccess = false
@@ -3469,14 +3619,21 @@ extension ViewController {
         // Remove source directory if it's now empty or all items were moved
         let remaining = try? fm.contentsOfDirectory(at: sourceURL, includingPropertiesForKeys: nil, options: [])
         if remaining?.isEmpty ?? true {
-            try? fm.removeItem(at: sourceURL)
+            do {
+                try fm.removeItem(at: sourceURL)
+                completedMoves.removeSubrange(completedMoveStart...)
+                completedMoves.append((oldPath: sourceURL.path, newPath: destURL.path))
+            } catch {
+                log("Merge move could not remove empty source folder \(sourceURL.path): \(error)", level: .error)
+                allSuccess = false
+            }
         }
 
         return allSuccess
     }
 
     func handleRename(urls: [URL]) -> Bool {
-        if urls.isEmpty { return false }
+        guard !publicVar.isInFileOperation, !urls.isEmpty else { return false }
 
         fileDB.lock()
         let curFolder = fileDB.curFolder
@@ -3537,7 +3694,11 @@ extension ViewController {
         if response == .alertFirstButtonReturn {
             let newBaseName = inputTextField.stringValue
 
-            if newBaseName != "" {
+            if !newBaseName.isEmpty {
+                guard newBaseName != ".", newBaseName != "..", !newBaseName.contains("/") else {
+                    showAlert(message: String(format: NSLocalizedString("Invalid file name: %@", comment: "无效的文件名：%@"), newBaseName))
+                    return false
+                }
 
                 // 记录操作到日志
                 // Log operation to log
@@ -3623,16 +3784,19 @@ extension ViewController {
                 }
 
                 let actionName = urls.count > 1 ? NSLocalizedString("批量重命名", comment: "batch rename undo") : NSLocalizedString("重命名", comment: "rename undo")
+                if finalNames.count > 1 {
+                    executeFileRenameMappingsAsync(
+                        finalNames,
+                        actionName: actionName,
+                        inPlaceFolderPath: curFolder
+                    )
+                    return true
+                }
                 let renameResult = executeFileRenameMappings(
                     finalNames,
                     actionName: actionName,
                     inPlaceFolderPath: curFolder
                 )
-                if renameResult {
-                    for item in finalNames {
-                        log("File renamed to \(item.to.lastPathComponent)")
-                    }
-                }
                 return renameResult
             }
         }
@@ -3640,6 +3804,7 @@ extension ViewController {
     }
 
     func handleBatchRenameFolders(urls: [URL]) -> Bool {
+        guard !publicVar.isInFileOperation else { return false }
         let fileManager = FileManager.default
         let folders = urls.filter { url in
             var isDirectory: ObjCBool = false
@@ -3771,15 +3936,17 @@ extension ViewController {
         fileDB.lock()
         let inPlaceFolderPath = fileDB.curFolder
         fileDB.unlock()
-        return executeFileRenameMappings(
+        executeFileRenameMappingsAsync(
             changedMappings,
             actionName: NSLocalizedString("Batch Rename Folders", comment: "批量重命名文件夹"),
             inPlaceFolderPath: inPlaceFolderPath
         )
+        return true
     }
 
     /// Shows a rename toolbox for any multi-selection, preserving file extensions by default.
     func handleBatchRenameSelectedItems(urls: [URL]) -> Bool {
+        guard !publicVar.isInFileOperation else { return false }
         let fileManager = FileManager.default
         var seenPaths = Set<String>()
         let items = urls.filter { url in
@@ -3957,11 +4124,12 @@ extension ViewController {
         fileDB.lock()
         let inPlaceFolderPath = fileDB.curFolder
         fileDB.unlock()
-        return executeFileRenameMappings(
+        executeFileRenameMappingsAsync(
             changedMappings,
             actionName: "批量重命名",
             inPlaceFolderPath: inPlaceFolderPath
         )
+        return true
     }
 
     func handleQuickRenameInCurrentFolder() -> Bool {
