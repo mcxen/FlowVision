@@ -67,7 +67,28 @@ private final class LibMPV {
 
     private let handle: UnsafeMutableRawPointer
 
-    static let shared: LibMPV? = LibMPV()
+    private static let sharedLock = NSLock()
+    private static var cachedShared: LibMPV?
+    private static var didAttemptLoad = false
+
+    static var shared: LibMPV? {
+        sharedLock.lock()
+        defer { sharedLock.unlock() }
+        if !didAttemptLoad {
+            cachedShared = LibMPV()
+            didAttemptLoad = true
+        }
+        return cachedShared
+    }
+
+    /// A failed first lookup must not be permanent: the optional runtime can
+    /// be downloaded while FlowVision is still running.
+    static func reload() {
+        sharedLock.lock()
+        cachedShared = nil
+        didAttemptLoad = false
+        sharedLock.unlock()
+    }
 
     private init?() {
         guard let loadedHandle = Self.openLibrary() else {
@@ -121,17 +142,30 @@ private final class LibMPV {
     }
 
     private static func openLibrary() -> UnsafeMutableRawPointer? {
-        let frameworkDirs = [
-            Bundle.main.privateFrameworksPath,
-            "/Applications/IINA.app/Contents/Frameworks"
-        ].compactMap { $0 }
-
-        for dir in frameworkDirs {
-            if let handle = openLibrary(in: dir) {
-                return handle
-            }
+        // Prefer a runtime bundled with FlowVision. It is the only source that
+        // is guaranteed to have been assembled and tested as one dependency
+        // set.
+        if let bundledDir = Bundle.main.privateFrameworksPath,
+           let handle = openLibrary(in: bundledDir) {
+            return handle
         }
 
+        // An optional, FlowVision-managed runtime is installed after explicit
+        // user consent and verified before this path becomes active.
+        if let managedDir = MPVRuntimeManager.shared.activeFrameworksDirectory,
+           let handle = openLibrary(in: managedDir) {
+            return handle
+        }
+
+        // Used by the local repair acceptance test so it cannot accidentally
+        // pass by finding a developer's Homebrew or IINA installation.
+        if ProcessInfo.processInfo.environment["FLOWVISION_MPV_DISABLE_EXTERNAL_FALLBACKS"] == "1" {
+            return nil
+        }
+
+        // A package-managed libmpv is a coherent keg and is safer than loading
+        // arbitrary dylibs from another app bundle. In particular, a partially
+        // updated IINA bundle can contain incompatible libmpv/libplacebo ABIs.
         for path in [
             "@rpath/libmpv.2.dylib",
             "@rpath/libmpv.dylib",
@@ -146,6 +180,13 @@ private final class LibMPV {
                 return handle
             }
         }
+
+        // Keep IINA as the final compatibility fallback only. openLibrary(in:)
+        // returns nil when its dependency set cannot be resolved, allowing the
+        // caller to show the existing external-player affordance safely.
+        if let handle = openLibrary(in: "/Applications/IINA.app/Contents/Frameworks") {
+            return handle
+        }
         return nil
     }
 
@@ -154,14 +195,26 @@ private final class LibMPV {
         guard FileManager.default.fileExists(atPath: libmpv) else { return nil }
 
         let dylibs = ((try? FileManager.default.contentsOfDirectory(atPath: dir)) ?? [])
-            .filter { $0.hasSuffix(".dylib") && $0 != "libmpv.2.dylib" }
+            .filter {
+                $0.hasSuffix(".dylib")
+                    && $0 != "libmpv.2.dylib"
+                    // IINA may bundle an older Swift runtime next to mpv.
+                    // Loading it into FlowVision duplicates the system Swift
+                    // classes and can make mpv initialization fail.
+                    && !$0.hasPrefix("libswift_")
+            }
 
         for _ in 0..<4 {
             for name in dylibs {
-                _ = dlopen(URL(fileURLWithPath: dir).appendingPathComponent(name).path, RTLD_NOW | RTLD_GLOBAL)
+                // Keep mpv's FFmpeg dependency graph private. FlowVision also
+                // embeds FFmpegKit; exporting either set globally lets the
+                // other bind to an ABI-incompatible symbol on the next launch.
+                _ = dlopen(URL(fileURLWithPath: dir).appendingPathComponent(name).path, RTLD_NOW | RTLD_LOCAL)
             }
         }
-        return dlopen(libmpv, RTLD_NOW | RTLD_LOCAL)
+        // RTLD_FIRST makes lookups prefer libmpv and its own dependency graph
+        // over same-named symbols already present in the application process.
+        return dlopen(libmpv, RTLD_NOW | RTLD_LOCAL | RTLD_FIRST)
     }
 }
 
@@ -386,6 +439,10 @@ final class MPVPlayerBackend {
     var currentTime: Double { getDouble("time-pos") }
     var duration: Double { getDouble("duration") }
 
+    static func reloadRuntime() {
+        LibMPV.reload()
+    }
+
     var volume: Float {
         get { Float(max(0, min(100, getDouble("volume"))) / 100.0) }
         set {
@@ -433,10 +490,15 @@ final class MPVPlayerBackend {
         setOption("sub-auto", "no")
         // Mounted SMB paths look like local files to mpv, so force a bounded
         // read-ahead cache instead of relying on small on-demand reads.
+        let isNetworkVolume = VolumeManager.shared.isNetworkVolume(url)
+        let readAheadSeconds = isNetworkVolume ? 12 : 5
         setOption("cache", "yes")
-        setOption("cache-on-disk", "yes")
-        setOption("cache-secs", "5")
-        setOption("demuxer-readahead-secs", "20")
+        setOption("cache-on-disk", "no")
+        setOption("cache-secs", "\(readAheadSeconds)")
+        setOption("cache-pause", "yes")
+        setOption("cache-pause-initial", isNetworkVolume ? "yes" : "no")
+        setOption("cache-pause-wait", isNetworkVolume ? "3" : "1")
+        setOption("demuxer-readahead-secs", "\(readAheadSeconds)")
         setOption("demuxer-max-bytes", "134217728")
         setOption("demuxer-max-back-bytes", "33554432")
         setOption("volume", "\(Int(max(0, min(1, volume)) * 100))")
@@ -551,6 +613,14 @@ final class MPVPlayerBackend {
 
     func seek(to seconds: Double) {
         _ = command(["seek", "\(boundedTime(seconds))", "absolute", "exact"])
+    }
+
+    /// Saves the decoded video frame that mpv is currently displaying. Using
+    /// mpv's own screenshot path keeps the capture aligned with playback even
+    /// when hardware decoding or a network-backed source is active.
+    func captureCurrentVideoFrame(to outputURL: URL) -> Bool {
+        guard outputURL.isFileURL, isActive else { return false }
+        return command(["screenshot-to-file", outputURL.path, "video"]) >= 0
     }
 
     func reportSwap() {

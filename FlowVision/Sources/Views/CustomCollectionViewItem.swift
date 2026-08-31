@@ -20,6 +20,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
     var queuePlayer: AVQueuePlayer?
     var playerLooper: AVPlayerLooper?
     var currentPlayingURL: URL?
+    private var networkPlaybackLease: NetworkIOCoordinator.PlaybackLease?
     
     var folderViews=[NSView]()
     var folderImageViews=[CustomImageView]()
@@ -791,10 +792,17 @@ class CustomCollectionViewItem: NSCollectionViewItem {
             
             if let url = URL(string: file.path),
                let viewController = getViewController(collectionView!) {
+                networkPlaybackLease?.end()
+                networkPlaybackLease = NetworkIOCoordinator.shared.beginPlayback(for: url)
                 let playbackAsset = viewController.mediaPreheatManager.preheatedAsset(for: url) ?? AVURLAsset(url: url)
-                guard let timeRange = getCommonTimeRange(asset: playbackAsset) else { return }
+                guard let timeRange = getCommonTimeRange(asset: playbackAsset) else {
+                    networkPlaybackLease?.end()
+                    networkPlaybackLease = nil
+                    return
+                }
                 
                 let playerItem = AVPlayerItem(asset: playbackAsset)
+                playerItem.preferredForwardBufferDuration = VolumeManager.shared.isNetworkVolume(url) ? 12 : 5
                 queuePlayer?.insert(playerItem, after: nil)
                 playerLooper = AVPlayerLooper(player: queuePlayer!, templateItem: playerItem, timeRange: timeRange)
                 queuePlayer?.play()
@@ -802,11 +810,15 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                 avPlayerLayer?.isHidden = false
             }
         } else {
+            networkPlaybackLease?.end()
+            networkPlaybackLease = nil
             avPlayerLayer?.isHidden = true
         }
     }
     
     func stopVideo() {
+        networkPlaybackLease?.end()
+        networkPlaybackLease = nil
         guard let viewController = getViewController(collectionView!) else {return}
         if viewController.publicVar.isInFindingClosestState {return}
         if avPlayerLayer?.isHidden == false {
@@ -1180,7 +1192,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
                     actionItemOpen.keyEquivalentModifierMask = []
                 }
                 
-                if (file.type == .folder || file.type == .image || (file.type == .video && globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(file.ext.lowercased()))) {
+                if (file.type == .folder || file.type == .image || (file.type == .video && globalVar.useInternalPlayer && globalVar.HandledVideoExtensions.contains(file.ext.lowercased()))) {
                     var titleTmp = NSLocalizedString("Open in New Tab", comment: "在新标签页中打开")
                     if selectedCount > 1 {
                         titleTmp = NSLocalizedString("open-in-new-tab-this", comment: "在新标签页中打开此项")
@@ -1459,7 +1471,7 @@ class CustomCollectionViewItem: NSCollectionViewItem {
         if let appDelegate=NSApplication.shared.delegate as? AppDelegate {
             if file.type == .folder {
                 _ = appDelegate.createNewWindow(file.path)
-            }else if file.type == .image || (file.type == .video && globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(file.ext.lowercased())){
+            }else if file.type == .image || (file.type == .video && globalVar.useInternalPlayer && globalVar.HandledVideoExtensions.contains(file.ext.lowercased())){
                 globalVar.isLaunchFromFile=true
                 if let windowController = appDelegate.createNewWindow(file.path) {
                     appDelegate.openImageInTargetWindow(file.path, windowController: windowController)

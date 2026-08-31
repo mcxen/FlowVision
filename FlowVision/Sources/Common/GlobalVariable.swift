@@ -91,6 +91,7 @@ class GlobalVar{
     var usePinyinInitialSearch = false
     var videoPlayRememberPosition = false
     var videoPlaySequentialPlay = false
+    var videoControlsAlwaysVisible = false
     var preferIINAForExternalVideoPlayer = true
     var useInternalPlayer = true {
         didSet {

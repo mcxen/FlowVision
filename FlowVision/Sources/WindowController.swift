@@ -1697,8 +1697,21 @@ extension WindowController: NSToolbarDelegate {
             actionItemSequentialPlay.keyEquivalentModifierMask = []
             actionItemSequentialPlay.state = globalVar.videoPlaySequentialPlay ? .on : .off
 
+            let actionItemAlwaysShowControls = menu.addItem(
+                withTitle: NSLocalizedString("Always Show Video Controls", comment: "视频进度条常显"),
+                action: #selector(actToggleVideoControlsAlwaysVisible),
+                keyEquivalent: ""
+            )
+            actionItemAlwaysShowControls.state = globalVar.videoControlsAlwaysVisible ? .on : .off
+
             let playbackRateItem = menu.addItem(withTitle: NSLocalizedString("Playback Speed", comment: "播放速度"), action: nil, keyEquivalent: "")
             playbackRateItem.submenu = viewController.largeImageView.buildPlaybackRateSubmenu()
+
+            menu.addItem(
+                withTitle: NSLocalizedString("Lossless Trim Segments...", comment: "无损分段裁剪..."),
+                action: #selector(actLosslessTrimSegments),
+                keyEquivalent: ""
+            )
 
         }
 
@@ -2138,6 +2151,16 @@ extension WindowController: NSToolbarDelegate {
     @objc func actSequentialPlay(_ sender: NSMenuItem){
         guard let viewController = contentViewController as? ViewController else {return}
         viewController.largeImageView.actSequentialPlay()
+    }
+
+    @objc func actToggleVideoControlsAlwaysVisible(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.largeImageView.actToggleVideoControlsAlwaysVisible()
+    }
+
+    @objc func actLosslessTrimSegments(_ sender: NSMenuItem) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.handleLosslessTrimCurrentVideo()
     }
 
     @objc func customLayoutStyle(_ sender: NSMenuItem){

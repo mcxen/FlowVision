@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A1B2C3D42F90000100ABCDEF /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */; };
+		F7BB00022FA0000000BB0002 /* MPVRuntimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BB00012FA0000000BB0001 /* MPVRuntimeManager.swift */; };
+		F7BB00042FA0000000BB0004 /* VideoTrimEditorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BB00032FA0000000BB0003 /* VideoTrimEditorWindowController.swift */; };
 		F70368E82BF609F300155F36 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F70368E72BF609F300155F36 /* Localizable.xcstrings */; };
 		F70F9FC12BAFE7B300C50CDD /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70F9FC02BAFE7B300C50CDD /* Common.swift */; };
 		F70F9FC32BAFE85D00C50CDD /* CustomCollectionViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70F9FC22BAFE85D00C50CDD /* CustomCollectionViewManager.swift */; };
@@ -117,6 +119,8 @@
 
 /* Begin PBXFileReference section */
 		A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
+		F7BB00012FA0000000BB0001 /* MPVRuntimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPVRuntimeManager.swift; sourceTree = "<group>"; };
+		F7BB00032FA0000000BB0003 /* VideoTrimEditorWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimEditorWindowController.swift; sourceTree = "<group>"; };
 		E00E13C3056A4910B242187C /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		F70368E72BF609F300155F36 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F70F9FC02BAFE7B300C50CDD /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -221,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B2C3D32F90000100ABCDEF /* UpdateManager.swift */,
+				F7BB00012FA0000000BB0001 /* MPVRuntimeManager.swift */,
 				F76F6A622F4FE58000D798DC /* TempVariable.swift */,
 				F73865D82C37BBCB00837FE4 /* GlobalVariable.swift */,
 				F70F9FC02BAFE7B300C50CDD /* Common.swift */,
@@ -257,6 +262,7 @@
 				F78960F12BDCC26B00C2571B /* LargeImageView.swift */,
 				F73865D42C37B9B800837FE4 /* Layout.swift */,
 				B513CF896032F495D8769284 /* MPVPlayerBackend.swift */,
+				F7BB00032FA0000000BB0003 /* VideoTrimEditorWindowController.swift */,
 				F7AA00002F9E000000AA0001 /* VideoPlayerControlsView.swift */,
 			);
 			path = Views;
@@ -480,6 +486,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1B2C3D42F90000100ABCDEF /* UpdateManager.swift in Sources */,
+				F7BB00022FA0000000BB0002 /* MPVRuntimeManager.swift in Sources */,
+				F7BB00042FA0000000BB0004 /* VideoTrimEditorWindowController.swift in Sources */,
 				F78960F22BDCC26B00C2571B /* LargeImageView.swift in Sources */,
 				F78FAB0D2C0EE94D00FE66CC /* CustomImageView.swift in Sources */,
 				F76E2EFE2C3B765C0031B0B4 /* Log.swift in Sources */,
@@ -611,6 +619,7 @@
 			baseConfigurationReference = E00E13C3056A4910B242187C /* Base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -676,6 +685,7 @@
 			baseConfigurationReference = E00E13C3056A4910B242187C /* Base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;

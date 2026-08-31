@@ -52,9 +52,15 @@ final class MediaPreheatManager {
         }
     }
 
-    func scheduleImage(generation: Int, distance: Int, work: @escaping () -> Void) {
+    func scheduleImage(url: URL, generation: Int, distance: Int, work: @escaping () -> Void) {
         let operation = BlockOperation { [weak self] in
             guard let self, self.isCurrent(generation) else { return }
+            guard let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(
+                for: url,
+                shouldContinue: { [weak self] in self?.isCurrent(generation) == true }
+            ) else { return }
+            defer { ioLease.end() }
+            guard self.isCurrent(generation) else { return }
             autoreleasepool(invoking: work)
         }
         operation.queuePriority = queuePriority(for: distance)
@@ -89,6 +95,14 @@ final class MediaPreheatManager {
 
     private func preheatVideo(url: URL, generation: Int, seconds: Double) {
         guard isCurrent(generation) else { return }
+        guard let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(
+            for: url,
+            shouldContinue: { [weak self] in self?.isCurrent(generation) == true }
+        ) else { return }
+        defer { ioLease.end() }
+        guard isCurrent(generation),
+              !NetworkIOCoordinator.shared.isPlaybackActive(for: url)
+        else { return }
 
         let asset = AVURLAsset(
             url: url,
@@ -116,11 +130,14 @@ final class MediaPreheatManager {
             reader.add(output)
             guard reader.startReading() else { return }
 
-            while isCurrent(generation), output.copyNextSampleBuffer() != nil {
+            while isCurrent(generation),
+                  !NetworkIOCoordinator.shared.isPlaybackActive(for: url),
+                  output.copyNextSampleBuffer() != nil {
                 // Reading compressed samples intentionally warms the unified
                 // file cache; AVPlayer/mpv will decode them when playback starts.
             }
-            if !isCurrent(generation) {
+            if !isCurrent(generation)
+                || NetworkIOCoordinator.shared.isPlaybackActive(for: url) {
                 reader.cancelReading()
             }
         } catch {
@@ -136,6 +153,18 @@ class NoHitAVPlayerView: AVPlayerView {
 }
 
 class LargeAVPlayerView: AVPlayerView {
+    func disableNativePlaybackControls() {
+        controlsStyle = .none
+        showsFrameSteppingButtons = false
+        showsSharingServiceButton = false
+        showsFullScreenToggleButton = false
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        disableNativePlaybackControls()
+    }
+
     override func hitTest(_ point: NSPoint) -> NSView? {
         return nil
     }

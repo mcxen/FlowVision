@@ -14,8 +14,8 @@ private class ScanCancelHandler: NSObject {
 }
 
 extension ViewController {
-    private func directMediaCounts(in folderURL: URL) -> (images: Int, videos: Int)? {
-        let options: FileManager.DirectoryEnumerationOptions = publicVar.isShowHiddenFile ? [] : [.skipsHiddenFiles]
+    private func directMediaCounts(in folderURL: URL, showHiddenFiles: Bool) -> (images: Int, videos: Int)? {
+        let options: FileManager.DirectoryEnumerationOptions = showHiddenFiles ? [] : [.skipsHiddenFiles]
         guard let contents = try? FileManager.default.contentsOfDirectory(
             at: folderURL,
             includingPropertiesForKeys: [.isDirectoryKey, .isAliasFileKey],
@@ -27,10 +27,8 @@ extension ViewController {
         var imageCount = 0
         var videoCount = 0
         for fileURL in contents {
-            if ((try? fileURL.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false) {
-                continue
-            }
-            if ((try? fileURL.resourceValues(forKeys: [.isAliasFileKey]).isAliasFile) ?? false) {
+            let values = try? fileURL.resourceValues(forKeys: [.isDirectoryKey, .isAliasFileKey])
+            if values?.isDirectory == true || values?.isAliasFile == true {
                 continue
             }
 
@@ -42,6 +40,182 @@ extension ViewController {
             }
         }
         return (imageCount, videoCount)
+    }
+
+    /// Populate an external folder's optional count badge only when its item is
+    /// actually requested by the collection view. This avoids an N+1 scan of
+    /// every SMB child folder during first paint.
+    func scheduleNetworkFolderMediaCountIfNeeded(for fileModel: FileModel) {
+        guard globalVar.showFolderMediaCountBadge,
+              fileModel.isDir,
+              fileModel.childImageCount == nil,
+              fileModel.childVideoCount == nil,
+              let folderURL = URL(string: fileModel.path),
+              VolumeManager.shared.isNetworkVolume(folderURL)
+        else { return }
+
+        fileDB.lock()
+        let parentFolder = fileDB.curFolder
+        let expectedVersion = fileDB.db[SortKeyDir(parentFolder)]?.ver
+        fileDB.unlock()
+        guard let expectedVersion else { return }
+
+        let taskKey = "\(expectedVersion)|\(folderURL.absoluteString)"
+        folderMediaCountTasksLock.lock()
+        guard !folderMediaCountTasks.contains(taskKey) else {
+            folderMediaCountTasksLock.unlock()
+            return
+        }
+        folderMediaCountTasks.insert(taskKey)
+        folderMediaCountTasksLock.unlock()
+
+        let showHiddenFiles = publicVar.isShowHiddenFile
+
+        // Leave the first paint and visible-thumbnail requests a short head
+        // start before an optional child-folder enumeration uses the share.
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.75) { [weak self] in
+            guard let self else { return }
+            defer {
+                self.folderMediaCountTasksLock.lock()
+                self.folderMediaCountTasks.remove(taskKey)
+                self.folderMediaCountTasksLock.unlock()
+            }
+
+            func isCurrent() -> Bool {
+                self.fileDB.lock()
+                let current = self.fileDB.curFolder == parentFolder
+                    && self.fileDB.db[SortKeyDir(parentFolder)]?.ver == expectedVersion
+                self.fileDB.unlock()
+                return current && !self.willTerminate
+            }
+
+            guard isCurrent() else { return }
+
+            guard let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(
+                for: folderURL,
+                shouldContinue: isCurrent
+            ) else { return }
+            let counts = self.directMediaCounts(
+                in: folderURL,
+                showHiddenFiles: showHiddenFiles
+            )
+            ioLease.end()
+            guard let counts else { return }
+
+            DispatchQueue.main.async { [weak self, weak fileModel] in
+                guard let self, let fileModel else { return }
+                self.fileDB.lock()
+                guard self.fileDB.curFolder == parentFolder,
+                      self.fileDB.db[SortKeyDir(parentFolder)]?.ver == expectedVersion,
+                      fileModel.ver == expectedVersion
+                else {
+                    self.fileDB.unlock()
+                    return
+                }
+                fileModel.childImageCount = counts.images
+                fileModel.childVideoCount = counts.videos
+                self.fileDB.unlock()
+
+                for case let item as CustomCollectionViewItem in self.collectionView.visibleItems()
+                where item.file === fileModel {
+                    item.refreshFolderMediaCountBadge()
+                }
+            }
+        }
+    }
+
+    /// Hydrates Finder tags after a network directory has already produced its
+    /// first model/layout pass. Reads are serialized with other SMB background
+    /// work and pause while a video on the same share is playing.
+    private func scheduleNetworkTagHydration(
+        parentFolderURL: URL,
+        items: [(url: URL, fileModel: FileModel)],
+        expectedVersion: Int,
+        tagsAlreadyLoaded: Bool
+    ) {
+        guard !items.isEmpty else { return }
+        let parentFolder = parentFolderURL.absoluteString
+        let taskKey = "\(expectedVersion)|\(parentFolder)"
+
+        networkMetadataTasksLock.lock()
+        guard !networkMetadataTasks.contains(taskKey) else {
+            networkMetadataTasksLock.unlock()
+            return
+        }
+        networkMetadataTasks.insert(taskKey)
+        networkMetadataTasksLock.unlock()
+
+        // Finder tags are optional for the ordinary directory view, so give
+        // first paint and visible thumbnails a head start on the share.
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.75) { [weak self] in
+            guard let self else { return }
+            defer {
+                self.networkMetadataTasksLock.lock()
+                self.networkMetadataTasks.remove(taskKey)
+                self.networkMetadataTasksLock.unlock()
+            }
+
+            func isCurrent() -> Bool {
+                self.fileDB.lock()
+                let current = self.fileDB.curFolder == parentFolder
+                    && self.fileDB.db[SortKeyDir(parentFolder)]?.ver == expectedVersion
+                self.fileDB.unlock()
+                return current && !self.willTerminate
+            }
+
+            func publish(_ batch: [(url: URL, fileModel: FileModel, tags: [String])]) {
+                guard !batch.isEmpty else { return }
+                EnhancedIndex.updateFiles(
+                    batch.map { (url: $0.url, tags: $0.tags) },
+                    isCalledByDirOpen: true
+                )
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.fileDB.lock()
+                    guard self.fileDB.curFolder == parentFolder,
+                          self.fileDB.db[SortKeyDir(parentFolder)]?.ver == expectedVersion
+                    else {
+                        self.fileDB.unlock()
+                        return
+                    }
+                    for entry in batch where entry.fileModel.ver == expectedVersion {
+                        entry.fileModel.finderTags = entry.tags
+                    }
+                    self.fileDB.unlock()
+
+                    for case let item as CustomCollectionViewItem in self.collectionView.visibleItems() {
+                        if batch.contains(where: { $0.fileModel === item.file }) {
+                            item.refreshFinderTagDots()
+                        }
+                    }
+                }
+            }
+
+            var batch: [(url: URL, fileModel: FileModel, tags: [String])] = []
+            batch.reserveCapacity(16)
+            for item in items {
+                guard isCurrent() else { return }
+                let tags: [String]
+                if tagsAlreadyLoaded {
+                    self.fileDB.lock()
+                    tags = item.fileModel.finderTags
+                    self.fileDB.unlock()
+                } else {
+                    guard let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(
+                        for: item.url,
+                        shouldContinue: isCurrent
+                    ) else { return }
+                    tags = (try? item.url.resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
+                    ioLease.end()
+                }
+                batch.append((item.url, item.fileModel, tags))
+                if batch.count == 16 {
+                    publish(batch)
+                    batch.removeAll(keepingCapacity: true)
+                }
+            }
+            publish(batch)
+        }
     }
 
     func scanFiles(at folderURL: URL, contents: inout [URL], properties: [URLResourceKey]) {
@@ -409,9 +583,15 @@ extension ViewController {
         
         
         var contents=[URL]()
+        let isNetworkVolume = VolumeManager.shared.isNetworkVolume(folderURL)
+        let shouldReadFinderTagsSynchronously = !isNetworkVolume
+            || !publicVar.finderTagFilters.isEmpty
         var properties: [URLResourceKey] = [.isHiddenKey, .isDirectoryKey, .fileSizeKey, .contentModificationDateKey, .creationDateKey, .addedToDirectoryDateKey, .isUbiquitousItemKey, .ubiquitousItemDownloadingStatusKey, .tagNamesKey, .isAliasFileKey, .isSymbolicLinkKey]
         if VolumeManager.shared.isExternalVolume(folderURL) {
             properties = [.isHiddenKey, .isDirectoryKey, .fileSizeKey, .contentModificationDateKey, .creationDateKey, .addedToDirectoryDateKey, .tagNamesKey, .isAliasFileKey, .isSymbolicLinkKey]
+        }
+        if !shouldReadFinderTagsSynchronously {
+            properties.removeAll { $0 == .tagNamesKey }
         }
         var isInSameDir = true
         if !skip {
@@ -431,6 +611,12 @@ extension ViewController {
                         scanVirtualFiles(at: folderURL, contents: &dirURLCache, properties: properties, tagName: tagName)
                     } else if isVirtualFolderPath(folderURL.absoluteString) {
                         dirURLCache = loadVirtualFolderContents(folderURL)
+                    } else if folderURL.standardizedFileURL.path == "/Volumes" {
+                        // The URL-based API resolves properties for every mount and
+                        // throws when the mount table still contains a stale SMB entry.
+                        // Raw names avoid per-mount metadata probes during enumeration.
+                        dirURLCache = try FileManager.default.contentsOfDirectory(atPath: folderURL.path)
+                            .map { folderURL.appendingPathComponent($0, isDirectory: true) }
                     }else if publicVar.isRecursiveMode {
                         scanFiles(at: folderURL, contents: &dirURLCache, properties: properties)
                     }else{
@@ -465,7 +651,9 @@ extension ViewController {
 
         // 更新增强索引
         // Update enhanced index
-        EnhancedIndex.updateFiles(contents, isCalledByDirOpen: true, recordTime: true)
+        if !isNetworkVolume {
+            EnhancedIndex.updateFiles(contents, isCalledByDirOpen: true, recordTime: true)
+        }
 
         // 搜索过滤
         // Search filter
@@ -743,8 +931,9 @@ extension ViewController {
                                downloadingStatus != .current {
                                 doNotActualRead=true
                             }
-                            let tags = (try? currentURL.resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
-                            finderTags = tags
+                            if shouldReadFinderTagsSynchronously {
+                                finderTags = resourceValues.tagNames ?? []
+                            }
                         }
                         // finderTags = resourceValues.tagNames ?? []
                     // 目录
@@ -777,9 +966,15 @@ extension ViewController {
                            {
                             doNotActualRead=true
                         }
-                        let tags = (try? subFolders[i-fileCount].resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
-                        finderTags = tags
-                        if let counts = directMediaCounts(in: subFolders[i-fileCount]) {
+                        if shouldReadFinderTagsSynchronously {
+                            finderTags = resourceValues.tagNames ?? []
+                        }
+                        if globalVar.showFolderMediaCountBadge,
+                           !VolumeManager.shared.isNetworkVolume(folderURL),
+                           let counts = directMediaCounts(
+                               in: subFolders[i-fileCount],
+                               showHiddenFiles: publicVar.isShowHiddenFile
+                           ) {
                             childImageCount = counts.images
                             childVideoCount = counts.videos
                         }
@@ -800,7 +995,9 @@ extension ViewController {
                         file.isDir=isDir
                         file.isAlias=isAlias
                         file.doNotActualRead=doNotActualRead
-                        file.finderTags=finderTags
+                        if shouldReadFinderTagsSynchronously {
+                            file.finderTags=finderTags
+                        }
                         file.childImageCount=childImageCount
                         file.childVideoCount=childVideoCount
                         // 检查文件或文件夹是否有变化(文件夹fileSize为nil)
@@ -865,6 +1062,27 @@ extension ViewController {
             }
         }
         fileDB.unlock()
+
+        if !skip,
+           direction == .zero,
+           folderURL == initURL,
+           isNetworkVolume {
+            fileDB.lock()
+            let expectedVersion = fileDB.db[SortKeyDir(folderURL.absoluteString)]?.ver
+            let tagItems: [(url: URL, fileModel: FileModel)] = fileDB.db[SortKeyDir(folderURL.absoluteString)]?.files.compactMap { _, fileModel in
+                guard let url = URL(string: fileModel.path) else { return nil }
+                return (url, fileModel)
+            } ?? []
+            fileDB.unlock()
+            if let expectedVersion {
+                scheduleNetworkTagHydration(
+                    parentFolderURL: folderURL,
+                    items: tagItems,
+                    expectedVersion: expectedVersion,
+                    tagsAlreadyLoaded: shouldReadFinderTagsSynchronously
+                )
+            }
+        }
         
         // 往后则先序遍历
         // Backward traversal uses pre-order traversal
@@ -1399,11 +1617,21 @@ extension ViewController {
         }
         
         fileDB.lock()
-        var lastFolder = fileDB.curFolder
-        fileDB.ver += 1
+        let lastFolder = fileDB.curFolder
         fileDB.unlock()
         var startFolder=lastFolder
         if direction == .zero && dest != "" { startFolder = dest }
+        if let startURL = URL(string: startFolder),
+           isUnavailableMountedVolumeURL(startURL) {
+            coreAreaView.showOperationToast(
+                NSLocalizedString("The network volume is not mounted.", comment: "网络卷尚未挂载。"),
+                autoHide: 2.0
+            )
+            return
+        }
+        fileDB.lock()
+        fileDB.ver += 1
+        fileDB.unlock()
         if !(direction == .zero && lastFolder == startFolder) {
             // 重置递归模式
             // Reset recursive mode

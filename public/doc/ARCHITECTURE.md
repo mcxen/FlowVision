@@ -334,6 +334,16 @@ handleBatchRenameSelectedItems     handleQuickRenameInCurrentFolder
 - 需要准确起止：视频重编码，并显式处理时间戳；音频可按兼容性决定复制或重编码。
 - 需要无损快速导出：接受切点对齐附近关键帧，并用 `ffprobe` 同时检查 format duration 和各 stream 的 start/duration。
 
+大图视频右键菜单的“无损分段裁剪”使用带预览和缩略图的多段时间轴；首段默认覆盖 `00:00` 到完整视频时长，只有用户移动黄色手柄后才缩小范围。每段分别导出到原片同目录，自动避让重名且不替换原片。执行时只映射首个视频流和可选音频流（`-map 0:v:0 -map 0:a?`），串行调用 FFmpeg，文件 I/O 在后台队列，进度与刷新回到主线程。
+
+工具栏“视频裁剪”复用同一个时间轴窗口，并在预览画面上提供空间裁剪框。实现采用独立的 IINA 式几何原则但不依赖 IINA：播放器、静态预览和裁剪框都是同一个等比例视频画布的子视图；选区以原视频 AppKit 底部原点像素矩形作为唯一真值，窗口缩放只改变画布投影，提交 FFmpeg 时才转换为 `crop` 滤镜使用的顶部原点偶数像素坐标。FFmpeg 首帧若表明视频经过 90°/270° 显示旋转，则交换有效裁剪尺寸并按比例保留选区。空间裁剪会生成原目录中的新文件，视频使用 VideoToolbox 编码且不设置固定 `-r`，从而沿用原始时间戳与帧率；它是快速 GPU 重编码，不应描述为无损剪切。
+
+大文件或 SMB 视频进入剪辑窗口时先同步显示预览骨架和时间轴骨架，首帧使用用户交互优先任务加载；缩略图随后作为独立的低优先级任务逐张填充。FFmpegKit 命令是串行的，因此 `OperationQueue` 只允许一个抽帧任务执行；每张缩略图结束后重新选取优先级，拖动预览可排到其余缩略图之前。连续播放始终由 mpv/AVPlayer 的真实渲染面承担，FFmpeg 画面只覆盖暂停和拖动状态，不能用低频抽帧替代播放。缩略图允许快速关键帧定位；暂停预览从输入端关键帧定位后解码丢弃到目标时间，不扫描完整文件。FFmpeg 不可用或抽帧失败时立即露出真实播放器，骨架不能无限保持“加载中”。
+
+视频控制条默认在鼠标离开后自动淡出。“视频进度条常显”是持久化设置；开启后取消隐藏计时器并保持控制条显示，停止视频时仍立即隐藏，避免空播放器残留控件。
+
+目录树定位只能展开目标路径上的具体节点；禁止调用 `expandItem(nil)`，因为这会展开所有顶层分支，并可能在主线程同步枚举无关或已失效的 SMB 卷。`/Volumes/<share>/...` 历史目录在访问前只对照当前挂载卷列表，不直接探测目标路径；未挂载时启动回退到本地目录，交互跳转则立即提示。打开本地文件不得被历史网络目录拖慢。
+
 ## 邻近媒体预热与 SMB 播放
 
 大图浏览每次切换位置后，以当前媒体为中心收集前 5 个和后 5 个可浏览媒体。`ViewController` 持有独立的 `MediaPreheatManager`，因此多窗口之间不会相互取消任务。
@@ -350,11 +360,19 @@ changeLargeImage（仅浏览位置变化）
 
 视频不生成本地 5 秒临时片段，因为片段切回原片会引入时间轴、音轨和关键帧拼接问题。`AVAssetReader` 的目的不是提前播放或长期持有解码帧，而是将 SMB 上即将访问的文件区间预读进系统文件页缓存。邻项切成当前项后：
 
-- libmpv 强制开启有界缓存，先维持约 5 秒目标缓冲，再在播放过程中持续向前读取；demuxer 前向上限为 128 MiB，回看上限为 32 MiB。
-- AVPlayer 回退路径优先从 `MediaPreheatManager` 取已解析的 `AVURLAsset`，并继续使用 `preferredForwardBufferDuration = 5`。
+- `VolumeManager` 使用 `getmntinfo(MNT_NOWAIT)` 读取非阻塞挂载表，并与 `/Volumes` 中实际可见的入口交叉校验；这样既能识别 SMB 等网络卷，也会排除已失效的幽灵挂载，而不会为了“检测”去读取共享中的文件。`NetworkIOCoordinator` 按挂载根目录协调 I/O：大图播放器和列表自动预览持有播放优先租约；缩略图、图片信息、Finder 标签、子目录计数和邻项预热在同一网络卷上最多两路并发，并在播放期间停止分配新后台读取。已进入不可取消的同步读取允许完成，`AVAssetReader` 等可取消任务则在检测到播放后提前退出。
+- libmpv 强制开启有界内存缓存：本地媒体维持 5 秒预读，网络媒体使用 12 秒目标/预读窗口、等待 3 秒初始缓冲并在缓存不足时暂停续缓冲；demuxer 前向上限为 128 MiB，回看上限为 32 MiB，禁用落盘缓存。
+- libmpv 运行时按“FlowVision 自带 Frameworks → FlowVision 管理的可选运行时 → Homebrew/系统独立运行时 → IINA”选择；IINA 只作为最后兜底，避免其局部更新后出现 libmpv/libplacebo ABI 混用。使用 IINA 时只预载媒体依赖 dylib，明确排除其私有 `libswift_*`，避免与当前系统 Swift 运行时重复注入。
+- 正式版本缺少 libmpv 且 AVPlayer 也无法打开当前视频时，`MPVRuntimeManager` 从 GitHub Release 的 `mpv-runtime-manifest.json` 选择当前进程架构的可选运行时。首次自动检测只提示一次；用户确认后才下载，不安装 Homebrew、不修改 IINA。归档必须通过 HTTPS、SHA-256、路径穿越、体积、CPU 架构和代码签名检查；正式签名 App 只接受相同 Team ID 的 dylib。验证通过后原子安装到 `~/Library/Application Support/FlowVision/Runtime/mpv`，刷新 libmpv 单例并在原视频上自动重试，无需重启 App。失败时保留“下载并修复视频播放”和外部播放器两个入口。
+- FlowVision 当前只构建和发布 arm64。发布用运行时由 `script/package_mpv_runtime.sh` 生成；脚本拒绝非 arm64 输入，递归收集 libmpv 的非系统动态库、裁成 arm64 单架构、固定主库名为 `libmpv.2.dylib`、把 Homebrew install name 改写为 `@loader_path`、拒绝未收拢依赖和 `libavdevice`、逐库签名并收集许可文件。脚本输出 ZIP 并更新 manifest 中的 arm64 条目；不要直接发布开发机 Homebrew 目录或 ad-hoc 签名产物。
+- AVPlayer 回退路径优先从 `MediaPreheatManager` 取已解析的 `AVURLAsset`；本地媒体使用 5 秒、网络媒体使用 12 秒 `preferredForwardBufferDuration`，并允许播放器等待以减少卡顿。
 - 当前视频由播放器读取，预热器只处理邻近视频，避免同一 SMB 文件被两条读取链路竞争。
 
 预热任务带 generation。快速连续翻页时，排队任务会被取消，已经运行的视频读取循环检测 generation 并取消 `AVAssetReader`。图片和视频队列分别限制并发，避免预热吞掉当前播放所需带宽。缩放、旋转等不改变浏览位置的刷新不重建预热窗口。
+
+网络媒体缩略图先查本机持久缓存，键包含路径、文件大小、修改时间和目标尺寸参数；缓存目录为 `~/Library/Caches/FlowVision/ExternalMediaThumbnailCache`，超过 1 GiB 时按最久未使用顺序裁到 768 MiB，并与外部文件夹缩略图共用设置中的开关、容量显示和清理入口。视频首张缩略图只取 1 秒附近的关键帧；FFmpeg 使用输入端 seek，AVFoundation 不再为网络视频先读时长并尝试多个百分比时间点。
+
+普通 SMB 目录首屏不读取 Finder 标签；目录模型和布局完成后再以 16 项为一批受控补齐，并更新可见标签点。启用 Finder 标签过滤时仍同步读取，以保持过滤结果正确。SMB 子文件夹媒体数量也不参与首屏全量扫描，只在对应集合项实际请求显示时按需统计。所有后台任务都核对当前目录和版本，切换目录后放弃旧任务，避免可选元数据造成 N+1 网络枚举。
 
 ## 支持的文件格式
 
@@ -366,7 +384,7 @@ changeLargeImage（仅浏览位置变化）
 
 ### 视频格式
 - 原生支持：mp4, mov, m2ts, ts, mpeg, mpg, m4v, vob
-- FFmpeg 支持：mkv, mts, avi, flv, f4v, asf, wmv, rmvb, rm, webm, divx, xvid, 3gp, 3g2
+- 内部 libmpv 直接播放：mkv, mts, avi, flv, f4v, asf, wmv, rmvb, rm, webm, divx, xvid, 3gp, 3g2（缩略图和元数据仍使用 FFmpeg）
 
 ## 依赖库
 

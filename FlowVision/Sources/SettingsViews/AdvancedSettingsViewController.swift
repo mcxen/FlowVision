@@ -195,10 +195,10 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
             return
         }
         
-        let label = NSTextField(labelWithString: NSLocalizedString("Folder Thumbnail Cache:", comment: "文件夹缩略图缓存"))
+        let label = NSTextField(labelWithString: NSLocalizedString("External Thumbnail Cache:", comment: "外接卷缩略图缓存"))
         label.alignment = .right
         
-        let checkbox = NSButton(checkboxWithTitle: NSLocalizedString("Cache external folder thumbnails locally", comment: "本地缓存外接卷文件夹缩略图"), target: self, action: #selector(externalFolderThumbnailCacheToggled(_:)))
+        let checkbox = NSButton(checkboxWithTitle: NSLocalizedString("Cache external thumbnails locally", comment: "本地缓存外接卷缩略图"), target: self, action: #selector(externalFolderThumbnailCacheToggled(_:)))
         checkbox.state = globalVar.cacheExternalFolderThumbnails ? .on : .off
         
         let sizeLabel = NSTextField(labelWithString: "")
@@ -236,6 +236,7 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
     
     @objc private func clearExternalFolderThumbnailCache(_ sender: NSButton) {
         FolderThumbnailDiskCache.clear()
+        ExternalMediaThumbnailDiskCache.clear()
         updateExternalFolderThumbnailCacheSizeLabel()
     }
     
@@ -243,7 +244,9 @@ final class AdvancedSettingsViewController: NSViewController, SettingsPane {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits = [.useKB, .useMB, .useGB]
         formatter.countStyle = .file
-        let sizeText = formatter.string(fromByteCount: FolderThumbnailDiskCache.sizeInBytes())
+        let totalSize = FolderThumbnailDiskCache.sizeInBytes()
+            + ExternalMediaThumbnailDiskCache.sizeInBytes()
+        let sizeText = formatter.string(fromByteCount: totalSize)
         externalFolderThumbnailCacheSizeLabel?.stringValue = String(format: NSLocalizedString("Local cache: %@", comment: "本地缓存大小"), sizeText)
     }
     

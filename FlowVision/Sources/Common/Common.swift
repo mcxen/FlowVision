@@ -5,6 +5,7 @@
 
 import Foundation
 import Cocoa
+import Darwin
 
 @propertyWrapper
 struct Atomic<Value> {
@@ -742,12 +743,79 @@ func getDirectoryPath(_ path: String) -> String {
     }
 }
 
+private struct MountedVolumeInfo {
+    let rootURL: URL
+    let isNetwork: Bool
+}
+
+private let networkVolumeFileSystemTypes: Set<String> = [
+    "smbfs", "afpfs", "nfs", "webdav"
+]
+
+/// Lists the names currently presented by `/Volumes` without asking
+/// Foundation to resolve every mounted URL. `contentsOfDirectory(atPath:)`
+/// deliberately avoids the per-item resource-value probes that can block on a
+/// stale SMB mount.
+private func availableVolumeEntryNames() -> Set<String> {
+    guard let names = try? FileManager.default.contentsOfDirectory(atPath: "/Volumes") else {
+        return []
+    }
+    return Set(names)
+}
+
+/// Takes a non-blocking POSIX mount-table snapshot, then drops ghost entries
+/// that no longer appear in `/Volumes`. No file inside a share is opened.
+private func mountedVolumeInfoSnapshot() -> [MountedVolumeInfo] {
+    let availableNames = availableVolumeEntryNames()
+    var mountBuffer: UnsafeMutablePointer<statfs>?
+    let mountCount = getmntinfo(&mountBuffer, MNT_NOWAIT)
+    guard mountCount > 0, let mountBuffer else { return [] }
+
+    return (0..<Int(mountCount)).compactMap { index in
+        var item = mountBuffer[index]
+        let mountPath = withUnsafePointer(to: &item.f_mntonname) { pointer in
+            pointer.withMemoryRebound(to: CChar.self, capacity: Int(MNAMELEN)) {
+                String(cString: $0)
+            }
+        }
+        let fileSystemType = withUnsafePointer(to: &item.f_fstypename) { pointer in
+            pointer.withMemoryRebound(to: CChar.self, capacity: Int(MFSTYPENAMELEN)) {
+                String(cString: $0).lowercased()
+            }
+        }
+
+        let rootURL = URL(fileURLWithPath: mountPath, isDirectory: true).standardizedFileURL
+        let components = rootURL.pathComponents
+        guard components.count >= 3,
+              components[0] == "/",
+              components[1] == "Volumes",
+              !components[2].hasPrefix("."),
+              availableNames.contains(components[2]) else { return nil }
+
+        let isNetwork = networkVolumeFileSystemTypes.contains(fileSystemType)
+            || (item.f_flags & UInt32(MNT_LOCAL)) == 0
+        return MountedVolumeInfo(rootURL: rootURL, isNetwork: isNetwork)
+    }
+}
+
+/// Returns true without touching the target path when it sits below a volume
+/// root that is not currently present. This avoids triggering a blocking SMB
+/// reconnect merely to validate a remembered `/Volumes/<share>/...` path.
+func isUnavailableMountedVolumeURL(_ url: URL) -> Bool {
+    guard url.isFileURL else { return false }
+    let components = url.standardizedFileURL.pathComponents
+    guard components.count >= 3,
+          components[0] == "/",
+          components[1] == "Volumes" else { return false }
+
+    return !availableVolumeEntryNames().contains(components[2])
+}
+
 
 class VolumeManager {
     static let shared = VolumeManager()
     private var externalVolumes: [URL] = []
-    private let fileManager = FileManager.default
-    private let keys: [URLResourceKey] = [.volumeNameKey, .volumeIsRemovableKey, .volumeIsInternalKey]
+    private var networkVolumes: [URL] = []
     private let lock = NSLock()
     private var timer = MyTimer()
     
@@ -765,25 +833,9 @@ class VolumeManager {
         
         // log("======updateExternalVolumes=====")
         
-        externalVolumes = []
-        if let urls = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: keys, options: [.skipHiddenVolumes]) {
-            for url in urls {
-                do {
-                    let resourceValues = try url.resourceValues(forKeys: Set(keys))
-                    if let isInternal = resourceValues.volumeIsInternal {
-                        if !isInternal {
-                            externalVolumes.append(url)
-                        }
-                    }else{
-                        externalVolumes.append(url)
-                    }
-                } catch {
-                    log("Error retrieving resource values: \(error)")
-                }
-            }
-        } else {
-            log("No mounted volumes found.")
-        }
+        let volumes = mountedVolumeInfoSnapshot()
+        externalVolumes = volumes.map(\.rootURL)
+        networkVolumes = volumes.filter(\.isNetwork).map(\.rootURL)
         return true
     }
     
@@ -800,38 +852,207 @@ class VolumeManager {
     }
     
     func isExternalVolume(_ url: URL) -> Bool {
-        let standardizedPath = url.standardized.path
-        
-        lock.lock()
-        let volumes = externalVolumes
-        lock.unlock()
-        
-        for volumeURL in volumes {
-            if standardizedPath.hasPrefix(volumeURL.standardized.path) {
-                return true
-            }
-        }
+        if matchingVolumeRoot(for: url, in: externalVolumeSnapshot()) != nil { return true }
         
         // 更新外置卷列表并再检查一次
         // Update external volume list and check again
         if updateExternalVolumes() {
-            lock.lock()
-            let updatedVolumes = externalVolumes
-            lock.unlock()
-            
-            for volumeURL in updatedVolumes {
-                if standardizedPath.hasPrefix(volumeURL.standardized.path) {
-                    return true
-                }
-            }
+            return matchingVolumeRoot(for: url, in: externalVolumeSnapshot()) != nil
         }
 
         return false
     }
+
+    func isNetworkVolume(_ path: String) -> Bool {
+        guard var url = URL(string: path) else { return false }
+        if url.scheme == nil {
+            url = URL(fileURLWithPath: path.removingPercentEncoding ?? path)
+        }
+        return isNetworkVolume(url)
+    }
+
+    func isNetworkVolume(_ url: URL) -> Bool {
+        networkVolumeRoot(for: url) != nil
+    }
+
+    /// Returns the mounted network-volume root without probing the target path.
+    /// Mounted SMB paths otherwise look like ordinary local file URLs.
+    func networkVolumeRoot(for url: URL) -> URL? {
+        if let root = matchingVolumeRoot(for: url, in: networkVolumeSnapshot()) {
+            return root
+        }
+        if updateExternalVolumes() {
+            return matchingVolumeRoot(for: url, in: networkVolumeSnapshot())
+        }
+        return nil
+    }
     
     func getExternalVolumes() -> [URL] {
         updateExternalVolumes()
+        return externalVolumeSnapshot()
+    }
+
+    private func externalVolumeSnapshot() -> [URL] {
+        lock.lock()
+        defer { lock.unlock() }
         return externalVolumes
+    }
+
+    private func networkVolumeSnapshot() -> [URL] {
+        lock.lock()
+        defer { lock.unlock() }
+        return networkVolumes
+    }
+
+    private func matchingVolumeRoot(for url: URL, in volumes: [URL]) -> URL? {
+        guard url.isFileURL else { return nil }
+        let path = url.standardizedFileURL.path
+        return volumes.first { volumeURL in
+            let rootPath = volumeURL.standardizedFileURL.path
+            return path == rootPath || path.hasPrefix(rootPath + "/")
+        }
+    }
+}
+
+/// Allows two bounded background reads per mounted network volume and lets
+/// active playback preempt new thumbnail, metadata, folder-count, and preheat work.
+/// A task already inside a synchronous framework call is allowed to finish;
+/// cancellable readers should additionally check `isPlaybackActive(for:)`.
+final class NetworkIOCoordinator {
+    static let shared = NetworkIOCoordinator()
+
+    final class PlaybackLease {
+        private weak var coordinator: NetworkIOCoordinator?
+        private let volumeKey: String
+        private let lock = NSLock()
+        private var ended = false
+
+        fileprivate init(coordinator: NetworkIOCoordinator, volumeKey: String) {
+            self.coordinator = coordinator
+            self.volumeKey = volumeKey
+        }
+
+        func end() {
+            lock.lock()
+            guard !ended else {
+                lock.unlock()
+                return
+            }
+            ended = true
+            let coordinator = coordinator
+            lock.unlock()
+            coordinator?.finishPlayback(on: volumeKey)
+        }
+
+        deinit { end() }
+    }
+
+    final class BackgroundLease {
+        private weak var coordinator: NetworkIOCoordinator?
+        private let volumeKey: String?
+        private let lock = NSLock()
+        private var ended = false
+
+        fileprivate init(coordinator: NetworkIOCoordinator?, volumeKey: String?) {
+            self.coordinator = coordinator
+            self.volumeKey = volumeKey
+        }
+
+        func end() {
+            lock.lock()
+            guard !ended else {
+                lock.unlock()
+                return
+            }
+            ended = true
+            let coordinator = coordinator
+            let volumeKey = volumeKey
+            lock.unlock()
+            if let volumeKey {
+                coordinator?.finishBackgroundAccess(on: volumeKey)
+            }
+        }
+
+        deinit { end() }
+    }
+
+    private let condition = NSCondition()
+    private var playbackCounts: [String: Int] = [:]
+    private var backgroundAccessCounts: [String: Int] = [:]
+    private let maxConcurrentBackgroundAccessesPerVolume = 2
+
+    private init() {}
+
+    func beginPlayback(for url: URL) -> PlaybackLease? {
+        guard let volumeKey = volumeKey(for: url) else { return nil }
+        condition.lock()
+        playbackCounts[volumeKey, default: 0] += 1
+        condition.broadcast()
+        condition.unlock()
+        return PlaybackLease(coordinator: self, volumeKey: volumeKey)
+    }
+
+    /// Waits for playback or a free background slot on the same SMB volume.
+    /// The cancellation closure is checked at least every 100 ms while waiting.
+    func beginBackgroundAccess(
+        for url: URL,
+        shouldContinue: () -> Bool = { true }
+    ) -> BackgroundLease? {
+        guard let volumeKey = volumeKey(for: url) else {
+            return shouldContinue() ? BackgroundLease(coordinator: nil, volumeKey: nil) : nil
+        }
+
+        condition.lock()
+        while playbackCounts[volumeKey, default: 0] > 0
+            || backgroundAccessCounts[volumeKey, default: 0] >= maxConcurrentBackgroundAccessesPerVolume {
+            guard shouldContinue() else {
+                condition.unlock()
+                return nil
+            }
+            _ = condition.wait(until: Date().addingTimeInterval(0.1))
+        }
+        guard shouldContinue() else {
+            condition.unlock()
+            return nil
+        }
+        backgroundAccessCounts[volumeKey, default: 0] += 1
+        condition.unlock()
+        return BackgroundLease(coordinator: self, volumeKey: volumeKey)
+    }
+
+    func isPlaybackActive(for url: URL) -> Bool {
+        guard let volumeKey = volumeKey(for: url) else { return false }
+        condition.lock()
+        defer { condition.unlock() }
+        return playbackCounts[volumeKey, default: 0] > 0
+    }
+
+    private func volumeKey(for url: URL) -> String? {
+        VolumeManager.shared.networkVolumeRoot(for: url)?.standardizedFileURL.path
+    }
+
+    private func finishPlayback(on volumeKey: String) {
+        condition.lock()
+        let remaining = max(0, playbackCounts[volumeKey, default: 0] - 1)
+        if remaining == 0 {
+            playbackCounts.removeValue(forKey: volumeKey)
+        } else {
+            playbackCounts[volumeKey] = remaining
+        }
+        condition.broadcast()
+        condition.unlock()
+    }
+
+    private func finishBackgroundAccess(on volumeKey: String) {
+        condition.lock()
+        let remaining = max(0, backgroundAccessCounts[volumeKey, default: 0] - 1)
+        if remaining == 0 {
+            backgroundAccessCounts.removeValue(forKey: volumeKey)
+        } else {
+            backgroundAccessCounts[volumeKey] = remaining
+        }
+        condition.broadcast()
+        condition.unlock()
     }
 }
 

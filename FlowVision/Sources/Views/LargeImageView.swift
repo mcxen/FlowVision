@@ -152,6 +152,8 @@ class LargeImageView: NSView {
     var queuePlayer: AVQueuePlayer?
     var playerLooper: AVPlayerLooper?
     var currentPlayingURL: URL?
+    private var networkPlaybackLease: NetworkIOCoordinator.PlaybackLease?
+    private var networkPlaybackPriorityURL: URL?
     var snapshotTimer: DispatchSourceTimer?
     var playcontrolTimer: DispatchSourceTimer?
     var videoOrderId: Int = 0
@@ -257,8 +259,7 @@ class LargeImageView: NSView {
         queuePlayer = AVQueuePlayer()
         queuePlayer?.volume = globalVar.videoVolume
         videoView.player = queuePlayer
-        videoView.controlsStyle = .none
-        videoView.showsFullScreenToggleButton = false
+        videoView.disableNativePlaybackControls()
         videoView.videoGravity = .resizeAspect
         videoView.isHidden = true
         self.addSubview(videoView)
@@ -285,12 +286,45 @@ class LargeImageView: NSView {
         videoControlsView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(videoControlsView)
         
+        let defaults = UserDefaults.standard
+        let hasIINACoordinatePosition = defaults.integer(forKey: "videoControlBarPositionCoordinateVersion") == 2
+        let storedHorizontal = hasIINACoordinatePosition
+            ? (defaults.object(forKey: "videoControlBarHorizontalPosition") as? Double ?? 0.5)
+            : 0.5
+        let storedVertical = hasIINACoordinatePosition
+            ? (defaults.object(forKey: "videoControlBarVerticalPosition") as? Double ?? 0.1)
+            : 0.1
+        if !hasIINACoordinatePosition {
+            defaults.set(storedHorizontal, forKey: "videoControlBarHorizontalPosition")
+            defaults.set(storedVertical, forKey: "videoControlBarVerticalPosition")
+        }
+        defaults.set(2, forKey: "videoControlBarPositionCoordinateVersion")
+        let centerXConstraint = videoControlsView.centerXAnchor.constraint(
+            equalTo: centerXAnchor,
+            constant: bounds.width * CGFloat(storedHorizontal - 0.5)
+        )
+        // Match IINA's floating OSC coordinate: host.bottom = bar.bottom + inset.
+        // Keeping the inset positive places the entire control bar inside the
+        // video instead of pushing its progress row below the window edge.
+        let bottomConstraint = bottomAnchor.constraint(
+            equalTo: videoControlsView.bottomAnchor,
+            constant: max(10, bounds.height * CGFloat(storedVertical))
+        )
+        let preferredWidth = videoControlsView.widthAnchor.constraint(equalToConstant: 520)
+        preferredWidth.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            videoControlsView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 6),
-            videoControlsView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6),
-            videoControlsView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6),
-            videoControlsView.heightAnchor.constraint(equalToConstant: 32),
+            centerXConstraint,
+            bottomConstraint,
+            preferredWidth,
+            videoControlsView.widthAnchor.constraint(greaterThanOrEqualToConstant: 300),
+            videoControlsView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, constant: -20),
+            videoControlsView.heightAnchor.constraint(equalToConstant: 67),
         ])
+        videoControlsView.configureFloatingPosition(
+            in: self,
+            centerXConstraint: centerXConstraint,
+            bottomConstraint: bottomConstraint
+        )
         
         exifTextView = ExifTextView(frame: .zero)
         exifTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -335,6 +369,13 @@ class LargeImageView: NSView {
         overlayLabel.font = NSFont.systemFont(ofSize: 16, weight: .regular)
         overlayLabel.translatesAutoresizingMaskIntoConstraints = false
         unsupportedVideoOverlay.addSubview(overlayLabel)
+
+        let repairPlaybackView = ClickableLabel(
+            title: NSLocalizedString("Download and Repair Playback", comment: "下载并修复视频播放"),
+            onClick: { [weak self] in self?.actRepairVideoPlayback() }
+        )
+        repairPlaybackView.translatesAutoresizingMaskIntoConstraints = false
+        unsupportedVideoOverlay.addSubview(repairPlaybackView)
         
         let openExternalView = ClickableLabel(
             title: NSLocalizedString("Open with External Player", comment: "使用外部播放器打开"),
@@ -352,7 +393,12 @@ class LargeImageView: NSView {
             overlayLabel.leadingAnchor.constraint(greaterThanOrEqualTo: unsupportedVideoOverlay.leadingAnchor, constant: 24),
             overlayLabel.trailingAnchor.constraint(lessThanOrEqualTo: unsupportedVideoOverlay.trailingAnchor, constant: -24),
             
-            openExternalView.topAnchor.constraint(equalTo: overlayLabel.bottomAnchor, constant: 16),
+            repairPlaybackView.topAnchor.constraint(equalTo: overlayLabel.bottomAnchor, constant: 16),
+            repairPlaybackView.centerXAnchor.constraint(equalTo: unsupportedVideoOverlay.centerXAnchor),
+            repairPlaybackView.leadingAnchor.constraint(greaterThanOrEqualTo: unsupportedVideoOverlay.leadingAnchor, constant: 24),
+            repairPlaybackView.trailingAnchor.constraint(lessThanOrEqualTo: unsupportedVideoOverlay.trailingAnchor, constant: -24),
+
+            openExternalView.topAnchor.constraint(equalTo: repairPlaybackView.bottomAnchor, constant: 10),
             openExternalView.centerXAnchor.constraint(equalTo: unsupportedVideoOverlay.centerXAnchor),
             openExternalView.leadingAnchor.constraint(greaterThanOrEqualTo: unsupportedVideoOverlay.leadingAnchor, constant: 24),
             openExternalView.trailingAnchor.constraint(lessThanOrEqualTo: unsupportedVideoOverlay.trailingAnchor, constant: -24),
@@ -732,6 +778,7 @@ class LargeImageView: NSView {
         // Reset mouse tracking area
         self.trackingAreas.forEach { self.removeTrackingArea($0) }
         setupMouseTracking()
+        videoControlsView?.constrainFloatingPosition()
     }
 
     var videoCurrentTimeSeconds: Double {
@@ -791,6 +838,7 @@ class LargeImageView: NSView {
         } else {
             queuePlayer?.rate = globalVar.videoPlaybackRate
         }
+        updateNetworkPlaybackPriority(isPlaying: !paused)
     }
     
     func pauseOrResumeVideo() {
@@ -802,8 +850,10 @@ class LargeImageView: NSView {
         if let queuePlayer = queuePlayer {
             if queuePlayer.timeControlStatus == .playing {
                 queuePlayer.pause()
+                updateNetworkPlaybackPriority(isPlaying: false)
             } else {
                 queuePlayer.rate = globalVar.videoPlaybackRate
+                updateNetworkPlaybackPriority(isPlaying: true)
             }
             videoControlsView.updatePlayPauseIcon()
         }
@@ -819,6 +869,7 @@ class LargeImageView: NSView {
                 queuePlayer.pause()
             }
         }
+        updateNetworkPlaybackPriority(isPlaying: false)
     }
     
     func resumeVideo() {
@@ -830,6 +881,31 @@ class LargeImageView: NSView {
             if queuePlayer.timeControlStatus == .paused {
                 queuePlayer.rate = globalVar.videoPlaybackRate
             }
+        }
+        updateNetworkPlaybackPriority(isPlaying: true)
+    }
+
+    private func beginNetworkPlaybackPriority(for url: URL) {
+        if networkPlaybackPriorityURL == url, networkPlaybackLease != nil { return }
+        endNetworkPlaybackPriority()
+        networkPlaybackPriorityURL = url
+        networkPlaybackLease = NetworkIOCoordinator.shared.beginPlayback(for: url)
+        if networkPlaybackLease == nil {
+            networkPlaybackPriorityURL = nil
+        }
+    }
+
+    private func endNetworkPlaybackPriority() {
+        networkPlaybackLease?.end()
+        networkPlaybackLease = nil
+        networkPlaybackPriorityURL = nil
+    }
+
+    private func updateNetworkPlaybackPriority(isPlaying: Bool) {
+        if isPlaying, let url = currentPlayingURL {
+            beginNetworkPlaybackPriority(for: url)
+        } else {
+            endNetworkPlaybackPriority()
         }
     }
 
@@ -888,6 +964,7 @@ class LargeImageView: NSView {
     }
     
     func stopVideo(savePosition: Bool = false){
+        endNetworkPlaybackPriority()
         if globalVar.videoPlayRememberPosition {
             saveCurrentPlayPosition()
         }
@@ -933,6 +1010,8 @@ class LargeImageView: NSView {
                 return
             }
 
+            beginNetworkPlaybackPriority(for: url)
+
             if currentPlayingURL != url && globalVar.videoPlayRememberPosition {
                 // 保存当前视频的播放进度
                 // Save current video playback position
@@ -974,7 +1053,7 @@ class LargeImageView: NSView {
             playerLooper = nil
             queuePlayer?.removeAllItems()
             playerItem = nil
-            videoView.controlsStyle = .none
+            videoView.disableNativePlaybackControls()
             videoOrderId += 1
             videoView.isHidden = true
             pausedBySeek = false
@@ -1019,6 +1098,7 @@ class LargeImageView: NSView {
                     isUsingMPVPlayer = true
                     currentPlayingURL = url
                     mpvVideoView.isHidden = false
+                    videoControlsView.applyVisibilityPreference()
                     startPeriodicTimeObserver()
                     checkPlayerItemStatus(id: videoOrderId)
                     return
@@ -1031,7 +1111,7 @@ class LargeImageView: NSView {
                 playerItem = AVPlayerItem(asset: playbackAsset)
                 if let playerItem = playerItem,
                    let queuePlayer = queuePlayer {
-                    playerItem.preferredForwardBufferDuration = 5
+                    playerItem.preferredForwardBufferDuration = VolumeManager.shared.isNetworkVolume(url) ? 12 : 5
                     queuePlayer.automaticallyWaitsToMinimizeStalling = true
                     
                     // 根据 file.rotate 设置视频旋转角度
@@ -1115,18 +1195,23 @@ class LargeImageView: NSView {
                     
                     queuePlayer.rate = globalVar.videoPlaybackRate
                     currentPlayingURL = url
+                    videoControlsView.applyVisibilityPreference()
                     
                     startPeriodicTimeObserver()
                     
                     checkPlayerItemStatus(id: videoOrderId)
                 }
             }else{
+                endNetworkPlaybackPriority()
                 while snapshotQueue.count > 0{
                     snapshotQueue.first??.removeFromSuperview()
                     snapshotQueue.removeFirst()
                 }
                 currentPlayingURL = nil
                 showUnsupportedVideoOverlay()
+                if MPVRuntimeManager.shared.activeFrameworksDirectory == nil {
+                    repairVideoPlayback(userInitiated: false, expectedURL: url)
+                }
             }
         }
     }
@@ -1518,7 +1603,7 @@ class LargeImageView: NSView {
         videoCropSelectionRect = .zero
         wasPlayingBeforeVideoCropSelection = videoIsPlaying
         pauseVideo()
-        videoControlsView.hideControls()
+        videoControlsView.hideControlsImmediately()
         ensureVideoCropOverlayLayer()
         updateVideoCropOverlay(selectionRect: .zero)
         showInfo(NSLocalizedString("Drag to select video crop area", comment: "拖动选择视频裁剪区域"))
@@ -1533,6 +1618,7 @@ class LargeImageView: NSView {
         videoCropSelectionRect = .zero
         videoCropOverlayView?.removeFromSuperview()
         videoCropOverlayView = nil
+        videoControlsView.applyVisibilityPreference()
         if wasPlayingBeforeVideoCropSelection {
             resumeVideo()
         }
@@ -1556,6 +1642,7 @@ class LargeImageView: NSView {
         videoCropSelectionRect = .zero
         videoCropOverlayView?.removeFromSuperview()
         videoCropOverlayView = nil
+        videoControlsView.applyVisibilityPreference()
 
         guard let cropRect = makeVideoCropRect(fromSelectionRect: selectedRect) else {
             showInfo(NSLocalizedString("Crop area is too small", comment: "裁剪区域太小"))
@@ -1963,6 +2050,27 @@ class LargeImageView: NSView {
             openVideoWithPreferredExternalPlayer(url)
         } else {
             NSWorkspace.shared.open(url)
+        }
+    }
+
+    @objc func actRepairVideoPlayback() {
+        guard let url = URL(string: file.path) else { return }
+        repairVideoPlayback(userInitiated: true, expectedURL: url)
+    }
+
+    private func repairVideoPlayback(userInitiated: Bool, expectedURL: URL) {
+        if userInitiated {
+            showInfo(NSLocalizedString("Checking Video Playback Component", comment: "正在检查视频播放组件"), timeOut: 2)
+        }
+        MPVRuntimeManager.shared.repairIfNeeded(
+            presenting: window,
+            userInitiated: userInitiated
+        ) { [weak self] success in
+            guard let self, success, URL(string: self.file.path) == expectedURL else { return }
+            MPVPlayerBackend.reloadRuntime()
+            self.hideUnsupportedVideoOverlay()
+            self.showInfo(NSLocalizedString("Video Playback Repaired", comment: "视频播放已修复"), timeOut: 2)
+            self.playVideo(reload: true)
         }
     }
     
@@ -2453,9 +2561,21 @@ class LargeImageView: NSView {
                 actionItemSequentialPlay.keyEquivalentModifierMask = []
                 actionItemSequentialPlay.state = globalVar.videoPlaySequentialPlay ? .on : .off
 
+                let actionItemAlwaysShowControls = menu.addItem(
+                    withTitle: NSLocalizedString("Always Show Video Controls", comment: "视频进度条常显"),
+                    action: #selector(actToggleVideoControlsAlwaysVisible),
+                    keyEquivalent: ""
+                )
+                actionItemAlwaysShowControls.state = globalVar.videoControlsAlwaysVisible ? .on : .off
+
                 let playbackRateItem = menu.addItem(withTitle: NSLocalizedString("Playback Speed", comment: "播放速度"), action: nil, keyEquivalent: "")
                 playbackRateItem.submenu = buildPlaybackRateSubmenu()
 
+                menu.addItem(
+                    withTitle: NSLocalizedString("Lossless Trim Segments...", comment: "无损分段裁剪..."),
+                    action: #selector(actLosslessTrimSegments),
+                    keyEquivalent: ""
+                )
                 menu.addItem(withTitle: NSLocalizedString("Crop Video Size...", comment: "裁剪视频尺寸..."), action: #selector(actCropVideoSize), keyEquivalent: "")
             }
 
@@ -2713,6 +2833,17 @@ class LargeImageView: NSView {
             showInfo(NSLocalizedString("Remember Position: Disabled", comment: "（视频）记忆位置禁用"))
         }
     }
+
+    @objc func actToggleVideoControlsAlwaysVisible() {
+        globalVar.videoControlsAlwaysVisible.toggle()
+        UserDefaults.standard.set(globalVar.videoControlsAlwaysVisible, forKey: "videoControlsAlwaysVisible")
+        videoControlsView.applyVisibilityPreference()
+        showInfo(
+            globalVar.videoControlsAlwaysVisible
+                ? NSLocalizedString("Video controls: Always visible", comment: "视频进度条：常显")
+                : NSLocalizedString("Video controls: Auto hide", comment: "视频进度条：自动隐藏")
+        )
+    }
     
     @objc func actSequentialPlay() {
         globalVar.videoPlaySequentialPlay.toggle()
@@ -2825,6 +2956,10 @@ class LargeImageView: NSView {
     @objc func actCropVideoSize() {
         getViewController(self)?.handleBatchCropSelectedVideos()
     }
+
+    @objc func actLosslessTrimSegments() {
+        getViewController(self)?.handleLosslessTrimCurrentVideo()
+    }
     
     func doRotateR() {
         file.rotate = (file.rotate+1)%4
@@ -2885,6 +3020,7 @@ class LargeImageView: NSView {
     }
     
     func prepareForDeinit() {
+        endNetworkPlaybackPriority()
         if globalVar.videoPlayRememberPosition {
             saveCurrentPlayPosition()
         }

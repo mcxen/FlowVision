@@ -224,7 +224,7 @@ extension ViewController {
                 } else if isSupportedArchiveURL(resolved) {
                     _ = openArchiveAsVirtualFolder(resolved)
                 } else if globalVar.HandledImageAndRawExtensions.contains(resolved.pathExtension.lowercased()) ||
-                    (globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(resolved.pathExtension.lowercased())) {
+                    (globalVar.useInternalPlayer && globalVar.HandledVideoExtensions.contains(resolved.pathExtension.lowercased())) {
                     if let appDelegate = NSApplication.shared.delegate as? AppDelegate {
                         globalVar.isLaunchFromFile = true
                         if let windowController = appDelegate.createNewWindow(resolvedAbsPath) {
@@ -245,7 +245,7 @@ extension ViewController {
                 _ = openArchiveAsVirtualFolder(url)
             }
             else if !globalVar.HandledImageAndRawExtensions.contains(url.pathExtension.lowercased()) &&
-                !(globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(item.file.ext)) {
+                !(globalVar.useInternalPlayer && globalVar.HandledVideoExtensions.contains(item.file.ext.lowercased())) {
                 if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
                     openVideoWithPreferredExternalPlayer(url)
                 } else {
@@ -285,7 +285,7 @@ extension ViewController {
                     // 视频模式会有闪烁
                     // Video mode will have flicker
                     if globalVar.portableMode ||
-                        (globalVar.useInternalPlayer && globalVar.HandledNativeSupportedVideoExtensions.contains(item.file.ext)) {
+                        (globalVar.useInternalPlayer && globalVar.HandledVideoExtensions.contains(item.file.ext.lowercased())) {
                         largeImageView.alphaValue = 1
                         largeImageBgEffectView.alphaValue = 1
                         publicVar.isInLargeViewAfterAnimate=true
@@ -564,7 +564,7 @@ extension ViewController {
         let rawUseEmbeddedThumb = publicVar.isRawUseEmbeddedThumb
         let enableHDR = publicVar.isEnableHDR
 
-        mediaPreheatManager.scheduleImage(generation: generation, distance: distance) {
+        mediaPreheatManager.scheduleImage(url: url, generation: generation, distance: distance) {
             let loadedImageInfo = file.imageInfo ?? getImageInfo(url: url, needMetadata: true)
             let originalSize = file.originalSize ?? loadedImageInfo?.size ?? DEFAULT_SIZE
             var largeSize: NSSize

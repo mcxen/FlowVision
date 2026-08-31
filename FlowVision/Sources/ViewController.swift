@@ -324,6 +324,10 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
     let loadImageTaskPoolSemaphore = DispatchSemaphore(value: 0)
     var externalVolumeThreadSemaphores = [String: DispatchSemaphore]()
     let externalVolumeThreadSemaphoresLock = NSLock()
+    var folderMediaCountTasks = Set<String>()
+    let folderMediaCountTasksLock = NSLock()
+    var networkMetadataTasks = Set<String>()
+    let networkMetadataTasksLock = NSLock()
     
     var searchFolderRound=0
     
@@ -356,6 +360,7 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
     var largeImageLoadTask: DispatchWorkItem?
     var largeImageLoadQueueLock = NSLock()
     let mediaPreheatManager = MediaPreheatManager()
+    var activeVideoTrimEditor: VideoTrimEditorWindowController?
     
     var lastDoNotGenResized = false
     var lastResizeFailed = false
@@ -863,6 +868,9 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
         // 在这里执行清理工作
         // Perform cleanup work here
         log("ViewController is being deinitialized")
+        willTerminate = true
+        activeVideoTrimEditor?.close()
+        activeVideoTrimEditor = nil
         
         // 存储关闭的目录/文件
         // Store closed directory/file
@@ -936,8 +944,6 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
         
         // 工作线程结束标志
         // Worker thread termination flag
-        willTerminate=true
-
         // 产生空任务，防止等待信号量导致窗口无法销毁
         // Generate empty task to prevent window from being unable to destroy due to waiting for semaphore
         readInfoTaskPoolSemaphore.signal()
@@ -975,6 +981,19 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
             }
             if openFolder != nil {
                 lastFolder = openFolder
+            }
+            if let candidate = lastFolder.flatMap(URL.init(string:)),
+               isUnavailableMountedVolumeURL(candidate) {
+                let configuredHome = URL(string: globalVar.homeFolder)
+                if let configuredHome,
+                   !isUnavailableMountedVolumeURL(configuredHome),
+                   FileManager.default.fileExists(atPath: configuredHome.path) {
+                    lastFolder = configuredHome.absoluteString
+                } else {
+                    lastFolder = rootFolder
+                }
+                defaults.set(lastFolder, forKey: "lastFolder")
+                log("Remembered volume is not mounted; using local startup folder.", level: .warn)
             }
             fileDB.lock()
             fileDB.curFolder=lastFolder!
@@ -1280,12 +1299,14 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                     if i == -1 {continue}
                     if ver != dirModel.ver {continue}
                     
-                    // 外置卷等待到队列全部执行完毕再分配(单线程)
-                    // External volume waits for queue to fully execute before allocating (single-threaded)
+                    // 网络卷允许两路受控读取；其它外置卷仍使用单线程。
+                    // Network volumes use two bounded reads; other external volumes stay single-threaded.
 //                    if VolumeManager.shared.isExternalVolume(key.path) {
 //                        operationQueue.waitUntilAllOperationsAreFinished()
 //                    }
-                    if VolumeManager.shared.isExternalVolume(key.path) {
+                    if VolumeManager.shared.isNetworkVolume(key.path) {
+                        operationQueue.maxConcurrentOperationCount = 2
+                    } else if VolumeManager.shared.isExternalVolume(key.path) {
                         operationQueue.maxConcurrentOperationCount = 1
                     }else{
                         operationQueue.maxConcurrentOperationCount = globalVar.thumbThreadNum > 2 ? 2 : 1
@@ -1326,7 +1347,20 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                                 originalSize = DEFAULT_SIZE
                                 isGetImageSizeFail = true
                             }else{
-                                imageInfo = getImageInfo(url: URL(string: key.path)!, needMetadata: true)
+                                let infoURL = URL(string: key.path)!
+                                guard let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(
+                                    for: infoURL,
+                                    shouldContinue: { [weak self] in
+                                        guard let self, !self.willTerminate else { return false }
+                                        self.fileDB.lock()
+                                        let isCurrent = ver == dirModel.ver
+                                            && dir == self.fileDB.curFolder
+                                        self.fileDB.unlock()
+                                        return isCurrent
+                                    }
+                                ) else { return }
+                                imageInfo = getImageInfo(url: infoURL, needMetadata: true)
+                                ioLease.end()
                                 originalSize = imageInfo?.size
                                 if originalSize == nil {
                                     originalSize = DEFAULT_SIZE
@@ -1496,7 +1530,9 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                             publicVar.isInStageThreeProgress = false
                         }
                         
-                        if VolumeManager.shared.isExternalVolume(key.path) {
+                        if VolumeManager.shared.isNetworkVolume(key.path) {
+                            operationQueue.maxConcurrentOperationCount = 2
+                        } else if VolumeManager.shared.isExternalVolume(key.path) {
                             operationQueue.maxConcurrentOperationCount = globalVar.thumbThreadNum_External
                         }else{
                             operationQueue.maxConcurrentOperationCount = globalVar.thumbThreadNum
@@ -1524,6 +1560,9 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                         fileDB.lock()
                         var originalSize:NSSize? = file.originalSize
                         var thumbSize:NSSize? = file.thumbSize
+                        let fileSize = file.fileSize
+                        let modificationDate = file.modDate
+                        let isDirectory = file.isDir
                         let count = dirModel.files.count
                         let isMemClearedToAvoidRemainingTask=dirModel.isMemClearedToAvoidRemainingTask
                         fileDB.unlock()
@@ -1670,10 +1709,25 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
                                 }else{
                                     if !publicVar.isGenHdThumb || noThumbSizeDueToSchedule { // publicVar.layoutType == .grid
                                         // image = getImageThumb(url: url, refSize: originalSize)
-                                        image = ThumbImageProcessor.getImageCache(url: url, refSize: originalSize, isPreferInternalThumb: publicVar.isPreferInternalThumb, ver: ver)
+                                        image = ThumbImageProcessor.getImageCache(
+                                            url: url,
+                                            refSize: originalSize,
+                                            isPreferInternalThumb: publicVar.isPreferInternalThumb,
+                                            fileSize: fileSize,
+                                            modificationDate: modificationDate,
+                                            isDirectory: isDirectory,
+                                            ver: ver
+                                        )
                                     }else{
                                         // image = getImageThumb(url: url, size: revisedSize)
-                                        image = ThumbImageProcessor.getImageCache(url: url, size: revisedSize, ver: ver)
+                                        image = ThumbImageProcessor.getImageCache(
+                                            url: url,
+                                            size: revisedSize,
+                                            fileSize: fileSize,
+                                            modificationDate: modificationDate,
+                                            isDirectory: isDirectory,
+                                            ver: ver
+                                        )
                                     }
                                     if image == nil {
                                         image = getFileTypeIcon(url: url)

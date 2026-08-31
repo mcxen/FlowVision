@@ -8,6 +8,16 @@ import Cocoa
 import AVFoundation
 import AVKit
 
+/// Decorative progress layers must not become the AppKit mouse target. The
+/// parent controls view owns the enlarged scrub hit area and all drag events.
+private final class ProgressDecorationView: NSView {
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
+}
+
+private final class PassiveVisualEffectView: NSVisualEffectView {
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
+}
+
 // MARK: - ClickableSlider
 
 private class ClickableSlider: NSSlider {
@@ -101,6 +111,7 @@ class VideoPlayerControlsView: NSView {
     private var skipForwardButton: NSButton!
     private var currentTimeLabel: NSTextField!
     private var durationLabel: NSTextField!
+    private var losslessTrimButton: NSButton!
     private var progressBarBackground: NSView!
     private var progressBarFilled: NSView!
     private var progressBarBuffered: NSView!
@@ -119,7 +130,11 @@ class VideoPlayerControlsView: NSView {
     
     private var hideTimer: Timer?
     private var isDraggingProgress = false
+    private var isDraggingControlBar = false
     private var wasPlayingBeforeDrag = false
+    private var controlBarDragStartInWindow: NSPoint = .zero
+    private var controlBarDragStartCenterX: CGFloat = 0
+    private var controlBarDragStartBottom: CGFloat = 0
     private var isMouseInsideControls = false
     private var trackingArea: NSTrackingArea?
     private var progressTrackingArea: NSTrackingArea?
@@ -140,6 +155,9 @@ class VideoPlayerControlsView: NSView {
     private var handleHeightConstraint: NSLayoutConstraint!
     
     private var effectView: NSVisualEffectView!
+    private weak var floatingHostView: NSView?
+    private weak var floatingCenterXConstraint: NSLayoutConstraint?
+    private weak var floatingBottomConstraint: NSLayoutConstraint?
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -154,16 +172,16 @@ class VideoPlayerControlsView: NSView {
     private func setupUI() {
         wantsLayer = true
         
-        effectView = NSVisualEffectView()
+        effectView = PassiveVisualEffectView()
         effectView.appearance = NSAppearance(named: .vibrantDark)
         effectView.material = .hudWindow
         effectView.blendingMode = .withinWindow
         effectView.state = .active
         effectView.wantsLayer = true
         if #available(macOS 26.0, *) {
-            effectView.layer?.cornerRadius = 16
+            effectView.layer?.cornerRadius = 10
         } else {
-            effectView.layer?.cornerRadius = 8
+            effectView.layer?.cornerRadius = 6
         }
         effectView.layer?.masksToBounds = true
         effectView.translatesAutoresizingMaskIntoConstraints = false
@@ -226,28 +244,28 @@ class VideoPlayerControlsView: NSView {
         currentTimeLabel = createTimeLabel("00:00")
         addSubview(currentTimeLabel)
         
-        progressBarBackground = NSView()
+        progressBarBackground = ProgressDecorationView()
         progressBarBackground.wantsLayer = true
         progressBarBackground.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.2).cgColor
         progressBarBackground.layer?.cornerRadius = 1.5
         progressBarBackground.translatesAutoresizingMaskIntoConstraints = false
         addSubview(progressBarBackground)
         
-        progressBarBuffered = NSView()
+        progressBarBuffered = ProgressDecorationView()
         progressBarBuffered.wantsLayer = true
         progressBarBuffered.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.2).cgColor
         progressBarBuffered.layer?.cornerRadius = 1.5
         progressBarBuffered.translatesAutoresizingMaskIntoConstraints = false
         progressBarBackground.addSubview(progressBarBuffered)
         
-        progressBarFilled = NSView()
+        progressBarFilled = ProgressDecorationView()
         progressBarFilled.wantsLayer = true
         progressBarFilled.layer?.backgroundColor = NSColor.white.withAlphaComponent(0.6).cgColor
         progressBarFilled.layer?.cornerRadius = 1.5
         progressBarFilled.translatesAutoresizingMaskIntoConstraints = false
         progressBarBackground.addSubview(progressBarFilled)
         
-        progressBarHandle = NSView()
+        progressBarHandle = ProgressDecorationView()
         progressBarHandle.wantsLayer = true
         progressBarHandle.layer?.backgroundColor = hexToNSColor(hex: "#DDDDDD", alpha: 1.0).cgColor
         progressBarHandle.layer?.cornerRadius = 1.5
@@ -266,6 +284,25 @@ class VideoPlayerControlsView: NSView {
         
         durationLabel = createTimeLabel("00:00")
         addSubview(durationLabel)
+
+        losslessTrimButton = NSButton(frame: .zero)
+        losslessTrimButton.isBordered = false
+        losslessTrimButton.bezelStyle = .regularSquare
+        losslessTrimButton.image = NSImage(
+            systemSymbolName: "scissors",
+            accessibilityDescription: NSLocalizedString("Lossless Trim Segments...", comment: "无损分段裁剪...")
+        )
+        losslessTrimButton.contentTintColor = NSColor.white.withAlphaComponent(0.7)
+        losslessTrimButton.imageScaling = .scaleProportionallyUpOrDown
+        losslessTrimButton.target = self
+        losslessTrimButton.action = #selector(losslessTrimTapped)
+        losslessTrimButton.toolTip = NSLocalizedString("Lossless Trim Segments...", comment: "无损分段裁剪...")
+        losslessTrimButton.setAccessibilityLabel(
+            NSLocalizedString("Lossless Trim Segments...", comment: "无损分段裁剪...")
+        )
+        losslessTrimButton.translatesAutoresizingMaskIntoConstraints = false
+        (losslessTrimButton.cell as? NSButtonCell)?.highlightsBy = []
+        addSubview(losslessTrimButton)
         
         volumeButton = NSButton(frame: .zero)
         volumeButton.isBordered = false
@@ -328,80 +365,105 @@ class VideoPlayerControlsView: NSView {
         abMarkerBConstraint = abMarkerB.centerXAnchor.constraint(equalTo: progressBarBackground.leadingAnchor, constant: 0)
         
         NSLayoutConstraint.activate([
-            skipBackwardButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            skipBackwardButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            playPauseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            playPauseButton.topAnchor.constraint(equalTo: topAnchor, constant: 13),
+            playPauseButton.widthAnchor.constraint(equalToConstant: 18),
+            playPauseButton.heightAnchor.constraint(equalToConstant: 18),
+
+            skipBackwardButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -18),
+            skipBackwardButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
             skipBackwardButton.widthAnchor.constraint(equalToConstant: 16),
             skipBackwardButton.heightAnchor.constraint(equalToConstant: 16),
-            
-            playPauseButton.leadingAnchor.constraint(equalTo: skipBackwardButton.trailingAnchor, constant: 14),
-            playPauseButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            playPauseButton.widthAnchor.constraint(equalToConstant: 16),
-            playPauseButton.heightAnchor.constraint(equalToConstant: 16),
-            
-            skipForwardButton.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 14),
-            skipForwardButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            skipForwardButton.leadingAnchor.constraint(equalTo: playPauseButton.trailingAnchor, constant: 18),
+            skipForwardButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
             skipForwardButton.widthAnchor.constraint(equalToConstant: 16),
             skipForwardButton.heightAnchor.constraint(equalToConstant: 16),
-            
-            currentTimeLabel.leadingAnchor.constraint(equalTo: skipForwardButton.trailingAnchor, constant: 12),
-            currentTimeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
+
+            volumeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            volumeButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
+            volumeButton.widthAnchor.constraint(equalToConstant: 18),
+            volumeButton.heightAnchor.constraint(equalToConstant: 18),
+
+            volumeSliderContainer.leadingAnchor.constraint(equalTo: volumeButton.trailingAnchor, constant: 8),
+            volumeSliderContainer.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
+            volumeSliderContainer.widthAnchor.constraint(equalToConstant: 60),
+            volumeSliderContainer.heightAnchor.constraint(equalToConstant: 20),
+
+            volumeSlider.leadingAnchor.constraint(equalTo: volumeSliderContainer.leadingAnchor),
+            volumeSlider.trailingAnchor.constraint(equalTo: volumeSliderContainer.trailingAnchor),
+            volumeSlider.centerYAnchor.constraint(equalTo: volumeSliderContainer.centerYAnchor),
+
+            fullscreenButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            fullscreenButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
+            fullscreenButton.widthAnchor.constraint(equalToConstant: 18),
+            fullscreenButton.heightAnchor.constraint(equalToConstant: 18),
+
+            losslessTrimButton.trailingAnchor.constraint(equalTo: fullscreenButton.leadingAnchor, constant: -14),
+            losslessTrimButton.centerYAnchor.constraint(equalTo: playPauseButton.centerYAnchor),
+            losslessTrimButton.widthAnchor.constraint(equalToConstant: 18),
+            losslessTrimButton.heightAnchor.constraint(equalToConstant: 18),
+
+            currentTimeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            currentTimeLabel.centerYAnchor.constraint(equalTo: progressBarBackground.centerYAnchor),
+
             progressBarBackground.leadingAnchor.constraint(equalTo: currentTimeLabel.trailingAnchor, constant: 10),
             progressBarBackground.trailingAnchor.constraint(equalTo: durationLabel.leadingAnchor, constant: -10),
-            progressBarBackground.centerYAnchor.constraint(equalTo: centerYAnchor),
+            progressBarBackground.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -13),
             progressBarBackground.heightAnchor.constraint(equalToConstant: progressBarHeight),
-            
+
             progressBarBuffered.leadingAnchor.constraint(equalTo: progressBarBackground.leadingAnchor),
             progressBarBuffered.topAnchor.constraint(equalTo: progressBarBackground.topAnchor),
             progressBarBuffered.bottomAnchor.constraint(equalTo: progressBarBackground.bottomAnchor),
             progressBarBuffered.widthAnchor.constraint(equalToConstant: 0),
-            
+
             progressBarFilled.leadingAnchor.constraint(equalTo: progressBarBackground.leadingAnchor),
             progressBarFilled.topAnchor.constraint(equalTo: progressBarBackground.topAnchor),
             progressBarFilled.bottomAnchor.constraint(equalTo: progressBarBackground.bottomAnchor),
             progressBarFilledWidthConstraint,
-            
+
             progressBarHandleLeadingConstraint,
             progressBarHandle.centerYAnchor.constraint(equalTo: progressBarBackground.centerYAnchor),
             handleWidthConstraint,
             handleHeightConstraint,
-            
+
             abMarkerAConstraint,
             abMarkerA.centerYAnchor.constraint(equalTo: progressBarBackground.centerYAnchor),
             abMarkerA.widthAnchor.constraint(equalToConstant: 2),
             abMarkerA.heightAnchor.constraint(equalToConstant: 10),
-            
+
             abMarkerBConstraint,
             abMarkerB.centerYAnchor.constraint(equalTo: progressBarBackground.centerYAnchor),
             abMarkerB.widthAnchor.constraint(equalToConstant: 2),
             abMarkerB.heightAnchor.constraint(equalToConstant: 10),
-            
-            durationLabel.trailingAnchor.constraint(equalTo: volumeSliderContainer.leadingAnchor, constant: -8),
-            durationLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            volumeSliderContainer.trailingAnchor.constraint(equalTo: fullscreenButton.leadingAnchor, constant: -38),
-            volumeSliderContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
-            volumeSliderContainer.widthAnchor.constraint(equalToConstant: 60),
-            volumeSliderContainer.heightAnchor.constraint(equalToConstant: 20),
-            
-            volumeSlider.leadingAnchor.constraint(equalTo: volumeSliderContainer.leadingAnchor),
-            volumeSlider.trailingAnchor.constraint(equalTo: volumeSliderContainer.trailingAnchor),
-            volumeSlider.centerYAnchor.constraint(equalTo: volumeSliderContainer.centerYAnchor),
-            
-            volumeButton.trailingAnchor.constraint(equalTo: fullscreenButton.leadingAnchor, constant: -12),
-            volumeButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            volumeButton.heightAnchor.constraint(equalToConstant: 16),
-            
-            // loopModeButton.trailingAnchor.constraint(equalTo: fullscreenButton.leadingAnchor, constant: -12),
-            // loopModeButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            // loopModeButton.widthAnchor.constraint(equalToConstant: 16),
-            // loopModeButton.heightAnchor.constraint(equalToConstant: 16),
-            
-            fullscreenButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
-            fullscreenButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            fullscreenButton.widthAnchor.constraint(equalToConstant: 16),
-            fullscreenButton.heightAnchor.constraint(equalToConstant: 16),
+
+            durationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            durationLabel.centerYAnchor.constraint(equalTo: progressBarBackground.centerYAnchor),
         ])
+    }
+
+    func configureFloatingPosition(
+        in hostView: NSView,
+        centerXConstraint: NSLayoutConstraint,
+        bottomConstraint: NSLayoutConstraint
+    ) {
+        floatingHostView = hostView
+        floatingCenterXConstraint = centerXConstraint
+        floatingBottomConstraint = bottomConstraint
+        constrainFloatingPosition()
+    }
+
+    func constrainFloatingPosition() {
+        guard let host = floatingHostView,
+              let centerXConstraint = floatingCenterXConstraint,
+              let bottomConstraint = floatingBottomConstraint,
+              host.bounds.width > 0,
+              host.bounds.height > 0 else { return }
+
+        let horizontalLimit = max(0, (host.bounds.width - bounds.width) / 2 - 10)
+        centerXConstraint.constant = max(-horizontalLimit, min(horizontalLimit, centerXConstraint.constant))
+        let verticalLimit = max(10, host.bounds.height - bounds.height - 25)
+        bottomConstraint.constant = max(10, min(verticalLimit, bottomConstraint.constant))
     }
     
     private func setupHoverTimeLabel() {
@@ -577,7 +639,17 @@ class VideoPlayerControlsView: NSView {
             wasPlayingBeforeDrag = largeImageView?.videoIsPlaying == true
             largeImageView?.setVideoPaused(true)
             seekToPosition(at: location)
+            return
         }
+
+        guard let centerXConstraint = floatingCenterXConstraint,
+              let bottomConstraint = floatingBottomConstraint else { return }
+        isDraggingControlBar = true
+        controlBarDragStartInWindow = event.locationInWindow
+        controlBarDragStartCenterX = centerXConstraint.constant
+        controlBarDragStartBottom = bottomConstraint.constant
+        cancelHideTimer()
+        NSCursor.closedHand.push()
     }
     
     override func mouseDragged(with event: NSEvent) {
@@ -585,6 +657,12 @@ class VideoPlayerControlsView: NSView {
             let location = convert(event.locationInWindow, from: nil)
             seekToPosition(at: location)
             updateHoverTime(at: location)
+        } else if isDraggingControlBar,
+                  let centerXConstraint = floatingCenterXConstraint,
+                  let bottomConstraint = floatingBottomConstraint {
+            centerXConstraint.constant = controlBarDragStartCenterX + event.locationInWindow.x - controlBarDragStartInWindow.x
+            bottomConstraint.constant = controlBarDragStartBottom + event.locationInWindow.y - controlBarDragStartInWindow.y
+            constrainFloatingPosition()
         }
     }
     
@@ -611,7 +689,27 @@ class VideoPlayerControlsView: NSView {
             if !isMouseInsideControls {
                 scheduleHide()
             }
+        } else if isDraggingControlBar {
+            isDraggingControlBar = false
+            NSCursor.pop()
+            saveFloatingPosition()
+            if !isMouseInsideControls {
+                scheduleHide()
+            }
         }
+    }
+
+    private func saveFloatingPosition() {
+        guard let host = floatingHostView,
+              let centerXConstraint = floatingCenterXConstraint,
+              let bottomConstraint = floatingBottomConstraint,
+              host.bounds.width > 0,
+              host.bounds.height > 0 else { return }
+        let horizontal = (centerXConstraint.constant + host.bounds.width / 2) / host.bounds.width
+        let vertical = bottomConstraint.constant / host.bounds.height
+        UserDefaults.standard.set(horizontal, forKey: "videoControlBarHorizontalPosition")
+        UserDefaults.standard.set(vertical, forKey: "videoControlBarVerticalPosition")
+        UserDefaults.standard.set(2, forKey: "videoControlBarPositionCoordinateVersion")
     }
     
     override func hitTest(_ point: NSPoint) -> NSView? {
@@ -713,6 +811,10 @@ class VideoPlayerControlsView: NSView {
         largeImageView?.videoVolume = Float(sender.doubleValue)
         updateVolumeIcon()
     }
+
+    @objc private func losslessTrimTapped() {
+        largeImageView?.actLosslessTrimSegments()
+    }
     
     @objc private func loopModeTapped() {
         largeImageView?.actSequentialPlay()
@@ -782,13 +884,18 @@ class VideoPlayerControlsView: NSView {
             updateVolumeUI()
         }
         
-        if autoHide && !isDraggingProgress {
+        if autoHide && !globalVar.videoControlsAlwaysVisible && !isDraggingProgress {
             scheduleHide()
+        } else if globalVar.videoControlsAlwaysVisible {
+            cancelHideTimer()
         }
     }
     
     func hideControls() {
-        guard !isMouseInsideControls, !isDraggingProgress else { return }
+        guard !globalVar.videoControlsAlwaysVisible,
+              !isMouseInsideControls,
+              !isDraggingProgress,
+              !isDraggingControlBar else { return }
         
         cancelHideTimer()
         NSAnimationContext.runAnimationGroup({ context in
@@ -809,8 +916,17 @@ class VideoPlayerControlsView: NSView {
     
     func scheduleHide(delay: TimeInterval = 3.0) {
         cancelHideTimer()
+        guard !globalVar.videoControlsAlwaysVisible else { return }
         hideTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
             self?.hideControls()
+        }
+    }
+
+    func applyVisibilityPreference() {
+        if globalVar.videoControlsAlwaysVisible {
+            showControls(autoHide: false)
+        } else {
+            scheduleHide()
         }
     }
     

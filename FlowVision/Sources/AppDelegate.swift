@@ -190,6 +190,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSMenuItemVa
         if let videoPlaySequentialPlay = UserDefaults.standard.value(forKey: "videoPlaySequentialPlay") as? Bool {
             globalVar.videoPlaySequentialPlay = videoPlaySequentialPlay
         }
+        if let videoControlsAlwaysVisible = UserDefaults.standard.value(forKey: "videoControlsAlwaysVisible") as? Bool {
+            globalVar.videoControlsAlwaysVisible = videoControlsAlwaysVisible
+        }
         if let videoVolume = UserDefaults.standard.value(forKey: "videoVolume") as? Float {
             globalVar.videoVolume = videoVolume
         }

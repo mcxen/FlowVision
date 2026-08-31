@@ -1,6 +1,97 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Always Show Video Controls" : {
+      "comment" : "视频进度条常显",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "始终显示播放控制条" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "永遠顯示播放控制列" } }
+      }
+    },
+    "Crop Aspect Ratio" : {
+      "comment" : "裁剪比例",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "裁剪比例" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "裁剪比例" } }
+      }
+    },
+    "Crop Output Size" : {
+      "comment" : "裁剪输出尺寸",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "裁剪输出尺寸" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "裁剪輸出尺寸" } }
+      }
+    },
+    "Crop Unavailable" : {
+      "comment" : "无法裁剪",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法裁剪" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無法裁剪" } }
+      }
+    },
+    "Exported %d cropped clips" : {
+      "comment" : "已导出 %d 个裁剪片段",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已导出 %d 个裁剪片段" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "已匯出 %d 個裁剪片段" } }
+      }
+    },
+    "Exporting cropped clips %d/%d" : {
+      "comment" : "正在导出裁剪片段 %d/%d",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "正在导出裁剪片段 %d/%d" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "正在匯出裁剪片段 %d/%d" } }
+      }
+    },
+    "Exporting cropped clips 0/%d" : {
+      "comment" : "正在导出裁剪片段 0/%d",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "正在导出裁剪片段 0/%d" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "正在匯出裁剪片段 0/%d" } }
+      }
+    },
+    "Free Crop" : {
+      "comment" : "自由裁剪",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "自由裁剪" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "自由裁剪" } }
+      }
+    },
+    "Lossless Trim Segments..." : {
+      "comment" : "无损分段裁剪...",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无损分段裁剪…" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無損分段裁剪…" } }
+      }
+    },
+    "No Crop" : {
+      "comment" : "不裁剪",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "不裁剪" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "不裁剪" } }
+      }
+    },
+    "Some cropped clips failed to export (segments: %@)." : {
+      "comment" : "部分裁剪片段导出失败（片段：%@）。",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "部分裁剪片段导出失败（片段：%@）。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "部分裁剪片段匯出失敗（片段：%@）。" } }
+      }
+    },
+    "Video controls: Always visible" : {
+      "comment" : "视频进度条：常显",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "播放控制条：始终显示" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "播放控制列：永遠顯示" } }
+      }
+    },
+    "Video controls: Auto hide" : {
+      "comment" : "视频进度条：自动隐藏",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "播放控制条：自动隐藏" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "播放控制列：自動隱藏" } }
+      }
+    },
     "(Multiselect)" : {
       "comment" : "(多选)",
       "localizations" : {
@@ -4397,8 +4488,8 @@
         }
       }
     },
-    "Cache external folder thumbnails locally" : {
-      "comment" : "本地缓存外接卷文件夹缩略图"
+    "Cache external thumbnails locally" : {
+      "comment" : "本地缓存外接卷缩略图"
     },
     "Cancel" : {
       "comment" : "取消",
@@ -6683,10 +6774,18 @@
       "comment" : "裁剪完成，失败：%d"
     },
     "Crop Size" : {
-      "comment" : "裁剪尺寸"
+      "comment" : "裁剪尺寸",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "裁剪尺寸" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "裁剪尺寸" } }
+      }
     },
     "Crop Video Size" : {
-      "comment" : "裁剪视频尺寸"
+      "comment" : "裁剪视频尺寸",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "快速裁剪视频" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "快速裁剪影片" } }
+      }
     },
     "Crop Video Size..." : {
       "comment" : "裁剪视频尺寸..."
@@ -15741,8 +15840,8 @@
         }
       }
     },
-    "Folder Thumbnail Cache:" : {
-      "comment" : "文件夹缩略图缓存"
+    "External Thumbnail Cache:" : {
+      "comment" : "外接卷缩略图缓存"
     },
     "Folders" : {
       "comment" : "目录",
@@ -23537,6 +23636,115 @@
         }
       }
     },
+    "Add Segment" : {
+      "comment" : "添加片段",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add Segment" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加片段" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增片段" } }
+      }
+    },
+    "Delete Segment" : {
+      "comment" : "删除片段",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete Segment" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "删除片段" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "刪除片段" } }
+      }
+    },
+    "Export %d Clips" : {
+      "comment" : "导出 %d 段",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Export %d Clips" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "导出 %d 段" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "匯出 %d 段" } }
+      }
+    },
+    "Save to Original Folder" : {
+      "comment" : "保存到原文件夹",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save to Original Folder" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "保存到原文件夹" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "儲存到原資料夾" } }
+      }
+    },
+    "Segment %d  %@–%@" : {
+      "comment" : "片段 %d  %@–%@",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Segment %d  %@–%@" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "片段 %d  %@–%@" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "片段 %d  %@–%@" } }
+      }
+    },
+    "Checking Video Playback Component" : {
+      "comment" : "正在检查视频播放组件",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking Video Playback Component"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在检查视频播放组件"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在檢查影片播放元件"
+          }
+        }
+      }
+    },
+    "Download and Repair Playback" : {
+      "comment" : "下载并修复视频播放",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download and Repair Playback"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载并修复视频播放"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下載並修復影片播放"
+          }
+        }
+      }
+    },
+    "Video Playback Repaired" : {
+      "comment" : "视频播放已修复",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video Playback Repaired"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "视频播放已修复"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "影片播放已修復"
+          }
+        }
+      }
+    },
     "Open with External Player" : {
       "comment" : "使用外部播放器打开",
       "localizations" : {
@@ -29578,7 +29786,11 @@
       "comment" : "还原完成"
     },
     "Restore Video Rotation" : {
-      "comment" : "还原视频旋转"
+      "comment" : "还原视频旋转",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "还原视频方向" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "還原影片方向" } }
+      }
     },
     "Restoring %d/%d: %@" : {
       "comment" : "还原中 %d/%d: %@",
@@ -29809,7 +30021,11 @@
       }
     },
     "Rotate" : {
-      "comment" : "旋转"
+      "comment" : "旋转",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "旋转" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "旋轉" } }
+      }
     },
     "Rotate %d°" : {
       "comment" : "（视频）旋转%d°",
@@ -29919,7 +30135,11 @@
       }
     },
     "Rotate 180°" : {
-      "comment" : "旋转180°"
+      "comment" : "旋转180°",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "旋转 180°" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "旋轉 180°" } }
+      }
     },
     "Rotate Clockwise" : {
       "comment" : "顺时针旋转",
@@ -30029,7 +30249,11 @@
       }
     },
     "Rotate Clockwise 90°" : {
-      "comment" : "顺时针旋转90°"
+      "comment" : "顺时针旋转90°",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "顺时针旋转 90°" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "順時針旋轉 90°" } }
+      }
     },
     "Rotate Counterclockwise" : {
       "comment" : "逆时针旋转",
@@ -30139,10 +30363,18 @@
       }
     },
     "Rotate Counterclockwise 90°" : {
-      "comment" : "逆时针旋转90°"
+      "comment" : "逆时针旋转90°",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "逆时针旋转 90°" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "逆時針旋轉 90°" } }
+      }
     },
     "Rotate Selected Media" : {
-      "comment" : "旋转选中的媒体"
+      "comment" : "旋转选中的媒体",
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "旋转所选媒体" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "旋轉所選媒體" } }
+      }
     },
     "Rotating %d/%d: %@" : {
       "comment" : "旋转中 %d/%d: %@",

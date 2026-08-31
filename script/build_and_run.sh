@@ -15,7 +15,7 @@ xcodebuild -quiet \
   -project "$ROOT_DIR/FlowVision.xcodeproj" \
   -scheme "$APP_NAME" \
   -configuration Release \
-  -destination 'platform=macOS' \
+  -destination 'platform=macOS,arch=arm64' \
   -derivedDataPath "$DERIVED_DATA" \
   CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
 

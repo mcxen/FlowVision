@@ -13,7 +13,15 @@ extension ViewController {
     private func findItemsToExpand(outlineView: NSOutlineView, targetPaths: [String], currentPath: [String], currentItem: Any?, itemsToExpand: inout Set<AnyHashable>) {
         guard !targetPaths.isEmpty else { return }
         
-        outlineView.expandItem(currentItem)
+        // `expandItem(nil)` expands every top-level branch. When the tree
+        // contains a mounted or stale SMB volume that synchronously enumerates
+        // the share on expansion, relocating to an unrelated local file can
+        // block the main thread on network I/O. Expand only the concrete node
+        // that lies on the target path; the top-level nodes are already
+        // available from the tree model below.
+        if let currentItem {
+            outlineView.expandItem(currentItem)
+        }
         
         let childrenCount = outlineView.numberOfChildren(ofItem: currentItem)
         for index in 0..<childrenCount {

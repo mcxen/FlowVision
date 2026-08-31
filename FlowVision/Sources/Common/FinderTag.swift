@@ -400,18 +400,57 @@ class EnhancedIndex {
     // MARK: - 批量更新文件的标签信息
 
     static func updateFiles(_ urls: [URL], isCalledByDirOpen: Bool = false, recordTime: Bool = false) {
-        guard globalVar.enhancedIndexEnabled else { return }
+        guard prepareForUpdate(isCalledByDirOpen: isCalledByDirOpen) else { return }
+        let startTime = recordTime ? CFAbsoluteTimeGetCurrent() : 0
+        let taggedFiles = urls.map { url in
+            (url: url, tags: (try? url.resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? [])
+        }
+        let changed = applyResolvedTags(taggedFiles)
+        logUpdateIfNeeded(
+            count: taggedFiles.count,
+            changed: changed,
+            startTime: startTime,
+            recordTime: recordTime
+        )
+    }
+
+    /// Updates the index with tags already read by a network-volume hydration
+    /// pass, avoiding a second SMB metadata request for every file.
+    static func updateFiles(
+        _ taggedFiles: [(url: URL, tags: [String])],
+        isCalledByDirOpen: Bool = false,
+        recordTime: Bool = false
+    ) {
+        guard prepareForUpdate(isCalledByDirOpen: isCalledByDirOpen) else { return }
+        let startTime = recordTime ? CFAbsoluteTimeGetCurrent() : 0
+        let changed = applyResolvedTags(taggedFiles)
+        logUpdateIfNeeded(
+            count: taggedFiles.count,
+            changed: changed,
+            startTime: startTime,
+            recordTime: recordTime
+        )
+    }
+
+    private static func prepareForUpdate(isCalledByDirOpen: Bool) -> Bool {
+        guard globalVar.enhancedIndexEnabled else { return false }
         if !isLoaded {
-            if isCalledByDirOpen { return }
+            if isCalledByDirOpen { return false }
             waitUntilLoaded()
         }
-        let startTime = recordTime ? CFAbsoluteTimeGetCurrent() : 0
+        return true
+    }
 
+    @discardableResult
+    private static func applyResolvedTags(
+        _ taggedFiles: [(url: URL, tags: [String])]
+    ) -> Bool {
         indexLock.lock()
         var changed = false
-        for url in urls {
+        for taggedFile in taggedFiles {
+            let url = taggedFile.url
             let path = url.path
-            let tags = (try? url.resourceValues(forKeys: [.tagNamesKey]))?.tagNames ?? []
+            let tags = taggedFile.tags
 
             if let existing = fileIndex[path] {
                 if existing.tags == tags { continue }
@@ -439,9 +478,18 @@ class EnhancedIndex {
             scheduleSave()
         }
 
+        return changed
+    }
+
+    private static func logUpdateIfNeeded(
+        count: Int,
+        changed: Bool,
+        startTime: CFAbsoluteTime,
+        recordTime: Bool
+    ) {
         if recordTime {
             let elapsed = CFAbsoluteTimeGetCurrent() - startTime
-            log("EnhancedIndex: updateFiles(\(urls.count) urls, changed=\(changed)) in \(String(format: "%.4f", elapsed))s", level: .info)
+            log("EnhancedIndex: updateFiles(\(count) urls, changed=\(changed)) in \(String(format: "%.4f", elapsed))s", level: .info)
         }
     }
 

@@ -99,7 +99,7 @@ extension ViewController {
         let targetURL: URL
     }
 
-    struct VideoCropRect {
+    struct VideoCropRect: Equatable {
         let x: Int
         let y: Int
         let width: Int
@@ -127,11 +127,7 @@ extension ViewController {
            largeImageView.file.type == .video,
            let currentURL = URL(string: largeImageView.file.path),
            isEditableVideoURL(currentURL) {
-            if largeImageView.isInVideoCropSelectionMode {
-                largeImageView.confirmVideoCropSelection()
-                return
-            }
-            largeImageView.beginVideoCropSelectionMode()
+            presentVideoEditor(initialMode: .crop)
             return
         } else {
             urls = publicVar.selectedUrls().filter { isEditableVideoURL($0) }
@@ -143,6 +139,350 @@ extension ViewController {
 
         guard let cropSize = promptVideoCropSize() else { return }
         handleBatchCropVideos(urls, cropSize: cropSize)
+    }
+
+    func handleLosslessTrimCurrentVideo() {
+        presentVideoEditor(initialMode: .trim)
+    }
+
+    private func presentVideoEditor(initialMode: VideoTrimEditorMode) {
+        guard publicVar.isInLargeView,
+              largeImageView.file.type == .video,
+              let videoURL = URL(string: largeImageView.file.path),
+              isEditableVideoURL(videoURL) else {
+            showAlert(message: NSLocalizedString("Please open a video first.", comment: "请先打开一个视频。"))
+            return
+        }
+        if let activeVideoTrimEditor {
+            activeVideoTrimEditor.present()
+            return
+        }
+        guard !publicVar.isInFileOperation else { return }
+
+        let duration = largeImageView.videoDurationSeconds
+        guard duration.isFinite, duration > 0 else {
+            showAlert(message: NSLocalizedString("The video duration is not available yet.", comment: "暂时无法读取视频时长。"))
+            return
+        }
+
+        // A trim editor should start non-destructively: until the user moves a
+        // handle, the selected range is the complete source video.
+        let suggestedRange = VideoTrimSegment(start: 0, end: duration)
+
+        // Release the main viewer's mpv render context before creating the
+        // editor preview. Keeping both contexts attached to the same window
+        // can leave the second one permanently black on some GPUs.
+        largeImageView.stopVideo(savePosition: true)
+        let editor = VideoTrimEditorWindowController(
+            sourceURL: videoURL,
+            duration: duration,
+            sourceSize: largeImageView.file.originalSize,
+            initialSegment: suggestedRange,
+            initialMode: initialMode,
+            onClose: { [weak self] in
+                guard let self else { return }
+                self.activeVideoTrimEditor = nil
+                guard !self.willTerminate,
+                      URL(string: self.largeImageView.file.path) == videoURL else { return }
+                self.largeImageView.playVideo(reload: true)
+            }
+        ) { [weak self] segments, cropRect in
+            self?.exportVideoSegments(
+                sourceURL: videoURL,
+                segments: segments,
+                cropRect: cropRect
+            )
+        }
+        activeVideoTrimEditor = editor
+        editor.present()
+    }
+
+    private func exportVideoSegments(
+        sourceURL videoURL: URL,
+        segments: [VideoTrimSegment],
+        cropRect: VideoCropRect?
+    ) {
+        guard !segments.isEmpty, !publicVar.isInFileOperation else { return }
+
+        publicVar.isInFileOperation = true
+        let initialProgress: String
+        if cropRect == nil {
+            initialProgress = String(
+                format: NSLocalizedString("Exporting lossless clips 0/%d", comment: "正在导出无损片段 0/%d"),
+                segments.count
+            )
+        } else {
+            initialProgress = String(
+                format: NSLocalizedString("Exporting cropped clips 0/%d", comment: "正在导出裁剪片段 0/%d"),
+                segments.count
+            )
+        }
+        coreAreaView.showOperationProgress(initialProgress, progress: 0)
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+            var outputURLs: [URL] = []
+            var failedIndices: [Int] = []
+
+            for (index, segment) in segments.enumerated() {
+                let outputURL: URL
+                let succeeded: Bool
+                if let cropRect {
+                    outputURL = self.makeCroppedVideoOutputURL(
+                        sourceURL: videoURL,
+                        segment: segment,
+                        index: index
+                    )
+                    succeeded = self.exportCroppedVideoSegment(
+                        sourceURL: videoURL,
+                        outputURL: outputURL,
+                        segment: segment,
+                        cropRect: cropRect
+                    )
+                } else {
+                    outputURL = self.makeLosslessTrimOutputURL(
+                        sourceURL: videoURL,
+                        segment: segment,
+                        index: index
+                    )
+                    succeeded = self.exportLosslessVideoSegment(
+                        sourceURL: videoURL,
+                        outputURL: outputURL,
+                        segment: segment
+                    )
+                }
+                if succeeded {
+                    outputURLs.append(outputURL)
+                } else {
+                    failedIndices.append(index + 1)
+                }
+
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    let finished = index + 1
+                    let message: String
+                    if cropRect == nil {
+                        message = String(
+                            format: NSLocalizedString("Exporting lossless clips %d/%d", comment: "正在导出无损片段 %d/%d"),
+                            finished,
+                            segments.count
+                        )
+                    } else {
+                        message = String(
+                            format: NSLocalizedString("Exporting cropped clips %d/%d", comment: "正在导出裁剪片段 %d/%d"),
+                            finished,
+                            segments.count
+                        )
+                    }
+                    self.coreAreaView.showOperationProgress(
+                        message,
+                        progress: Double(finished) / Double(segments.count)
+                    )
+                }
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.publicVar.isInFileOperation = false
+                self.publicVar.fileChangedCount += outputURLs.count
+
+                if !outputURLs.isEmpty {
+                    // Keep the source video open. The exported clips are new
+                    // siblings and must not interrupt current playback.
+                    self.publicVar.openFromFinderPath = videoURL.absoluteString
+                    self.scheduledRefresh()
+                }
+
+                if failedIndices.isEmpty {
+                    let completionMessage: String
+                    let infoMessage: String
+                    if cropRect == nil {
+                        completionMessage = String(
+                            format: NSLocalizedString("Exported %d lossless clips", comment: "已导出 %d 个无损片段"),
+                            outputURLs.count
+                        )
+                        infoMessage = String(
+                            format: NSLocalizedString("Exported %d clips", comment: "已导出 %d 个片段"),
+                            outputURLs.count
+                        )
+                    } else {
+                        completionMessage = String(
+                            format: NSLocalizedString("Exported %d cropped clips", comment: "已导出 %d 个裁剪片段"),
+                            outputURLs.count
+                        )
+                        infoMessage = completionMessage
+                    }
+                    self.coreAreaView.showOperationProgress(
+                        completionMessage,
+                        progress: 1
+                    )
+                    self.coreAreaView.hideOperationOverlay(delayed: 1.0)
+                    self.largeImageView.showInfo(infoMessage)
+                } else {
+                    self.coreAreaView.hideOperationOverlay(delayed: 0.2)
+                    let failedText = failedIndices.map(String.init).joined(separator: ", ")
+                    let failureMessage: String
+                    if cropRect == nil {
+                        failureMessage = String(
+                            format: NSLocalizedString("Some clips failed to export (segments: %@).", comment: "部分片段导出失败（片段：%@）。"),
+                            failedText
+                        )
+                    } else {
+                        failureMessage = String(
+                            format: NSLocalizedString("Some cropped clips failed to export (segments: %@).", comment: "部分裁剪片段导出失败（片段：%@）。"),
+                            failedText
+                        )
+                    }
+                    showAlert(
+                        message: failureMessage
+                    )
+                }
+            }
+        }
+    }
+
+    private func makeLosslessTrimOutputURL(
+        sourceURL: URL,
+        segment: VideoTrimSegment,
+        index: Int
+    ) -> URL {
+        let startMilliseconds = Int64((segment.start * 1000).rounded())
+        let endMilliseconds = Int64((segment.end * 1000).rounded())
+        let baseName = sourceURL.deletingPathExtension().lastPathComponent
+        let clipName = String(
+            format: "%@_clip_%02d_%09lld-%09lld",
+            baseName,
+            index + 1,
+            startMilliseconds,
+            endMilliseconds
+        )
+        let candidate = sourceURL.deletingLastPathComponent()
+            .appendingPathComponent(clipName)
+            .appendingPathExtension(sourceURL.pathExtension)
+        return getUniqueDestinationURL(for: candidate)
+    }
+
+    private func makeCroppedVideoOutputURL(
+        sourceURL: URL,
+        segment: VideoTrimSegment,
+        index: Int
+    ) -> URL {
+        let startMilliseconds = Int64((segment.start * 1000).rounded())
+        let endMilliseconds = Int64((segment.end * 1000).rounded())
+        let baseName = sourceURL.deletingPathExtension().lastPathComponent
+        let fileName = String(
+            format: "%@_crop_%02d_%09lld-%09lld",
+            baseName,
+            index + 1,
+            startMilliseconds,
+            endMilliseconds
+        )
+        let sourceExtension = sourceURL.pathExtension.lowercased()
+        let outputExtension = ["mp4", "mov", "m4v"].contains(sourceExtension) ? "mp4" : "mkv"
+        let candidate = sourceURL.deletingLastPathComponent()
+            .appendingPathComponent(fileName)
+            .appendingPathExtension(outputExtension)
+        return getUniqueDestinationURL(for: candidate)
+    }
+
+    private func exportLosslessVideoSegment(
+        sourceURL: URL,
+        outputURL: URL,
+        segment: VideoTrimSegment
+    ) -> Bool {
+        guard FFmpegKitWrapper.shared.getIfLoaded() else { return false }
+        let tempURL = sourceURL.deletingLastPathComponent()
+            .appendingPathComponent(".flowvision_trim_\(UUID().uuidString)")
+            .appendingPathExtension(sourceURL.pathExtension)
+        let posixLocale = Locale(identifier: "en_US_POSIX")
+        let start = String(format: "%.3f", locale: posixLocale, segment.start)
+        let duration = String(format: "%.3f", locale: posixLocale, segment.duration)
+        let args = [
+            // The temporary sibling has a UUID name, so overwrite is safe and
+            // avoids FFmpegKit's conflicting no-overwrite state.
+            "-y",
+            "-ss", start,
+            "-i", sourceURL.path,
+            "-t", duration,
+            "-map", "0:v:0",
+            "-map", "0:a?",
+            "-map_metadata", "0",
+            "-c", "copy",
+            // Stream copy preserves every packet and the input frame cadence.
+            // copytb makes that intent explicit for variable-frame-rate input.
+            "-copytb", "1",
+            "-avoid_negative_ts", "make_zero",
+            tempURL.path
+        ]
+
+        guard let session = FFmpegKitWrapper.shared.executeFFmpegCommand(args),
+              FFmpegKitWrapper.shared.isSuccess(FFmpegKitWrapper.shared.getReturnCode(from: session)) else {
+            try? FileManager.default.removeItem(at: tempURL)
+            return false
+        }
+        do {
+            try FileManager.default.moveItem(at: tempURL, to: outputURL)
+            return true
+        } catch {
+            log("Failed to finalize lossless trim output: \(error)", level: .error)
+            try? FileManager.default.removeItem(at: tempURL)
+            return false
+        }
+    }
+
+    private func exportCroppedVideoSegment(
+        sourceURL: URL,
+        outputURL: URL,
+        segment: VideoTrimSegment,
+        cropRect: VideoCropRect
+    ) -> Bool {
+        guard FFmpegKitWrapper.shared.getIfLoaded() else { return false }
+        let tempURL = outputURL.deletingLastPathComponent()
+            .appendingPathComponent(".flowvision_crop_\(UUID().uuidString)")
+            .appendingPathExtension(outputURL.pathExtension)
+        let posix = Locale(identifier: "en_US_POSIX")
+        let start = String(format: "%.3f", locale: posix, segment.start)
+        let clipDuration = String(format: "%.3f", locale: posix, segment.duration)
+        let filter = "crop=\(cropRect.width):\(cropRect.height):\(cropRect.x):\(cropRect.y),setsar=1"
+        var args = [
+            "-y",
+            "-ss", start,
+            "-i", sourceURL.path,
+            "-t", clipDuration,
+            "-map", "0:v:0",
+            "-map", "0:a?",
+            "-map_metadata", "0",
+            "-vf", filter,
+            // Preserve source timestamps and cadence. In particular, do not
+            // synthesize a fixed `-r` for variable-frame-rate phone videos.
+            "-fps_mode", "passthrough",
+            "-c:v", "h264_videotoolbox",
+            "-allow_sw", "1",
+            "-b:v", "0",
+            "-q:v", "65",
+            "-pix_fmt", "yuv420p",
+            "-c:a", "copy",
+            "-avoid_negative_ts", "make_zero"
+        ]
+        if outputURL.pathExtension.lowercased() == "mp4" {
+            args += ["-movflags", "+faststart"]
+        }
+        args.append(tempURL.path)
+
+        guard let session = FFmpegKitWrapper.shared.executeFFmpegCommand(args),
+              FFmpegKitWrapper.shared.isSuccess(FFmpegKitWrapper.shared.getReturnCode(from: session)) else {
+            try? FileManager.default.removeItem(at: tempURL)
+            return false
+        }
+
+        do {
+            try FileManager.default.moveItem(at: tempURL, to: outputURL)
+            return true
+        } catch {
+            log("Failed to finalize cropped video output: \(error)", level: .error)
+            try? FileManager.default.removeItem(at: tempURL)
+            return false
+        }
     }
 
     func handleCropCurrentVideo(selection cropRect: VideoCropRect) {
@@ -2324,40 +2664,94 @@ extension ViewController {
             return
         }
 
-        var captureTime = CMTime(seconds: largeImageView.videoCurrentTimeSeconds, preferredTimescale: 600)
-        if !captureTime.isValid || captureTime == .indefinite {
-            captureTime = CMTime(seconds: 0, preferredTimescale: 600)
+        guard !publicVar.isInFileOperation else { return }
+
+        let currentSeconds = largeImageView.videoCurrentTimeSeconds
+        let captureSeconds = currentSeconds.isFinite && currentSeconds >= 0 ? currentSeconds : 0
+        let captureTime = CMTime(seconds: captureSeconds, preferredTimescale: 600)
+        let baseName = videoURL.deletingPathExtension().lastPathComponent
+        let milliseconds = Int(captureSeconds * 1000)
+        let outputCandidate = videoURL.deletingLastPathComponent()
+            .appendingPathComponent("\(baseName)_frame_\(milliseconds)")
+            .appendingPathExtension("png")
+        let outputURL = getUniqueDestinationURL(for: outputCandidate)
+        let mpvPlayer = largeImageView.isUsingMPVPlayer ? largeImageView.mpvPlayer : nil
+        let shouldResumeMPV = mpvPlayer != nil && largeImageView.videoIsPlaying
+        if shouldResumeMPV {
+            // Freeze the displayed frame before handing the screenshot command
+            // to the background queue. Otherwise playback can advance between
+            // the shortcut and mpv writing the file.
+            largeImageView.setVideoPaused(true)
         }
 
-        let generator = AVAssetImageGenerator(asset: AVAsset(url: videoURL))
-        generator.appliesPreferredTrackTransform = true
-        generator.requestedTimeToleranceBefore = .zero
-        generator.requestedTimeToleranceAfter = .zero
+        publicVar.isInFileOperation = true
+        coreAreaView.showOperationIndeterminate(
+            NSLocalizedString("Capturing current frame…", comment: "正在截存当前画面…")
+        )
 
-        do {
-            let cgImage = try generator.copyCGImage(at: captureTime, actualTime: nil)
-            let bitmap = NSBitmapImageRep(cgImage: cgImage)
-            guard let pngData = bitmap.representation(using: .png, properties: [:]) else {
-                showAlert(message: NSLocalizedString("Failed to encode captured frame.", comment: "编码截图失败。"))
-                return
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+
+            var captureError: Error?
+            var succeeded = false
+
+            if let mpvPlayer {
+                succeeded = mpvPlayer.captureCurrentVideoFrame(to: outputURL)
+            }
+            if !succeeded {
+                try? FileManager.default.removeItem(at: outputURL)
+                do {
+                    let generator = AVAssetImageGenerator(asset: AVURLAsset(url: videoURL))
+                    generator.appliesPreferredTrackTransform = true
+                    generator.requestedTimeToleranceBefore = .zero
+                    generator.requestedTimeToleranceAfter = .zero
+                    let cgImage = try generator.copyCGImage(at: captureTime, actualTime: nil)
+                    let bitmap = NSBitmapImageRep(cgImage: cgImage)
+                    guard let pngData = bitmap.representation(using: .png, properties: [:]) else {
+                        throw NSError(
+                            domain: "netdcy.FlowVision.VideoFrameCapture",
+                            code: 1,
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to encode the captured frame as PNG."]
+                        )
+                    }
+                    try pngData.write(to: outputURL, options: .atomic)
+                    succeeded = true
+                } catch {
+                    captureError = error
+                }
             }
 
-            let baseName = videoURL.deletingPathExtension().lastPathComponent
-            let ms = max(0, Int(CMTimeGetSeconds(captureTime).isFinite ? CMTimeGetSeconds(captureTime) * 1000 : 0))
-            let fileName = "\(baseName)_frame_\(ms)"
-            let outputCandidate = videoURL.deletingLastPathComponent().appendingPathComponent(fileName).appendingPathExtension("png")
-            let outputURL = getUniqueDestinationURL(for: outputCandidate)
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.publicVar.isInFileOperation = false
+                self.coreAreaView.hideOperationOverlay(delayed: succeeded ? 0.6 : 0)
+                if shouldResumeMPV,
+                   URL(string: self.largeImageView.file.path) == videoURL {
+                    self.largeImageView.setVideoPaused(false)
+                }
 
-            try pngData.write(to: outputURL, options: .atomic)
-            publicVar.fileChangedCount += 1
-            // Preserve the current video after refresh so the newly saved frame
-            // doesn't take over the current large-view position and pause playback.
-            publicVar.openFromFinderPath = videoURL.absoluteString
-            scheduledRefresh()
-            largeImageView.showInfo(NSLocalizedString("Frame Saved", comment: "视频帧已保存"))
-        } catch {
-            log("Capture video frame failed: \(error)", level: .error)
-            showAlert(message: NSLocalizedString("Failed to capture current video frame.", comment: "抓取当前视频帧失败。"))
+                guard succeeded else {
+                    if let captureError {
+                        log("Capture video frame failed: \(captureError)", level: .error)
+                    } else {
+                        log("Capture video frame through mpv failed", level: .error)
+                    }
+                    showAlert(message: NSLocalizedString("Failed to capture current video frame.", comment: "抓取当前视频帧失败。"))
+                    return
+                }
+
+                self.publicVar.fileChangedCount += 1
+                // Preserve the current video after refresh so the newly saved
+                // image does not replace it or interrupt playback.
+                self.publicVar.openFromFinderPath = videoURL.absoluteString
+                self.scheduledRefresh()
+                self.largeImageView.showInfo(
+                    String(
+                        format: NSLocalizedString("Frame saved: %@", comment: "画面已保存：%@"),
+                        outputURL.lastPathComponent
+                    )
+                )
+            }
         }
     }
 

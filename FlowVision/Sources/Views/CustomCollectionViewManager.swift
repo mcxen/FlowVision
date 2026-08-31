@@ -29,11 +29,16 @@ class CustomCollectionViewManager: NSObject, NSCollectionViewDataSource, NSColle
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "CustomCollectionViewItem"), for: indexPath) as! CustomCollectionViewItem
 
+        var configuredFile: FileModel?
         fileDB.lock()
         if let file=fileDB.db[SortKeyDir(fileDB.curFolder)]?.files.elementSafe(atOffset: indexPath.item)?.1{
             item.configureWithImage(file)
+            configuredFile = file
         }
         fileDB.unlock()
+        if let configuredFile {
+            getViewController(collectionView)?.scheduleNetworkFolderMediaCountIfNeeded(for: configuredFile)
+        }
 
         return item
     }

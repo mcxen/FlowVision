@@ -27,7 +27,7 @@ xcodebuild \
   -project "$PROJECT_PATH" \
   -scheme "$SCHEME" \
   -configuration "$CONFIGURATION" \
-  -destination "platform=macOS" \
+  -destination "platform=macOS,arch=arm64" \
   -derivedDataPath "$DERIVED_DATA" \
   clean build \
   "${EXTRA_ARGS[@]}"

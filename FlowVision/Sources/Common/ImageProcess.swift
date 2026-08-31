@@ -123,6 +123,167 @@ enum FolderThumbnailDiskCache {
     }
 }
 
+/// Persistent cache for regular media thumbnails stored on network volumes.
+/// The existing folder-thumbnail preference also controls this cache so users
+/// retain one switch and one cleanup surface for external thumbnail data.
+enum ExternalMediaThumbnailDiskCache {
+    private static let cacheVersion = "v1"
+    private static let cacheFolderName = "ExternalMediaThumbnailCache"
+    private static let compressionFactor: CGFloat = 0.78
+    private static let maximumSize: Int64 = 1_073_741_824
+    private static let pruneTargetSize: Int64 = 805_306_368
+    private static let maintenanceQueue = DispatchQueue(label: "FlowVision.ExternalMediaThumbnailCache")
+    private static let stateLock = NSLock()
+    private static var storesSincePrune = 0
+    private static var didScheduleInitialPrune = false
+
+    static var cacheDirectory: URL {
+        let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
+        return baseURL
+            .appendingPathComponent("FlowVision", isDirectory: true)
+            .appendingPathComponent(cacheFolderName, isDirectory: true)
+    }
+
+    static func cacheKey(
+        for url: URL,
+        size: NSSize?,
+        refSize: NSSize?,
+        isPreferInternalThumb: Bool,
+        fileSize: Int?,
+        modificationDate: Date?
+    ) -> String? {
+        guard let fileSize, let modificationDate else { return nil }
+        return [
+            cacheVersion,
+            url.standardizedFileURL.path,
+            String(fileSize),
+            String(modificationDate.timeIntervalSince1970),
+            "s\(Int((size?.width ?? 0).rounded()))x\(Int((size?.height ?? 0).rounded()))",
+            "r\(Int((refSize?.width ?? 0).rounded()))x\(Int((refSize?.height ?? 0).rounded()))",
+            "p\(isPreferInternalThumb)",
+        ].joined(separator: "|")
+    }
+
+    static func cachedImage(forKey key: String) -> NSImage? {
+        guard globalVar.cacheExternalFolderThumbnails,
+              let data = try? Data(contentsOf: cacheFileURL(forKey: key)),
+              let image = NSImage(data: data)
+        else { return nil }
+        let fileURL = cacheFileURL(forKey: key)
+        maintenanceQueue.async {
+            try? FileManager.default.setAttributes(
+                [.modificationDate: Date()],
+                ofItemAtPath: fileURL.path
+            )
+        }
+        schedulePruneIfNeeded()
+        return image
+    }
+
+    static func store(_ image: NSImage, forKey key: String) {
+        guard globalVar.cacheExternalFolderThumbnails,
+              let data = jpegData(from: image) else { return }
+        do {
+            try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
+            try data.write(to: cacheFileURL(forKey: key), options: .atomic)
+            schedulePruneIfNeeded(didStore: true)
+        } catch {
+            log("Failed to write external media thumbnail cache: \(error)", level: .warn)
+        }
+    }
+
+    static func sizeInBytes() -> Int64 {
+        cachedFiles().reduce(0) { $0 + $1.size }
+    }
+
+    static func clear() {
+        maintenanceQueue.sync {
+            do {
+                if FileManager.default.fileExists(atPath: cacheDirectory.path) {
+                    try FileManager.default.removeItem(at: cacheDirectory)
+                }
+                try FileManager.default.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
+            } catch {
+                log("Failed to clear external media thumbnail cache: \(error)", level: .warn)
+            }
+        }
+    }
+
+    private static func cacheFileURL(forKey key: String) -> URL {
+        cacheDirectory.appendingPathComponent("\(stableHash(key)).jpg")
+    }
+
+    private static func stableHash(_ string: String) -> String {
+        var hash: UInt64 = 0xcbf29ce484222325
+        for byte in string.utf8 {
+            hash ^= UInt64(byte)
+            hash &*= 0x100000001b3
+        }
+        return String(format: "%016llx", hash)
+    }
+
+    private static func jpegData(from image: NSImage) -> Data? {
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return nil
+        }
+        let representation = NSBitmapImageRep(cgImage: cgImage)
+        return representation.representation(
+            using: .jpeg,
+            properties: [.compressionFactor: compressionFactor]
+        )
+    }
+
+    private static func schedulePruneIfNeeded(didStore: Bool = false) {
+        stateLock.lock()
+        if didStore { storesSincePrune += 1 }
+        let shouldSchedule = !didScheduleInitialPrune || storesSincePrune >= 64
+        if shouldSchedule {
+            didScheduleInitialPrune = true
+            storesSincePrune = 0
+        }
+        stateLock.unlock()
+        guard shouldSchedule else { return }
+        maintenanceQueue.async { pruneIfNeeded() }
+    }
+
+    private static func pruneIfNeeded() {
+        var files = cachedFiles()
+        var totalSize = files.reduce(Int64(0)) { $0 + $1.size }
+        guard totalSize > maximumSize else { return }
+        files.sort { $0.modifiedAt < $1.modifiedAt }
+        for file in files where totalSize > pruneTargetSize {
+            do {
+                try FileManager.default.removeItem(at: file.url)
+                totalSize -= file.size
+            } catch {
+                log("Failed to prune external media thumbnail cache: \(error)", level: .warn)
+            }
+        }
+    }
+
+    private static func cachedFiles() -> [(url: URL, size: Int64, modifiedAt: Date)] {
+        guard let enumerator = FileManager.default.enumerator(
+            at: cacheDirectory,
+            includingPropertiesForKeys: [.isRegularFileKey, .fileSizeKey, .contentModificationDateKey],
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+
+        var result: [(URL, Int64, Date)] = []
+        for case let fileURL as URL in enumerator {
+            guard let values = try? fileURL.resourceValues(
+                forKeys: [.isRegularFileKey, .fileSizeKey, .contentModificationDateKey]
+            ), values.isRegularFile == true else { continue }
+            result.append((
+                fileURL,
+                Int64(values.fileSize ?? 0),
+                values.contentModificationDate ?? .distantPast
+            ))
+        }
+        return result
+    }
+}
+
 extension NSImage {
     func rotated(by degrees: CGFloat) -> NSImage {
         if degrees == 0 { return self }
@@ -829,19 +990,39 @@ func getVideoThumbnailFFmpeg(for url: URL, at time: TimeInterval = 10) -> NSImag
     let tempDirectory = FileManager.default.temporaryDirectory
     let uniqueFilename = UUID().uuidString + ".jpg"
     let thumbnailPath = tempDirectory.appendingPathComponent(uniqueFilename).path
+    defer { try? FileManager.default.removeItem(atPath: thumbnailPath) }
     
     // let ffmpegCommand = "-i '\(url.path)' -ss \(time) -vf \"select=eq(n\\,100),thumbnail,scale=512:-1\" -qscale:v 2 -frames:v 1 \(thumbnailPath)"
     // let ffmpegCommand = "-i '\(url.path)' -vf \"scale=1280:-1,blackframe=0,metadata=select:key=lavfi.blackframe.pblack:value=50:function=less\" -frames:v 1 \(thumbnailPath)"
 
     // 构建 ffmpeg 命令的参数数组
     // Build ffmpeg command argument array
-    let ffmpegArgs: [String] = [
-        "-i", url.path,
-        "-vf", "scale=1280:-1,blackframe=0,metadata=select:key=lavfi.blackframe.pblack:value=50:function=less",
-        "-frames:v", "1",
-        "-threads", "2",
-        thumbnailPath
-    ]
+    let ffmpegArgs: [String]
+    if VolumeManager.shared.isNetworkVolume(url) {
+        // Input-side seeking lands on a nearby keyframe without scanning the
+        // remote file from byte zero. One representative frame is sufficient
+        // because the result is persisted in the local thumbnail cache.
+        ffmpegArgs = [
+            "-ss", String(format: "%.3f", max(0, time)),
+            "-i", url.path,
+            "-map", "0:v:0",
+            "-vf", "scale=512:-2",
+            "-frames:v", "1",
+            "-q:v", "3",
+            "-threads", "2",
+            "-y",
+            thumbnailPath,
+        ]
+    } else {
+        ffmpegArgs = [
+            "-i", url.path,
+            "-vf", "scale=1280:-1,blackframe=0,metadata=select:key=lavfi.blackframe.pblack:value=50:function=less",
+            "-frames:v", "1",
+            "-threads", "2",
+            "-y",
+            thumbnailPath,
+        ]
+    }
 
 //    let session = FFmpegKit.execute(withArguments: ffmpegArgs)
 //    // let session = FFmpegKit.execute(ffmpegCommand)
@@ -877,10 +1058,7 @@ func getVideoThumbnailFFmpeg(for url: URL, at time: TimeInterval = 10) -> NSImag
             
             if FFmpegKitWrapper.shared.isSuccess(returnCode) {
                 if let thumbnail = NSImage(contentsOf: URL(fileURLWithPath: thumbnailPath)) {
-                    // 删除临时文件
-                    // Delete temporary file
-                    try? FileManager.default.removeItem(at: URL(fileURLWithPath: thumbnailPath))
-                    return thumbnail
+                    return thumbnail.deepCopy()
                 } else {
                     log("Failed to load thumbnail image from \(thumbnailPath)", level: .warn)
                 }
@@ -964,7 +1142,10 @@ func getImageThumb(url: URL, size oriSize: NSSize? = nil, refSize: NSSize? = nil
     // Handle unsupported thumbnails
     if globalVar.HandledNotNativeSupportedVideoExtensions.contains(url.pathExtension.lowercased()) {
         if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
-            return getVideoThumbnailFFmpeg(for: url)
+            return getVideoThumbnailFFmpeg(
+                for: url,
+                at: VolumeManager.shared.isNetworkVolume(url) ? 1 : 10
+            )
         }
         // return getFileTypeIcon(url: url)
         return nil
@@ -975,28 +1156,34 @@ func getImageThumb(url: URL, size oriSize: NSSize? = nil, refSize: NSSize? = nil
     if globalVar.HandledVideoExtensions.contains(url.pathExtension.lowercased()) {
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
+        let isNetworkVolume = VolumeManager.shared.isNetworkVolume(url)
         // 保证图像的正确方向
         // Ensure correct image orientation
         imageGenerator.appliesPreferredTrackTransform = true
         // imageGenerator.requestedTimeToleranceBefore = .zero
         // imageGenerator.requestedTimeToleranceAfter = .zero
-        imageGenerator.requestedTimeToleranceBefore = CMTime(seconds: 0.1, preferredTimescale: 600)
-        imageGenerator.requestedTimeToleranceAfter = CMTime(seconds: 0.1, preferredTimescale: 600)
-
-        let durationSeconds = asset.duration.seconds
+        let tolerance = isNetworkVolume ? 2.0 : 0.1
+        imageGenerator.requestedTimeToleranceBefore = CMTime(seconds: tolerance, preferredTimescale: 600)
+        imageGenerator.requestedTimeToleranceAfter = CMTime(seconds: tolerance, preferredTimescale: 600)
         
         // 尝试多个时间点，直到找到合适的帧
         // Try multiple time points until finding a suitable frame
         let timePoints: [Double]
-        if durationSeconds < 60 {
-            timePoints = [1, 2, 5, 10]
+        if isNetworkVolume {
+            // Avoid duration-dependent 10/25/50/75% seeks over SMB.
+            timePoints = [1]
         } else {
-            timePoints = [
-                durationSeconds * 0.10,
-                durationSeconds * 0.25,
-                durationSeconds * 0.50,
-                durationSeconds * 0.75
-            ]
+            let durationSeconds = asset.duration.seconds
+            if durationSeconds < 60 {
+                timePoints = [1, 2, 5, 10]
+            } else {
+                timePoints = [
+                    durationSeconds * 0.10,
+                    durationSeconds * 0.25,
+                    durationSeconds * 0.50,
+                    durationSeconds * 0.75,
+                ]
+            }
         }
         
         var bestFrame: (image: CGImage, brightness: Double)? = nil
@@ -1033,7 +1220,7 @@ func getImageThumb(url: URL, size oriSize: NSSize? = nil, refSize: NSSize? = nil
         
         // 如果所有尝试都失败，则使用FFmpeg方案
         // If all attempts fail, use FFmpeg solution
-        return getVideoThumbnailFFmpeg(for: url)
+        return getVideoThumbnailFFmpeg(for: url, at: isNetworkVolume ? 1 : 10)
     }else if (globalVar.HandledImageAndRawExtensions+["pdf"]).contains(url.pathExtension.lowercased()) {
         // 处理其它缩略图
         // Handle other thumbnails
@@ -2567,14 +2754,42 @@ class ThumbImageProcessor {
         }
     }
     
-    static func getImageCache(url: URL, size: NSSize? = nil, refSize: NSSize? = nil, needWaitWhenSame: Bool = true, isPreferInternalThumb: Bool = false, ver: Int) -> NSImage? {
+    static func getImageCache(
+        url: URL,
+        size: NSSize? = nil,
+        refSize: NSSize? = nil,
+        needWaitWhenSame: Bool = true,
+        isPreferInternalThumb: Bool = false,
+        fileSize: Int? = nil,
+        modificationDate: Date? = nil,
+        isDirectory: Bool = false,
+        ver: Int
+    ) -> NSImage? {
         let cacheKey = "\(url.absoluteString)_s\(size?.width ?? 0)x\(size?.height ?? 0)_r\(refSize?.width ?? 0)x\(refSize?.height ?? 0)_p\(isPreferInternalThumb)_v\(ver)" as NSString
+        let persistentCacheKey: String?
+        if !isDirectory, VolumeManager.shared.isNetworkVolume(url) {
+            persistentCacheKey = ExternalMediaThumbnailDiskCache.cacheKey(
+                for: url,
+                size: size,
+                refSize: refSize,
+                isPreferInternalThumb: isPreferInternalThumb,
+                fileSize: fileSize,
+                modificationDate: modificationDate
+            )
+        } else {
+            persistentCacheKey = nil
+        }
         // print(cacheKey)
         
         // 先检查缓存中是否已有图像（包括nil情况）
         // Check if image exists in cache first (including nil cases)
         if let cachedWrapper = cache.object(forKey: cacheKey) {
             return cachedWrapper.image
+        }
+        if let persistentCacheKey,
+           let cachedImage = ExternalMediaThumbnailDiskCache.cachedImage(forKey: persistentCacheKey) {
+            cache.setObject(CacheWrapper(image: cachedImage), forKey: cacheKey)
+            return cachedImage
         }
         
         lock.lock()
@@ -2604,7 +2819,18 @@ class ThumbImageProcessor {
             // 生成图像
             // Generate image
             var image: NSImage?
-            image = getImageThumb(url: url, size: size, refSize: refSize, isPreferInternalThumb: isPreferInternalThumb)
+            if let ioLease = NetworkIOCoordinator.shared.beginBackgroundAccess(for: url) {
+                image = getImageThumb(
+                    url: url,
+                    size: size,
+                    refSize: refSize,
+                    isPreferInternalThumb: isPreferInternalThumb
+                )
+                ioLease.end()
+            }
+            if let image, let persistentCacheKey {
+                ExternalMediaThumbnailDiskCache.store(image, forKey: persistentCacheKey)
+            }
             
             // 更新缓存（包括nil情况）
             // Update cache (including nil cases)
