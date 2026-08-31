@@ -185,9 +185,11 @@ class LargeImageView: NSView {
     var videoControlsView: VideoPlayerControlsView!
     private var periodicTimeObserver: Any?
     private var curtainModeView: CurtainModeView!
-    private var curtainProgressView: CurtainProgressView!
     private(set) var isCurtainMode = false
     private var curtainTransitionAxis: CurtainTransitionAxis = .horizontal
+    private var curtainAudioFadeGeneration = 0
+    private var curtainShouldFadeInNextVideo = false
+    private var isAdjustingPlaybackVolumeProgrammatically = false
     
     var exifTextView: ExifTextView!
     var ratioView: InfoView!
@@ -283,6 +285,7 @@ class LargeImageView: NSView {
                   let newVal = change.newValue,
                   let oldVal = change.oldValue,
                   newVal != oldVal else { return }
+            guard !self.isAdjustingPlaybackVolumeProgrammatically else { return }
             self.saveVolumeChange()
             self.videoControlsView.updateVolumeUI()
         }
@@ -335,11 +338,6 @@ class LargeImageView: NSView {
             bottomConstraint: bottomConstraint
         )
 
-        curtainProgressView = CurtainProgressView(frame: .zero)
-        curtainProgressView.largeImageView = self
-        curtainProgressView.isHidden = true
-        addSubview(curtainProgressView, positioned: .above, relativeTo: mpvVideoView)
-        
         exifTextView = ExifTextView(frame: .zero)
         exifTextView.translatesAutoresizingMaskIntoConstraints = false
         exifTextView.isHidden=true
@@ -809,8 +807,12 @@ class LargeImageView: NSView {
             curtainModeView.setPresented(true, centerFrame: curtainCenterFrame(), animated: true)
             refreshCurtainMedia(animated: true)
         } else {
-            curtainProgressView.isHidden = true
-            curtainProgressView.setActive(false)
+            curtainAudioFadeGeneration += 1
+            curtainShouldFadeInNextVideo = false
+            getViewController(self)?.curtainPendingLargeImagePos = nil
+            if file.type == .video {
+                setPlaybackVolumeWithoutSaving(globalVar.videoVolume)
+            }
             curtainModeView.setPresented(false, centerFrame: curtainCenterFrame(), animated: true)
             changeToStandardMediaFrame()
         }
@@ -820,7 +822,63 @@ class LargeImageView: NSView {
     func prepareCurtainTransition(direction: Int, axis: CurtainTransitionAxis) {
         guard isCurtainMode else { return }
         curtainTransitionAxis = axis
-        curtainModeView.animateSwitch(direction: direction, axis: axis, centerFrame: curtainCenterFrame())
+        curtainModeView.animateSwitch(
+            direction: direction,
+            axis: axis,
+            centerFrame: curtainCenterFrame(),
+            currentSnapshot: curtainCurrentMediaSnapshot()
+        )
+    }
+
+    func performCurtainAudioTransition(targetIsVideo: Bool, completion: @escaping () -> Void) {
+        curtainAudioFadeGeneration += 1
+        let generation = curtainAudioFadeGeneration
+        curtainShouldFadeInNextVideo = targetIsVideo
+
+        guard isCurtainMode, file.type == .video, videoIsPlaying else {
+            completion()
+            return
+        }
+
+        let startVolume = videoVolume
+        guard startVolume > 0 else {
+            completion()
+            return
+        }
+        animatePlaybackVolume(from: startVolume, to: 0, duration: 0.12, generation: generation, completion: completion)
+    }
+
+    private func fadeInCurtainVideoIfNeeded() {
+        guard curtainShouldFadeInNextVideo else { return }
+        curtainShouldFadeInNextVideo = false
+        curtainAudioFadeGeneration += 1
+        let generation = curtainAudioFadeGeneration
+        let targetVolume = globalVar.videoVolume
+        setPlaybackVolumeWithoutSaving(0)
+        animatePlaybackVolume(from: 0, to: targetVolume, duration: 0.18, generation: generation)
+    }
+
+    private func animatePlaybackVolume(from start: Float, to end: Float, duration: TimeInterval, generation: Int, completion: (() -> Void)? = nil) {
+        let steps = max(1, Int(duration / 0.02))
+        for step in 1...steps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration * Double(step) / Double(steps)) { [weak self] in
+                guard let self, self.curtainAudioFadeGeneration == generation else { return }
+                let progress = Float(step) / Float(steps)
+                self.setPlaybackVolumeWithoutSaving(start + (end - start) * progress)
+                if step == steps { completion?() }
+            }
+        }
+    }
+
+    private func setPlaybackVolumeWithoutSaving(_ volume: Float) {
+        let bounded = max(0, min(1, volume))
+        if isUsingMPVPlayer {
+            mpvPlayer?.volume = bounded
+        } else {
+            isAdjustingPlaybackVolumeProgrammatically = true
+            queuePlayer?.volume = bounded
+            isAdjustingPlaybackVolumeProgrammatically = false
+        }
     }
 
     func refreshCurtainMedia(animated: Bool = true) {
@@ -847,33 +905,34 @@ class LargeImageView: NSView {
             self.imageView.frame = centerFrame
             self.videoView.frame = centerFrame
             self.mpvVideoView.frame = centerFrame
-            self.curtainProgressView.frame = NSRect(
-                x: centerFrame.minX + 20,
-                y: centerFrame.minY + 13,
-                width: max(80, centerFrame.width - 40),
-                height: 14
-            )
         }
         if animated {
             NSAnimationContext.runAnimationGroup { context in
-                context.duration = self.curtainTransitionAxis == .vertical ? 0.44 : 0.38
-                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 0.82, 0.18, 1)
+                context.duration = self.curtainTransitionAxis == .vertical ? 0.34 : 0.27
+                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.12, 0.78, 0.16, 1)
                 self.imageView.animator().frame = centerFrame
                 self.videoView.animator().frame = centerFrame
                 self.mpvVideoView.animator().frame = centerFrame
-                self.curtainProgressView.animator().frame = NSRect(
-                    x: centerFrame.minX + 20,
-                    y: centerFrame.minY + 13,
-                    width: max(80, centerFrame.width - 40),
-                    height: 14
-                )
             }
         } else {
             applyFrames()
         }
-        curtainProgressView.isHidden = file.type != .video
-        curtainProgressView.setActive(file.type == .video)
         curtainModeView.layoutCards(centerFrame: centerFrame, animated: animated)
+    }
+
+    private func curtainCurrentMediaSnapshot() -> NSImage? {
+        let sourceView: NSView
+        if file.type == .video {
+            sourceView = isUsingMPVPlayer ? mpvVideoView : videoView
+        } else {
+            sourceView = imageView
+        }
+        guard sourceView.bounds.width > 0, sourceView.bounds.height > 0,
+              let representation = sourceView.bitmapImageRepForCachingDisplay(in: sourceView.bounds) else { return nil }
+        sourceView.cacheDisplay(in: sourceView.bounds, to: representation)
+        let image = NSImage(size: sourceView.bounds.size)
+        image.addRepresentation(representation)
+        return image
     }
 
     private func changeToStandardMediaFrame() {
@@ -1098,8 +1157,6 @@ class LargeImageView: NSView {
         currentPlayingURL = nil
         pausedBySeek = false
         isVideoMetadataUpdated = false
-        curtainProgressView?.isHidden = true
-        curtainProgressView?.setActive(false)
         while snapshotQueue.count > 0{
             snapshotQueue.first??.removeFromSuperview()
             snapshotQueue.removeFirst()
@@ -1187,7 +1244,7 @@ class LargeImageView: NSView {
                 let didLoad = mpvPlayer.load(
                     url: url,
                     startTime: restorePlayURL == url ? restorePlayPosition?.seconds : nil,
-                    volume: globalVar.videoVolume,
+                    volume: curtainShouldFadeInNextVideo ? 0 : globalVar.videoVolume,
                     rate: globalVar.videoPlaybackRate,
                     rotation: file.rotate,
                     abRange: finalABRange,
@@ -1208,6 +1265,7 @@ class LargeImageView: NSView {
                     startPeriodicTimeObserver()
                     checkPlayerItemStatus(id: videoOrderId)
                     if isCurtainMode { updateCurtainModeLayout(animated: false) }
+                    fadeInCurtainVideoIfNeeded()
                     return
                 }
             }
@@ -1304,6 +1362,7 @@ class LargeImageView: NSView {
                     currentPlayingURL = url
                     videoControlsView.applyVisibilityPreference()
                     if isCurtainMode { updateCurtainModeLayout(animated: false) }
+                    fadeInCurtainVideoIfNeeded()
                     
                     startPeriodicTimeObserver()
                     

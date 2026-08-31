@@ -306,6 +306,7 @@ class ViewController: NSViewController, NSSplitViewDelegate, NSSearchFieldDelega
     
     var initLargeImagePos = -1
     var currLargeImagePos = -1
+    var curtainPendingLargeImagePos: Int?
     var fileDB = DatabaseModel()
     
     var readInfoTaskPool = [TaskType]()

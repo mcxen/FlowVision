@@ -326,7 +326,7 @@ extension ViewController {
         let curFolder=fileDB.curFolder
         let totalCount = fileDB.db[SortKeyDir(curFolder)]!.files.count
         let fileCount = fileDB.db[SortKeyDir(curFolder)]!.fileCount
-        var nextLargeImagePos=currLargeImagePos
+        var nextLargeImagePos = largeImageView.isCurtainMode ? (curtainPendingLargeImagePos ?? currLargeImagePos) : currLargeImagePos
         var ifFoundNextImage=false
         // 向前
         // Forward
@@ -379,46 +379,43 @@ extension ViewController {
         fileDB.unlock()
         
         if ifFoundNextImage {
+            fileDB.lock()
+            let targetIsVideo = fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: nextLargeImagePos)?.1.type == .video
+            fileDB.unlock()
+            curtainPendingLargeImagePos = nextLargeImagePos
             largeImageView.prepareCurtainTransition(direction: curtainVisualDirection ?? (direction < 0 ? -1 : 1), axis: curtainTransitionAxis)
-            // 复原之前图片的旋转
-            // Restore the rotation of the previous image
-            largeImageView.file.rotate=0
-            
-            // 复原镜像
-            // Restore mirror
-            if !publicVar.isMirrorLocked {
-                largeImageView.imageView.isMirroredH=false
-            }
-            
-            currLargeImagePos=nextLargeImagePos
+            largeImageView.performCurtainAudioTransition(targetIsVideo: targetIsVideo) { [weak self] in
+                guard let self else { return }
+                // Restore per-media transforms before loading the target.
+                largeImageView.file.rotate=0
+                if !publicVar.isMirrorLocked {
+                    largeImageView.imageView.isMirroredH=false
+                }
+                currLargeImagePos=nextLargeImagePos
+                curtainPendingLargeImagePos = nil
+                lastDoNotGenResized=false
+                lastResizeFailed=false
+                lastUseHDR=false
+                lastLargeImageRotate=0
+                largeImageView.unSetOcr()
 
-            lastDoNotGenResized=false
-            lastResizeFailed=false
-            lastUseHDR=false
-            lastLargeImageRotate=0
-            
-            // 取消OCR
-            // Cancel OCR
-            largeImageView.unSetOcr()
-            
-            if globalVar.portableMode {
-                fileDB.lock()
-                let refSize = fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: nextLargeImagePos)?.1.originalSize
-                fileDB.unlock()
-                adjustWindowPortable(refSize: refSize, firstShowThumb: firstShowThumb, animate: false)
-            }else{
-                changeLargeImage(firstShowThumb: firstShowThumb)
-            }
-            largeImageView.refreshCurtainMedia()
-            
-            // 选中新的项目
-            // Select new item
-            collectionView.deselectAll(nil)
-            if currLargeImagePos < collectionView.numberOfItems(inSection: 0) {
-                let indexPath=IndexPath(item: currLargeImagePos, section: 0)
-                collectionView.delegate?.collectionView?(collectionView, shouldSelectItemsAt: [indexPath])
-                collectionView.selectItems(at: [indexPath], scrollPosition: [])
-                collectionView.delegate?.collectionView?(collectionView, didSelectItemsAt: [indexPath])
+                if globalVar.portableMode {
+                    fileDB.lock()
+                    let refSize = fileDB.db[SortKeyDir(curFolder)]!.files.elementSafe(atOffset: nextLargeImagePos)?.1.originalSize
+                    fileDB.unlock()
+                    adjustWindowPortable(refSize: refSize, firstShowThumb: firstShowThumb, animate: false)
+                } else {
+                    changeLargeImage(firstShowThumb: firstShowThumb)
+                }
+                largeImageView.refreshCurtainMedia()
+
+                collectionView.deselectAll(nil)
+                if currLargeImagePos < collectionView.numberOfItems(inSection: 0) {
+                    let indexPath=IndexPath(item: currLargeImagePos, section: 0)
+                    collectionView.delegate?.collectionView?(collectionView, shouldSelectItemsAt: [indexPath])
+                    collectionView.selectItems(at: [indexPath], scrollPosition: [])
+                    collectionView.delegate?.collectionView?(collectionView, didSelectItemsAt: [indexPath])
+                }
             }
         }else {
             if direction == -1 {

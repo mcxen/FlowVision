@@ -11,13 +11,12 @@ enum CurtainTransitionAxis {
 }
 
 final class CurtainModeView: NSView {
-    private let ambientGlow = NSView()
     private let leftCard = CurtainMediaCardView()
     private let rightCard = CurtainMediaCardView()
-    private let centerPlate = NSView()
-    private var transitionOverlay: NSImageView?
+    private var transitionOverlays = [NSImageView]()
     private var isPresented = false
     private var presentationGeneration = 0
+    private var transitionGeneration = 0
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -31,41 +30,8 @@ final class CurtainModeView: NSView {
 
     private func setup() {
         wantsLayer = true
-        layer?.backgroundColor = NSColor.black.withAlphaComponent(0.08).cgColor
-
-        ambientGlow.wantsLayer = true
-        let glow = CAGradientLayer()
-        glow.type = .radial
-        glow.colors = [
-            NSColor.white.withAlphaComponent(0.13).cgColor,
-            NSColor.controlAccentColor.withAlphaComponent(0.045).cgColor,
-            NSColor.clear.cgColor,
-        ]
-        glow.locations = [0, 0.38, 1]
-        glow.startPoint = CGPoint(x: 0.5, y: 0.5)
-        glow.endPoint = CGPoint(x: 1, y: 1)
-        ambientGlow.layer = glow
-        addSubview(ambientGlow)
-
         addSubview(leftCard)
         addSubview(rightCard)
-
-        centerPlate.wantsLayer = true
-        centerPlate.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.34).cgColor
-        centerPlate.layer?.cornerRadius = 20
-        centerPlate.layer?.borderWidth = 1
-        centerPlate.layer?.borderColor = NSColor.white.withAlphaComponent(0.22).cgColor
-        centerPlate.layer?.shadowColor = NSColor.black.cgColor
-        centerPlate.layer?.shadowOpacity = 0.66
-        centerPlate.layer?.shadowRadius = 34
-        centerPlate.layer?.shadowOffset = NSSize(width: 0, height: -14)
-        addSubview(centerPlate)
-    }
-
-    override func layout() {
-        super.layout()
-        ambientGlow.frame = bounds.insetBy(dx: -bounds.width * 0.08, dy: -bounds.height * 0.08)
-        ambientGlow.layer?.frame = ambientGlow.bounds
     }
 
     override func hitTest(_ point: NSPoint) -> NSView? {
@@ -96,23 +62,21 @@ final class CurtainModeView: NSView {
         )
 
         let applyFrames = {
-            self.centerPlate.frame = centerFrame.insetBy(dx: -2, dy: -2)
             self.leftCard.frame = leftFrame
             self.rightCard.frame = rightFrame
-            self.leftCard.alphaValue = self.leftCard.hasMedia ? 0.68 : 0
-            self.rightCard.alphaValue = self.rightCard.hasMedia ? 0.68 : 0
+            self.leftCard.alphaValue = self.leftCard.hasMedia ? 0.82 : 0
+            self.rightCard.alphaValue = self.rightCard.hasMedia ? 0.82 : 0
             self.leftCard.applyRestingDepth(side: .left)
             self.rightCard.applyRestingDepth(side: .right)
         }
         if animated {
             NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.38
-                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.18, 0.76, 0.20, 1)
-                self.centerPlate.animator().frame = centerFrame.insetBy(dx: -2, dy: -2)
+                context.duration = 0.28
+                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 0.82, 0.18, 1)
                 self.leftCard.animator().frame = leftFrame
                 self.rightCard.animator().frame = rightFrame
-                self.leftCard.animator().alphaValue = self.leftCard.hasMedia ? 0.68 : 0
-                self.rightCard.animator().alphaValue = self.rightCard.hasMedia ? 0.68 : 0
+                self.leftCard.animator().alphaValue = self.leftCard.hasMedia ? 0.82 : 0
+                self.rightCard.animator().alphaValue = self.rightCard.hasMedia ? 0.82 : 0
             }
             leftCard.applyRestingDepth(side: .left, animated: true)
             rightCard.applyRestingDepth(side: .right, animated: true)
@@ -121,60 +85,79 @@ final class CurtainModeView: NSView {
         }
     }
 
-    func animateSwitch(direction: Int, axis: CurtainTransitionAxis, centerFrame: NSRect) {
+    func animateSwitch(direction: Int, axis: CurtainTransitionAxis, centerFrame: NSRect, currentSnapshot: NSImage?) {
+        transitionGeneration += 1
+        let generation = transitionGeneration
         let card = direction < 0 ? leftCard : rightCard
         guard card.hasMedia else { return }
-        transitionOverlay?.removeFromSuperview()
-        guard let snapshot = card.snapshotImage() else { return }
+        transitionOverlays.forEach { $0.removeFromSuperview() }
+        transitionOverlays.removeAll()
+        guard let incomingSnapshot = card.snapshotImage(), let hostView = superview else { return }
 
-        let overlay = NSImageView(frame: card.frame)
-        overlay.image = snapshot
-        overlay.imageScaling = .scaleAxesIndependently
-        overlay.wantsLayer = true
-        overlay.layer?.cornerRadius = 18
-        overlay.layer?.masksToBounds = false
-        overlay.layer?.shadowColor = NSColor.black.cgColor
-        overlay.layer?.shadowOpacity = 0.72
-        overlay.layer?.shadowRadius = 30
-        overlay.layer?.shadowOffset = NSSize(width: 0, height: -12)
-        guard let hostView = superview else { return }
-        hostView.addSubview(overlay, positioned: .above, relativeTo: nil)
-        transitionOverlay = overlay
+        let incoming = makeTransitionView(image: incomingSnapshot, frame: card.frame)
+        hostView.addSubview(incoming, positioned: .above, relativeTo: nil)
+        transitionOverlays.append(incoming)
 
-        let startFrame = card.frame
-        let anticipationFrame: NSRect
+        var outgoing: NSImageView?
+        if let currentSnapshot {
+            let view = makeTransitionView(image: currentSnapshot, frame: centerFrame)
+            hostView.addSubview(view, positioned: .below, relativeTo: incoming)
+            transitionOverlays.append(view)
+            outgoing = view
+        }
+
+        let outgoingTarget: NSRect
         switch axis {
         case .horizontal:
-            anticipationFrame = startFrame.offsetBy(dx: CGFloat(direction) * 18, dy: 4)
+            outgoingTarget = direction > 0 ? leftCard.frame : rightCard.frame
         case .vertical:
-            anticipationFrame = startFrame.offsetBy(dx: CGFloat(direction) * -12, dy: CGFloat(direction) * -22)
+            outgoingTarget = centerFrame.offsetBy(dx: 0, dy: CGFloat(direction) * centerFrame.height * -0.78)
         }
-        overlay.frame = anticipationFrame
-        overlay.alphaValue = 0.86
-        overlay.layer?.transform = CATransform3DMakeScale(0.94, 0.94, 1)
+        incoming.alphaValue = 1
+        incoming.layer?.transform = coverFlowTransform(relativeOffset: CGFloat(direction), travelDirection: direction)
+        outgoing?.layer?.transform = coverFlowTransform(relativeOffset: 0, travelDirection: direction)
 
-        let duration = axis == .horizontal ? 0.36 : 0.42
+        let duration = axis == .horizontal ? 0.27 : 0.34
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = duration
-            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 0.82, 0.18, 1)
-            overlay.animator().frame = centerFrame
-            overlay.animator().alphaValue = 1
-            overlay.layer?.transform = CATransform3DIdentity
-            self.centerPlate.animator().alphaValue = 0.78
-        }, completionHandler: { [weak self, weak overlay] in
-            guard let self, let overlay else { return }
-            NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.12
-                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-                overlay.animator().alphaValue = 0
-                self.centerPlate.animator().alphaValue = 1
-            }, completionHandler: {
-                overlay.removeFromSuperview()
-                if self.transitionOverlay === overlay {
-                    self.transitionOverlay = nil
-                }
-            })
+            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.12, 0.78, 0.16, 1)
+            incoming.animator().frame = centerFrame
+            incoming.layer?.transform = self.coverFlowTransform(relativeOffset: 0, travelDirection: direction)
+            outgoing?.animator().frame = outgoingTarget
+            outgoing?.animator().alphaValue = axis == .horizontal ? 0.82 : 0
+            outgoing?.layer?.transform = self.coverFlowTransform(relativeOffset: CGFloat(-direction), travelDirection: direction)
+        }, completionHandler: { [weak self] in
+            guard let self, self.transitionGeneration == generation else { return }
+            self.transitionOverlays.forEach { $0.removeFromSuperview() }
+            self.transitionOverlays.removeAll()
         })
+    }
+
+    private func coverFlowTransform(relativeOffset: CGFloat, travelDirection: Int) -> CATransform3D {
+        let clamped = max(-1, min(1, relativeOffset))
+        var transform = CATransform3DIdentity
+        transform.m34 = -1 / 700
+        transform = CATransform3DTranslate(transform, 0, 0, -abs(clamped) * 105)
+        transform = CATransform3DRotate(transform, -clamped * 0.82, 0, 1, 0)
+        let scale = 1 - abs(clamped) * 0.18
+        transform = CATransform3DScale(transform, scale, scale, 1)
+        // Incoming and outgoing cards overlap at the midpoint; bias the incoming card forward.
+        transform.m43 += relativeOffset.sign == CGFloat(travelDirection).sign ? 1 : 0
+        return transform
+    }
+
+    private func makeTransitionView(image: NSImage, frame: NSRect) -> NSImageView {
+        let view = NSImageView(frame: frame)
+        view.image = image
+        view.imageScaling = .scaleAxesIndependently
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 16
+        view.layer?.masksToBounds = true
+        view.layer?.shadowColor = NSColor.black.cgColor
+        view.layer?.shadowOpacity = 0.42
+        view.layer?.shadowRadius = 18
+        view.layer?.shadowOffset = NSSize(width: 0, height: -7)
+        return view
     }
 
     func setPresented(_ presented: Bool, centerFrame: NSRect, animated: Bool) {
@@ -182,25 +165,22 @@ final class CurtainModeView: NSView {
         let generation = presentationGeneration
         isPresented = presented
         layer?.removeAllAnimations()
+        if !presented {
+            transitionGeneration += 1
+            transitionOverlays.forEach { $0.removeFromSuperview() }
+            transitionOverlays.removeAll()
+        }
         if presented {
             isHidden = false
             alphaValue = 1
-            centerPlate.frame = centerFrame.insetBy(dx: 12, dy: 12)
-            centerPlate.alphaValue = 0
-            ambientGlow.alphaValue = 0
             leftCard.alphaValue = 0
             rightCard.alphaValue = 0
-            guard animated else {
-                centerPlate.alphaValue = 1
-                ambientGlow.alphaValue = 1
-                return
-            }
+            guard animated else { return }
             NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.42
+                context.duration = 0.24
                 context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 0.82, 0.18, 1)
-                self.centerPlate.animator().frame = centerFrame.insetBy(dx: -2, dy: -2)
-                self.centerPlate.animator().alphaValue = 1
-                self.ambientGlow.animator().alphaValue = 1
+                self.leftCard.animator().alphaValue = self.leftCard.hasMedia ? 0.82 : 0
+                self.rightCard.animator().alphaValue = self.rightCard.hasMedia ? 0.82 : 0
             }
         } else if animated {
             NSAnimationContext.runAnimationGroup({ context in
@@ -222,8 +202,7 @@ private final class CurtainMediaCardView: NSView {
     enum Side { case left, right }
 
     private let imageView = NSImageView()
-    private let shadeView = NSView()
-    private let videoBadge = NSVisualEffectView()
+    private let videoBadge = NSView()
     private let videoIcon = NSImageView()
     private let nameLabel = NSTextField(labelWithString: "")
     private var representedPath = ""
@@ -264,25 +243,8 @@ private final class CurtainMediaCardView: NSView {
         imageView.layer?.masksToBounds = true
         addSubview(imageView)
 
-        shadeView.wantsLayer = true
-        let shade = CAGradientLayer()
-        shade.colors = [
-            NSColor.white.withAlphaComponent(0.08).cgColor,
-            NSColor.clear.cgColor,
-            NSColor.black.withAlphaComponent(0.50).cgColor,
-        ]
-        shade.locations = [0, 0.52, 1]
-        shade.startPoint = CGPoint(x: 0.5, y: 1)
-        shade.endPoint = CGPoint(x: 0.5, y: 0)
-        shadeView.layer = shade
-        shadeView.layer?.cornerRadius = 18
-        shadeView.layer?.masksToBounds = true
-        addSubview(shadeView)
-
-        videoBadge.blendingMode = .withinWindow
-        videoBadge.material = .hudWindow
-        videoBadge.state = .active
         videoBadge.wantsLayer = true
+        videoBadge.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.66).cgColor
         videoBadge.layer?.cornerRadius = 14
         addSubview(videoBadge)
 
@@ -303,8 +265,6 @@ private final class CurtainMediaCardView: NSView {
     override func layout() {
         super.layout()
         imageView.frame = bounds
-        shadeView.frame = bounds
-        shadeView.layer?.frame = shadeView.bounds
         videoBadge.frame = NSRect(x: bounds.midX - 14, y: bounds.midY - 14, width: 28, height: 28)
         videoIcon.frame = videoBadge.bounds.insetBy(dx: 7, dy: 7)
         nameLabel.frame = NSRect(x: 12, y: 10, width: max(0, bounds.width - 24), height: 22)
@@ -349,8 +309,8 @@ private final class CurtainMediaCardView: NSView {
     func applyRestingDepth(side: Side, animated: Bool = false) {
         var transform = CATransform3DIdentity
         transform.m34 = -1 / 760
-        transform = CATransform3DScale(transform, 0.965, 0.965, 1)
-        transform = CATransform3DRotate(transform, side == .left ? 0.105 : -0.105, 0, 1, 0)
+        transform = CATransform3DScale(transform, 0.96, 0.96, 1)
+        transform = CATransform3DRotate(transform, side == .left ? 0.095 : -0.095, 0, 1, 0)
         let changes = {
             self.layer?.transform = transform
             self.layer?.shadowOpacity = 0.48
@@ -358,7 +318,7 @@ private final class CurtainMediaCardView: NSView {
         }
         if animated {
             NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.38
+                context.duration = 0.28
                 context.timingFunction = CAMediaTimingFunction(controlPoints: 0.18, 0.76, 0.20, 1)
                 changes()
             }
@@ -374,74 +334,5 @@ private final class CurtainMediaCardView: NSView {
         let image = NSImage(size: bounds.size)
         image.addRepresentation(representation)
         return image
-    }
-}
-
-final class CurtainProgressView: NSView {
-    weak var largeImageView: LargeImageView?
-    private var timer: Timer?
-    private var isDragging = false
-
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        wantsLayer = true
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        wantsLayer = true
-    }
-
-    func setActive(_ active: Bool) {
-        timer?.invalidate()
-        timer = nil
-        guard active else { return }
-        timer = Timer.scheduledTimer(withTimeInterval: 0.12, repeats: true) { [weak self] _ in
-            self?.needsDisplay = true
-        }
-    }
-
-    deinit {
-        timer?.invalidate()
-    }
-
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        guard let player = largeImageView else { return }
-        let duration = player.videoDurationSeconds
-        let fraction = duration.isFinite && duration > 0 ? max(0, min(1, player.videoCurrentTimeSeconds / duration)) : 0
-        let track = bounds.insetBy(dx: 1, dy: max(0, (bounds.height - 5) / 2))
-        NSColor.white.withAlphaComponent(0.24).setFill()
-        NSBezierPath(roundedRect: track, xRadius: 2.5, yRadius: 2.5).fill()
-        let fill = NSRect(x: track.minX, y: track.minY, width: track.width * fraction, height: track.height)
-        NSColor.controlAccentColor.setFill()
-        NSBezierPath(roundedRect: fill, xRadius: 2.5, yRadius: 2.5).fill()
-        let knob = NSRect(x: track.minX + track.width * fraction - 5, y: track.midY - 5, width: 10, height: 10)
-        NSColor.white.setFill()
-        NSBezierPath(ovalIn: knob).fill()
-    }
-
-    override func mouseDown(with event: NSEvent) {
-        isDragging = true
-        seek(with: event)
-    }
-
-    override func mouseDragged(with event: NSEvent) {
-        seek(with: event)
-    }
-
-    override func mouseUp(with event: NSEvent) {
-        seek(with: event)
-        isDragging = false
-    }
-
-    private func seek(with event: NSEvent) {
-        guard let player = largeImageView else { return }
-        let duration = player.videoDurationSeconds
-        guard duration.isFinite, duration > 0 else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let fraction = max(0, min(1, point.x / max(1, bounds.width)))
-        player.seekVideo(to: duration * Double(fraction))
-        needsDisplay = true
     }
 }
