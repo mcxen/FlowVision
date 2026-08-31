@@ -1640,6 +1640,13 @@ extension WindowController: NSToolbarDelegate {
         if viewController.publicVar.isInLargeView {
             menu.addItem(NSMenuItem.separator())
 
+            let curtainMode = menu.addItem(
+                withTitle: NSLocalizedString("Curtain Mode", comment: "幕布模式"),
+                action: #selector(toggleCurtainMode),
+                keyEquivalent: ""
+            )
+            curtainMode.state = viewController.largeImageView.isCurtainMode ? .on : .off
+
             let isFullScreen = window?.styleMask.contains(.fullScreen) ?? false
             let fullScreenTitle = isFullScreen
                 ? NSLocalizedString("Exit Full Screen", comment: "退出全屏")
@@ -1857,6 +1864,11 @@ extension WindowController: NSToolbarDelegate {
             let menuLocation = NSEvent.mouseLocation
             menu.popUp(positioning: nil, at: menuLocation, in: nil)
         }
+    }
+
+    @objc func toggleCurtainMode(_ sender: Any?) {
+        guard let viewController = contentViewController as? ViewController else { return }
+        viewController.largeImageView.toggleCurtainMode()
     }
 
     @objc func toggleEnableHDR(_ sender: NSMenuItem){

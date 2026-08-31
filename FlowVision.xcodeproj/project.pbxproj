@@ -58,6 +58,7 @@
 		F7790ED82BA5FB6A00406D35 /* CustomCollectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7790ED62BA5FB6A00406D35 /* CustomCollectionViewItem.xib */; };
 		F7790EDB2BA8581600406D35 /* BTree in Frameworks */ = {isa = PBXBuildFile; productRef = F7790EDA2BA8581600406D35 /* BTree */; };
 		F78960F22BDCC26B00C2571B /* LargeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78960F12BDCC26B00C2571B /* LargeImageView.swift */; };
+		F7CC00022FB0000000CC0002 /* CurtainModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CC00012FB0000000CC0001 /* CurtainModeView.swift */; };
 		F78D1A8A2D4CF31D00741908 /* CustomSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78D1A892D4CF31D00741908 /* CustomSettingsViewController.xib */; };
 		F78D1A8C2D4CF37900741908 /* CustomSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78D1A8B2D4CF37900741908 /* CustomSettingsViewController.swift */; };
 		F78FAB0D2C0EE94D00FE66CC /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78FAB0C2C0EE94D00FE66CC /* CustomImageView.swift */; };
@@ -182,6 +183,7 @@
 		F7790ED52BA5FB6A00406D35 /* CustomCollectionViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewItem.swift; sourceTree = "<group>"; };
 		F7790ED62BA5FB6A00406D35 /* CustomCollectionViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCollectionViewItem.xib; sourceTree = "<group>"; };
 		F78960F12BDCC26B00C2571B /* LargeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeImageView.swift; sourceTree = "<group>"; };
+		F7CC00012FB0000000CC0001 /* CurtainModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurtainModeView.swift; sourceTree = "<group>"; };
 		B513CF896032F495D8769284 /* MPVPlayerBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPVPlayerBackend.swift; sourceTree = "<group>"; };
 		F78960F52BDFFE9200C2571B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F78D1A692D432DCE00741908 /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/Main.xcstrings; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				F795AC6D2C196B80004B487F /* CustomSplitView.swift */,
 				F73865E52C37C1AA00837FE4 /* DrawingView.swift */,
 				F7FAE0002F6BA00000FAE000 /* FavoritesPopoverViewController.swift */,
+				F7CC00012FB0000000CC0001 /* CurtainModeView.swift */,
 				F78960F12BDCC26B00C2571B /* LargeImageView.swift */,
 				F73865D42C37B9B800837FE4 /* Layout.swift */,
 				B513CF896032F495D8769284 /* MPVPlayerBackend.swift */,
@@ -489,6 +492,7 @@
 				F7BB00022FA0000000BB0002 /* MPVRuntimeManager.swift in Sources */,
 				F7BB00042FA0000000BB0004 /* VideoTrimEditorWindowController.swift in Sources */,
 				F78960F22BDCC26B00C2571B /* LargeImageView.swift in Sources */,
+				F7CC00022FB0000000CC0002 /* CurtainModeView.swift in Sources */,
 				F78FAB0D2C0EE94D00FE66CC /* CustomImageView.swift in Sources */,
 				F76E2EFE2C3B765C0031B0B4 /* Log.swift in Sources */,
 				F7C2DEBC2C4E6BEC003DF765 /* GeneralSettingsViewController.swift in Sources */,
@@ -747,7 +751,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260809;
+				CURRENT_PROJECT_VERSION = 20260831;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -763,7 +767,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.6;
+				MARKETING_VERSION = 1.7.7;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVisionDbg;
 				PRODUCT_NAME = "$(TARGET_NAME)Dbg";
@@ -781,7 +785,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlowVision/FlowVision.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20260809;
+				CURRENT_PROJECT_VERSION = 20260831;
 				DEVELOPMENT_TEAM = M6WQA48PJ2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -797,7 +801,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.7.6;
+				MARKETING_VERSION = 1.7.7;
 				MERGED_BINARY_TYPE = automatic;
 				PRODUCT_BUNDLE_IDENTIFIER = netdcy.FlowVision;
 				PRODUCT_NAME = "$(TARGET_NAME)";

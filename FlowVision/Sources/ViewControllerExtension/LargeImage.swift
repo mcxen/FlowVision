@@ -43,6 +43,8 @@ extension ViewController {
         if !publicVar.isInLargeView || !publicVar.isInLargeViewAfterAnimate {
             return
         }
+
+        largeImageView.setCurtainModeEnabled(false)
         
         view.window?.makeFirstResponder(collectionView)
         
@@ -313,7 +315,7 @@ extension ViewController {
         }
     }
     
-    func locateLargeImage(direction: Int, isShowReachEndPrompt: Bool = true, firstShowThumb: Bool = true, noLoopBrowsing: Bool = false){
+    func locateLargeImage(direction: Int, isShowReachEndPrompt: Bool = true, firstShowThumb: Bool = true, noLoopBrowsing: Bool = false, curtainTransitionAxis: CurtainTransitionAxis = .horizontal, curtainVisualDirection: Int? = nil){
         if largeImageView.isHidden {return}
         if publicVar.openFromFinderPath != "" {return}
         if currLargeImagePos == -1 {
@@ -377,6 +379,7 @@ extension ViewController {
         fileDB.unlock()
         
         if ifFoundNextImage {
+            largeImageView.prepareCurtainTransition(direction: curtainVisualDirection ?? (direction < 0 ? -1 : 1), axis: curtainTransitionAxis)
             // 复原之前图片的旋转
             // Restore the rotation of the previous image
             largeImageView.file.rotate=0
@@ -406,6 +409,7 @@ extension ViewController {
             }else{
                 changeLargeImage(firstShowThumb: firstShowThumb)
             }
+            largeImageView.refreshCurtainMedia()
             
             // 选中新的项目
             // Select new item
@@ -419,13 +423,13 @@ extension ViewController {
         }else {
             if direction == -1 {
                 if globalVar.loopBrowsing && !noLoopBrowsing {
-                    locateLargeImage(direction: 2, isShowReachEndPrompt: isShowReachEndPrompt, firstShowThumb: firstShowThumb)
+                    locateLargeImage(direction: 2, isShowReachEndPrompt: isShowReachEndPrompt, firstShowThumb: firstShowThumb, curtainTransitionAxis: curtainTransitionAxis, curtainVisualDirection: -1)
                 } else if isShowReachEndPrompt {
                     largeImageView.showInfo(NSLocalizedString("Have Reached the First", comment: "已经是第一张图片"))
                 }
             }else if direction == 1 {
                 if globalVar.loopBrowsing && !noLoopBrowsing {
-                    locateLargeImage(direction: -2, isShowReachEndPrompt: isShowReachEndPrompt, firstShowThumb: firstShowThumb)
+                    locateLargeImage(direction: -2, isShowReachEndPrompt: isShowReachEndPrompt, firstShowThumb: firstShowThumb, curtainTransitionAxis: curtainTransitionAxis, curtainVisualDirection: 1)
                 }else if isShowReachEndPrompt {
                     largeImageView.showInfo(NSLocalizedString("Have Reached the Last", comment: "已经是最后一张图片"))
                 }
@@ -439,6 +443,38 @@ extension ViewController {
     
     func nextLargeImage(isShowReachEndPrompt: Bool = true, firstShowThumb: Bool = true, noLoopBrowsing: Bool = false){
         locateLargeImage(direction: 1, isShowReachEndPrompt: isShowReachEndPrompt, firstShowThumb: firstShowThumb, noLoopBrowsing: noLoopBrowsing)
+    }
+
+    func curtainNeighborFiles() -> (FileModel?, FileModel?) {
+        guard currLargeImagePos >= 0 else { return (nil, nil) }
+        fileDB.lock()
+        defer { fileDB.unlock() }
+        guard let directory = fileDB.db[SortKeyDir(fileDB.curFolder)] else { return (nil, nil) }
+
+        func neighbor(from start: Int, step: Int) -> FileModel? {
+            var index = start + step
+            var inspected = 0
+            while index >= 0 && index < directory.files.count {
+                if let candidate = directory.files.elementSafe(atOffset: index)?.1,
+                   candidate.type == .image || (candidate.type == .video && globalVar.useInternalPlayer) {
+                    return candidate
+                }
+                index += step
+                inspected += 1
+            }
+            if globalVar.loopBrowsing, inspected < directory.files.count {
+                index = step < 0 ? directory.files.count - 1 : 0
+                while index >= 0 && index < directory.files.count, index != start {
+                    if let candidate = directory.files.elementSafe(atOffset: index)?.1,
+                       candidate.type == .image || (candidate.type == .video && globalVar.useInternalPlayer) {
+                        return candidate
+                    }
+                    index += step
+                }
+            }
+            return nil
+        }
+        return (neighbor(from: currLargeImagePos, step: -1), neighbor(from: currLargeImagePos, step: 1))
     }
     
     func setWindowTitleOfLargeImage(file: FileModel){

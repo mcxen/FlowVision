@@ -759,6 +759,22 @@ extension ViewController {
                 }
             }
             
+            // Shift+Space opens Curtain mode directly, or toggles it in large view.
+            if characters == " " && isOnlyShiftPressed {
+                if publicVar.isInLargeView {
+                    largeImageView.toggleCurtainMode()
+                    return nil
+                }
+                if publicVar.isCollectionViewFirstResponder,
+                   let indexPath = collectionView.selectionIndexPaths.min() {
+                    openLargeImage(indexPath)
+                    if publicVar.isInLargeView {
+                        largeImageView.setCurtainModeEnabled(true)
+                    }
+                    return nil
+                }
+            }
+
             // 检查按键是否是 空格 键
             // Check if key is Space
             if characters == " " && noModifierKey {
@@ -932,6 +948,10 @@ extension ViewController {
             let isRTL = view.userInterfaceLayoutDirection == .rightToLeft
             if (specialKey == .rightArrow || specialKey == .downArrow || specialKey == .pageDown || specialKey == .next) && noModifierKey {
                 if publicVar.isInLargeView{
+                    if largeImageView.isCurtainMode && (specialKey == .downArrow || specialKey == .pageDown) {
+                        locateLargeImage(direction: 1, curtainTransitionAxis: .vertical)
+                        return nil
+                    }
                     if largeImageView.file.type == .video && specialKey == .rightArrow {
                         // RTL: right arrow = backward
                         largeImageView.seekVideo(direction: isRTL ? -1 : 1)
@@ -947,6 +967,10 @@ extension ViewController {
             // Check if key is ⬅️, ⬆️, PageUp
             if (specialKey == .leftArrow || specialKey == .upArrow || specialKey == .pageUp || specialKey == .prev) && noModifierKey {
                 if publicVar.isInLargeView{
+                    if largeImageView.isCurtainMode && (specialKey == .upArrow || specialKey == .pageUp) {
+                        locateLargeImage(direction: -1, curtainTransitionAxis: .vertical)
+                        return nil
+                    }
                     if largeImageView.file.type == .video && specialKey == .leftArrow {
                         // RTL: left arrow = forward
                         largeImageView.seekVideo(direction: isRTL ? 1 : -1)

@@ -184,6 +184,10 @@ class LargeImageView: NSView {
     
     var videoControlsView: VideoPlayerControlsView!
     private var periodicTimeObserver: Any?
+    private var curtainModeView: CurtainModeView!
+    private var curtainProgressView: CurtainProgressView!
+    private(set) var isCurtainMode = false
+    private var curtainTransitionAxis: CurtainTransitionAxis = .horizontal
     
     var exifTextView: ExifTextView!
     var ratioView: InfoView!
@@ -268,6 +272,11 @@ class LargeImageView: NSView {
         mpvVideoView.autoresizingMask = [.width, .height]
         mpvVideoView.isHidden = true
         self.addSubview(mpvVideoView)
+
+        curtainModeView = CurtainModeView(frame: bounds)
+        curtainModeView.autoresizingMask = [.width, .height]
+        curtainModeView.isHidden = true
+        addSubview(curtainModeView, positioned: .below, relativeTo: imageView)
         
         volumeObservation = queuePlayer?.observe(\.volume, options: [.new, .old]) { [weak self] _, change in
             guard let self = self,
@@ -325,6 +334,11 @@ class LargeImageView: NSView {
             centerXConstraint: centerXConstraint,
             bottomConstraint: bottomConstraint
         )
+
+        curtainProgressView = CurtainProgressView(frame: .zero)
+        curtainProgressView.largeImageView = self
+        curtainProgressView.isHidden = true
+        addSubview(curtainProgressView, positioned: .above, relativeTo: mpvVideoView)
         
         exifTextView = ExifTextView(frame: .zero)
         exifTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -779,6 +793,96 @@ class LargeImageView: NSView {
         self.trackingAreas.forEach { self.removeTrackingArea($0) }
         setupMouseTracking()
         videoControlsView?.constrainFloatingPosition()
+        if isCurtainMode {
+            updateCurtainModeLayout(animated: false)
+        }
+    }
+
+    func toggleCurtainMode() {
+        setCurtainModeEnabled(!isCurtainMode)
+    }
+
+    func setCurtainModeEnabled(_ enabled: Bool) {
+        guard enabled != isCurtainMode else { return }
+        isCurtainMode = enabled
+        if enabled {
+            curtainModeView.setPresented(true, centerFrame: curtainCenterFrame(), animated: true)
+            refreshCurtainMedia(animated: true)
+        } else {
+            curtainProgressView.isHidden = true
+            curtainProgressView.setActive(false)
+            curtainModeView.setPresented(false, centerFrame: curtainCenterFrame(), animated: true)
+            changeToStandardMediaFrame()
+        }
+        getViewController(self)?.view.window?.windowController.map { ($0 as? WindowController)?.updateToolbar() }
+    }
+
+    func prepareCurtainTransition(direction: Int, axis: CurtainTransitionAxis) {
+        guard isCurtainMode else { return }
+        curtainTransitionAxis = axis
+        curtainModeView.animateSwitch(direction: direction, axis: axis, centerFrame: curtainCenterFrame())
+    }
+
+    func refreshCurtainMedia(animated: Bool = true) {
+        guard isCurtainMode else { return }
+        let neighbors = getViewController(self)?.curtainNeighborFiles() ?? (nil, nil)
+        curtainModeView.update(left: neighbors.0, right: neighbors.1)
+        updateCurtainModeLayout(animated: animated)
+        curtainTransitionAxis = .horizontal
+    }
+
+    private func curtainCenterFrame() -> NSRect {
+        let viewport = bounds.insetBy(dx: bounds.width * 0.10, dy: bounds.height * 0.10)
+        var mediaSize = file.originalSize ?? imageView.image?.size ?? viewport.size
+        if file.rotate % 2 == 1 {
+            mediaSize = NSSize(width: mediaSize.height, height: mediaSize.width)
+        }
+        guard mediaSize.width > 0, mediaSize.height > 0 else { return viewport }
+        return AVMakeRect(aspectRatio: mediaSize, insideRect: viewport)
+    }
+
+    private func updateCurtainModeLayout(animated: Bool) {
+        let centerFrame = curtainCenterFrame()
+        let applyFrames = {
+            self.imageView.frame = centerFrame
+            self.videoView.frame = centerFrame
+            self.mpvVideoView.frame = centerFrame
+            self.curtainProgressView.frame = NSRect(
+                x: centerFrame.minX + 20,
+                y: centerFrame.minY + 13,
+                width: max(80, centerFrame.width - 40),
+                height: 14
+            )
+        }
+        if animated {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = self.curtainTransitionAxis == .vertical ? 0.44 : 0.38
+                context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 0.82, 0.18, 1)
+                self.imageView.animator().frame = centerFrame
+                self.videoView.animator().frame = centerFrame
+                self.mpvVideoView.animator().frame = centerFrame
+                self.curtainProgressView.animator().frame = NSRect(
+                    x: centerFrame.minX + 20,
+                    y: centerFrame.minY + 13,
+                    width: max(80, centerFrame.width - 40),
+                    height: 14
+                )
+            }
+        } else {
+            applyFrames()
+        }
+        curtainProgressView.isHidden = file.type != .video
+        curtainProgressView.setActive(file.type == .video)
+        curtainModeView.layoutCards(centerFrame: centerFrame, animated: animated)
+    }
+
+    private func changeToStandardMediaFrame() {
+        if file.type == .image {
+            getViewController(self)?.changeLargeImage(firstShowThumb: false, resetSize: true)
+        } else {
+            mpvVideoView.frame = bounds
+            determineBlackBg()
+        }
     }
 
     var videoCurrentTimeSeconds: Double {
@@ -994,6 +1098,8 @@ class LargeImageView: NSView {
         currentPlayingURL = nil
         pausedBySeek = false
         isVideoMetadataUpdated = false
+        curtainProgressView?.isHidden = true
+        curtainProgressView?.setActive(false)
         while snapshotQueue.count > 0{
             snapshotQueue.first??.removeFromSuperview()
             snapshotQueue.removeFirst()
@@ -1101,6 +1207,7 @@ class LargeImageView: NSView {
                     videoControlsView.applyVisibilityPreference()
                     startPeriodicTimeObserver()
                     checkPlayerItemStatus(id: videoOrderId)
+                    if isCurtainMode { updateCurtainModeLayout(animated: false) }
                     return
                 }
             }
@@ -1196,6 +1303,7 @@ class LargeImageView: NSView {
                     queuePlayer.rate = globalVar.videoPlaybackRate
                     currentPlayingURL = url
                     videoControlsView.applyVisibilityPreference()
+                    if isCurtainMode { updateCurtainModeLayout(animated: false) }
                     
                     startPeriodicTimeObserver()
                     
@@ -1861,6 +1969,10 @@ class LargeImageView: NSView {
                 } else {
                     disableBlackBgForVideo()
                 }
+            }
+
+            if isCurtainMode {
+                updateCurtainModeLayout(animated: false)
             }
             
         } else {
@@ -2975,6 +3087,7 @@ class LargeImageView: NSView {
             // 旋转后重新绘制图像
             // Redraw image after rotation
             getViewController(self)?.changeLargeImage(firstShowThumb: true, resetSize: true, triggeredByLongPress: false)
+            if isCurtainMode { updateCurtainModeLayout(animated: true) }
             // 旋转后同步画布位置
             // Sync canvas position after rotation
             syncEditingCanvasFrame()
@@ -2995,6 +3108,7 @@ class LargeImageView: NSView {
             // 旋转后重新绘制图像
             // Redraw image after rotation
             getViewController(self)?.changeLargeImage(firstShowThumb: true, resetSize: true, triggeredByLongPress: false)
+            if isCurtainMode { updateCurtainModeLayout(animated: true) }
             // 旋转后同步画布位置
             // Sync canvas position after rotation
             syncEditingCanvasFrame()
